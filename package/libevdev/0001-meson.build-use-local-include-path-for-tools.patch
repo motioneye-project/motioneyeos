@@ -1,0 +1,54 @@
+From 83eb5bbac775d46b74e7f99fbd243d53f0118b37 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Mon, 2 Mar 2020 15:43:14 +0100
+Subject: [PATCH] meson.build: use local include path for tools
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fixes the following compile failure with old toolchains and meson
+build (autotools build not affected):
+
+  ../tools/mouse-dpi-tool.c: In function ‘handle_event’:
+  ../tools/mouse-dpi-tool.c:115:13: error: ‘const struct input_event’ has no member named ‘input_event_sec’
+     m->us = ev->input_event_sec * 1000000 + ev->input_event_usec;
+               ^
+  ../tools/mouse-dpi-tool.c:115:45: error: ‘const struct input_event’ has no member named ‘input_event_usec’
+     m->us = ev->input_event_sec * 1000000 + ev->input_event_usec;
+                                               ^
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ meson.build | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/meson.build b/meson.build
+index 4831f8e..5500a83 100644
+--- a/meson.build
++++ b/meson.build
+@@ -102,18 +102,22 @@ install_man(manpage)
+ # tools
+ executable('libevdev-events',
+ 	   sources: ['tools/libevdev-events.c'],
++	   include_directories: [includes_include],
+ 	   dependencies: dep_libevdev,
+ 	   install: false)
+ executable('touchpad-edge-detector',
+ 	   sources: ['tools/touchpad-edge-detector.c'],
++	   include_directories: [includes_include],
+ 	   dependencies: [dep_libevdev, dep_lm],
+            install: true)
+ executable('mouse-dpi-tool',
+ 	   sources: ['tools/mouse-dpi-tool.c'],
++	   include_directories: [includes_include],
+ 	   dependencies: dep_libevdev,
+            install: true)
+ executable('libevdev-tweak-device',
+ 	   sources: ['tools/libevdev-tweak-device.c'],
++	   include_directories: [includes_include],
+ 	   dependencies: dep_libevdev,
+ 	   install: true)
+ 
+-- 
+2.25.1
+

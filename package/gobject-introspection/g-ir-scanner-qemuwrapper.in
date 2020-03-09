@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# Pass -r to qemu-user as to trick glibc into not errorings out if the host kernel
+# is older than the target kernel.
+# Use a modules directory which does not exist so we don't load random things
+# which may then get deleted (or their dependencies) and potentially segfault
+GIO_MODULE_DIR=$(dirname $0)/../lib/gio/modules-dummy \
+@QEMU_USER@ -r @TOOLCHAIN_HEADERS_VERSION@ \
+-L $(dirname $0)/../../ \
+-E LD_LIBRARY_PATH=${GIR_EXTRA_LIBS_PATH}:.libs:$(dirname $0)/../lib:$(dirname $0)/../../lib \
+"$@"
+
+if [[ $? -ne 0 ]]; then
+    echo "If the above error message is about missing .so libraries, then setting up GIR_EXTRA_LIBS_PATH in the .mk file should help."
+    echo 'Typically like this: PKG_MAKE_ENV += GIR_EXTRA_LIBS_PATH="$(@D)/.libs"'
+    exit 1
+fi

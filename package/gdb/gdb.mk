@@ -35,7 +35,9 @@ endif
 # For the host variant, we really want to build with XML support,
 # which is needed to read XML descriptions of target architectures. We
 # also need ncurses.
-HOST_GDB_DEPENDENCIES = host-expat host-ncurses
+# As for libiberty, gdb may use a system-installed one if present, so
+# we must ensure ours is installed first.
+HOST_GDB_DEPENDENCIES = host-expat host-libiberty host-ncurses
 
 # Disable building documentation
 GDB_MAKE_OPTS += MAKEINFO=true

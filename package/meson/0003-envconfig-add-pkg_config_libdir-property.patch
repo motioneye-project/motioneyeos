@@ -53,7 +53,7 @@ diff --git a/run_unittests.py b/run_unittests.py
 index 676604f4..382c0964 100755
 --- a/run_unittests.py
 +++ b/run_unittests.py
-@@ -3621,6 +3621,34 @@ recommended as it is not supported on some platforms''')
+@@ -3629,6 +3629,34 @@ recommended as it is not supported on some platforms''')
          self.wipe()
          self.init(testdir, extra_args=['-Dstart_native=true'], override_envvars=env)
  
@@ -88,7 +88,7 @@ index 676604f4..382c0964 100755
      def __reconfigure(self, change_minor=False):
          # Set an older version to force a reconfigure from scratch
          filename = os.path.join(self.privatedir, 'coredata.dat')
-@@ -6847,7 +6875,7 @@ class NativeFileTests(BasePlatformTests):
+@@ -6863,7 +6891,7 @@ class NativeFileTests(BasePlatformTests):
  
  class CrossFileTests(BasePlatformTests):
  

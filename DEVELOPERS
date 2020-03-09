@@ -31,6 +31,7 @@ F:	package/audit/
 F:	package/busybox/
 F:	package/checkpolicy/
 F:	package/cppdb/
+F:	package/gobject-introspection/
 F:	package/gstreamer1/gstreamer1/
 F:	package/gstreamer1/gstreamer1-mm/
 F:	package/gstreamer1/gst1-plugins-bad/
@@ -53,6 +54,7 @@ F:	package/openjdk/
 F:	package/openjdk-bin/
 F:	package/php/
 F:	package/policycoreutils/
+F:	package/prelink-cross/
 F:	package/polkit/
 F:	package/python3/
 F:	package/python-aioredis/
@@ -503,6 +505,7 @@ F:	package/skeleton-init-systemd/
 F:	package/skeleton-init-sysv/
 F:	package/skeleton/
 F:	package/sysvinit/
+F:	package/udev-gentoo-scripts/
 F:	package/util-linux/
 F:	package/tpm2-abrmd/
 F:	package/tpm2-tools/
@@ -823,6 +826,7 @@ F:	package/libmaxminddb/
 F:	package/openzwave/
 
 N:	Fabrice Fontaine <fontaine.fabrice@gmail.com>
+F:	package/bearssl/
 F:	package/boinc/
 F:	package/cairo/
 F:	package/duktape/
@@ -1167,6 +1171,7 @@ F:	package/python-async-lru/
 F:	package/python-async-timeout/
 F:	package/python-brotli/
 F:	package/python-cchardet/
+F:	package/python-flatbuffers/
 F:	package/python-frozenlist/
 F:	package/python-janus/
 F:	package/python-logstash/
@@ -1217,6 +1222,9 @@ F:	package/quota/
 
 N:	Jason Pruitt <jrspruitt@gmail.com>
 F:	package/librtlsdr/
+
+N:	Jean Burgat <jeanburgat33@gmail.com>
+F:	package/openfpgaloader/
 
 N:	Jens Kleintje <scooby22@web.de>
 F:	package/gcnano-binaries/
@@ -1507,6 +1515,10 @@ F:	package/python-keyring/
 F:	package/python-simplejson/
 F:	package/python-versiontools/
 F:	package/wilc1000-firmware/
+
+N:	Maeva Manuel <maeva.manuel@oss.nxp.com>
+F:	board/freescale/imx8qmmek/
+F:	configs/freescale_imx8qmmek_defconfig
 
 N:	Mahyar Koshkouei <mahyar.koshkouei@gmail.com>
 F:	package/ffmpeg/
@@ -2558,6 +2570,7 @@ F:	package/keyutils/
 F:	package/libbsd/
 F:	package/libedit/
 F:	package/libgsm/
+F:	package/libiberty/
 F:	package/libinput/
 F:	package/libiscsi/
 F:	package/libpri/

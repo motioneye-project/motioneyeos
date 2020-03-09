@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-INADYN_VERSION = 2.5
+INADYN_VERSION = 2.6
 INADYN_SITE = https://github.com/troglobit/inadyn/releases/download/v$(INADYN_VERSION)
 INADYN_SOURCE = inadyn-$(INADYN_VERSION).tar.xz
 INADYN_LICENSE = GPL-2.0+
 INADYN_LICENSE_FILES = COPYING
-INADYN_DEPENDENCIES = host-pkgconf libconfuse libite
+INADYN_DEPENDENCIES = host-pkgconf libconfuse
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 INADYN_CONF_OPTS += --enable-openssl

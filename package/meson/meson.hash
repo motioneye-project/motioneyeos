@@ -1,4 +1,4 @@
 # Locally calculated after checking pgp signature
-# https://github.com/mesonbuild/meson/releases/download/0.53.1/meson-0.53.1.tar.gz.asc
-sha256 ec1ba33eea701baca2c1607dac458152dc8323364a51fdef6babda2623413b04 meson-0.53.1.tar.gz
+# https://github.com/mesonbuild/meson/releases/download/0.53.2/meson-0.53.2.tar.gz.asc
+sha256 3e8f830f33184397c2eb0b651ec502adb63decb28978bdc84b3558d71284c21f meson-0.53.2.tar.gz
 sha256 cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30 COPYING

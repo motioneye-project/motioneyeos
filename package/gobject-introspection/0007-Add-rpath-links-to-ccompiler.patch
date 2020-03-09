@@ -1,0 +1,29 @@
+From 72a427bc50daee8f1ded0e9221e53dbbf2a80f08 Mon Sep 17 00:00:00 2001
+From: Adam Duskett <aduskett@gmail.com>
+Date: Wed, 14 Mar 2018 12:07:10 -0400
+Subject: [PATCH] Add rpath links to ccompiler
+
+This patch allows gobject-introspection to process extra paths passed to the
+compiler via the GIR_EXTRA_LIBS_PATH variable.
+
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+---
+ giscanner/ccompiler.py | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/giscanner/ccompiler.py b/giscanner/ccompiler.py
+index a8bd5b1..51bb9bc 100644
+--- a/giscanner/ccompiler.py
++++ b/giscanner/ccompiler.py
+@@ -229,6 +229,8 @@ class CCompiler(object):
+ 
+         for envvar in runtime_path_envvar:
+             if envvar in os.environ:
++                for envvar_path in os.environ[envvar].split(':'):
++                    args.append("-Wl,-rpath-link," + envvar_path)
+                 os.environ[envvar] = \
+                     os.pathsep.join(runtime_paths + [os.environ[envvar]])
+             else:
+-- 
+2.14.3
+

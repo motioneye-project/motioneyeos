@@ -367,6 +367,13 @@ config BR2_PACKAGE_LINUX_FIRMWARE_INTEL_E100
 	  Firmware files for Intel 825xx handled by driver e100
 	  (e100)
 
+config BR2_PACKAGE_LINUX_FIRMWARE_MICROCHIP_VSC85XX_PHY
+	bool "Microchip VSC85xx PHYs"
+	help
+	  Firmware files for Microchip/Microsemi VSC85xx networking
+	  PHYs (VSC8504, VSC8552, VSC8572, VSC8574, VSC856X, VSC8575,
+	  VSC8582 and VSC8584)
+
 config BR2_PACKAGE_LINUX_FIRMWARE_QLOGIC_4X
 	bool "QLogic FastLinQ 4xxxx"
 	help

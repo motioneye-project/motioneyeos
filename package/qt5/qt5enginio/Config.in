@@ -1,6 +1,6 @@
 config BR2_PACKAGE_QT5ENGINIO
 	bool "qt5enginio"
-	depends on BR2_PACKAGE_QT5BASE_OPENSSL
+	select BR2_PACKAGE_OPENSSL
 	select BR2_PACKAGE_QT5BASE_GUI
 	select BR2_PACKAGE_QT5BASE_NETWORK
 	help
@@ -14,13 +14,3 @@ config BR2_PACKAGE_QT5ENGINIO
 	  5.6 and not recommended for new design.
 
 	  http://doc.qt.io/archives/qt-5.5/enginio-index.html
-
-# When Qt 5.6 is removed, replace the depends on
-# BR2_PACKAGE_QT5BASE_OPENSSL above by a select BR2_PACKAGE_OPENSSL.
-comment "qt5enginio needs libressl"
-	depends on BR2_PACKAGE_QT5_VERSION_5_6
-	depends on !BR2_PACKAGE_QT5BASE_OPENSSL
-
-comment "qt5enginio needs openssl"
-	depends on BR2_PACKAGE_QT5_VERSION_LATEST
-	depends on !BR2_PACKAGE_QT5BASE_OPENSSL

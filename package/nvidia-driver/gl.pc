@@ -7,5 +7,5 @@ Name: gl
 Description: Nvidia OpenGL library
 Version: 10.4.2
 Libs: -L${libdir} -lGL -lm -lXext -lX11 -ldl
-Cflags: -I${includedir}  -DMESA_EGL_NO_X11_HEADERS
+Cflags: -I${includedir}  -DEGL_NO_X11
 glx_tls: no

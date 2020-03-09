@@ -318,6 +318,16 @@ config BR2_PACKAGE_SYSTEMD_RANDOMSEED
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-random-seed.service.html
 
+config BR2_PACKAGE_SYSTEMD_REPART
+	bool "enable repart support"
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_UTIL_LINUX_LIBFDISK
+	help
+	  systemd-repart grows and adds partitions to a partition table,
+	  based on the configuration files described in repart.d.
+
+	  https://www.freedesktop.org/software/systemd/man/systemd-repart.html
+
 config BR2_PACKAGE_SYSTEMD_RESOLVED
 	bool "enable resolve daemon"
 	default y
@@ -392,6 +402,18 @@ config BR2_PACKAGE_SYSTEMD_TMPFILES
 	  tmpfiles.d(5).
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-tmpfiles.html
+
+config BR2_PACKAGE_SYSTEMD_USERDB
+	bool "enable userdb daemon"
+	help
+	  systemd-userdbd is a system service that multiplexes
+	  user/group lookups to all local services that provide JSON
+	  user/group record definitions to the system. In addition it
+	  synthesizes JSON user/group records from classic UNIX/glibc
+	  NSS user/group records in order to provide full backwards
+	  compatibility.
+
+	  https://www.freedesktop.org/software/systemd/man/systemd-userdbd.service.html
 
 config BR2_PACKAGE_SYSTEMD_VCONSOLE
 	bool "enable vconsole tool"

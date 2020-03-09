@@ -1,11 +1,8 @@
 config BR2_PACKAGE_QT5BASE
 	bool "qt5base"
 	select BR2_PACKAGE_ZLIB
-	select BR2_PACKAGE_PCRE if BR2_PACKAGE_QT5_VERSION_5_6
-	select BR2_PACKAGE_PCRE_16 if BR2_PACKAGE_QT5_VERSION_5_6
-	select BR2_PACKAGE_PCRE_UTF if BR2_PACKAGE_QT5_VERSION_5_6
-	select BR2_PACKAGE_PCRE2 if BR2_PACKAGE_QT5_VERSION_LATEST
-	select BR2_PACKAGE_PCRE2_16 if BR2_PACKAGE_QT5_VERSION_LATEST
+	select BR2_PACKAGE_PCRE2
+	select BR2_PACKAGE_PCRE2_16
 	help
 	  Qt is a cross-platform application and UI framework for
 	  developers using C++.
@@ -285,12 +282,6 @@ config BR2_PACKAGE_QT5BASE_ICU
 comment "icu support needs a toolchain w/ gcc >= 4.8"
 	depends on !BR2_BINFMT_FLAT
 	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
-
-config BR2_PACKAGE_QT5BASE_OPENSSL
-	bool
-	# No OpenSSL 1.1.x support in Qt 5.6.x
-	default y if BR2_PACKAGE_QT5_VERSION_5_6 && BR2_PACKAGE_LIBRESSL
-	default y if BR2_PACKAGE_QT5_VERSION_LATEST && BR2_PACKAGE_OPENSSL
 
 config BR2_PACKAGE_QT5BASE_TSLIB
 	bool "Enable Tslib support"

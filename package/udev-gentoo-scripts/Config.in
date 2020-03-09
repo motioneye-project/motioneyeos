@@ -1,0 +1,6 @@
+config BR2_PACKAGE_UDEV_GENTOO_SCRIPTS
+	bool
+	depends on BR2_PACKAGE_EUDEV
+	depends on BR2_INIT_OPENRC
+	help
+	  Init scripts for eudev.

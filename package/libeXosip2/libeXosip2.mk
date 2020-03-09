@@ -4,16 +4,15 @@
 #
 ################################################################################
 
-LIBEXOSIP2_VERSION = 3.6.0
+LIBEXOSIP2_VERSION = 5.1.1
+# Since version 5.0, letter 'X' in library's name is in lower case
+LIBEXOSIP2_SOURCE = libexosip2-$(LIBEXOSIP2_VERSION).tar.gz
 LIBEXOSIP2_SITE = http://download.savannah.gnu.org/releases/exosip
 LIBEXOSIP2_INSTALL_STAGING = YES
 LIBEXOSIP2_LICENSE = GPL-2.0+
 LIBEXOSIP2_LICENSE_FILES = COPYING
 
 LIBEXOSIP2_DEPENDENCIES = host-pkgconf libosip2
-
-# We are touching configure.in and Makefile.am with one of our patches
-LIBEXOSIP2_AUTORECONF = YES
 
 ifeq ($(BR2_arc),y)
 # toolchain __arc__ define conflicts with libeXosip2 source

@@ -48,6 +48,12 @@ define EUDEV_INSTALL_INIT_SYSV
 	$(INSTALL) -D -m 0755 package/eudev/S10udev $(TARGET_DIR)/etc/init.d/S10udev
 endef
 
+# Avoid installing S10udev with openrc, as the service is started by a unit
+# from the udev-gentoo-scripts package.
+define EUDEV_INSTALL_INIT_OPENRC
+	@:
+endef
+
 # Required by default rules for input devices
 define EUDEV_USERS
 	- - input -1 * - - - Input device group

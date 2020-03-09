@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SYSTEMD_VERSION = 244.3
+SYSTEMD_VERSION = 245
 SYSTEMD_SITE = $(call github,systemd,systemd-stable,v$(SYSTEMD_VERSION))
 SYSTEMD_LICENSE = LGPL-2.1+, GPL-2.0+ (udev), Public Domain (few source files, see README), BSD-3-Clause (tools/chromiumos)
 SYSTEMD_LICENSE_FILES = LICENSE.GPL2 LICENSE.LGPL2.1 README tools/chromiumos/LICENSE
@@ -41,6 +41,7 @@ SYSTEMD_CONF_OPTS += \
 	-Dumount-path=/usr/bin/umount \
 	-Dnobody-group=nogroup \
 	-Didn=true \
+	-Dhomed=false \
 	-Dnss-systemd=true
 
 ifeq ($(BR2_PACKAGE_ACL),y)
@@ -302,6 +303,19 @@ else
 SYSTEMD_CONF_OPTS += -Dlocaled=false
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD_REPART),y)
+SYSTEMD_CONF_OPTS += -Drepart=true
+SYSTEMD_DEPENDENCIES += openssl
+else
+SYSTEMD_CONF_OPTS += -Drepart=false
+endif
+
+ifeq ($(BR2_PACKAGE_SYSTEMD_USERDB),y)
+SYSTEMD_CONF_OPTS += -Duserdb=true
+else
+SYSTEMD_CONF_OPTS += -Duserdb=false
+endif
+
 ifeq ($(BR2_PACKAGE_SYSTEMD_COREDUMP),y)
 SYSTEMD_CONF_OPTS += -Dcoredump=true
 SYSTEMD_COREDUMP_USER = systemd-coredump -1 systemd-coredump -1 * /var/lib/systemd/coredump - - Core Dumper
@@ -346,6 +360,16 @@ SYSTEMD_CONF_OPTS += -Dresolve=true
 SYSTEMD_RESOLVED_USER = systemd-resolve -1 systemd-resolve -1 * - - - Network Name Resolution Manager
 else
 SYSTEMD_CONF_OPTS += -Dresolve=false
+endif
+
+ifeq ($(BR2_PACKAGE_GNUTLS),y)
+SYSTEMD_CONF_OPTS += -Ddns-over-tls=gnutls -Ddefault-dns-over-tls=opportunistic
+SYSTEMD_DEPENDENCIES += gnutls
+else ifeq ($(BR2_PACKAGE_OPENSSL),y)
+SYSTEMD_CONF_OPTS += -Ddns-over-tls=openssl -Ddefault-dns-over-tls=opportunistic
+SYSTEMD_DEPENDENCIES += openssl
+else
+SYSTEMD_CONF_OPTS += -Ddns-over-tls=false -Ddefault-dns-over-tls=no
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_TIMESYNCD),y)
@@ -511,6 +535,7 @@ HOST_SYSTEMD_CONF_OPTS = \
 	-Dtpm=false \
 	-Denvironment-d=false \
 	-Dbinfmt=false \
+	-Drepart=false \
 	-Dcoredump=false \
 	-Dpstore=false \
 	-Dlogind=false \
@@ -518,6 +543,8 @@ HOST_SYSTEMD_CONF_OPTS = \
 	-Dlocaled=false \
 	-Dmachined=false \
 	-Dportabled=false \
+	-Duserdb=false \
+	-Dhomed=false \
 	-Dnetworkd=false \
 	-Dtimedated=false \
 	-Dtimesyncd=false \

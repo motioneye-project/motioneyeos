@@ -30,9 +30,13 @@ import certifi
 import distutils.version
 import time
 import gzip
+import sys
 from urllib3 import HTTPSConnectionPool
 from urllib3.exceptions import HTTPError
 from multiprocessing import Pool
+
+sys.path.append('utils/')
+from getdeveloperlib import parse_developers
 
 NVD_START_YEAR = 2002
 NVD_JSON_VERSION = "1.0"
@@ -50,28 +54,63 @@ RM_API_STATUS_NOT_FOUND = 4
 # because it's used by sub-processes.
 http_pool = None
 
+class Defconfig:
+    def __init__(self, name, path):
+        self.name = name
+        self.path = path
+        self.developers = None
+
+    def set_developers(self, developers):
+        """
+        Fills in the .developers field
+        """
+        self.developers = [
+            developer.name
+            for developer in developers
+            if developer.hasfile(self.path)
+        ]
+
+
+def get_defconfig_list():
+    """
+    Builds the list of Buildroot defconfigs, returning a list of Defconfig
+    objects.
+    """
+    return [
+        Defconfig(name[:-len('_defconfig')], os.path.join('configs', name))
+        for name in os.listdir('configs')
+        if name.endswith('_defconfig')
+    ]
+
 
 class Package:
-    all_licenses = list()
+    all_licenses = dict()
     all_license_files = list()
     all_versions = dict()
     all_ignored_cves = dict()
+    # This is the list of all possible checks. Add new checks to this list so
+    # a tool that post-processeds the json output knows the checks before
+    # iterating over the packages.
+    status_checks = ['cve', 'developers', 'hash', 'license',
+                     'license-files', 'patches', 'pkg-check', 'url', 'version']
 
     def __init__(self, name, path):
         self.name = name
         self.path = path
+        self.pkg_path = os.path.dirname(path)
         self.infras = None
+        self.license = None
         self.has_license = False
         self.has_license_files = False
         self.has_hash = False
-        self.patch_count = 0
+        self.patch_files = []
         self.warnings = 0
         self.current_version = None
         self.url = None
-        self.url_status = None
         self.url_worker = None
         self.cves = list()
-        self.latest_version = (RM_API_STATUS_ERROR, None, None)
+        self.latest_version = {'status': RM_API_STATUS_ERROR, 'version': None, 'id': None}
+        self.status = {}
 
     def pkgvar(self):
         return self.name.upper().replace("-", "_")
@@ -80,18 +119,31 @@ class Package:
         """
         Fills in the .url field
         """
-        self.url_status = "No Config.in"
+        self.status['url'] = ("warning", "no Config.in")
         for filename in os.listdir(os.path.dirname(self.path)):
             if fnmatch.fnmatch(filename, 'Config.*'):
                 fp = open(os.path.join(os.path.dirname(self.path), filename), "r")
                 for config_line in fp:
                     if URL_RE.match(config_line):
                         self.url = config_line.strip()
-                        self.url_status = "Found"
+                        self.status['url'] = ("ok", "found")
                         fp.close()
                         return
-                self.url_status = "Missing"
+                self.status['url'] = ("error", "missing")
                 fp.close()
+
+    @property
+    def patch_count(self):
+        return len(self.patch_files)
+
+    @property
+    def has_valid_infra(self):
+        try:
+            if self.infras[0][1] == 'virtual':
+                return False
+        except IndexError:
+                return False
+        return True
 
     def set_infra(self):
         """
@@ -112,29 +164,55 @@ class Package:
 
     def set_license(self):
         """
-        Fills in the .has_license and .has_license_files fields
+        Fills in the .status['license'] and .status['license-files'] fields
         """
+        if not self.has_valid_infra:
+            self.status['license'] = ("na", "no valid package infra")
+            self.status['license-files'] = ("na", "no valid package infra")
+            return
+
         var = self.pkgvar()
+        self.status['license'] = ("error", "missing")
+        self.status['license-files'] = ("error", "missing")
         if var in self.all_licenses:
-            self.has_license = True
+            self.license = self.all_licenses[var]
+            self.status['license'] = ("ok", "found")
         if var in self.all_license_files:
-            self.has_license_files = True
+            self.status['license-files'] = ("ok", "found")
 
     def set_hash_info(self):
         """
-        Fills in the .has_hash field
+        Fills in the .status['hash'] field
         """
+        if not self.has_valid_infra:
+            self.status['hash'] = ("na", "no valid package infra")
+            self.status['hash-license'] = ("na", "no valid package infra")
+            return
+
         hashpath = self.path.replace(".mk", ".hash")
-        self.has_hash = os.path.exists(hashpath)
+        if os.path.exists(hashpath):
+            self.status['hash'] = ("ok", "found")
+        else:
+            self.status['hash'] = ("error", "missing")
 
     def set_patch_count(self):
         """
-        Fills in the .patch_count field
+        Fills in the .patch_count, .patch_files and .status['patches'] fields
         """
-        self.patch_count = 0
+        if not self.has_valid_infra:
+            self.status['patches'] = ("na", "no valid package infra")
+            return
+
         pkgdir = os.path.dirname(self.path)
         for subdir, _, _ in os.walk(pkgdir):
-            self.patch_count += len(fnmatch.filter(os.listdir(subdir), '*.patch'))
+            self.patch_files = fnmatch.filter(os.listdir(subdir), '*.patch')
+
+        if self.patch_count == 0:
+            self.status['patches'] = ("ok", "no patches")
+        elif self.patch_count < 5:
+            self.status['patches'] = ("warning", "some patches")
+        else:
+            self.status['patches'] = ("error", "lots of patches")
 
     def set_current_version(self):
         """
@@ -146,10 +224,11 @@ class Package:
 
     def set_check_package_warnings(self):
         """
-        Fills in the .warnings field
+        Fills in the .warnings and .status['pkg-check'] fields
         """
         cmd = ["./utils/check-package"]
         pkgdir = os.path.dirname(self.path)
+        self.status['pkg-check'] = ("error", "Missing")
         for root, dirs, files in os.walk(pkgdir):
             for f in files:
                 if f.endswith(".mk") or f.endswith(".hash") or f == "Config.in" or f == "Config.in.host":
@@ -160,6 +239,10 @@ class Package:
             m = re.match("^([0-9]*) warnings generated", line.decode())
             if m:
                 self.warnings = int(m.group(1))
+                if self.warnings == 0:
+                    self.status['pkg-check'] = ("ok", "no warnings")
+                else:
+                    self.status['pkg-check'] = ("error", "{} warnings".format(self.warnings))
                 return
 
     def is_cve_ignored(self, cve):
@@ -167,6 +250,24 @@ class Package:
         Tells if the CVE is ignored by the package
         """
         return cve in self.all_ignored_cves.get(self.pkgvar(), [])
+
+    def set_developers(self, developers):
+        """
+        Fills in the .developers and .status['developers'] field
+        """
+        self.developers = [
+            dev.name
+            for dev in developers
+            if dev.hasfile(self.path)
+        ]
+
+        if self.developers:
+            self.status['developers'] = ("ok", "{} developers".format(len(self.developers)))
+        else:
+            self.status['developers'] = ("warning", "no developers")
+
+    def is_status_ok(self, name):
+        return self.status[name][0] == 'ok'
 
     def __eq__(self, other):
         return self.path == other.path
@@ -176,7 +277,7 @@ class Package:
 
     def __str__(self):
         return "%s (path='%s', license='%s', license_files='%s', hash='%s', patches=%d)" % \
-            (self.name, self.path, self.has_license, self.has_license_files, self.has_hash, self.patch_count)
+            (self.name, self.path, self.is_status_ok('license'), self.is_status_ok('license-files'), self.status['hash'], self.patch_count)
 
 
 class CVE:
@@ -370,7 +471,7 @@ def package_init_make_info():
             if value == "unknown":
                 continue
             pkgvar = pkgvar[:-8]
-            Package.all_licenses.append(pkgvar)
+            Package.all_licenses[pkgvar] = value
 
         elif pkgvar.endswith("_LICENSE_FILES"):
             if pkgvar.endswith("_MANIFEST_LICENSE_FILES"):
@@ -390,23 +491,23 @@ def package_init_make_info():
 
 
 def check_url_status_worker(url, url_status):
-    if url_status != "Missing" and url_status != "No Config.in":
+    if url_status[0] == 'ok':
         try:
             url_status_code = requests.head(url, timeout=30).status_code
             if url_status_code >= 400:
-                return "Invalid(%s)" % str(url_status_code)
+                return ("error", "invalid {}".format(url_status_code))
         except requests.exceptions.RequestException:
-            return "Invalid(Err)"
-        return "Ok"
+            return ("error", "invalid (err)")
+        return ("ok", "valid")
     return url_status
 
 
 def check_package_urls(packages):
     pool = Pool(processes=64)
     for pkg in packages:
-        pkg.url_worker = pool.apply_async(check_url_status_worker, (pkg.url, pkg.url_status))
+        pkg.url_worker = pool.apply_async(check_url_status_worker, (pkg.url, pkg.status['url']))
     for pkg in packages:
-        pkg.url_status = pkg.url_worker.get(timeout=3600)
+        pkg.status['url'] = pkg.url_worker.get(timeout=3600)
         del pkg.url_worker
     pool.terminate()
 
@@ -462,9 +563,8 @@ def check_package_latest_version(packages):
     """
     Fills in the .latest_version field of all Package objects
 
-    This field has a special format:
-      (status, version, id)
-    with:
+    This field is a dict and has the following keys:
+
     - status: one of RM_API_STATUS_ERROR,
       RM_API_STATUS_FOUND_BY_DISTRO, RM_API_STATUS_FOUND_BY_PATTERN,
       RM_API_STATUS_NOT_FOUND
@@ -480,7 +580,24 @@ def check_package_latest_version(packages):
     worker_pool = Pool(processes=64)
     results = worker_pool.map(check_package_latest_version_worker, (pkg.name for pkg in packages))
     for pkg, r in zip(packages, results):
-        pkg.latest_version = r
+        pkg.latest_version = dict(zip(['status', 'version', 'id'], r))
+
+        if not pkg.has_valid_infra:
+            pkg.status['version'] = ("na", "no valid package infra")
+            continue
+
+        if pkg.latest_version['status'] == RM_API_STATUS_ERROR:
+            pkg.status['version'] = ('warning', "Release Monitoring API error")
+        elif pkg.latest_version['status'] == RM_API_STATUS_NOT_FOUND:
+            pkg.status['version'] = ('warning', "Package not found on Release Monitoring")
+
+        if pkg.latest_version['version'] is None:
+            pkg.status['version'] = ('warning', "No upstream version available on Release Monitoring")
+        elif pkg.latest_version['version'] != pkg.current_version:
+            pkg.status['version'] = ('error', "The newer version {} is available upstream".format(pkg.latest_version['version']))
+        else:
+            pkg.status['version'] = ('ok', 'up-to-date')
+
     worker_pool.terminate()
     del http_pool
 
@@ -497,6 +614,7 @@ def check_package_cves(nvd_path, packages):
 
 def calculate_stats(packages):
     stats = defaultdict(int)
+    stats['packages'] = len(packages)
     for pkg in packages:
         # If packages have multiple infra, take the first one. For the
         # vast majority of packages, the target and host infra are the
@@ -507,25 +625,25 @@ def calculate_stats(packages):
             stats["infra-%s" % infra] += 1
         else:
             stats["infra-unknown"] += 1
-        if pkg.has_license:
+        if pkg.is_status_ok('license'):
             stats["license"] += 1
         else:
             stats["no-license"] += 1
-        if pkg.has_license_files:
+        if pkg.is_status_ok('license-files'):
             stats["license-files"] += 1
         else:
             stats["no-license-files"] += 1
-        if pkg.has_hash:
+        if pkg.is_status_ok('hash'):
             stats["hash"] += 1
         else:
             stats["no-hash"] += 1
-        if pkg.latest_version[0] == RM_API_STATUS_FOUND_BY_DISTRO:
+        if pkg.latest_version['status'] == RM_API_STATUS_FOUND_BY_DISTRO:
             stats["rmo-mapping"] += 1
         else:
             stats["rmo-no-mapping"] += 1
-        if not pkg.latest_version[1]:
+        if not pkg.latest_version['version']:
             stats["version-unknown"] += 1
-        elif pkg.latest_version[1] == pkg.current_version:
+        elif pkg.latest_version['version'] == pkg.current_version:
             stats["version-uptodate"] += 1
         else:
             stats["version-not-uptodate"] += 1
@@ -658,30 +776,30 @@ def dump_html_pkg(f, pkg):
 
     # License
     td_class = ["centered"]
-    if pkg.has_license:
+    if pkg.is_status_ok('license'):
         td_class.append("correct")
     else:
         td_class.append("wrong")
     f.write("  <td class=\"%s\">%s</td>\n" %
-            (" ".join(td_class), boolean_str(pkg.has_license)))
+            (" ".join(td_class), boolean_str(pkg.is_status_ok('license'))))
 
     # License files
     td_class = ["centered"]
-    if pkg.has_license_files:
+    if pkg.is_status_ok('license-files'):
         td_class.append("correct")
     else:
         td_class.append("wrong")
     f.write("  <td class=\"%s\">%s</td>\n" %
-            (" ".join(td_class), boolean_str(pkg.has_license_files)))
+            (" ".join(td_class), boolean_str(pkg.is_status_ok('license-files'))))
 
     # Hash
     td_class = ["centered"]
-    if pkg.has_hash:
+    if pkg.is_status_ok('hash'):
         td_class.append("correct")
     else:
         td_class.append("wrong")
     f.write("  <td class=\"%s\">%s</td>\n" %
-            (" ".join(td_class), boolean_str(pkg.has_hash)))
+            (" ".join(td_class), boolean_str(pkg.is_status_ok('hash'))))
 
     # Current version
     if len(pkg.current_version) > 20:
@@ -691,29 +809,29 @@ def dump_html_pkg(f, pkg):
     f.write("  <td class=\"centered\">%s</td>\n" % current_version)
 
     # Latest version
-    if pkg.latest_version[0] == RM_API_STATUS_ERROR:
+    if pkg.latest_version['status'] == RM_API_STATUS_ERROR:
         td_class.append("version-error")
-    if pkg.latest_version[1] is None:
+    if pkg.latest_version['version'] is None:
         td_class.append("version-unknown")
-    elif pkg.latest_version[1] != pkg.current_version:
+    elif pkg.latest_version['version'] != pkg.current_version:
         td_class.append("version-needs-update")
     else:
         td_class.append("version-good")
 
-    if pkg.latest_version[0] == RM_API_STATUS_ERROR:
+    if pkg.latest_version['status'] == RM_API_STATUS_ERROR:
         latest_version_text = "<b>Error</b>"
-    elif pkg.latest_version[0] == RM_API_STATUS_NOT_FOUND:
+    elif pkg.latest_version['status'] == RM_API_STATUS_NOT_FOUND:
         latest_version_text = "<b>Not found</b>"
     else:
-        if pkg.latest_version[1] is None:
+        if pkg.latest_version['version'] is None:
             latest_version_text = "<b>Found, but no version</b>"
         else:
             latest_version_text = "<a href=\"https://release-monitoring.org/project/%s\"><b>%s</b></a>" % \
-                (pkg.latest_version[2], str(pkg.latest_version[1]))
+                (pkg.latest_version['id'], str(pkg.latest_version['version']))
 
         latest_version_text += "<br/>"
 
-        if pkg.latest_version[0] == RM_API_STATUS_FOUND_BY_DISTRO:
+        if pkg.latest_version['status'] == RM_API_STATUS_FOUND_BY_DISTRO:
             latest_version_text += "found by <a href=\"https://release-monitoring.org/distro/Buildroot/\">distro</a>"
         else:
             latest_version_text += "found by guess"
@@ -732,12 +850,12 @@ def dump_html_pkg(f, pkg):
 
     # URL status
     td_class = ["centered"]
-    url_str = pkg.url_status
-    if pkg.url_status == "Missing" or pkg.url_status == "No Config.in":
+    url_str = pkg.status['url'][1]
+    if pkg.status['url'][0] in ("error", "warning"):
         td_class.append("missing_url")
-    elif pkg.url_status.startswith("Invalid"):
+    if pkg.status['url'][0] == "error":
         td_class.append("invalid_url")
-        url_str = "<a href=%s>%s</a>" % (pkg.url, pkg.url_status)
+        url_str = "<a href=%s>%s</a>" % (pkg.url, pkg.status['url'][1])
     else:
         td_class.append("good_url")
         url_str = "<a href=%s>Link</a>" % pkg.url
@@ -832,7 +950,7 @@ def dump_html(packages, stats, date, commit, output):
         f.write(html_footer)
 
 
-def dump_json(packages, stats, date, commit, output):
+def dump_json(packages, defconfigs, stats, date, commit, output):
     # Format packages as a dictionnary instead of a list
     # Exclude local field that does not contains real date
     excluded_fields = ['url_worker', 'name']
@@ -842,6 +960,12 @@ def dump_json(packages, stats, date, commit, output):
             for k, v in pkg.__dict__.items()
             if k not in excluded_fields
         } for pkg in packages
+    }
+    defconfigs = {
+        d.name: {
+            k: v
+            for k, v in d.__dict__.items()
+        } for d in defconfigs
     }
     # Aggregate infrastructures into a single dict entry
     statistics = {
@@ -853,6 +977,8 @@ def dump_json(packages, stats, date, commit, output):
     # The actual structure to dump, add commit and date to it
     final = {'packages': pkgs,
              'stats': statistics,
+             'defconfigs': defconfigs,
+             'package_status_checks': Package.status_checks,
              'commit': commit,
              'date': str(date)}
 
@@ -892,6 +1018,12 @@ def __main__():
                                       'HEAD']).splitlines()[0].decode()
     print("Build package list ...")
     packages = get_pkglist(args.npackages, package_list)
+    print("Getting developers ...")
+    developers = parse_developers()
+    print("Build defconfig list ...")
+    defconfigs = get_defconfig_list()
+    for d in defconfigs:
+        d.set_developers(developers)
     print("Getting package make info ...")
     package_init_make_info()
     print("Getting package details ...")
@@ -903,6 +1035,7 @@ def __main__():
         pkg.set_check_package_warnings()
         pkg.set_current_version()
         pkg.set_url()
+        pkg.set_developers(developers)
     print("Checking URL status")
     check_package_urls(packages)
     print("Getting latest versions ...")
@@ -917,7 +1050,7 @@ def __main__():
         dump_html(packages, stats, date, commit, args.html)
     if args.json:
         print("Write JSON")
-        dump_json(packages, stats, date, commit, args.json)
+        dump_json(packages, defconfigs, stats, date, commit, args.json)
 
 
 __main__()

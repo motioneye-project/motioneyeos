@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PCRE_VERSION = 8.43
+PCRE_VERSION = 8.44
 PCRE_SITE = https://ftp.pcre.org/pub/pcre
 PCRE_SOURCE = pcre-$(PCRE_VERSION).tar.bz2
 PCRE_LICENSE = BSD-3-Clause
