@@ -1,3 +1,3 @@
 # Locally computed
-sha256 6f1940d2a0607342cba8cffc0beb7c78caae5995c2d554a6079f4849997da7ba  kodi-audiodecoder-vgmstream-1.1.4-Leia.tar.gz
-sha256 976ef407b9b30a6c30dab03a8fbb32d0e7e45713b2121d9b378bfb15dc1dfc09  src/VGMCodec.cpp
+sha256 28876be1e1317b3ec5c3a4fe415f20d92a4c5868912656c5e8ab9cdd7e3f32d8  kodi-audiodecoder-vgmstream-1.1.5-Leia.tar.gz
+sha256 fc7c7ab8774d94fb2eccdf47e3b8052a3906e4b5ec8554191da321020c965d8e  debian/copyright
