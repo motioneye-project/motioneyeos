@@ -1,0 +1,82 @@
+From e3b47c1b84964c62b3e1fa782f1ffa4be0ae62f9 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Mon, 9 Mar 2020 13:01:14 +0100
+Subject: [PATCH] vc4: add meson option to disable optional neon support
+
+Not all toolchains are able to compile the runtime
+optional vc4 neon support, so add an meson option
+to force disabling it at compile time.
+
+[Upstream: https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/4114]
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ meson_options.txt                    | 7 +++++++
+ src/gallium/drivers/vc4/meson.build  | 4 ++--
+ src/gallium/drivers/vc4/vc4_tiling.h | 4 ++--
+ 3 files changed, 11 insertions(+), 4 deletions(-)
+
+diff --git a/meson_options.txt b/meson_options.txt
+index a39596a6f19..0f6b6c62b55 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -117,6 +117,13 @@ option(
+   choices : ['auto', 'true', 'false'],
+   description : 'enable gallium va state tracker.',
+ )
++option(
++  'gallium-vc4-neon',
++  type : 'combo',
++  value : 'auto',
++  choices : ['auto', 'disabled'],
++  description : 'enable gallium vc4 optional neon support.',
++)
+ option(
+   'va-libs-path',
+   type : 'string',
+diff --git a/src/gallium/drivers/vc4/meson.build b/src/gallium/drivers/vc4/meson.build
+index 5ce5af5f6b4..e3f7d8d62ae 100644
+--- a/src/gallium/drivers/vc4/meson.build
++++ b/src/gallium/drivers/vc4/meson.build
+@@ -84,7 +84,7 @@ files_libvc4 = files(
+ vc4_c_args = []
+ 
+ libvc4_neon = []
+-if host_machine.cpu_family() == 'arm'
++if host_machine.cpu_family() == 'arm' and get_option('gallium-vc4-neon') != 'disabled'
+   libvc4_neon = static_library(
+     'vc4_neon',
+     'vc4_tiling_lt_neon.c',
+@@ -93,7 +93,7 @@ if host_machine.cpu_family() == 'arm'
+     ],
+     c_args : '-mfpu=neon',
+   )
+-  vc4_c_args += '-DUSE_ARM_ASM'
++  vc4_c_args += '-DVC4_TILING_LT_NEON'
+ endif
+ 
+ if dep_simpenrose.found()
+diff --git a/src/gallium/drivers/vc4/vc4_tiling.h b/src/gallium/drivers/vc4/vc4_tiling.h
+index 66767e7f1f8..7446f1c3d0c 100644
+--- a/src/gallium/drivers/vc4/vc4_tiling.h
++++ b/src/gallium/drivers/vc4/vc4_tiling.h
+@@ -89,7 +89,7 @@ vc4_load_lt_image(void *dst, uint32_t dst_stride,
+                   void *src, uint32_t src_stride,
+                   int cpp, const struct pipe_box *box)
+ {
+-#ifdef USE_ARM_ASM
++#ifdef VC4_TILING_LT_NEON
+         if (util_cpu_caps.has_neon) {
+                 vc4_load_lt_image_neon(dst, dst_stride, src, src_stride,
+                                        cpp, box);
+@@ -105,7 +105,7 @@ vc4_store_lt_image(void *dst, uint32_t dst_stride,
+                    void *src, uint32_t src_stride,
+                    int cpp, const struct pipe_box *box)
+ {
+-#ifdef USE_ARM_ASM
++#ifdef VC4_TILING_LT_NEON
+         if (util_cpu_caps.has_neon) {
+                 vc4_store_lt_image_neon(dst, dst_stride, src, src_stride,
+                                         cpp, box);
+-- 
+2.25.1
+
