@@ -1830,6 +1830,7 @@ F:	package/libgudev/
 N:	Naumann Andreas <ANaumann@ultratronik.de>
 F:	package/evemu/
 F:	package/libevdev/
+F:	package/pkg-qmake.mk
 
 N:	Nicola Di Lieto <nicola.dilieto@gmail.com>
 F:	package/uacme/
