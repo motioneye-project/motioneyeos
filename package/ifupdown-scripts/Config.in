@@ -1,7 +1,7 @@
 config BR2_PACKAGE_IFUPDOWN_SCRIPTS
 	bool "ifupdown scripts"
 	default y if BR2_ROOTFS_SKELETON_DEFAULT
-	depends on !BR2_PACKAGE_SYSTEMD_NETWORKD && !BR2_PACKAGE_OPENRC
+	depends on !BR2_PACKAGE_SYSTEMD_NETWORKD && !BR2_PACKAGE_NETIFRC
 	help
 	  Set of scripts used by ifupdown (either the standalone one,
 	  or the busybox one) to bring network up, or tear it down.
