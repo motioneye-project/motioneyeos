@@ -10,7 +10,9 @@ AVAHI_LICENSE = LGPL-2.1+
 AVAHI_LICENSE_FILES = LICENSE
 AVAHI_INSTALL_STAGING = YES
 
-AVAHI_CONF_ENV = DATADIRNAME=share
+AVAHI_CONF_ENV = \
+	avahi_cv_sys_cxx_works=yes \
+	DATADIRNAME=share
 
 # Note: even if we have Gtk2 and Gtk3 support in Buildroot, we
 # explicitly disable support for them, in order to avoid the following
