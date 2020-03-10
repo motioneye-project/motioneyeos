@@ -1,0 +1,7 @@
+config BR2_PACKAGE_RTTY
+	bool "rtty"
+	select BR2_PACKAGE_LIBEV
+	help
+	  Access your device's terminal from anywhere via the web.
+
+	  https://github.com/zhaojh329/rtty
