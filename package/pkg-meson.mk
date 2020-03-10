@@ -76,9 +76,7 @@ define $(2)_CONFIGURE_CMDS
 	    -e 's%@TARGET_CXXFLAGS@%$$(call make-comma-list,$$($(2)_CXXFLAGS))%g' \
 	    -e 's%@HOST_DIR@%$$(HOST_DIR)%g' \
 	    -e 's%@STAGING_DIR@%$$(STAGING_DIR)%g' \
-	    $$(foreach x,$$($(2)_MESON_EXTRA_BINARIES), \
-	        -e "/^\[binaries\]$$$$/s:$$$$:\n$$(x):" \
-	    ) \
+	    -e "/^\[binaries\]$$$$/s:$$$$:$$(foreach x,$$($(2)_MESON_EXTRA_BINARIES),\n$$(x)):" \
 	    package/meson/cross-compilation.conf.in \
 	    > $$($$(PKG)_SRCDIR)/build/cross-compilation.conf
 	PATH=$$(BR_PATH) $$($$(PKG)_CONF_ENV) $$(MESON) \
