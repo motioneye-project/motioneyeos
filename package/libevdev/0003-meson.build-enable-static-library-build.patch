@@ -1,0 +1,30 @@
+From 0d39ee4958869e9dd7657d6d0528bc4e2461e912 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Tue, 10 Mar 2020 09:35:52 +0100
+Subject: [PATCH] meson.build: enable static library build
+
+Use meson library() instead of shared_library() to enable
+static build.
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+Upstream: https://gitlab.freedesktop.org/libevdev/libevdev/-/commit/a9d324f82bd5e822ea57224000fea43cb64aa214
+---
+ meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/meson.build b/meson.build
+index a623a90..94224cb 100644
+--- a/meson.build
++++ b/meson.build
+@@ -70,7 +70,7 @@ src_libevdev = [
+ 
+ mapfile = join_paths(dir_src, 'libevdev.sym')
+ version_flag = '-Wl,--version-script,@0@'.format(mapfile)
+-lib_libevdev = shared_library('evdev',
++lib_libevdev = library('evdev',
+ 	src_libevdev,
+ 	include_directories: [includes_include],
+ 	dependencies: [],
+-- 
+2.25.1
+
