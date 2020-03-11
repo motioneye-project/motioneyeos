@@ -20,7 +20,9 @@ LIBGTK3_CONF_ENV = \
 
 LIBGTK3_CONF_OPTS = \
 	--disable-glibtest \
+	--disable-introspection \
 	--enable-explicit-deps=no
+HOST_LIBGTK3_CONF_OPTS = --disable-introspection
 
 # Override pkg-config pkgdatadir variable, it needs the prefix
 LIBGTK3_MAKE_OPTS = \
