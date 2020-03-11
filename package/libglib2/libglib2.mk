@@ -52,6 +52,11 @@ LIBGLIB2_CONF_OPTS = \
 	-Dinstalled_tests=false \
 	-Doss_fuzz=disabled
 
+LIBGLIB2_MESON_EXTRA_PROPERTIES = \
+	have_c99_vsnprintf=true \
+	have_c99_snprintf=true \
+	have_unix98_printf=true
+
 ifneq ($(BR2_ENABLE_LOCALE),y)
 LIBGLIB2_DEPENDENCIES += libiconv
 endif
