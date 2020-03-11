@@ -116,6 +116,15 @@ will therefore only use a few of them.
   single quotes. By default, empty. Note that Buildroot already sets the
   correct values for +c+, +cpp+, +ar+, +strip+, and +pkgconfig+.
 
+* +FOO_MESON_EXTRA_PROPERTIES+, to specify a space-separated list of
+  properties to add to the `[properties]` section of the meson
+  `cross-compilation.conf` configuration file. The format is
+  `property-name=<value>` with no space around the +=+ sign, and with
+  single quotes around string values. By default, empty. Note that
+  Buildroot already sets values for +needs_exe_wrapper+, +c_args+,
+  +c_link_args+, +cpp_args+, +cpp_link_args+, +sys_root+, and
+  +pkg_config_libdir+.
+
 * +FOO_NINJA_ENV+, to specify additional environment variables to pass to
   +ninja+, meson companion tool in charge of the build operations. By default,
   empty.
