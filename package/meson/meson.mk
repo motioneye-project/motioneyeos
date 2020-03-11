@@ -13,7 +13,7 @@ MESON_SETUP_TYPE = setuptools
 HOST_MESON_DEPENDENCIES = host-ninja
 HOST_MESON_NEEDS_HOST_PYTHON = python3
 
-HOST_MESON_TARGET_ENDIAN = $(call LOWERCASE,$(BR2_ENDIAN))
+HOST_MESON_TARGET_ENDIAN = $(call qstrip,$(call LOWERCASE,$(BR2_ENDIAN)))
 HOST_MESON_TARGET_CPU = $(GCC_TARGET_CPU)
 
 # https://mesonbuild.com/Reference-tables.html#cpu-families
