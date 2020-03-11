@@ -9,7 +9,7 @@ PSPLASH_SITE = git://git.yoctoproject.org/psplash
 PSPLASH_LICENSE = GPL-2.0+
 PSPLASH_LICENSE_FILES = COPYING
 PSPLASH_AUTORECONF = YES
-PSPLASH_DEPENDENCIES = host-pkgconf
+PSPLASH_DEPENDENCIES = host-gdk-pixbuf host-pkgconf
 
 ifeq ($(BR2_PACKAGE_SYSTEMD),y)
 PSPLASH_DEPENDENCIES += systemd
