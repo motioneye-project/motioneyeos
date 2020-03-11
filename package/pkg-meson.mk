@@ -193,7 +193,7 @@ define PKG_MESON_INSTALL_CROSS_CONF
 	    -e 's%@TARGET_LDFLAGS@%$(call make-comma-list,$(TARGET_LDFLAGS))@PKG_TARGET_CFLAGS@%g' \
 	    -e 's%@TARGET_CXXFLAGS@%$(call make-comma-list,$(TARGET_CXXFLAGS))@PKG_TARGET_CFLAGS@%g' \
 	    -e 's%@HOST_DIR@%$(HOST_DIR)%g' \
-	    -e 's%@STAGING_DIR@%$$(STAGING_DIR)%g' \
+	    -e 's%@STAGING_DIR@%$(STAGING_DIR)%g' \
 	    $(HOST_MESON_PKGDIR)/cross-compilation.conf.in \
 	    > $(HOST_DIR)/etc/meson/cross-compilation.conf.in
 	sed -e 's%@PKG_TARGET_CFLAGS@%%g' \
