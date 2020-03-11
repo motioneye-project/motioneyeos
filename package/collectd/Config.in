@@ -603,6 +603,13 @@ config BR2_PACKAGE_COLLECTD_NETWORK
 	help
 	  Send/receive values from other instances of collectd.
 
+config BR2_PACKAGE_COLLECTD_NETWORK_GCRYPT
+	bool "crypto support"
+	depends on BR2_PACKAGE_COLLECTD_NETWORK
+	select BR2_PACKAGE_LIBGCRYPT
+	help
+	  Enable crypto support
+
 config BR2_PACKAGE_COLLECTD_RRDTOOL
 	bool "rrdtool"
 	depends on BR2_USE_WCHAR # rrdtool
