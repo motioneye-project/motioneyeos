@@ -1,6 +1,6 @@
 # retrieved by scancpan from http://cpan.metacpan.org/
-md5    f2ba18b5cea1c8cb322a62be0a847f3d DBI-1.642.tar.gz
-sha256 3f2025023a56286cebd15cb495e36ccd9b456c3cc229bf2ce1f69e9ebfc27f5d DBI-1.642.tar.gz
+md5    352f80b1e23769c116082a90905d7398 DBI-1.643.tar.gz
+sha256 8a2b993db560a2c373c174ee976a51027dd780ec766ae17620c20393d2e836fa DBI-1.643.tar.gz
 
 # computed by scancpan
 sha256 33453c8b0d8d474a42669ac702a13c20f39c91a34b3df4e6ca778fc2f0f711c7 LICENSE
