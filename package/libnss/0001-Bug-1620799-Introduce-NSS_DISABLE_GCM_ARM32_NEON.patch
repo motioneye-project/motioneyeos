@@ -1,0 +1,127 @@
+From 5d0fdb245bbb1dd4d7cc94eae91981ff79c4852d Mon Sep 17 00:00:00 2001
+From: Giulio Benetti <giulio.benetti@benettiengineering.com>
+Date: Sat, 7 Mar 2020 23:47:09 +0100
+Subject: [PATCH] Bug 1620799 - Introduce NSS_DISABLE_GCM_ARM32_NEON
+
+Only some Arm32 supports neon, so let's introduce
+NSS_DISABLE_GCM_ARM32_NEON to allow disabling gcm-arm32-neon.c building.
+
+Signed-off-by: Giulio Benetti <giulio.benetti@benettiengineering.com>
+---
+ nss/coreconf/config.gypi  |  1 +
+ nss/coreconf/config.mk    |  5 +++++
+ nss/lib/freebl/Makefile   |  4 ++++
+ nss/lib/freebl/freebl.gyp | 14 ++++++++++++--
+ nss/lib/freebl/gcm.c      |  3 ++-
+ 5 files changed, 24 insertions(+), 3 deletions(-)
+
+diff --git a/nss/coreconf/config.gypi b/nss/coreconf/config.gypi
+index 2a730398b..2a7fe8ac0 100644
+--- a/nss/coreconf/config.gypi
++++ b/nss/coreconf/config.gypi
+@@ -103,6 +103,7 @@
+     'disable_libpkix%': 1,
+     'disable_werror%': 0,
+     'disable_altivec%': 0,
++    'disable_gcm_arm32_neon%': 0,
+     'mozilla_client%': 0,
+     'comm_client%': 0,
+     'moz_fold_libs%': 0,
+diff --git a/nss/coreconf/config.mk b/nss/coreconf/config.mk
+index 704e3fa83..9042e78bf 100644
+--- a/nss/coreconf/config.mk
++++ b/nss/coreconf/config.mk
+@@ -196,6 +196,11 @@ DEFINES += -DPKIX_OBJECT_LEAK_TEST
+ endif
+ endif
+ 
++# Avoid building gcm-arm32-neon.c
++ifdef NSS_DISABLE_GCM_ARM32_NEON
++DEFINES += -DNSS_DISABLE_GCM_ARM32_NEON
++endif
++
+ # Avoid building with PowerPC's Altivec acceleration
+ ifdef NSS_DISABLE_ALTIVEC
+ DEFINES += -DNSS_DISABLE_ALTIVEC
+diff --git a/nss/lib/freebl/Makefile b/nss/lib/freebl/Makefile
+index ce9d36f3a..2802fdf42 100644
+--- a/nss/lib/freebl/Makefile
++++ b/nss/lib/freebl/Makefile
+@@ -124,7 +124,9 @@ ifeq ($(CPU_ARCH),aarch64)
+     EXTRA_SRCS += aes-armv8.c gcm-aarch64.c
+ endif
+ ifeq ($(CPU_ARCH),arm)
++ifndef NSS_DISABLE_GCM_ARM32_NEON
+     EXTRA_SRCS += gcm-arm32-neon.c
++endif
+     ifdef CC_IS_CLANG
+         DEFINES += -DUSE_HW_AES
+         EXTRA_SRCS += aes-armv8.c
+@@ -770,8 +772,10 @@ ifeq ($(CPU_ARCH),arm)
+ # Confusingly, __SOFTFP__ is the name of the define for the softfloat ABI, not for the softfp ABI.
+ USES_SOFTFLOAT_ABI := $(shell $(CC) -o - -E -dM - $(CFLAGS) < /dev/null | grep __SOFTFP__ > /dev/null && echo 1)
+ $(OBJDIR)/$(PROG_PREFIX)aes-armv8$(OBJ_SUFFIX): CFLAGS += -march=armv8-a -mfpu=crypto-neon-fp-armv8$(if $(USES_SOFTFLOAT_ABI), -mfloat-abi=softfp)
++ifndef NSS_DISABLE_GCM_ARM32_NEON
+ $(OBJDIR)/$(PROG_PREFIX)gcm-arm32-neon$(OBJ_SUFFIX): CFLAGS += -march=armv7 -mfpu=neon$(if $(USES_SOFTFLOAT_ABI), -mfloat-abi=softfp)
+ endif
++endif
+ ifeq ($(CPU_ARCH),aarch64)
+ $(OBJDIR)/$(PROG_PREFIX)aes-armv8$(OBJ_SUFFIX): CFLAGS += -march=armv8-a+crypto
+ $(OBJDIR)/$(PROG_PREFIX)gcm-aarch64$(OBJ_SUFFIX): CFLAGS += -march=armv8-a+crypto
+diff --git a/nss/lib/freebl/freebl.gyp b/nss/lib/freebl/freebl.gyp
+index d46bd1949..7bf4e9f7e 100644
+--- a/nss/lib/freebl/freebl.gyp
++++ b/nss/lib/freebl/freebl.gyp
+@@ -265,11 +265,16 @@
+             'armv8_c_lib'
+           ],
+         }],
+-        [ 'target_arch=="arm"', {
++        [ 'disable_gcm_arm32_neon==0 and target_arch=="arm"', {
+           'dependencies': [
+             'gcm-aes-arm32-neon_c_lib',
+           ],
+         }],
++        [ 'disable_gcm_arm32_neon==1 and target_arch=="arm"', {
++          'defines!': [
++            'NSS_DISABLE_GCM_ARM32_NEON',
++          ],
++        }],
+         [ 'target_arch=="arm64" or target_arch=="aarch64"', {
+           'dependencies': [
+             'gcm-aes-aarch64_c_lib',
+@@ -326,11 +331,16 @@
+             'armv8_c_lib',
+           ],
+         }],
+-        [ 'target_arch=="arm"', {
++        [ 'disable_gcm_arm32_neon==0 and target_arch=="arm"', {
+           'dependencies': [
+             'gcm-aes-arm32-neon_c_lib',
+           ],
+         }],
++        [ 'disable_gcm_arm32_neon==1 and target_arch=="arm"', {
++          'defines!': [
++            'NSS_DISABLE_GCM_ARM32_NEON',
++          ],
++        }],
+         [ 'target_arch=="arm64" or target_arch=="aarch64"', {
+           'dependencies': [
+             'gcm-aes-aarch64_c_lib',
+diff --git a/nss/lib/freebl/gcm.c b/nss/lib/freebl/gcm.c
+index 2a42f74c0..9b1c6c02f 100644
+--- a/nss/lib/freebl/gcm.c
++++ b/nss/lib/freebl/gcm.c
+@@ -21,7 +21,8 @@
+ #if defined(__aarch64__) && defined(IS_LITTLE_ENDIAN) && \
+     (defined(__clang__) || defined(__GNUC__) && __GNUC__ > 6)
+ #define USE_ARM_GCM
+-#elif defined(__arm__) && defined(IS_LITTLE_ENDIAN)
++#elif defined(__arm__) && defined(IS_LITTLE_ENDIAN) && \
++      !defined(NSS_DISABLE_GCM_ARM32_NEON)
+ /* We don't test on big endian platform, so disable this on big endian. */
+ #define USE_ARM_GCM
+ #endif
+-- 
+2.20.1
+
