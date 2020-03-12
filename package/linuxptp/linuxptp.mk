@@ -40,10 +40,10 @@ define LINUXPTP_INSTALL_INIT_SYSV
 endef
 
 define LINUXPTP_INSTALL_INIT_SYSTEMD
-	$(INSTALL) -D -m 644 $(LINUXPTP_PKGDIR)/linuxptp.service \
-		$(TARGET_DIR)/usr/lib/systemd/system/linuxptp.service
-	$(INSTALL) -D -m 644 $(LINUXPTP_PKGDIR)/linuxptp-system-clock.service \
-		$(TARGET_DIR)/usr/lib/systemd/system/linuxptp-system-clock.service
+	$(INSTALL) -D -m 644 $(LINUXPTP_PKGDIR)/ptp4l.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/ptp4l.service
+	$(INSTALL) -D -m 644 $(LINUXPTP_PKGDIR)/phc2sys.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/phc2sys.service
 endef
 
 $(eval $(generic-package))
