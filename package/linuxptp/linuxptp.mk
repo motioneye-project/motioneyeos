@@ -33,8 +33,10 @@ define LINUXPTP_INSTALL_TARGET_CMDS
 endef
 
 define LINUXPTP_INSTALL_INIT_SYSV
-	$(INSTALL) -m 755 -D $(LINUXPTP_PKGDIR)/S65linuxptp \
-		$(TARGET_DIR)/etc/init.d/S65linuxptp
+	$(INSTALL) -m 755 -D $(LINUXPTP_PKGDIR)/S65ptp4l \
+		$(TARGET_DIR)/etc/init.d/S65ptp4l
+	$(INSTALL) -m 755 -D $(LINUXPTP_PKGDIR)/S66phc2sys \
+		$(TARGET_DIR)/etc/init.d/S66phc2sys
 endef
 
 define LINUXPTP_INSTALL_INIT_SYSTEMD
