@@ -463,7 +463,7 @@ tests.package.test_python_cryptography.TestPythonPy3Cryptography: { extends: .ru
 tests.package.test_python_django.TestPythonPy3Django: { extends: .runtime_test }
 tests.package.test_python_gitdb2.TestPythonPy2Gitdb2: { extends: .runtime_test }
 tests.package.test_python_gitdb2.TestPythonPy3Gitdb2: { extends: .runtime_test }
-tests.package.test_python_gobject.TestPythonPy2Gobject: { extends: .runtime_test }
+tests.package.test_python_gobject.TestPythonPy3Gobject: { extends: .runtime_test }
 tests.package.test_python_incremental.TestPythonPy2Incremental: { extends: .runtime_test }
 tests.package.test_python_incremental.TestPythonPy3Incremental: { extends: .runtime_test }
 tests.package.test_python_passlib.TestPythonPy2Passlib: { extends: .runtime_test }
