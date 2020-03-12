@@ -23,7 +23,7 @@ diff --git a/meson.build b/meson.build
 index 99806d0..3206603 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -77,7 +77,7 @@ installed_tests_template = files('template.test.in')
+@@ -84,7 +84,7 @@ installed_tests_template = files('template.test.in')
  installed_tests_template_tap = files('template-tap.test.in')
  
  # Don’t build the tests unless we can run them (either natively, in an exe wrapper, or by installing them for later use)

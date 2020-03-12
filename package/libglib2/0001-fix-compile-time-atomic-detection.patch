@@ -18,7 +18,7 @@ diff --git a/glib/gthread-posix.c b/glib/gthread-posix.c
 index 71a6b7b..d09d029 100644
 --- a/glib/gthread-posix.c
 +++ b/glib/gthread-posix.c
-@@ -68,7 +68,7 @@
+@@ -73,7 +73,7 @@
  #endif
  
  /* clang defines __ATOMIC_SEQ_CST but doesn't support the GCC extension */
