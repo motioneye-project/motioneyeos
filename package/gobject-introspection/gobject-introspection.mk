@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GOBJECT_INTROSPECTION_VERSION_MAJOR = 1.62
+GOBJECT_INTROSPECTION_VERSION_MAJOR = 1.64
 GOBJECT_INTROSPECTION_VERSION = $(GOBJECT_INTROSPECTION_VERSION_MAJOR).0
 GOBJECT_INTROSPECTION_SITE = http://ftp.gnome.org/pub/GNOME/sources/gobject-introspection/$(GOBJECT_INTROSPECTION_VERSION_MAJOR)
 GOBJECT_INTROSPECTION_SOURCE = gobject-introspection-$(GOBJECT_INTROSPECTION_VERSION).tar.xz
@@ -37,19 +37,22 @@ GOBJECT_INTROSPECTION_NINJA_ENV += \
 # the package will attempt to use the systems libglib2 which will fail
 # if the systems libglib2 version is older than 2.60.
 HOST_GOBJECT_INTROSPECTION_CONF_OPTS = \
-	-Denable-introspection-data=false
+	-Dbuild_introspection_data=false
 
 # Use the host gi-scanner to prevent the scanner from generating incorrect
 # elf classes.
 GOBJECT_INTROSPECTION_CONF_OPTS = \
-	-Denable-host-gi=true \
-	-Denable-gi-cross-wrapper="$(STAGING_DIR)/usr/bin/g-ir-scanner-qemuwrapper" \
-	-Denable-gi-ldd-wrapper="$(STAGING_DIR)/usr/bin/g-ir-scanner-lddwrapper" \
-	-Denable-introspection-data=true
+	-Dgi_cross_use_host_gi=true \
+	-Dgi_cross_binary_wrapper="$(STAGING_DIR)/usr/bin/g-ir-scanner-qemuwrapper" \
+	-Dgi_cross_ldd_wrapper="$(STAGING_DIR)/usr/bin/g-ir-scanner-lddwrapper" \
+	-Dbuild_introspection_data=true \
+	-Ddoctool=disabled
 
 ifeq ($(BR2_PACKAGE_CAIRO),y)
 GOBJECT_INTROSPECTION_DEPENDENCIES += cairo
-GOBJECT_INTROSPECTION_CONF_OPTS += -Dcairo=true
+GOBJECT_INTROSPECTION_CONF_OPTS += -Dcairo=enabled
+else
+GOBJECT_INTROSPECTION_CONF_OPTS += -Dcairo=disabled
 endif
 
 # GI_SCANNER_DISABLE_CACHE=1 prevents g-ir-scanner from writing cache data to ${HOME}

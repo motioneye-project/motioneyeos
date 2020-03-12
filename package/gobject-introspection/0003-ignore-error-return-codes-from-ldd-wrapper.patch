@@ -17,7 +17,7 @@ diff --git a/giscanner/shlibs.py b/giscanner/shlibs.py
 index d67df95..80352a6 100644
 --- a/giscanner/shlibs.py
 +++ b/giscanner/shlibs.py
-@@ -102,7 +102,7 @@ def _resolve_non_libtool(options, binary, libraries):
+@@ -103,7 +103,7 @@ def _resolve_non_libtool(options, binary, libraries):
              args.extend(['otool', '-L', binary.args[0]])
          else:
              args.extend(['ldd', binary.args[0]])
