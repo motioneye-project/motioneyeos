@@ -3,6 +3,7 @@ config BR2_PACKAGE_DROPWATCH
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libnl
 	select BR2_PACKAGE_READLINE
 	select BR2_PACKAGE_LIBNL
+	select BR2_PACKAGE_LIBPCAP
 	help
 	  Dropwatch is an interactive utility for monitoring and
 	  recording packets that are dropped by the kernel
