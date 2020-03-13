@@ -7,8 +7,6 @@
 DROPWATCH_VERSION = 1.5.2
 DROPWATCH_SITE = $(call github,nhorman,dropwatch,v$(DROPWATCH_VERSION))
 DROPWATCH_DEPENDENCIES = libnl readline libpcap host-pkgconf $(TARGET_NLS_DEPENDENCIES)
-# Until upstream updates their tree with a proper license
-# blurb: https://github.com/nhorman/dropwatch/issues/14
 DROPWATCH_LICENSE = GPL-2.0+
 DROPWATCH_LICENSE_FILES = COPYING
 # From git
