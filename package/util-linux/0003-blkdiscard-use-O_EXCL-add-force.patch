@@ -8,6 +8,7 @@ unwanted discard on mounted device.
 
 Addresses: https://github.com/karelzak/util-linux/issues/915
 Signed-off-by: Karel Zak <kzak@redhat.com>
+Signed-off-by: Carlos Santos <unixmania@gmail.com>
 ---
  sys-utils/blkdiscard.8 |  5 +++++
  sys-utils/blkdiscard.c | 11 ++++++++---

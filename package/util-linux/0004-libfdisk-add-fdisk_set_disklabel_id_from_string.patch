@@ -8,6 +8,7 @@ It's not comfortable if you want to avoid dialog or template.
 
 Addresses: https://github.com/karelzak/util-linux/issues/916
 Signed-off-by: Karel Zak <kzak@redhat.com>
+Signed-off-by: Carlos Santos <unixmania@gmail.com>
 ---
  libfdisk/docs/libfdisk-sections.txt |  1 +
  libfdisk/src/dos.c                  | 29 ++++++++++++++++++-----------

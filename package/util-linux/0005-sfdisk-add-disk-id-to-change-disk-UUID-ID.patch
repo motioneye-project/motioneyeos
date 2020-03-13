@@ -5,6 +5,7 @@ Subject: [PATCH] sfdisk: add --disk-id to change disk UUID/ID
 
 Addresses: https://github.com/karelzak/util-linux/issues/916
 Signed-off-by: Karel Zak <kzak@redhat.com>
+Signed-off-by: Carlos Santos <unixmania@gmail.com>
 ---
  disk-utils/sfdisk.8 |  5 +++++
  disk-utils/sfdisk.c | 54 +++++++++++++++++++++++++++++++++++++++++++++
