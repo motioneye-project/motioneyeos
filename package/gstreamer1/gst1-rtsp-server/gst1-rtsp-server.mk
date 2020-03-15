@@ -25,10 +25,16 @@ GST1_RTSP_SERVER_CONF_OPTS = \
 GST1_RTSP_SERVER_CONF_OPTS += \
 	-Dexamples=disabled \
 	-Dtests=disabled \
-	-Dintrospection=disabled \
 	-Dgobject-cast-checks=disabled \
 	-Dglib-asserts=disabled \
 	-Dglib-checks=disabled
+
+ifeq ($(BR2_PACKAGE_GOBJECT_INTROSPECTION),y)
+GST1_RTSP_SERVER_CONF_OPTS += -Dintrospection=enabled
+GST1_RTSP_SERVER_DEPENDENCIES += gobject-introspection
+else
+GST1_RTSP_SERVER_CONF_OPTS += -Dintrospection=disabled
+endif
 
 ifeq ($(BR2_PACKAGE_LIBCGROUP),y)
 GST1_RTSP_SERVER_DEPENDENCIES += libcgroup
