@@ -38,6 +38,7 @@ F:	package/gstreamer1/gst1-plugins-bad/
 F:	package/gstreamer1/gst1-plugins-base/
 F:	package/gstreamer1/gst1-plugins-good/
 F:	package/gstreamer1/gst1-plugins-ugly/
+F:	package/gstreamer1/gst1-python/
 F:	package/gstreamer1/gst1-vaapi/
 F:	package/imx-usb-loader/
 F:	package/janus-gateway/
