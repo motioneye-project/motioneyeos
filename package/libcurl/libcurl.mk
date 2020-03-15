@@ -51,6 +51,13 @@ else
 LIBCURL_CONF_OPTS += --without-ssl
 endif
 
+ifeq ($(BR2_PACKAGE_LIBCURL_BEARSSL),y)
+LIBCURL_CONF_OPTS += --with-bearssl=$(STAGING_DIR)/usr
+LIBCURL_DEPENDENCIES += bearssl
+else
+LIBCURL_CONF_OPTS += --without-bearssl
+endif
+
 ifeq ($(BR2_PACKAGE_LIBCURL_GNUTLS),y)
 LIBCURL_CONF_OPTS += --with-gnutls=$(STAGING_DIR)/usr \
 	--with-ca-fallback
