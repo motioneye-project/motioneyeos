@@ -16,7 +16,6 @@ GSTREAMER1_CONF_OPTS = \
 	-Dtests=disabled \
 	-Dbenchmarks=disabled \
 	-Dgtk_doc=disabled \
-	-Dintrospection=disabled \
 	-Dglib-asserts=disabled \
 	-Dglib-checks=disabled \
 	-Dgobject-cast-checks=disabled \
@@ -35,6 +34,13 @@ GSTREAMER1_DEPENDENCIES = \
 	$(if $(BR2_PACKAGE_LIBUNWIND),libunwind) \
 	$(if $(BR2_PACKAGE_VALGRIND),valgrind) \
 	$(TARGET_NLS_DEPENDENCIES)
+
+ifeq ($(BR2_PACKAGE_GOBJECT_INTROSPECTION),y)
+GSTREAMER1_CONF_OPTS += -Dintrospection=enabled
+GSTREAMER1_DEPENDENCIES += gobject-introspection
+else
+GSTREAMER1_CONF_OPTS += -Dintrospection=disabled
+endif
 
 GSTREAMER1_LDFLAGS = $(TARGET_LDFLAGS) $(TARGET_NLS_LIBS)
 
