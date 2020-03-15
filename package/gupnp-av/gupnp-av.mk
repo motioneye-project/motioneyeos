@@ -13,4 +13,11 @@ GUPNP_AV_LICENSE_FILES = COPYING
 GUPNP_AV_INSTALL_STAGING = YES
 GUPNP_AV_DEPENDENCIES = host-pkgconf libglib2 libxml2 gupnp
 
+ifeq ($(BR2_PACKAGE_GOBJECT_INTROSPECTION),y)
+GUPNP_AV_CONF_OPTS += --enable-introspection
+GUPNP_AV_DEPENDENCIES += gobject-introspection
+else
+GUPNP_AV_CONF_OPTS += --disable-introspection
+endif
+
 $(eval $(autotools-package))
