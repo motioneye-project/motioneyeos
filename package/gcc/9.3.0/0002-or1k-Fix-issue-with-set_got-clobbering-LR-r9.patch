@@ -1,4 +1,4 @@
-From 94c7d630348671b781368d9270514dcf6c34e0c9 Mon Sep 17 00:00:00 2001
+From 1383012ae409ed91903b2b76ee15137bc1f89900 Mon Sep 17 00:00:00 2001
 From: shorne <shorne@138bc75d-0d04-0410-961f-82ee72b054a4>
 Date: Sat, 31 Aug 2019 06:00:56 +0000
 Subject: [PATCH] or1k: Fix issue with set_got clobbering LR (r9)
@@ -101,5 +101,5 @@ index 2dad51cd46b..88f3f02630f 100644
     (clobber (reg:SI LR_REGNUM))]
    ""
 -- 
-2.23.0
+2.24.1
 
