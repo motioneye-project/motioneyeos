@@ -384,6 +384,7 @@ tests.package.test_crudini.TestCrudiniPy3: { extends: .runtime_test }
 tests.package.test_docker_compose.TestDockerCompose: { extends: .runtime_test }
 tests.package.test_dropbear.TestDropbear: { extends: .runtime_test }
 tests.package.test_glxinfo.TestGlxinfo: { extends: .runtime_test }
+tests.package.test_gst1_python.TestGst1Python: { extends: .runtime_test }
 tests.package.test_ipython.TestIPythonPy3: { extends: .runtime_test }
 tests.package.test_libftdi1.TestPythonPy2Libftdi1: { extends: .runtime_test }
 tests.package.test_libftdi1.TestPythonPy3Libftdi1: { extends: .runtime_test }
