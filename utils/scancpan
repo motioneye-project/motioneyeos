@@ -800,15 +800,15 @@ while (my ($distname, $dist) = each %dist) {
         say qq{write ${hashname}} unless $quiet;
         open my $fh, q{>}, $hashname;
         say {$fh} qq{# retrieved by scancpan from ${mirror}/};
-        say {$fh} qq{md5    ${md5} ${filename}};
-        say {$fh} qq{sha256 ${sha256} ${filename}};
+        say {$fh} qq{md5  ${md5}  ${filename}};
+        say {$fh} qq{sha256  ${sha256}  ${filename}};
         my %license_files =  %{$license_files{$distname}};
         if (scalar keys %license_files) {
             say {$fh} q{};
             say {$fh} qq{# computed by scancpan};
             foreach my $license (sort keys %license_files) {
                 my $digest = $license_files{$license};
-                say {$fh} qq{sha256 ${digest} ${license}};
+                say {$fh} qq{sha256  ${digest}  ${license}};
             }
         }
         close $fh;
