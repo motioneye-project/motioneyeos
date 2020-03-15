@@ -105,6 +105,15 @@ define GOBJECT_INTROSPECTION_INSTALL_WRAPPERS
 		$(INSTALL) -D -m 755 \
 			$(GOBJECT_INTROSPECTION_PKGDIR)/$(w).in $(STAGING_DIR)/usr/bin/$(w)
 	)
+	$(SED) "s%@BASENAME_TARGET_CPP@%$(notdir $(TARGET_CPP))%g" \
+		-e "s%@BASENAME_TARGET_CC@%$(notdir $(TARGET_CC))%g" \
+		-e "s%@BASENAME_TARGET_CXX@%$(notdir $(TARGET_CXX))%g" \
+		-e "s%@TARGET_CPPFLAGS@%$(TARGET_CPPFLAGS)%g" \
+		-e "s%@TARGET_CFLAGS@%$(TARGET_CFLAGS)%g" \
+		-e "s%@TARGET_CXXFLAGS@%$(TARGET_CXXFLAGS)%g" \
+		-e "s%@TARGET_LDFLAGS@%$(TARGET_LDFLAGS)%g" \
+		$(STAGING_DIR)/usr/bin/g-ir-scanner
+
 	# Gobject-introspection installs Makefile.introspection in
 	# $(STAGING_DIR)/usr/share which is needed for autotools-based programs to
 	# build .gir and .typelib files. Unfortuantly, gobject-introspection-1.0.pc
