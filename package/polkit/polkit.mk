@@ -24,6 +24,7 @@ POLKIT_CONF_OPTS = \
 	--disable-libsystemd-login
 
 ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
+POLKIT_DEPENDENCIES += linux-pam
 POLKIT_CONF_OPTS += --with-authfw=pam
 else
 POLKIT_CONF_OPTS += --with-authfw=shadow
