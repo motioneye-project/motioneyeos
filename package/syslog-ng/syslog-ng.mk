@@ -97,6 +97,14 @@ else
 SYSLOG_NG_CONF_OPTS += --disable-systemd
 endif
 
+ifeq ($(BR2_PACKAGE_NETSNMP),y)
+SYSLOG_NG_DEPENDENCIES += netsnmp
+SYSLOG_NG_CONF_OPTS += --enable-snmp-dest
+SYSLOG_NG_CONF_OPTS += --with-netsnmp="$(STAGING_DIR)/usr/bin"
+else
+SYSLOG_NG_CONF_OPTS += --disable-snmp-dest
+endif
+
 define SYSLOG_NG_INSTALL_INIT_SYSV
 	$(INSTALL) -m 0755 -D package/syslog-ng/S01syslog-ng \
 		$(TARGET_DIR)/etc/init.d/S01syslog-ng

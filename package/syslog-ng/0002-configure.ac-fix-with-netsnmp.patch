@@ -1,0 +1,41 @@
+From 39ab118a7e79b223941b50b372c8ed51f0e21f4b Mon Sep 17 00:00:00 2001
+From: Thomas De Schampheleire <thomas.de_schampheleire@nokia.com>
+Date: Mon, 16 Mar 2020 15:41:03 +0100
+Subject: [PATCH] configure.ac: fix --with-netsnmp
+
+The option '--with-net-snmp' did not work, because later checks were using
+the variable '$with_netsnmp' rather than '$with_net_snmp'.
+
+There are two possible solutions:
+- make the option '--with-netsnmp'
+- change the internal variables
+
+Taking into account that latest upstream has moved away from autotools and
+towards cmake, we opt for the first option that has the least amount of
+changes.
+
+Signed-off-by: Thomas De Schampheleire <thomas.de_schampheleire@nokia.com>
+Upstream-status: not applicable (latest upstream moved to cmake)
+
+---
+ configure.ac | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index bfc85c32d..392ab8bf3 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -148,8 +148,8 @@ AC_ARG_WITH(libnet,
+    ,
+    [with_libnet=""])
+ 
+-AC_ARG_WITH(net-snmp,
+-   [  --with-net-snmp=path      use path to net-snmp-config script],
++AC_ARG_WITH(netsnmp,
++   [  --with-netsnmp=path      use path to net-snmp-config script],
+    ,
+    [with_netsnmp=""])
+ 
+-- 
+2.24.1
+
