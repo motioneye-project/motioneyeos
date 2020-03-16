@@ -51,6 +51,14 @@ else
 BLUEZ5_UTILS_CONF_OPTS += --disable-health
 endif
 
+# enable mesh profile
+ifeq ($(BR2_PACKAGE_BLUEZ5_UTILS_PLUGINS_MESH),y)
+BLUEZ5_UTILS_CONF_OPTS += --enable-mesh
+BLUEZ5_UTILS_DEPENDENCIES += json-c readline
+else
+BLUEZ5_UTILS_CONF_OPTS += --disable-mesh
+endif
+
 # enable midi profile
 ifeq ($(BR2_PACKAGE_BLUEZ5_UTILS_PLUGINS_MIDI),y)
 BLUEZ5_UTILS_CONF_OPTS += --enable-midi
