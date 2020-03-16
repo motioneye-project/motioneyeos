@@ -980,6 +980,9 @@ F:	package/qt5/qt5webengine/
 F:	package/qt5/qt5webkit/
 F:	package/qt5/qt5webkit-examples/
 
+N:	Gao Xiang <hsiangkao@aol.com>
+F:	package/erofs-utils/
+
 N:	Gary Bisson <bisson.gary@gmail.com>
 F:	board/boundarydevices/
 F:	configs/nitrogen*
