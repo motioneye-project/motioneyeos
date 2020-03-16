@@ -53,10 +53,10 @@ endif
 
 # enable mesh profile
 ifeq ($(BR2_PACKAGE_BLUEZ5_UTILS_PLUGINS_MESH),y)
-BLUEZ5_UTILS_CONF_OPTS += --enable-mesh
-BLUEZ5_UTILS_DEPENDENCIES += json-c readline
+BLUEZ5_UTILS_CONF_OPTS += --enable-external-ell --enable-mesh
+BLUEZ5_UTILS_DEPENDENCIES += ell json-c readline
 else
-BLUEZ5_UTILS_CONF_OPTS += --disable-mesh
+BLUEZ5_UTILS_CONF_OPTS += --disable-external-ell --disable-mesh
 endif
 
 # enable midi profile
