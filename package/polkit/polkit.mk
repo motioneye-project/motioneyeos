@@ -11,10 +11,13 @@ POLKIT_LICENSE_FILES = COPYING
 
 POLKIT_INSTALL_STAGING = YES
 
-POLKIT_DEPENDENCIES = libglib2 host-intltool expat spidermonkey
+POLKIT_DEPENDENCIES = \
+	libglib2 host-intltool expat spidermonkey $(TARGET_NLS_DEPENDENCIES)
 
 # spidermonkey needs C++11
-POLKIT_CONF_ENV = CXXFLAGS="$(TARGET_CXXFLAGS) -std=c++11"
+POLKIT_CONF_ENV = \
+	CXXFLAGS="$(TARGET_CXXFLAGS) -std=c++11" \
+	LIBS=$(TARGET_NLS_LIBS)
 
 POLKIT_CONF_OPTS = \
 	--with-os-type=unknown \
