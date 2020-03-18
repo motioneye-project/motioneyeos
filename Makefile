@@ -728,6 +728,10 @@ $(TARGETS_ROOTFS): target-finalize
 # Avoid the rootfs name leaking down the dependency chain
 target-finalize: ROOTFS=
 
+TARGET_DIR_FILES_LISTS = $(sort $(wildcard $(BUILD_DIR)/*/.files-list.txt))
+HOST_DIR_FILES_LISTS = $(sort $(wildcard $(BUILD_DIR)/*/.files-list-host.txt))
+STAGING_DIR_FILES_LISTS = $(sort $(wildcard $(BUILD_DIR)/*/.files-list-staging.txt))
+
 .PHONY: host-finalize
 host-finalize: $(PACKAGES) $(HOST_DIR) $(HOST_DIR_SYMLINK)
 	@$(call MESSAGE,"Finalizing host directory")
@@ -808,12 +812,12 @@ endif # merged /usr
 
 	touch $(TARGET_DIR)/usr
 
-	cat $(sort $(wildcard $(BUILD_DIR)/*/.files-list.txt)) > \
-		$(BUILD_DIR)/packages-file-list.txt
-	cat $(sort $(wildcard $(BUILD_DIR)/*/.files-list-host.txt)) > \
-		$(BUILD_DIR)/packages-file-list-host.txt
-	cat $(sort $(wildcard $(BUILD_DIR)/*/.files-list-staging.txt)) > \
-		$(BUILD_DIR)/packages-file-list-staging.txt
+	$(if $(TARGET_DIR_FILES_LISTS), \
+		cat $(TARGET_DIR_FILES_LISTS)) > $(BUILD_DIR)/packages-file-list.txt
+	$(if $(HOST_DIR_FILES_LISTS), \
+		cat $(HOST_DIR_FILES_LISTS)) > $(BUILD_DIR)/packages-file-list-host.txt
+	$(if $(STAGING_DIR_FILES_LISTS), \
+		cat $(STAGING_DIR_FILES_LISTS)) > $(BUILD_DIR)/packages-file-list-staging.txt
 
 .PHONY: target-post-image
 target-post-image: $(TARGETS_ROOTFS) target-finalize staging-finalize
