@@ -160,4 +160,11 @@ config BR2_TARGET_ARM_TRUSTED_FIRMWARE_IMAGES
 	  Names of generated image files that are installed in the
 	  output images/ directory.
 
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE_NEEDS_DTC
+	bool "Needs dtc"
+	select BR2_PACKAGE_HOST_DTC
+	help
+	  Select this option if your ATF board configuration
+	  requires the Device Tree compiler to be available.
+
 endif
