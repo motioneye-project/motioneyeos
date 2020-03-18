@@ -63,7 +63,7 @@ GLOBAL_INSTRUMENTATION_HOOKS += step_time
 define step_pkg_size_before
 	cd $(2); \
 	LC_ALL=C find . \( -type f -o -type l \) -printf '%T@:%i:%#m:%y:%s,%p\n' \
-		| LC_ALL=C sort > $($(PKG)_BUILDDIR)/.files-list$(3).before
+		| LC_ALL=C sort > $($(PKG)_DIR)/.files-list$(3).before
 endef
 
 # $(1): package name
@@ -72,14 +72,14 @@ endef
 define step_pkg_size_after
 	cd $(2); \
 	LC_ALL=C find . \( -type f -o -type l \) -printf '%T@:%i:%#m:%y:%s,%p\n' \
-		| LC_ALL=C sort > $($(PKG)_BUILDDIR)/.files-list$(3).after
+		| LC_ALL=C sort > $($(PKG)_DIR)/.files-list$(3).after
 	LC_ALL=C comm -13 \
-		$($(PKG)_BUILDDIR)/.files-list$(3).before \
-		$($(PKG)_BUILDDIR)/.files-list$(3).after \
+		$($(PKG)_DIR)/.files-list$(3).before \
+		$($(PKG)_DIR)/.files-list$(3).after \
 		| sed -r -e 's/^[^,]+/$(1)/' \
-		> $($(PKG)_BUILDDIR)/.files-list$(3).txt
-	rm -f $($(PKG)_BUILDDIR)/.files-list$(3).before
-	rm -f $($(PKG)_BUILDDIR)/.files-list$(3).after
+		> $($(PKG)_DIR)/.files-list$(3).txt
+	rm -f $($(PKG)_DIR)/.files-list$(3).before
+	rm -f $($(PKG)_DIR)/.files-list$(3).after
 endef
 
 define step_pkg_size
@@ -103,7 +103,7 @@ GLOBAL_INSTRUMENTATION_HOOKS += step_pkg_size
 define check_bin_arch
 	$(if $(filter end-install-target,$(1)-$(2)),\
 		support/scripts/check-bin-arch -p $(3) \
-			-l $($(PKG)_BUILDDIR)/.files-list.txt \
+			-l $($(PKG)_DIR)/.files-list.txt \
 			$(foreach i,$($(PKG)_BIN_ARCH_EXCLUDE),-i "$(i)") \
 			-r $(TARGET_READELF) \
 			-a $(BR2_READELF_ARCH_NAME))
