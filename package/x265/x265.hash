@@ -1,5 +1,5 @@
-# From https://mailman.videolan.org/pipermail/x265-devel/2019-October/012721.html
-md5 94808045a34d88a857e5eaf3f68f4bca  x265_3.2.1.tar.gz
+# From https://mailman.videolan.org/pipermail/x265-devel/2020-February/012880.html
+md5  0c8c747b59b5411dea8cf557554636c1  x265_3.3.tar.gz
 # Locally generated
-sha256 fb9badcf92364fd3567f8b5aa0e5e952aeea7a39a2b864387cec31e3b58cbbcc  x265_3.2.1.tar.gz
-sha256 d8afb1bcc7a2cfc603683b168d6987ef0a48e59e0da3693bf55c5d33b67e2b49  COPYING
+sha256  f26e148ed1f4dfb33fd1eb3ff5e60e08078d1b2017e88bcbb045b3fb58300b9c  x265_3.3.tar.gz
+sha256  d8afb1bcc7a2cfc603683b168d6987ef0a48e59e0da3693bf55c5d33b67e2b49  COPYING
