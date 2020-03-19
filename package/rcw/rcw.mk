@@ -10,6 +10,8 @@ RCW_SITE_METHOD = git
 RCW_LICENSE = BSD-3-Clause
 RCW_LICENSE_FILES = LICENSE
 
+HOST_RCW_DEPENDENCIES = host-python
+
 RCW_FILES = $(call qstrip,$(BR2_PACKAGE_HOST_RCW_CUSTOM_PATH))
 
 ifneq ($(RCW_FILES),)
@@ -39,7 +41,9 @@ endef
 HOST_RCW_POST_PATCH_HOOKS += HOST_RCW_ADD_CUSTOM_RCW_FILES
 
 define HOST_RCW_BUILD_CMDS
-	python $(@D)/rcw.py -i $(@D)/custom_board/rcw/$(RCW_PROJECT) -I $(@D)/custom_board -o $(@D)/PBL.bin
+	$(HOST_DIR)/bin/python $(@D)/rcw.py \
+		-i $(@D)/custom_board/rcw/$(RCW_PROJECT) \
+		-I $(@D)/custom_board -o $(@D)/PBL.bin
 endef
 
 define HOST_RCW_INSTALL_DELIVERY_FILE
