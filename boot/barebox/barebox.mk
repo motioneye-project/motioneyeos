@@ -31,6 +31,8 @@ $(1)_SOURCE = barebox-$$($(1)_VERSION).tar.bz2
 $(1)_SITE = https://www.barebox.org/download
 endif
 
+$(1)_DL_SUBDIR = barebox
+
 $(1)_DEPENDENCIES = host-lzop
 $(1)_LICENSE = GPL-2.0 with exceptions
 ifeq ($(BR2_TARGET_BAREBOX_LATEST_VERSION),y)
