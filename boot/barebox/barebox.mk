@@ -25,6 +25,10 @@ $(1)_SOURCE = $$(notdir $$($(1)_TARBALL))
 else ifeq ($$(BR2_TARGET_BAREBOX_CUSTOM_GIT),y)
 $(1)_SITE = $$(call qstrip,$$(BR2_TARGET_BAREBOX_CUSTOM_GIT_REPO_URL))
 $(1)_SITE_METHOD = git
+# Override the default value of _SOURCE to 'barebox-*' so that it is not
+# downloaded a second time for barebox-aux; also alows avoiding the hash
+# check:
+$(1)_SOURCE = barebox-$$($(1)_VERSION).tar.gz
 else
 # Handle stable official Barebox versions
 $(1)_SOURCE = barebox-$$($(1)_VERSION).tar.bz2
