@@ -1,4 +1,5 @@
-# From https://pypi.python.org/pypi/Cheetah/2.4.4
-md5	853917116e731afbc8c8a43c37e6ddba	Cheetah-2.4.4.tar.gz
-# Calculated based on the hash above
-sha256	be308229f0c1e5e5af4f27d7ee06d90bb19e6af3059794e5fd536a6f29a9b550	Cheetah-2.4.4.tar.gz
+# From https://pypi.org/pypi/Cheetah3/json
+md5  8c0ac643263ffc3454fb321342284d0a  Cheetah3-3.2.4.tar.gz
+sha256	caabb9c22961a3413ac85cd1e5525ec9ca80daeba6555f4f60802b6c256e252b  Cheetah3-3.2.4.tar.gz
+# Locally computed sha256 checksums
+sha256  635349ae512fafc2e60eb74a50d0a5276fa06c00b5ecb20da53546449ddc45ea  LICENSE
