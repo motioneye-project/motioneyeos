@@ -6,7 +6,7 @@
 
 RADVD_VERSION = 2.18
 RADVD_SITE = http://www.litech.org/radvd/dist
-RADVD_DEPENDENCIES = host-bison flex host-flex host-pkgconf
+RADVD_DEPENDENCIES = host-bison host-flex host-pkgconf
 # We need to ignore <linux/if_arp.h>, because radvd already includes
 # <net/if_arp.h>, which conflicts with <linux/if_arp.h>.
 RADVD_CONF_ENV = \
