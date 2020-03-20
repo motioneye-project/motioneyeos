@@ -127,6 +127,8 @@ LINUX_POST_EXTRACT_HOOKS += LINUX_XTENSA_OVERLAY_EXTRACT
 LINUX_EXTRA_DOWNLOADS += $(ARCH_XTENSA_OVERLAY_URL)
 endif
 
+# We don't want to run depmod after installing the kernel. It's done in a
+# target-finalize hook, to encompass modules installed by packages.
 LINUX_MAKE_FLAGS = \
 	HOSTCC="$(HOSTCC) $(HOST_CFLAGS) $(HOST_LDFLAGS)" \
 	ARCH=$(KERNEL_ARCH) \
@@ -533,6 +535,13 @@ define LINUX_INSTALL_TARGET_CMDS
 	fi
 	$(LINUX_INSTALL_HOST_TOOLS)
 endef
+
+# Run depmod in a target-finalize hook, to encompass modules installed by
+# packages.
+define LINUX_RUN_DEPMOD
+	$(HOST_DIR)/sbin/depmod -a -b $(TARGET_DIR) $(LINUX_VERSION_PROBED)
+endef
+LINUX_TARGET_FINALIZE_HOOKS += LINUX_RUN_DEPMOD
 
 # Include all our extensions.
 #
