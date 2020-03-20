@@ -21,6 +21,7 @@ LIBOSTREE_CONF_OPTS += \
 	--disable-gtk-doc \
 	--disable-gtk-doc-html \
 	--disable-gtk-doc-pdf \
+	--disable-introspection \
 	--disable-man
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
