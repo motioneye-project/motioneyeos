@@ -1,0 +1,9 @@
+config BR2_PACKAGE_IMX_SECO
+	bool "imx-seco"
+	depends on BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX8 || \
+		BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX8X
+	help
+	  Firmware file for the i.MX8 and i.MX8X Security Controller.
+
+	  This library is provided by Freescale as-is and doesn't have
+	  an upstream.

@@ -1531,6 +1531,7 @@ F:	package/wilc1000-firmware/
 N:	Maeva Manuel <maeva.manuel@oss.nxp.com>
 F:	board/freescale/imx8qmmek/
 F:	configs/freescale_imx8qmmek_defconfig
+F:	package/freescale-imx/imx-seco/
 
 N:	Mahyar Koshkouei <mahyar.koshkouei@gmail.com>
 F:	package/ffmpeg/
