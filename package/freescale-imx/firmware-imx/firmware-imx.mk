@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FIRMWARE_IMX_VERSION = 8.1.1
+FIRMWARE_IMX_VERSION = 8.5
 FIRMWARE_IMX_SITE = $(FREESCALE_IMX_SITE)
 FIRMWARE_IMX_SOURCE = firmware-imx-$(FIRMWARE_IMX_VERSION).bin
 
@@ -45,22 +45,7 @@ define FIRMWARE_IMX_INSTALL_IMAGES_CMDS
 	cp $(@D)/firmware/hdmi/cadence/signed_hdmi_imx8m.bin \
 		$(BINARIES_DIR)/signed_hdmi_imx8m.bin
 endef
-else ifeq ($(BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX8),y)
-FIRMWARE_IMX_INSTALL_IMAGES = YES
-define FIRMWARE_IMX_INSTALL_IMAGES_CMDS
-	# SECO firmware is needed when generating imx8-boot-sd.bin which
-	# is done in post-image script.
-	cp $(@D)/firmware/seco/mx8qm-ahab-container.img \
-		$(BINARIES_DIR)/ahab-container.img
-endef
 else ifeq ($(BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX8X),y)
-FIRMWARE_IMX_INSTALL_IMAGES = YES
-define FIRMWARE_IMX_INSTALL_IMAGES_CMDS
-	# SECO firmware is needed when generating imx8-boot-sd.bin which
-	# is done in post-image script.
-	cp $(@D)/firmware/seco/mx8qx-ahab-container.img \
-		$(BINARIES_DIR)/ahab-container.img
-endef
 define FIRMWARE_IMX_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0644 $(@D)/firmware/vpu/vpu_fw_imx8_dec.bin \
 		$(TARGET_DIR)/lib/firmware/vpu/vpu_fw_imx8_dec.bin
