@@ -49,18 +49,20 @@ ${HOSTCC} -imacros "${SYSROOT}/usr/include/linux/version.h" \
 int main(int argc __attribute__((unused)),
          char** argv __attribute__((unused)))
 {
-    int ret = 0;
     int l = LINUX_VERSION_CODE & ~0xFF;
     int h = KERNEL_VERSION(${HDR_M},${HDR_m},0);
+
+    if ((l >= h) && !strcmp("${CHECK}", "loose"))
+        return 0;
 
     if (l != h) {
         printf("Incorrect selection of kernel headers: ");
         printf("expected %d.%d.x, got %d.%d.x\n", ${HDR_M}, ${HDR_m},
                ((LINUX_VERSION_CODE>>16) & 0xFF),
                ((LINUX_VERSION_CODE>>8) & 0xFF));
-        ret = ((l >= h) && !strcmp("${CHECK}", "loose")) ? 0 : 1;
+        return 1;
     }
-    return ret;
+    return 0;
 }
 _EOF_
 
