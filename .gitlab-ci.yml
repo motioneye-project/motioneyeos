@@ -427,12 +427,15 @@ tests.package.test_openjdk.TestOpenJdk: { extends: .runtime_test }
 tests.package.test_opkg.TestOpkg: { extends: .runtime_test }
 tests.package.test_perl.TestPerl: { extends: .runtime_test }
 tests.package.test_perl_class_load.TestPerlClassLoad: { extends: .runtime_test }
+tests.package.test_perl_crypt_ssleay.TestPerlCryptSSLeay: { extends: .runtime_test }
 tests.package.test_perl_dbd_mysql.TestPerlDBDmysql: { extends: .runtime_test }
 tests.package.test_perl_encode_detect.TestPerlEncodeDetect: { extends: .runtime_test }
 tests.package.test_perl_gdgraph.TestPerlGDGraph: { extends: .runtime_test }
+tests.package.test_perl_html_parser.TestPerlHTMLParser: { extends: .runtime_test }
 tests.package.test_perl_io_socket_multicast.TestPerlIOSocketMulticast: { extends: .runtime_test }
 tests.package.test_perl_io_socket_ssl.TestPerlIOSocketSSL: { extends: .runtime_test }
 tests.package.test_perl_libwww_perl.TestPerllibwwwperl: { extends: .runtime_test }
+tests.package.test_perl_lwp_protocol_https.TestPerlLWPProtocolhttps: { extends: .runtime_test }
 tests.package.test_perl_mail_dkim.TestPerlMailDKIM: { extends: .runtime_test }
 tests.package.test_perl_x10.TestPerlX10: { extends: .runtime_test }
 tests.package.test_perl_xml_libxml.TestPerlXMLLibXML: { extends: .runtime_test }
