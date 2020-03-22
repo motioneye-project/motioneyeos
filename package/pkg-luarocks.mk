@@ -17,6 +17,12 @@
 #
 ################################################################################
 
+LUAROCKS_RUN_CMD = $(HOST_DIR)/bin/luarocks
+LUAROCKS_CFLAGS = $(TARGET_CFLAGS) -fPIC
+ifeq ($(BR2_PACKAGE_LUA_5_3),y)
+LUAROCKS_CFLAGS += -DLUA_COMPAT_5_2
+endif
+
 ################################################################################
 # inner-luarocks-package -- defines how the configuration, compilation and
 # installation of a LuaRocks package should be done, implements a few hooks to
@@ -53,7 +59,7 @@ ifndef $(2)_EXTRACT_CMDS
 define $(2)_EXTRACT_CMDS
 	mkdir -p $$($(2)_DIR)/luarocks-extract
 	cd $$($(2)_DIR)/luarocks-extract && \
-		$$(LUAROCKS_RUN_ENV) $$(LUAROCKS_RUN_CMD) unpack --force $$($(2)_DL_DIR)/$$($(2)_SOURCE)
+		$$(LUAROCKS_RUN_CMD) unpack --force $$($(2)_DL_DIR)/$$($(2)_SOURCE)
 	mv $$($(2)_DIR)/luarocks-extract/*/* $$($(2)_DIR)
 endef
 endif
@@ -63,8 +69,16 @@ endif
 #
 ifndef $(2)_INSTALL_TARGET_CMDS
 define $(2)_INSTALL_TARGET_CMDS
-	cd $$($(2)_SRCDIR) && $$(LUAROCKS_RUN_ENV) \
-		$$(LUAROCKS_RUN_CMD) make --keep $$($(2)_ROCKSPEC) $$($(2)_BUILD_OPTS)
+	cd $$($(2)_SRCDIR) && \
+		$$(LUAROCKS_RUN_CMD) make --keep --deps-mode none \
+			--tree "$$(TARGET_DIR)/usr" \
+			LUA_INCDIR="$$(STAGING_DIR)/usr/include" \
+			LUA_LIBDIR="$$(STAGING_DIR)/usr/lib" \
+			CC=$$(TARGET_CC) \
+			LD=$$(TARGET_CC) \
+			CFLAGS="$$(LUAROCKS_CFLAGS)" \
+			LIBFLAG="-shared $$(TARGET_LDFLAGS)" \
+			$$($(2)_BUILD_OPTS) $$($(2)_ROCKSPEC)
 endef
 endif
 

@@ -13,10 +13,6 @@ HOST_LUAROCKS_DEPENDENCIES = host-luainterpreter
 
 LUAROCKS_CONFIG_DIR = $(HOST_DIR)/etc
 LUAROCKS_CONFIG_FILE = $(LUAROCKS_CONFIG_DIR)/luarocks/config-$(LUAINTERPRETER_ABIVER).lua
-LUAROCKS_CFLAGS = $(TARGET_CFLAGS) -fPIC
-ifeq ($(BR2_PACKAGE_LUA_5_3),y)
-LUAROCKS_CFLAGS += -DLUA_COMPAT_5_2
-endif
 
 define LUAROCKS_ADDON_EXTRACT
 	mkdir $(@D)/src/luarocks/cmd/external
@@ -40,13 +36,6 @@ define HOST_LUAROCKS_INSTALL_CMDS
 endef
 
 $(eval $(host-generic-package))
-
-LUAROCKS_RUN_ENV = \
-	LUA_PATH="$(HOST_DIR)/share/lua/$(LUAINTERPRETER_ABIVER)/?.lua" \
-	TARGET_CC="$(TARGET_CC)" \
-	TARGET_CFLAGS="$(LUAROCKS_CFLAGS)" \
-	TARGET_LDFLAGS="$(TARGET_LDFLAGS)"
-LUAROCKS_RUN_CMD = $(LUA_RUN) $(HOST_DIR)/bin/luarocks
 
 define LUAROCKS_FINALIZE_TARGET
 	rm -rf $(TARGET_DIR)/usr/lib/luarocks
