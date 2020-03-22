@@ -19,8 +19,10 @@
 
 LUAROCKS_RUN_CMD = $(HOST_DIR)/bin/luarocks
 LUAROCKS_CFLAGS = $(TARGET_CFLAGS) -fPIC
+HOST_LUAROCKS_CFLAGS = $(HOST_CFLAGS) -fPIC
 ifeq ($(BR2_PACKAGE_LUA_5_3),y)
 LUAROCKS_CFLAGS += -DLUA_COMPAT_5_2
+HOST_LUAROCKS_CFLAGS += -DLUA_COMPAT_5_2
 endif
 
 ################################################################################
@@ -39,16 +41,50 @@ endif
 
 define inner-luarocks-package
 
-$(2)_BUILD_OPTS		?=
-$(2)_NAME_UPSTREAM	?= $(1)
-$(2)_SUBDIR		?= $$($(2)_NAME_UPSTREAM)-$$(shell echo "$$($(2)_VERSION)" | sed -e "s/-[0-9]$$$$//")
-$(2)_ROCKSPEC		?= $$(call LOWERCASE,$$($(2)_NAME_UPSTREAM))-$$($(2)_VERSION).rockspec
-$(2)_SOURCE		?= $$(call LOWERCASE,$$($(2)_NAME_UPSTREAM))-$$($(2)_VERSION).src.rock
-$(2)_SITE		?= $$(call qstrip,$$(BR2_LUAROCKS_MIRROR))
+ifndef $(2)_NAME_UPSTREAM
+  ifdef $(3)_NAME_UPSTREAM
+    $(2)_NAME_UPSTREAM = $($(3)_NAME_UPSTREAM)
+  else
+    $(2)_NAME_UPSTREAM ?= $(1)
+  endif
+endif
 
-# Since we do not support host-luarocks-package, we know this is
-# a target package, and can just add the required dependencies
-$(2)_DEPENDENCIES	+= luainterpreter
+ifndef $(2)_SUBDIR
+  ifdef $(3)_SUBDIR
+    $(2)_SUBDIR = $($(3)_SUBDIR)
+  else
+    $(2)_SUBDIR ?= $$($(3)_NAME_UPSTREAM)-$$(shell echo "$$($(3)_VERSION)" | sed -e "s/-[0-9]$$$$//")
+  endif
+endif
+
+ifndef $(2)_ROCKSPEC
+  ifdef $(3)_ROCKSPEC
+    $(2)_ROCKSPEC = $($(3)_ROCKSPEC)
+  else
+    $(2)_ROCKSPEC ?= $$(call LOWERCASE,$$($(3)_NAME_UPSTREAM))-$$($(3)_VERSION).rockspec
+  endif
+endif
+
+ifndef $(2)_SOURCE
+  ifdef $(3)_SOURCE
+    $(2)_SOURCE = $($(3)_SOURCE)
+  else
+    $(2)_SOURCE ?= $$(call LOWERCASE,$$($(3)_NAME_UPSTREAM))-$$($(3)_VERSION).src.rock
+  endif
+endif
+
+ifndef $(2)_SITE
+  ifdef $(3)_SITE
+    $(2)_SITE = $($(3)_SITE)
+  else
+    $(2)_SITE ?= $$(call qstrip,$$(BR2_LUAROCKS_MIRROR))
+  endif
+endif
+
+ifeq ($(4),target)
+$(2)_DEPENDENCIES += luainterpreter
+endif
+# host-luarocks implies host-luainterpreter
 $(2)_EXTRACT_DEPENDENCIES += host-luarocks
 
 #
@@ -83,6 +119,17 @@ define $(2)_INSTALL_TARGET_CMDS
 endef
 endif
 
+ifndef $(2)_INSTALL_CMDS
+define $(2)_INSTALL_CMDS
+	cd $$($(2)_SRCDIR) && \
+		LUAROCKS_CONFIG=$$(HOST_LUAROCKS_CONFIG_FILE) \
+		$$(LUAROCKS_RUN_CMD) make --keep --deps-mode none \
+			CFLAGS="$$(HOST_LUAROCKS_CFLAGS)" \
+			LIBFLAG="-shared $$(HOST_LDFLAGS)" \
+			$$($(2)_BUILD_OPTS) $$($(2)_ROCKSPEC)
+endef
+endif
+
 # Call the generic package infrastructure to generate the necessary
 # make targets
 $(call inner-generic-package,$(1),$(2),$(3),$(4))
@@ -100,4 +147,4 @@ endef
 ################################################################################
 
 luarocks-package = $(call inner-luarocks-package,$(pkgname),$(call UPPERCASE,$(pkgname)),$(call UPPERCASE,$(pkgname)),target)
-# host-luarocks-package not supported
+host-luarocks-package = $(call inner-luarocks-package,host-$(pkgname),$(call UPPERCASE,host-$(pkgname)),$(call UPPERCASE,$(pkgname)),host)

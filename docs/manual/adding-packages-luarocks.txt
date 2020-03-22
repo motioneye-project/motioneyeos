@@ -73,9 +73,7 @@ infrastructures in Buildroot, respectively.
 
 The main macro of the LuaRocks package infrastructure is +luarocks-package+:
 like +generic-package+ it works by defining a number of variables providing
-metadata information about the package, and then calling +luarocks-package+. It
-is worth mentioning that building LuaRocks packages for the host is not
-supported, so the macro +host-luarocks-package+ is not implemented.
+metadata information about the package, and then calling +luarocks-package+.
 
 Just like the generic infrastructure, the LuaRocks infrastructure works
 by defining a number of variables before calling the +luarocks-package+
