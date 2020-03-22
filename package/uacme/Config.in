@@ -6,9 +6,10 @@ config BR2_PACKAGE_UACME
 	help
 	  uacme is a client for the ACMEv2 protocol described in
 	  RFC8555, written in plain C code with minimal dependencies
-	  (libcurl and GnuTLS or mbedTLS). The ACMEv2 protocol allows
-	  a Certificate Authority (https://letsencrypt.org is a
-	  popular one) and an applicant to automate the process of
-	  verification and certificate issuance.
+	  (libcurl and either of GnuTLS, OpenSSL or mbedTLS). The
+	  ACMEv2 protocol allows a Certificate Authority
+	  (https://letsencrypt.org is a popular one) and an applicant
+	  to automate the process of verification and certificate
+	  issuance.
 
 	  https://github.com/ndilieto/uacme
