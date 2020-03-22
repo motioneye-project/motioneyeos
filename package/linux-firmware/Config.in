@@ -318,7 +318,7 @@ config BR2_PACKAGE_LINUX_FIRMWARE_RTL_88XX
 	help
 	  Realtek rtl8821ae
 
-config BR2_PACKAGE_LINUX_FIRMWARE_RTW88
+config BR2_PACKAGE_LINUX_FIRMWARE_RTL_RTW88
 	bool "Realtek rtw88"
 	help
 	  Firmware images supported by Realtek's wireless
