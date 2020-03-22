@@ -1,0 +1,50 @@
+From 8f4b588eb9737c2c0d1b199c7e609d880e0858a8 Mon Sep 17 00:00:00 2001
+From: Alistair Francis <alistair.francis@wdc.com>
+Date: Wed, 18 Sep 2019 09:28:51 -0700
+Subject: [PATCH] runsv: Use 64 prefix syscall if we have to
+
+Some 32-bit architectures no longer have the 32-bit time_t syscalls.
+Instead they have suffixed syscalls that returns a 64-bit time_t. If
+the architecture doesn't have the non-suffixed syscall and is using a
+64-bit time_t let's use the suffixed syscall instead.
+
+This fixes build issues when building for RISC-V 32-bit with 5.1+ kernel
+headers.
+
+If an architecture only supports the suffixed syscalls, but is still
+using a 32-bit time_t report a compilation error. This avoids us have to
+deal with converting between 64-bit and 32-bit values. There are
+currently no architectures where this is the case.
+
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>
+
+(cherry picked from commit ad27d44ebe950335616f37e36863469dc181b455)
+
+Signed-off-by: Carlos Santos <unixmania@gmail.com>
+---
+ runit/runsv.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/runit/runsv.c b/runit/runsv.c
+index ccc762d78..737909b0e 100644
+--- a/runit/runsv.c
++++ b/runit/runsv.c
+@@ -55,7 +55,14 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  * typically requiring -lrt. We just skip all this mess */
+ static void gettimeofday_ns(struct timespec *ts)
+ {
++#if defined(__NR_clock_gettime)
+ 	syscall(__NR_clock_gettime, CLOCK_REALTIME, ts);
++#elif __TIMESIZE == 64
++	syscall(__NR_clock_gettime64, CLOCK_REALTIME, ts);
++#else
++# error "We currently don't support architectures without " \
++	"the __NR_clock_gettime syscall and 32-bit time_t"
++#endif
+ }
+ #else
+ static void gettimeofday_ns(struct timespec *ts)
+-- 
+2.18.2
+
