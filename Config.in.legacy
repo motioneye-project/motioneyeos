@@ -144,6 +144,15 @@ endif
 
 ###############################################################################
 
+comment "Legacy options removed in 2020.05"
+
+config BR2_GCC_VERSION_5_X
+	bool "gcc 5.x support removed"
+	select BR2_LEGACY
+	help
+	  Support for gcc version 5.x has been removed. The current
+	  default version (8.x or later) has been selected instead.
+
 comment "Legacy options removed in 2020.02"
 
 config BR2_PACKAGE_JAMVM
