@@ -112,6 +112,15 @@ LINUX_FIRMWARE_FILES += \
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.rtlwifi_firmware.txt
 endif
 
+# rtw88
+ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_RTW88),y)
+LINUX_FIRMWARE_FILES += \
+	rtw88/rtw8723d_fw.bin \
+	rtw88/rtw8822b_fw.bin \
+	rtw88/rtw8822c_fw.bin
+LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.rtlwifi_firmware.txt
+endif
+
 # ar3011
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_AR3011),y)
 LINUX_FIRMWARE_FILES += ath3k-1.fw
