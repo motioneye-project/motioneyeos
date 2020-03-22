@@ -4,13 +4,14 @@
 #
 ################################################################################
 
-DOMOTICZ_VERSION = 0f411f781ae4fb4a82f592d38a3f40578c149533
+DOMOTICZ_VERSION = 2020.1
 DOMOTICZ_SITE = $(call github,domoticz,domoticz,$(DOMOTICZ_VERSION))
 DOMOTICZ_LICENSE = GPL-3.0
 DOMOTICZ_LICENSE_FILES = License.txt
 DOMOTICZ_DEPENDENCIES = \
 	boost \
 	host-pkgconf \
+	jsoncpp \
 	libcurl \
 	lua \
 	mosquitto \
@@ -25,8 +26,9 @@ DOMOTICZ_CONF_OPTS += \
 	-DUSE_OPENSSL_STATIC=OFF
 
 # Do not use any built-in libraries which are enabled by default for
-# lua, sqlite and mqtt
+# jsoncpp, lua, sqlite and mqtt
 DOMOTICZ_CONF_OPTS += \
+	-DUSE_BUILTIN_JSONCPP=OFF \
 	-DUSE_BUILTIN_LUA=OFF \
 	-DUSE_BUILTIN_SQLITE=OFF \
 	-DUSE_BUILTIN_MQTT=OFF

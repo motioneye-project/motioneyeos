@@ -7,6 +7,7 @@ Subject: [PATCH] Revert "Updating CMake configuration file to use
 This reverts commit 4e4ee999c4b323514c0ba81ab1ff3afb10d2f1cd to avoid
 bumping host-cmake requirement version from 3.8 to 3.14 in buildroot.
 
+[Fabrice: Updated for 2020.1]
 Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
 ---
  CMakeLists.txt | 8 +++-----
@@ -32,11 +33,18 @@ index c5b7832ff..a21f5b87b 100644
  
  if(USE_STATIC_BOOST)
     message(STATUS "Linking against boost static libraries")
-@@ -590,9 +591,6 @@ else(USE_STATIC_BOOST)
+@@ -590,16 +591,6 @@ else(USE_STATIC_BOOST)
     message(STATUS "Linking against boost dynamic libraries")
  endif(USE_STATIC_BOOST)
  
 -find_package(Boost REQUIRED COMPONENTS thread system)
+-if(Boost_FOUND)
+-    MESSAGE(STATUS "BOOST libraries found at: ${Boost_LIBRARY_DIRS}")
+-    MESSAGE(STATUS "Boost includes found at: ${Boost_INCLUDE_DIR}")
+-else(Boost_FOUND)
+-    MESSAGE(FATAL_ERROR "Boost thread/system library not found on your system, try to get this installed.")
+-endif(Boost_FOUND)
+-
 -target_link_libraries(domoticz Boost::thread Boost::system)
 -
  # compare found vs required libBoost version
