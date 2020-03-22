@@ -4,13 +4,13 @@
 #
 ################################################################################
 
-RCW_VERSION = LSDK-18.12
+RCW_VERSION = LSDK-19.09
 RCW_SITE = https://source.codeaurora.org/external/qoriq/qoriq-components/rcw
 RCW_SITE_METHOD = git
 RCW_LICENSE = BSD-3-Clause
 RCW_LICENSE_FILES = LICENSE
 
-HOST_RCW_DEPENDENCIES = host-python
+HOST_RCW_DEPENDENCIES = $(BR2_PYTHON3_HOST_DEPENDENCY)
 
 RCW_FILES = $(call qstrip,$(BR2_PACKAGE_HOST_RCW_CUSTOM_PATH))
 
@@ -40,8 +40,13 @@ define HOST_RCW_ADD_CUSTOM_RCW_FILES
 endef
 HOST_RCW_POST_PATCH_HOOKS += HOST_RCW_ADD_CUSTOM_RCW_FILES
 
+# rcw.py is a python3-only script, and we can be using either the
+# system-provided python3, or our own built with host-python3.
+# Fortunately, rcw.py uses #!/usr/bin/env python3, so it will
+# easily find it from PATH.
 define HOST_RCW_BUILD_CMDS
-	$(HOST_DIR)/bin/python $(@D)/rcw.py \
+	PATH=$(BR_PATH) \
+	$(@D)/rcw.py \
 		-i $(@D)/custom_board/rcw/$(RCW_PROJECT) \
 		-I $(@D)/custom_board -o $(@D)/PBL.bin
 endef
