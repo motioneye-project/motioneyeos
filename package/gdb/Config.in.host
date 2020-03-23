@@ -32,10 +32,28 @@ config BR2_PACKAGE_HOST_GDB_TUI
 	help
 	  This option enables terminal user interface (TUI) for gdb
 
-config BR2_PACKAGE_HOST_GDB_PYTHON
-	bool "Python support"
+choice
+	prompt "Python support"
+	default BR2_PACKAGE_HOST_GDB_NOPYTHON
 	help
-	  This option enables the Python support in the cross gdb.
+	  Select the version of Python you wish to use
+
+config BR2_PACKAGE_HOST_GDB_NOPYTHON
+	bool "None"
+	help
+	  This option disables Python support in the cross gdb.
+
+config BR2_PACKAGE_HOST_GDB_PYTHON
+	bool "Python 2"
+	help
+	  This option enables the Python 2 support in the cross gdb.
+
+config BR2_PACKAGE_HOST_GDB_PYTHON3
+	bool "Python 3"
+	help
+	  This option enables the Python 3 support in the cross gdb.
+
+endchoice
 
 config BR2_PACKAGE_HOST_GDB_SIM
 	bool "Simulator support"
