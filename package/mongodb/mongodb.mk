@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MONGODB_VERSION_BASE = 4.0.12
+MONGODB_VERSION_BASE = 4.2.4
 MONGODB_VERSION = r$(MONGODB_VERSION_BASE)
 MONGODB_SITE = $(call github,mongodb,mongo,$(MONGODB_VERSION))
 
@@ -13,9 +13,11 @@ MONGODB_LICENSE_FILES = APACHE-2.0.txt LICENSE-Community.txt
 
 MONGODB_DEPENDENCIES = \
 	boost \
-	host-python-cheetah \
-	host-python-pyyaml \
-	host-python-typing \
+	host-python3-cheetah \
+	host-python3-psutil \
+	host-python3-pyyaml \
+	host-python3-regex \
+	host-python3-requests \
 	host-scons \
 	pcre \
 	snappy \
@@ -29,6 +31,7 @@ MONGODB_SCONS_ENV = CC="$(TARGET_CC)" CXX="$(TARGET_CXX)" \
 	-j"$(PARALLEL_JOBS)"
 
 MONGODB_SCONS_OPTS = \
+	--disable-minimum-compiler-version-enforcement \
 	--disable-warnings-as-errors \
 	--use-system-boost \
 	--use-system-pcre \
@@ -60,21 +63,27 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBCURL),y)
 MONGODB_DEPENDENCIES += libcurl
-MONGODB_SCONS_OPTS += --enable-free-mon=on
+MONGODB_SCONS_OPTS += \
+	--enable-free-mon=on \
+	--enable-http-client=on
 else
-MONGODB_SCONS_OPTS += --enable-free-mon=off
+MONGODB_SCONS_OPTS += \
+	--enable-free-mon=off \
+	--enable-http-client=off
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 MONGODB_DEPENDENCIES += openssl
 MONGODB_SCONS_OPTS += \
-	--ssl \
+	--ssl=on \
 	--ssl-provider=openssl
+else
+MONGODB_SCONS_OPTS += --ssl=off
 endif
 
 define MONGODB_BUILD_CMDS
 	(cd $(@D); \
-		$(HOST_DIR)/bin/python $(SCONS) \
+		$(HOST_DIR)/bin/python3 $(SCONS) \
 		$(MONGODB_SCONS_ENV) \
 		$(MONGODB_SCONS_OPTS) \
 		$(MONGODB_SCONS_TARGETS))
@@ -82,7 +91,7 @@ endef
 
 define MONGODB_INSTALL_TARGET_CMDS
 	(cd $(@D); \
-		$(HOST_DIR)/bin/python $(SCONS) \
+		$(HOST_DIR)/bin/python3 $(SCONS) \
 		$(MONGODB_SCONS_ENV) \
 		$(MONGODB_SCONS_OPTS) \
 		--prefix=$(TARGET_DIR)/usr \
