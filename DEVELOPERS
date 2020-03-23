@@ -910,6 +910,10 @@ F:	package/tinydtls/
 F:	package/tinymembench/
 F:	package/whois/
 
+N:	Fabrice Goucem <fabrice.goucem@oss.nxp.com>
+F:	board/freescale/imx6ullevk/
+F:	configs/freescale_imx6ullevk_defconfig
+
 N:	Falco Hyfing <hyfinglists@gmail.com>
 F:	package/python-pymodbus/
 
