@@ -1,0 +1,28 @@
+From 050bf24c16e95f63a76e13156346a072035d45b4 Mon Sep 17 00:00:00 2001
+From: Evan Harvey <evanwork1234@gmail.com>
+Date: Thu, 19 Mar 2020 01:32:03 -0700
+Subject: [PATCH] Fix build error with input_event_sec for old kernel
+
+[Retrieved from:
+https://github.com/libts/tslib/commit/050bf24c16e95f63a76e13156346a072035d45b4]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ tools/ts_uinput.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/tools/ts_uinput.c b/tools/ts_uinput.c
+index 1832a07..9c40bb3 100644
+--- a/tools/ts_uinput.c
++++ b/tools/ts_uinput.c
+@@ -51,6 +51,11 @@
+ #include <linux/fb.h>
+ #endif
+ 
++#ifndef input_event_sec
++#define input_event_sec time.tv_sec
++#define input_event_usec time.tv_usec
++#endif
++
+ #define RESET   "\033[0m"
+ #define RED     "\033[31m"
+ #define GREEN   "\033[32m"
