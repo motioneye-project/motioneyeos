@@ -295,7 +295,7 @@ comment "Graphic applications"
 	source "package/tesseract-ocr/Config.in"
 
 comment "Graphic libraries"
-	source "package/cegui06/Config.in"
+	source "package/cegui/Config.in"
 	source "package/directfb/Config.in"
 	source "package/directfb-examples/Config.in"
 	source "package/efl/Config.in"

@@ -2604,7 +2604,7 @@ F:	board/friendlyarm/nanopi-neo/
 F:	configs/nanopi_neo_defconfig
 F:	fs/squashfs/
 F:	package/asterisk/
-F:	package/cegui06/
+F:	package/cegui/
 F:	package/dahdi-linux/
 F:	package/dahdi-tools/
 F:	package/dtc/
