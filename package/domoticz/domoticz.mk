@@ -19,6 +19,9 @@ DOMOTICZ_DEPENDENCIES = \
 	sqlite \
 	zlib
 
+# Disable precompiled header as it needs cmake >= 3.16
+DOMOTICZ_CONF_OPTS = -DUSE_PRECOMPILED_HEADER=OFF
+
 # Due to the dependency on mosquitto, domoticz depends on
 # !BR2_STATIC_LIBS so set USE_STATIC_BOOST and USE_OPENSSL_STATIC to OFF
 DOMOTICZ_CONF_OPTS += \
