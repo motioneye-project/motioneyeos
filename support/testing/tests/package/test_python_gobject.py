@@ -1,6 +1,7 @@
 import os
 from tests.package.test_python import TestPythonPackageBase
 
+
 class TestPythonPy3Gobject(TestPythonPackageBase):
     __test__ = True
     config = \
