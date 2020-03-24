@@ -9,7 +9,7 @@ https://github.com/WebPlatformForEmbedded/meta-wpe/blob/master/recipes-wpe/wpewe
 Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
 ---
  Source/JavaScriptCore/runtime/MachineContext.h | 10 +++++-----
- Source/WTF/wtf/Platform.h                      |  2 +-
+ Source/WTF/wtf/PlatformHave.h                  |  2 +-
  2 files changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/Source/JavaScriptCore/runtime/MachineContext.h b/Source/JavaScriptCore/runtime/MachineContext.h
@@ -63,8 +63,8 @@ index bf0bdc7a51a..78d2ec81838 100644
  #if CPU(X86)
 diff --git a/Source/WTF/wtf/Platform.h b/Source/WTF/wtf/Platform.h
 index e2a3388993f..95fe7c593cf 100644
---- a/Source/WTF/wtf/Platform.h
-+++ b/Source/WTF/wtf/Platform.h
+--- a/Source/WTF/wtf/PlatformHave.h
++++ b/Source/WTF/wtf/PlatformHave.h
 @@ -683,7 +683,7 @@
  #define HAVE_CFNETWORK_STORAGE_PARTITIONING 1
  #endif
