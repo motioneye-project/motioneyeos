@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-OPENJDK_VERSION_MAJOR = 13.0.2
-OPENJDK_VERSION_MINOR = 8
+OPENJDK_VERSION_MAJOR = 14
+OPENJDK_VERSION_MINOR = 36
 OPENJDK_VERSION = $(OPENJDK_VERSION_MAJOR)+$(OPENJDK_VERSION_MINOR)
 OPENJDK_SOURCE = jdk-$(OPENJDK_VERSION).tar.gz
-OPENJDK_SITE = https://hg.openjdk.java.net/jdk-updates/jdk13u/archive
+OPENJDK_SITE = https://hg.openjdk.java.net/jdk-updates/jdk14u/archive
 OPENJDK_LICENSE = GPL-2.0+ with exception
 OPENJDK_LICENSE_FILES = LICENSE
 
