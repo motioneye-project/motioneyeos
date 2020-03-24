@@ -13,5 +13,17 @@ config BR2_PACKAGE_OPTEE_CLIENT
 
 	  https://github.com/OP-TEE/optee_client
 
+if BR2_PACKAGE_OPTEE_CLIENT
+
+config BR2_PACKAGE_OPTEE_CLIENT_TEE_FS_PATH
+	string "Path for normal world OS secure storage"
+	default "/data/tee"
+	help
+	  Path to storage area for secure storage based on the
+	  normal world OS providing the actual storage via
+	  tee-supplicant.
+
+endif
+
 comment "optee-client needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
