@@ -2517,6 +2517,7 @@ F:	package/scons/
 F:	package/squashfs/
 F:	package/wayland/
 F:	package/weston/
+F:	support/testing/tests/boot/test_syslinux.py
 F:	toolchain/
 
 N:	Timo Ketola <timo.ketola@exertus.fi>
