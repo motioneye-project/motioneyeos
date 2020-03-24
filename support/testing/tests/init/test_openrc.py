@@ -1,4 +1,3 @@
-import infra.basetest
 from tests.init.base import InitSystemBase as InitSystemBase
 
 
