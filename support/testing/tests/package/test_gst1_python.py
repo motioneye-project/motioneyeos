@@ -26,4 +26,3 @@ class TestGst1Python(TestPythonPackageBase):
                            options=["-initrd", cpio_file])
         self.emulator.login()
     sample_scripts = ["tests/package/sample_gst1_python.py"]
-
