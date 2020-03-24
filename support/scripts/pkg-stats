@@ -36,7 +36,7 @@ from urllib3.exceptions import HTTPError
 from multiprocessing import Pool
 
 sys.path.append('utils/')
-from getdeveloperlib import parse_developers
+from getdeveloperlib import parse_developers  # noqa: E402
 
 NVD_START_YEAR = 2002
 NVD_JSON_VERSION = "1.0"
