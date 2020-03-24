@@ -177,7 +177,6 @@ config BR2_PACKAGE_KODI_LCMS2
 
 config BR2_PACKAGE_KODI_LIBMICROHTTPD
 	bool "web server"
-	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS # libgcrypt, libmicrohttpd
 	select BR2_PACKAGE_LIBMICROHTTPD
 	help
 	  Enable webserver feature
