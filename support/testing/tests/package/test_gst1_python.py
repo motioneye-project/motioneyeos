@@ -14,6 +14,10 @@ class TestGst1Python(TestPythonPackageBase):
         BR2_TOOLCHAIN_EXTERNAL_LINARO_ARM=y
         BR2_PACKAGE_GOBJECT_INTROSPECTION=y
         BR2_PACKAGE_GSTREAMER1=y
+        BR2_PACKAGE_GST1_PLUGINS_BASE=y
+        BR2_PACKAGE_GST1_PLUGINS_BAD=y
+        BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_VIDEOTESTSRC=y
+        BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DEBUGUTILS=y
         BR2_PACKAGE_GST1_PYTHON=y
         BR2_PACKAGE_PYTHON3=y
         BR2_PACKAGE_PYTHON_GOBJECT=y
@@ -26,3 +30,4 @@ class TestGst1Python(TestPythonPackageBase):
                            options=["-initrd", cpio_file])
         self.emulator.login()
     sample_scripts = ["tests/package/sample_gst1_python.py"]
+    timeout = 200
