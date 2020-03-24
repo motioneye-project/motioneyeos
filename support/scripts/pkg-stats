@@ -278,7 +278,8 @@ class Package:
 
     def __str__(self):
         return "%s (path='%s', license='%s', license_files='%s', hash='%s', patches=%d)" % \
-            (self.name, self.path, self.is_status_ok('license'), self.is_status_ok('license-files'), self.status['hash'], self.patch_count)
+            (self.name, self.path, self.is_status_ok('license'),
+             self.is_status_ok('license-files'), self.status['hash'], self.patch_count)
 
 
 class CVE:
