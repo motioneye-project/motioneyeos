@@ -336,7 +336,7 @@ class CVE:
             filename = CVE.download_nvd_year(nvd_dir, year)
             try:
                 content = ijson.items(gzip.GzipFile(filename), 'CVE_Items.item')
-            except:
+            except:  # noqa: E722
                 print("ERROR: cannot read %s. Please remove the file then rerun this script" % filename)
                 raise
             for cve in content:
