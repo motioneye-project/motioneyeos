@@ -2,9 +2,8 @@
 """A simple test that uses gst1-python to run a fake videotestsrc for 100 frames"""
 import sys
 import gi
-import time
 gi.require_version('Gst', '1.0')
-from gi.repository import Gst, GLib
+from gi.repository import Gst, GLib  # noqa: E402
 
 
 def main():
