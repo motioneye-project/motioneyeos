@@ -1,0 +1,36 @@
+From ff172a49d1ca5708f45939b9b4f125cafba01db3 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Tue, 24 Mar 2020 22:50:32 +0100
+Subject: [PATCH] configure.ac: add foreign option to AM_INIT_AUTOMAKE
+
+oprofile doesn't provide the NEWS, AUTHORS and ChangeLog file, so
+autoreconf complains with:
+
+Makefile.am: error: required file './NEWS' not found
+Makefile.am: error: required file './AUTHORS' not found
+Makefile.am: error: required file './ChangeLog' not found
+
+Such errors can be avoided by passing the "foreign" option to
+AM_INIT_AUTOMAKE.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 00e30079..87afe2b7 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -13,7 +13,7 @@ AC_PREREQ(2.13)
+ 
+ AC_INIT([OProfile], [1.3.0])
+ AC_CONFIG_SRCDIR([libop/op_config.h])
+-AM_INIT_AUTOMAKE
++AM_INIT_AUTOMAKE([foreign])
+ AC_CONFIG_HEADERS(config.h)
+ 
+ AC_CHECK_DECLS([basename], [], [], [[#include <libgen.h>]])
+-- 
+2.25.1
+

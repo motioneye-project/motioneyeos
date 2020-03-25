@@ -8,6 +8,9 @@ OPROFILE_VERSION = 1.3.0
 OPROFILE_SITE = http://downloads.sourceforge.net/project/oprofile/oprofile/oprofile-$(OPROFILE_VERSION)
 OPROFILE_LICENSE = GPL-2.0+
 OPROFILE_LICENSE_FILES = COPYING
+# 0002-configure.ac-add-foreign-option-to-AM_INIT_AUTOMAKE.patch
+# 0003-Macro-wrappers-to-handle-the-binutils-2.34-api-chang.patch
+OPROFILE_AUTORECONF = YES
 OPROFILE_CONF_OPTS = \
 	--disable-account-check \
 	--enable-gui=no \
