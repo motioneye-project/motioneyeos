@@ -12,4 +12,3 @@ PERL_TRY_TINY_LICENSE_FILES = LICENCE
 PERL_TRY_TINY_DISTNAME = Try-Tiny
 
 $(eval $(perl-package))
-$(eval $(host-perl-package))
