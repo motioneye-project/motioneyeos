@@ -100,7 +100,7 @@ endif
 ifeq ($(BR2_PACKAGE_NETSNMP),y)
 SYSLOG_NG_DEPENDENCIES += netsnmp
 SYSLOG_NG_CONF_OPTS += --enable-snmp-dest
-SYSLOG_NG_CONF_OPTS += --with-netsnmp="$(STAGING_DIR)/usr/bin"
+SYSLOG_NG_CONF_OPTS += --with-net-snmp="$(STAGING_DIR)/usr/bin"
 else
 SYSLOG_NG_CONF_OPTS += --disable-snmp-dest
 endif
