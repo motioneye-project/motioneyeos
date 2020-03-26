@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/cchardet/json
-md5	681af4e6546e47e2ae856057a8a7d105  cchardet-2.1.5.tar.gz
-sha256	240efe3f255f916769458343840b9c6403cf3192720bc5129792cbcb88bf72fb  cchardet-2.1.5.tar.gz
+md5  ee884e2c7762e56e8a0600aa34ad4fa3  cchardet-2.1.6.tar.gz
+sha256  b76afb2059ad69eab576949980a17413c1e9e5a5624abf9e43542d8853f146b3  cchardet-2.1.6.tar.gz
 # Locally computed sha256 checksums
-sha256	107a29ccdd2d778aa2df5462f85dddfa099059abd22e064e07ec2cc9bafc37cd  COPYING
+sha256  107a29ccdd2d778aa2df5462f85dddfa099059abd22e064e07ec2cc9bafc37cd  COPYING
