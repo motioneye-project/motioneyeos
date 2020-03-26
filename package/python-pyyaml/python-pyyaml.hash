@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/PyYAML/json
-md5	adbb0d336b509d6472d3b095a0f1cf30  PyYAML-5.3.tar.gz
-sha256	e9f45bd5b92c7974e59bcd2dcc8631a6b6cc380a904725fce7bc08872e691615  PyYAML-5.3.tar.gz
+md5  d3590b85917362e837298e733321962b  PyYAML-5.3.1.tar.gz
+sha256  b8eac752c5e14d3eca0e6dd9199cd627518cb5ec06add0de9d32baeee6fe645d  PyYAML-5.3.1.tar.gz
 # Locally computed sha256 checksums
-sha256	a2adb9c959b797494a0ef80bdf60e22db2749ee3e0c0908556e3eb548f967c56  LICENSE
+sha256  c40112449f254b9753045925248313e9270efa36d226b22d82d4cc6c43c57f29  LICENSE
