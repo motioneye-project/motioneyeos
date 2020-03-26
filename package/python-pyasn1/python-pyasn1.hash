@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/pyasn1/json
-md5	50290e833395016c49903f4f9c7e47e5  pyasn1-0.4.7.tar.gz
-sha256	a9495356ca1d66ed197a0f72b41eb1823cf7ea8b5bd07191673e8147aecf8604  pyasn1-0.4.7.tar.gz
+md5  dffae4ff9f997a83324b3f33fe62be54  pyasn1-0.4.8.tar.gz
+sha256  aef77c9fb94a3ac588e87841208bdec464471d9871bd5050a287cc9a475cd0ba  pyasn1-0.4.8.tar.gz
 # Locally computed sha256 checksums
-sha256	22c5cc6922ab5d69fba32d8c5ee4cdd14981508cb53afc0ebd85593847fd95a5  LICENSE.rst
+sha256  22c5cc6922ab5d69fba32d8c5ee4cdd14981508cb53afc0ebd85593847fd95a5  LICENSE.rst
