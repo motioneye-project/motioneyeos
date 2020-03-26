@@ -13,11 +13,14 @@ if itest.s x51 == "x${imx_cpu}"; then
 	a_base=0x92000000
 elif itest.s x53 == "x${imx_cpu}"; then
 	a_base=0x72000000
-elif itest.s x6SX == "x${imx_cpu}" || itest.s x7D == "x${imx_cpu}"; then
+elif itest.s x6SX == "x${imx_cpu}" || itest.s x6ULL == "x${imx_cpu}" || itest.s x7D == "x${imx_cpu}"; then
 	a_base=0x82000000
-elif itest.s x8MQ == "x${imx_cpu}"; then
+elif itest.s x8MQ == "x${imx_cpu}" || itest.s x8MM == "x${imx_cpu}" || itest.s x8MMQ == "x${imx_cpu}"; then
 	a_base=0x42000000
 	offset=0x8400
+elif itest.s x8MNano == "x${imx_cpu}"; then
+	a_base=0x42000000
+	offset=0x8000
 fi
 
 qspi_match=1
@@ -56,6 +59,7 @@ mmc dev ${env_dev} ${env_part}
 mmc read ${a_uImage2} ${cntoffset} ${cntfile}
 if cmp.b ${a_uImage1} ${a_uImage2} ${filesize} ; then
 	echo "------- U-Boot versions match" ;
+	echo "------- U-Boot upgrade NOT needed" ;
 	exit ;
 fi
 
@@ -134,7 +138,7 @@ fi
 if cmp.b ${a_uImage1} ${a_uImage2} $filesize ; then
 	echo "------- U-Boot versions match" ;
 	if itest.s "${qspi_match}" == "1" ; then
-		echo "------- upgrade not needed" ;
+		echo "------- U-Boot upgrade NOT needed" ;
 		if itest.s "x" != "x${next}" ; then
 			if ${fs}load ${devtype} ${devnum}:${distro_bootpart} ${a_script} ${next} ; then
 				source ${a_script}
@@ -206,6 +210,12 @@ if itest.s "x" != "x${next}" ; then
 fi
 fi
 
-while echo "---- U-Boot upgraded. Please reset the board" ; do
-	sleep 120
+if itest.s "xno" == "x${reset}" ; then
+	while echo "---- U-Boot upgraded. Please reset the board" ; do
+		sleep 120
+	done
+fi
+echo "---- U-Boot upgraded. The board will now reset."
+sleep 1
+reset
 done
