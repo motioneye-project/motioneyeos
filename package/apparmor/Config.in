@@ -18,6 +18,16 @@ config BR2_PACKAGE_APPARMOR
 
 	  http://wiki.apparmor.net
 
+if BR2_PACKAGE_APPARMOR
+
+config BR2_PACKAGE_APPARMOR_BINUTILS
+	bool "binutils"
+	help
+	  A set of utilities (written in C):
+	    aa-enabled    aa-exec
+
+endif # BR2_PACKAGE_APPARMOR
+
 comment "apparmor needs a toolchain w/ headers >= 3.16, threads, C++"
 	depends on BR2_USE_MMU
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
