@@ -1,0 +1,30 @@
+From 575ef199984ae4e8510ed36f8b1ae1babdff8ea9 Mon Sep 17 00:00:00 2001
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Thu, 26 Mar 2020 07:48:19 -0600
+Subject: [PATCH] fdo: ensure xkb_data.state is not null before calling
+ xkb_state_key_get_one_sym (#192)
+
+[james.hilliard1@gmail.com: backport from upstream commit
+575ef199984ae4e8510ed36f8b1ae1babdff8ea9]
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+---
+ platform/cog-platform-fdo.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/platform/cog-platform-fdo.c b/platform/cog-platform-fdo.c
+index 043f91d..93ff255 100644
+--- a/platform/cog-platform-fdo.c
++++ b/platform/cog-platform-fdo.c
+@@ -919,6 +919,9 @@ capture_app_key_bindings (uint32_t keysym,
+ static void
+ handle_key_event (uint32_t key, uint32_t state, uint32_t time)
+ {
++    if (xkb_data.state == NULL)
++        return;
++
+     uint32_t keysym = xkb_state_key_get_one_sym (xkb_data.state, key);
+     uint32_t unicode = xkb_state_key_get_utf32 (xkb_data.state, key);
+ 
+-- 
+2.20.1
+
