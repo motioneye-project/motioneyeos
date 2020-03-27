@@ -197,6 +197,7 @@ N:	Angelo Compagnucci <angelo.compagnucci@gmail.com>
 F:	package/corkscrew/
 F:	package/fail2ban/
 F:	package/i2c-tools/
+F:	package/libapparmor/
 F:	package/mender/
 F:	package/mender-artifact/
 F:	package/mono/
