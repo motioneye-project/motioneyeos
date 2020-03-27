@@ -22,4 +22,10 @@ LIBMICROHTTPD_LICENSE = LGPL-2.1+ or eCos
 LIBMICROHTTPD_CONF_OPTS += --disable-https
 endif
 
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
+LIBMICROHTTPD_CONF_OPTS += --with-threads=auto
+else
+LIBMICROHTTPD_CONF_OPTS += --with-threads=none
+endif
+
 $(eval $(autotools-package))

@@ -1,0 +1,46 @@
+From 6702e6202368720d7a381669c03eedc318f225ca Mon Sep 17 00:00:00 2001
+From: Christian Grothoff <christian@grothoff.org>
+Date: Thu, 26 Mar 2020 19:08:30 +0100
+Subject: [PATCH] fix #6135
+
+Downloaded from upstream commit to fix non-threaded build:
+https://git.gnunet.org/libmicrohttpd.git/commit/?id=6702e6202368720d7a381669c03eedc318f225ca
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ src/microhttpd/internal.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/src/microhttpd/internal.h b/src/microhttpd/internal.h
+index 211eed9f..ad16535e 100644
+--- a/src/microhttpd/internal.h
++++ b/src/microhttpd/internal.h
+@@ -1462,12 +1462,6 @@ struct MHD_Daemon
+    */
+   size_t thread_stack_size;
+ 
+-  /**
+-   * Our #MHD_OPTION_SERVER_INSANITY level, bits indicating
+-   * which sanity checks are off.
+-   */
+-  enum MHD_DisableSanityCheck insanity_level;
+-
+   /**
+    * Number of worker daemons
+    */
+@@ -1490,6 +1484,12 @@ struct MHD_Daemon
+   MHD_mutex_ cleanup_connection_mutex;
+ #endif
+ 
++  /**
++   * Our #MHD_OPTION_SERVER_INSANITY level, bits indicating
++   * which sanity checks are off.
++   */
++  enum MHD_DisableSanityCheck insanity_level;
++
+   /**
+    * Listen socket.
+    */
+-- 
+2.25.0
+

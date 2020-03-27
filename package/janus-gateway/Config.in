@@ -77,7 +77,6 @@ comment "RabbitMQ transport needs a toolchain w/ dynamic library, threads"
 
 config BR2_PACKAGE_JANUS_GATEWAY_REST
 	bool "REST (HTTP/HTTPS)"
-	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_LIBMICROHTTPD
 
 comment "REST transport needs a toolchain w/ threads"
