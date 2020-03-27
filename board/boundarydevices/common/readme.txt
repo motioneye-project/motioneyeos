@@ -1,6 +1,6 @@
 Buildroot for Boundary Devices platforms:
 
-https://boundarydevices.com/product-category/popular-sbc-and-som-modules/
+https://boundarydevices.com/nitrogen-sbcs-and-soms/
 
 Here is the list of targeted platforms per defconfig:
 
@@ -19,7 +19,11 @@ Here is the list of targeted platforms per defconfig:
 - nitrogen7_defconfig
   - Nitrogen7
 
-To install, simply copy the image to a uSD card:
+- nitrogen8m_defconfig
+  - Nitrogen8M
+  - Nitrogen8M_SOM
+
+To install, simply copy the image to your storage (SD, eMMC, USB):
 
 $ sudo dd if=output/images/sdcard.img of=/dev/sdX
 
