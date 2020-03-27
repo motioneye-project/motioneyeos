@@ -15,10 +15,10 @@ GUPNP_DEPENDENCIES = host-pkgconf libglib2 libxml2 gssdp util-linux
 GUPNP_CONF_OPTS = -Dexamples=false
 
 ifeq ($(BR2_PACKAGE_GOBJECT_INTROSPECTION),y)
-GUPNP_CONF_OPTS += -Dintrospection=true
-GUPNP_DEPENDENCIES += gobject-introspection
+GUPNP_CONF_OPTS += -Dintrospection=true -Dvapi=true
+GUPNP_DEPENDENCIES += host-vala gobject-introspection
 else
-GUPNP_CONF_OPTS += -Dintrospection=false
+GUPNP_CONF_OPTS += -Dintrospection=false -Dvapi=false
 endif
 
 $(eval $(meson-package))
