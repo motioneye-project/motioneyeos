@@ -1,0 +1,25 @@
+config BR2_PACKAGE_APPARMOR
+	bool "apparmor"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # libapparmor
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libapparmor
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_16 # libapparmor
+	select BR2_PACKAGE_LIBAPPARMOR
+	help
+	  AppArmor is an effective and easy-to-use Linux application
+	  security system. AppArmor proactively protects the operating
+	  system and applications from external or internal threats,
+	  even zero-day attacks, by enforcing good behavior and
+	  preventing even unknown application flaws from being
+	  exploited.
+
+	  This package builds the parser (which can load profiles).
+
+	  http://wiki.apparmor.net
+
+comment "apparmor needs a toolchain w/ headers >= 3.16, threads, C++"
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS \
+		|| !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_16

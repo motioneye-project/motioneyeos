@@ -4,6 +4,7 @@
 #
 ################################################################################
 
+# When updating the version here, please also update the apparmor package
 LIBAPPARMOR_VERSION_MAJOR = 2.13
 LIBAPPARMOR_VERSION = $(LIBAPPARMOR_VERSION_MAJOR).3
 LIBAPPARMOR_SOURCE = apparmor-$(LIBAPPARMOR_VERSION).tar.gz

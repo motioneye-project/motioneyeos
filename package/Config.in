@@ -2260,6 +2260,7 @@ menu "Real-Time"
 endmenu
 
 menu "Security"
+	source "package/apparmor/Config.in"
 	source "package/checkpolicy/Config.in"
 	source "package/ima-evm-utils/Config.in"
 	source "package/optee-benchmark/Config.in"
