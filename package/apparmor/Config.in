@@ -60,6 +60,12 @@ config BR2_PACKAGE_APPARMOR_UTILS_EXTRA
 
 endif # BR2_PACKAGE_APPARMOR_UTILS
 
+config BR2_PACKAGE_APPARMOR_PROFILES
+	bool "profiles"
+	help
+	  Installs server-class profiles for a wide range of
+	  usual programs and daemons.
+
 endif # BR2_PACKAGE_APPARMOR
 
 comment "apparmor needs a toolchain w/ headers >= 3.16, threads, C++"
