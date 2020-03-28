@@ -8,7 +8,7 @@ gi.require_version('Gst', '1.0')
 from gi.repository import Gst, GLib  # noqa: E402
 
 
-def on_message(bus: Gst.Bus, message: Gst.Message, loop: GLib.MainLoop):
+def on_message(bus, message, loop):
     print('Received Gst.Message.type: {}'.format(message.type))
     if message.type == Gst.MessageType.EOS:
         loop.quit()
