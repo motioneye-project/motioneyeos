@@ -1,6 +1,6 @@
 config BR2_PACKAGE_KODI_VFS_RAR
 	bool "kodi-vfs-rar"
-	select BR2_PACKAGE_LIBPLATFORM
+	select BR2_PACKAGE_TINYXML
 	help
 	  RAR VFS addon for Kodi
 
