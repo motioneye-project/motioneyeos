@@ -18,6 +18,9 @@ GVFS_LIBS = $(TARGET_NLS_LIBS)
 # 0001-admin-Prevent-access-if-any-authentication-agent-isn-t-available.patch
 GVFS_IGNORE_CVES += CVE-2019-3827
 
+# package/gvfs/0002-admin-Add-query_info_on_read-write-functionality.patch
+GVFS_IGNORE_CVES += CVE-2019-12448
+
 # Export ac_cv_path_LIBGCRYPT_CONFIG unconditionally to prevent
 # build system from searching the host paths.
 GVFS_CONF_ENV = \
