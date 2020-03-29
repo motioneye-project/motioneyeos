@@ -15,6 +15,9 @@ GVFS_LICENSE = LGPL-2.0+
 GVFS_LICENSE_FILES = COPYING
 GVFS_LIBS = $(TARGET_NLS_LIBS)
 
+# 0001-admin-Prevent-access-if-any-authentication-agent-isn-t-available.patch
+GVFS_IGNORE_CVES += CVE-2019-3827
+
 # Export ac_cv_path_LIBGCRYPT_CONFIG unconditionally to prevent
 # build system from searching the host paths.
 GVFS_CONF_ENV = \

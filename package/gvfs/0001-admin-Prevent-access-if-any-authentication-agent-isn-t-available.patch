@@ -1,0 +1,46 @@
+From d8d0c8c40049cfd824b2b90d0cd47914052b9811 Mon Sep 17 00:00:00 2001
+From: Ondrej Holy <oholy@redhat.com>
+Date: Wed, 2 Jan 2019 17:13:27 +0100
+Subject: [PATCH] admin: Prevent access if any authentication agent isn't
+ available
+
+The backend currently allows to access and modify files without prompting
+for password if any polkit authentication agent isn't available. This seems
+isn't usually problem, because polkit agents are integral parts of
+graphical environments / linux distributions. The agents can't be simply
+disabled without root permissions and are automatically respawned. However,
+this might be a problem in some non-standard cases.
+
+This affects only users which belong to wheel group (i.e. those who are
+already allowed to use sudo). It doesn't allow privilege escalation for
+users, who don't belong to that group.
+
+Let's return permission denied error also when the subject can't be
+authorized by any polkit agent to prevent this behavior.
+
+Closes: https://gitlab.gnome.org/GNOME/gvfs/issues/355
+
+[Retrieved from:
+https://gitlab.gnome.org/GNOME/gvfs/commit/d8d0c8c40049cfd824b2b90d0cd47914052b9811]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ daemon/gvfsbackendadmin.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/daemon/gvfsbackendadmin.c b/daemon/gvfsbackendadmin.c
+index ec0f2392..0f849008 100644
+--- a/daemon/gvfsbackendadmin.c
++++ b/daemon/gvfsbackendadmin.c
+@@ -130,8 +130,7 @@ check_permission (GVfsBackendAdmin *self,
+       return FALSE;
+     }
+ 
+-  is_authorized = polkit_authorization_result_get_is_authorized (result) ||
+-    polkit_authorization_result_get_is_challenge (result);
++  is_authorized = polkit_authorization_result_get_is_authorized (result);
+ 
+   g_object_unref (result);
+ 
+-- 
+2.24.1
+
