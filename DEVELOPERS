@@ -2360,6 +2360,9 @@ F:	package/libvpx/
 F:	package/mesa3d-demos/
 F:	package/ti-gfx/
 
+N:	Stefan Ott <stefan@ott.net>
+F:	package/unbound/
+
 N:	Stefan Sørensen <stefan.sorensen@spectralink.com>
 F:	package/cracklib/
 F:	package/libpwquality/
