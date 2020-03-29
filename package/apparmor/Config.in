@@ -26,6 +26,40 @@ config BR2_PACKAGE_APPARMOR_BINUTILS
 	  A set of utilities (written in C):
 	    aa-enabled    aa-exec
 
+comment "utils need python3"
+	depends on !BR2_PACKAGE_PYTHON3
+
+config BR2_PACKAGE_APPARMOR_UTILS
+	bool "utils"
+	depends on BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYTHON3_READLINE
+	help
+	  A set of utilities (written in pyhon):
+	    aa-audit          aa-disable      aa-logprof
+	    aa-autodep        aa-easyprof     aa-mergeprof
+	    aa-cleanprof      aa-enforce      aa-status
+	    aa-complain       aa-genprof      aa-unconfined
+
+if BR2_PACKAGE_APPARMOR_UTILS
+
+comment "utils (extras) need bash and perl, and busybox or gawk"
+	depends on !BR2_PACKAGE_BASH || !BR2_PACKAGE_PERL \
+		|| !(BR2_PACKAGE_BUSYBOX || BR2_PACKAGE_GAWK)
+
+config BR2_PACKAGE_APPARMOR_UTILS_EXTRA
+	bool "utils (extras)"
+	depends on BR2_PACKAGE_BASH
+	depends on BR2_PACKAGE_PERL
+	depends on BR2_PACKAGE_BUSYBOX || BR2_PACKAGE_GAWK
+	help
+	  An extra set of utilities (written in a mixture of sh,
+	  bash, perl, and awk):
+	    aa-decode          (bash + perl)
+	    aa-notify          (perl)
+	    aa-remove-unknown  (sh + awk)
+
+endif # BR2_PACKAGE_APPARMOR_UTILS
+
 endif # BR2_PACKAGE_APPARMOR
 
 comment "apparmor needs a toolchain w/ headers >= 3.16, threads, C++"
