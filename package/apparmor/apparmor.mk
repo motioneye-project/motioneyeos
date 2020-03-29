@@ -39,6 +39,11 @@ ifeq ($(BR2_PACKAGE_APPARMOR_PROFILES),y)
 APPARMOR_TOOLS += profiles
 endif
 
+ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
+APPARMOR_DEPENDENCIES += linux-pam
+APPARMOR_TOOLS += changehat/pam_apparmor
+endif
+
 define APPARMOR_BUILD_CMDS
 	$(foreach tool,$(APPARMOR_TOOLS),\
 		$(TARGET_MAKE_ENV) $(TARGET_CONFIGURE_OPTS) \
