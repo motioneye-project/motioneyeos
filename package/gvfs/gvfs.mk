@@ -25,6 +25,9 @@ GVFS_IGNORE_CVES += CVE-2019-12448
 # 0004-admin-Use-fsuid-to-ensure-correct-file-ownership.patch
 GVFS_IGNORE_CVES += CVE-2019-12447
 
+# 0005-admin-Ensure-correct-ownership-when-moving-to-file-uri.patch
+GVFS_IGNORE_CVES += CVE-2019-12449
+
 # Export ac_cv_path_LIBGCRYPT_CONFIG unconditionally to prevent
 # build system from searching the host paths.
 GVFS_CONF_ENV = \
