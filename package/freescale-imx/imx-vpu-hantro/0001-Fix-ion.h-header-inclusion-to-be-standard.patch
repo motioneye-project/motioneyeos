@@ -1,6 +1,6 @@
-From 872c82e7cbb9a0a0e761e8ac70fc28e19a55b4c3 Mon Sep 17 00:00:00 2001
+From e776e7360f80da9ac03f81a5df27d8b7fabc7ac7 Mon Sep 17 00:00:00 2001
 From: Gary Bisson <gary.bisson@boundarydevices.com>
-Date: Thu, 12 Jul 2018 11:38:28 +0200
+Date: Thu, 26 Mar 2020 16:00:33 +0100
 Subject: [PATCH] Fix ion.h header inclusion to be standard
 
 NXP "solution" was to manually copy the header to include/linux.
@@ -9,25 +9,44 @@ https://elixir.bootlin.com/linux/v4.17/source/drivers/staging/android/uapi/ion.h
 
 Signed-off-by: Gary Bisson <gary.bisson@boundarydevices.com>
 ---
- Makefile                                  | 2 ++
- decoder_sw/software/linux/dwl/dwl_linux.c | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ Makefile_G1G2                                             | 4 ++--
+ Makefile_H1                                               | 4 ++--
+ decoder_sw/software/linux/dwl/dwl_linux.c                 | 2 +-
+ h1_encoder/software/linux_reference/ewl/ewl_x280_common.c | 2 +-
+ 4 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index b74e23a..a5ce22b 100755
---- a/Makefile
-+++ b/Makefile
-@@ -11,6 +11,8 @@ INCLUDE_HEADERS = -I./decoder_sw -I$(SOURCE_ROOT)/source/inc -I$(SOURCE_ROOT)/so
+diff --git a/Makefile_G1G2 b/Makefile_G1G2
+index 8280cce..4c9fc34 100755
+--- a/Makefile_G1G2
++++ b/Makefile_G1G2
+@@ -10,8 +10,8 @@ INCLUDE_HEADERS = -I./decoder_sw -I$(SOURCE_ROOT)/source/inc -I$(SOURCE_ROOT)/so
+ 
  INCLUDE_HEADERS += -I$(SOURCE_ROOT)/linux/memalloc
  #INCLUDE_HEADERS += -I$(SOURCE_ROOT)/linux/ldriver
- INCLUDE_HEADERS += -I$(LINUX_KERNEL_ROOT)/include/uapi -I$(LINUX_KERNEL_ROOT)/include
-+# ION header location
+-#INCLUDE_HEADERS += -I$(LINUX_KERNEL_ROOT)/include/uapi -I$(LINUX_KERNEL_ROOT)/include
+-INCLUDE_HEADERS += -I$(SDKTARGETSYSROOT)/usr/include/imx
++INCLUDE_HEADERS += -I$(LINUX_KERNEL_ROOT)/include/uapi -I$(LINUX_KERNEL_ROOT)/include
 +INCLUDE_HEADERS += -I$(LINUX_KERNEL_ROOT)/drivers/staging/android/uapi
  
  CFLAGS += -DDEC_MODULE_PATH=\"/dev/mxc_hantro\" -DUSE_FAKE_RFC_TABLE -DFIFO_DATATYPE=void* -DNDEBUG -DDOWN_SCALER \
             -DUSE_EXTERNAL_BUFFER -DUSE_FAST_EC -DUSE_VP9_EC -DGET_FREE_BUFFER_NON_BLOCK \
+diff --git a/Makefile_H1 b/Makefile_H1
+index 9ab62e1..8d366e3 100755
+--- a/Makefile_H1
++++ b/Makefile_H1
+@@ -17,8 +17,8 @@ ENV += -DMEMALLOC_MODULE_PATH=\\\"/dev/ion\\\"
+ #ENV += -DSDRAM_LM_BASE=0x00000000
+ ENV += -DEWL_NO_HW_TIMEOUT
+ ENV += -DUSE_ION
+-#ENV += -I$(LINUX_KERNEL_ROOT)/include/uapi -I$(LINUX_KERNEL_ROOT)/include
+-ENV += -I$(SDKTARGETSYSROOT)/usr/include/imx
++ENV += -I$(LINUX_KERNEL_ROOT)/include/uapi -I$(LINUX_KERNEL_ROOT)/include
++ENV += -I$(LINUX_KERNEL_ROOT)/drivers/staging/android/uapi
+ 
+ LIBENCNAME = libcodec_enc
+ LIBSENC = -L./ -lhantro_h1 -lpthread
 diff --git a/decoder_sw/software/linux/dwl/dwl_linux.c b/decoder_sw/software/linux/dwl/dwl_linux.c
-index 8183660..ed37d86 100644
+index 9b057f0..43225f6 100755
 --- a/decoder_sw/software/linux/dwl/dwl_linux.c
 +++ b/decoder_sw/software/linux/dwl/dwl_linux.c
 @@ -41,7 +41,7 @@
@@ -36,9 +55,22 @@ index 8183660..ed37d86 100644
  #ifdef USE_ION
 -#include <linux/ion.h>
 +#include <ion.h>
+ #include <linux/dma-buf.h>
+ #include <linux/version.h>
  #ifdef ANDROID
- #include <linux/mxc_ion.h>
- #endif
+diff --git a/h1_encoder/software/linux_reference/ewl/ewl_x280_common.c b/h1_encoder/software/linux_reference/ewl/ewl_x280_common.c
+index fef1307..20b6f95 100755
+--- a/h1_encoder/software/linux_reference/ewl/ewl_x280_common.c
++++ b/h1_encoder/software/linux_reference/ewl/ewl_x280_common.c
+@@ -49,7 +49,7 @@
+ 
+ #include "linux/hx280enc.h"
+ #ifdef USE_ION
+-#include <linux/ion.h>
++#include <ion.h>
+ #include <linux/dma-buf.h>
+ #include <linux/version.h>
+ #ifdef ANDROID
 -- 
-2.18.0
+2.25.1
 
