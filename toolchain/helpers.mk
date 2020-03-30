@@ -119,12 +119,12 @@ copy_toolchain_sysroot = \
 	done ; \
 	for link in $$(find $(STAGING_DIR) -type l); do \
 		target=$$(readlink $${link}) ; \
-		if [ "$${target}" == "$${target\#/}" ] ; then \
+		if [ "$${target}" == "$${target$(SHARP_SIGN)/}" ] ; then \
 			continue ; \
 		fi ; \
-		relpath="$(call relpath_prefix,$${target\#/})" ; \
-		echo "Fixing symlink $${link} from $${target} to $${relpath}$${target\#/}" ; \
-		ln -sf $${relpath}$${target\#/} $${link} ; \
+		relpath="$(call relpath_prefix,$${target$(SHARP_SIGN)/})" ; \
+		echo "Fixing symlink $${link} from $${target} to $${relpath}$${target$(SHARP_SIGN)/}" ; \
+		ln -sf $${relpath}$${target$(SHARP_SIGN)/} $${link} ; \
 	done ; \
 	relpath="$(call relpath_prefix,$${ARCH_LIB_DIR})" ; \
 	if [ "$${relpath}" != "" ]; then \

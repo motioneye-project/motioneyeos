@@ -14,6 +14,20 @@ comma := ,
 empty :=
 space := $(empty) $(empty)
 
+# make 4.3:
+# https://lwn.net/Articles/810071/
+# Number signs (#) appearing inside a macro reference or function invocation
+#   no longer introduce comments and should not be escaped with backslashes:
+#   thus a call such as:
+#     foo := $(shell echo '#')
+#   is legal.  Previously the number sign needed to be escaped, for example:
+#     foo := $(shell echo '\#')
+#   Now this latter will resolve to "\#".  If you want to write makefiles
+#   portable to both versions, assign the number sign to a variable:
+#     H := \#
+#     foo := $(shell echo '$H')
+SHARP_SIGN := \#
+
 # Case conversion macros. This is inspired by the 'up' macro from gmsl
 # (http://gmsl.sf.net). It is optimised very heavily because these macros
 # are used a lot. It is about 5 times faster than forking a shell and tr.
