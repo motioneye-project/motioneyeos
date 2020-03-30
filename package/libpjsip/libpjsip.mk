@@ -4,9 +4,11 @@
 #
 ################################################################################
 
-LIBPJSIP_VERSION = 2.9
-LIBPJSIP_SOURCE = pjproject-$(LIBPJSIP_VERSION).tar.bz2
-LIBPJSIP_SITE = https://www.pjsip.org/release/$(LIBPJSIP_VERSION)
+LIBPJSIP_VERSION = 2.10
+LIBPJSIP_SOURCE = pjproject-$(LIBPJSIP_VERSION).tar.gz
+LIBPJSIP_SITE = $(call github,pjsip,pjproject,$(LIBPJSIP_VERSION))
+# https://github.com/pjsip/pjproject/archive/2.10.tar.gz
+
 LIBPJSIP_DEPENDENCIES = libsrtp
 LIBPJSIP_LICENSE = GPL-2.0+
 LIBPJSIP_LICENSE_FILES = COPYING
