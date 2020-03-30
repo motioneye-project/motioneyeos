@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBUWSC_VERSION = 3.3.2
+LIBUWSC_VERSION = 3.3.4
 LIBUWSC_SITE = https://github.com/zhaojh329/libuwsc/releases/download/v$(LIBUWSC_VERSION)
 LIBUWSC_LICENSE = MIT
 LIBUWSC_LICENSE_FILES = LICENSE
