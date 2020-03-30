@@ -24,6 +24,16 @@ LIBSNDFILE_IGNORE_CVES += CVE-2018-13419
 LIBSNDFILE_IGNORE_CVES += CVE-2018-19758
 # 0005-wav_write_header-don-t-read-past-the-array-end.patch
 LIBSNDFILE_IGNORE_CVES += CVE-2019-3832
+# 0006-src-aiff.c-Fix-a-buffer-read-overflow.patch
+LIBSNDFILE_IGNORE_CVES += CVE-2017-6892
+# 0007-FLAC-Fix-a-buffer-read-overrun.patch
+LIBSNDFILE_IGNORE_CVES += CVE-2017-8361
+# 0008-src-flac.c-Fix-a-buffer-read-overflow.patch
+LIBSNDFILE_IGNORE_CVES += CVE-2017-8362 CVE-2017-8365
+# 0009-src-flac-c-Fix-another-memory-leak.patch
+LIBSNDFILE_IGNORE_CVES += CVE-2017-8363
+# 0010-src-common-c-Fix-heap-buffer-overflows-when-writing-strings-in.patch
+LIBSNDFILE_IGNORE_CVES += CVE-2017-12562
 
 LIBSNDFILE_CONF_OPTS = \
 	--disable-sqlite \
