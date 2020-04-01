@@ -13,4 +13,11 @@ LIBGEE_INSTALL_STAGING = YES
 LIBGEE_LICENSE = LGPL-2.1+
 LIBGEE_LICENSE_FILES = COPYING
 
+ifeq ($(BR2_PACKAGE_GOBJECT_INTROSPECTION),y)
+LIBGEE_CONF_OPTS += --enable-introspection
+LIBGEE_DEPENDENCIES += gobject-introspection
+else
+LIBGEE_CONF_OPTS += --disable-introspection
+endif
+
 $(eval $(autotools-package))
