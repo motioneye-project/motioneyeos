@@ -33,4 +33,11 @@ LIBMEDIAART_CONF_OPTS += \
 	--disable-qt
 endif
 
+ifeq ($(BR2_PACKAGE_GOBJECT_INTROSPECTION),y)
+LIBMEDIAART_CONF_OPTS += --enable-introspection
+LIBMEDIAART_DEPENDENCIES += gobject-introspection
+else
+LIBMEDIAART_CONF_OPTS += --disable-introspection
+endif
+
 $(eval $(autotools-package))
