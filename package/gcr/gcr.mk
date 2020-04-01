@@ -23,6 +23,13 @@ GCR_CONF_OPTS = \
 GCR_LICENSE = LGPL-2.1+
 GCR_LICENSE_FILES = COPYING
 
+ifeq ($(BR2_PACKAGE_GOBJECT_INTROSPECTION),y)
+GCR_DEPENDENCIES += gobject-introspection
+GCR_CONF_OPTS += --with-introspection
+else
+GCR_CONF_OPTS += --without-introspection
+endif
+
 # Only the X11 backend is supported for the simple GUI
 ifeq ($(BR2_PACKAGE_LIBGTK3_X11),y)
 GCR_DEPENDENCIES += libgtk3
