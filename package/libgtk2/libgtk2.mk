@@ -35,6 +35,13 @@ LIBGTK2_CONF_OPTS += \
 LIBGTK2_DEPENDENCIES += \
 	fontconfig xlib_libX11 xlib_libXext xlib_libXrender
 
+ifeq ($(BR2_PACKAGE_GOBJECT_INTROSPECTION),y)
+LIBGTK2_CONF_OPTS += --enable-introspection
+LIBGTK2_DEPENDENCIES += gobject-introspection
+else
+LIBGTK2_CONF_OPTS += --disable-introspection
+endif
+
 ifeq ($(BR2_PACKAGE_XLIB_LIBXINERAMA),y)
 LIBGTK2_CONF_OPTS += --enable-xinerama
 LIBGTK2_DEPENDENCIES += xlib_libXinerama
