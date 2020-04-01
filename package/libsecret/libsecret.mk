@@ -15,10 +15,16 @@ LIBSECRET_CONF_OPTS = \
 	--disable-manpages \
 	--disable-strict \
 	--disable-coverage \
-	--enable-introspection=no \
 	--enable-vala=no
 LIBSECRET_LICENSE = LGPL-2.1+
 LIBSECRET_LICENSE_FILES = COPYING
+
+ifeq ($(BR2_PACKAGE_GOBJECT_INTROSPECTION),y)
+LIBSECRET_CONF_OPTS += --enable-introspection=yes
+LIBSECRET_DEPENDENCIES += gobject-introspection
+else
+LIBSECRET_CONF_OPTS += --enable-introspection=no
+endif
 
 ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
 LIBSECRET_DEPENDENCIES += libgcrypt
