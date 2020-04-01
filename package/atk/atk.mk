@@ -13,7 +13,13 @@ ATK_LICENSE_FILES = COPYING
 ATK_INSTALL_STAGING = YES
 ATK_DEPENDENCIES = libglib2 $(TARGET_NLS_DEPENDENCIES)
 
-ATK_CONF_OPTS = -Dintrospection=false
+ifeq ($(BR2_PACKAGE_GOBJECT_INTROSPECTION),y)
+ATK_CONF_OPTS += -Dintrospection=true
+ATK_DEPENDENCIES += gobject-introspection
+else
+ATK_CONF_OPTS += -Dintrospection=false
+endif
+
 ATK_LDFLAGS = $(TARGET_LDFLAGS) $(TARGET_NLS_LIBS)
 
 $(eval $(meson-package))
