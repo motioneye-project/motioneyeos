@@ -33,6 +33,13 @@ ifeq ($(BR2_PACKAGE_GDK_PIXBUF),y)
 RYGEL_DEPENDENCIES += gdk-pixbuf
 endif
 
+ifeq ($(BR2_PACKAGE_GOBJECT_INTROSPECTION),y)
+RYGEL_CONF_OPTS += --enable-introspection
+RYGEL_DEPENDENCIES += gobject-introspection
+else
+RYGEL_CONF_OPTS += --disable-introspection
+endif
+
 ifeq ($(BR2_PACKAGE_RYGEL_MEDIA_ENGINE_GSTREAMER1),y)
 RYGEL_CONF_OPTS += \
 	--with-media-engine=gstreamer \
