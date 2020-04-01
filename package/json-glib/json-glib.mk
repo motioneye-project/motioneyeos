@@ -17,7 +17,12 @@ JSON_GLIB_DEPENDENCIES = \
 	host-pkgconf \
 	libglib2
 
-JSON_GLIB_CONF_OPTS = -Dintrospection=false
+ifeq ($(BR2_PACKAGE_GOBJECT_INTROSPECTION),y)
+JSON_GLIB_CONF_OPTS += -Dintrospection=true
+JSON_GLIB_DEPENDENCIES += gobject-introspection
+else
+JSON_GLIB_CONF_OPTS += -Dintrospection=false
+endif
 
 JSON_GLIB_LDFLAGS = $(TARGET_LDFLAGS) $(TARGET_NLS_LIBS)
 
