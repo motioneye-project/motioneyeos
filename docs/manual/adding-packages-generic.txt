@@ -142,7 +142,7 @@ All these steps rely on the +$(@D)+ variable, which
 contains the directory where the source code of the package has been
 extracted.
 
-On lines 31..43, we define a user that is used by this package (e.g.
+On lines 31..33, we define a user that is used by this package (e.g.
 to run a daemon as non-root) (+LIBFOO_USERS+).
 
 On line 35..37, we define a device-node file used by this package
