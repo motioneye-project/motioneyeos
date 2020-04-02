@@ -1,0 +1,34 @@
+From 4561bac9dddad8fd79e746ea1ddd89c20647a162 Mon Sep 17 00:00:00 2001
+From: Bartosz Bilas <b.bilas@grinn-global.com>
+Date: Thu, 2 Apr 2020 18:04:28 +0200
+Subject: [PATCH] cegui/src/IconvStringTranscoder.cpp: use cast notation
+ instead of reinterpret_cast
+
+Fixes:
+	IconvStringTranscoder.cpp:50:49: error: invalid cast from type 'int' to
+	type 'iconv_t' {aka 'long int'}
+         if (d_cd == reinterpret_cast<iconv_t>(-1))
+
+Signed-off-by: Bartosz Bilas <b.bilas@grinn-global.com>
+---
+ Upstream status: https://github.com/cegui/cegui/pull/1194
+
+ cegui/src/IconvStringTranscoder.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/cegui/src/IconvStringTranscoder.cpp b/cegui/src/IconvStringTranscoder.cpp
+index 1a5df2995..f6b5aa816 100644
+--- a/cegui/src/IconvStringTranscoder.cpp
++++ b/cegui/src/IconvStringTranscoder.cpp
+@@ -47,7 +47,7 @@ public:
+         d_toCode(tocode),
+         d_cd(iconv_open(d_toCode.c_str(), d_fromCode.c_str()))
+     {
+-        if (d_cd == reinterpret_cast<iconv_t>(-1))
++        if (d_cd == (iconv_t)(-1))
+             CEGUI_THROW(InvalidRequestException(String(
+                 "Failed to create conversion descriptor from \"") +
+                 d_fromCode.c_str() + "\" to \"" + d_toCode.c_str() + "\"."));
+-- 
+2.26.0
+
