@@ -146,6 +146,14 @@ endif
 
 comment "Legacy options removed in 2020.05"
 
+config BR2_PACKAGE_QT5CANVAS3D
+	bool "qt5canvas3d was removed"
+	select BR2_LEGACY
+	help
+	  This Qt5 module was removed by the upstream Qt project since
+	  Qt 5.13, so the corresponding Buildroot package was removed
+	  as well.
+
 config BR2_PACKAGE_KODI_LIBTHEORA
 	bool "libtheora support in Kodi was removed"
 	select BR2_LEGACY
