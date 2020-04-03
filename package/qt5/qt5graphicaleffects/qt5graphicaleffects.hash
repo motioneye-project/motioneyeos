@@ -1,5 +1,5 @@
-# Hash from: https://download.qt.io/official_releases/qt/5.13/5.13.2/submodules/qtgraphicaleffects-everywhere-src-5.13.2.tar.xz.sha256
-sha256 297a89bb6c771f849c4ce866e5c98dadf665163b3dab03bc48a58f51424e7e66 qtgraphicaleffects-everywhere-src-5.13.2.tar.xz
+# Hash from: https://download.qt.io/official_releases/qt/5.14/5.14.2/submodules/qtgraphicaleffects-everywhere-src-5.14.2.tar.xz.sha256
+sha256  487a7f858244a08264363733055a8cf8b00e77c658c5608cc462817d15e4b50f  qtgraphicaleffects-everywhere-src-5.14.2.tar.xz
 
 # Hashes for license files:
 sha256 8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643 LICENSE.GPL2

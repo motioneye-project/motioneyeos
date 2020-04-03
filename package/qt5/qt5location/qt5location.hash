@@ -1,5 +1,5 @@
-# Hash from: https://download.qt.io/official_releases/qt/5.13/5.13.2/submodules/qtlocation-everywhere-src-5.13.2.tar.xz.sha256
-sha256 5fe4b824d3dc6c800682ff986333ec09edb9c27582066e928b1862b4d58212e3 qtlocation-everywhere-src-5.13.2.tar.xz
+# Hash from: https://download.qt.io/official_releases/qt/5.14/5.14.2/submodules/qtlocation-everywhere-src-5.14.2.tar.xz.sha256
+sha256  c37708bc396f6dac397b49a6a268d5edb39e1c8296ca2337ce9e80bde04775cc  qtlocation-everywhere-src-5.14.2.tar.xz
 
 # Hashes for license files:
 sha256 8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643 LICENSE.GPL2

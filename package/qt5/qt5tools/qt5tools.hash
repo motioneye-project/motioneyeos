@@ -1,5 +1,5 @@
-# Hash from: https://download.qt.io/official_releases/qt/5.13/5.13.2/submodules/qttools-everywhere-src-5.13.2.tar.xz.sha256
-sha256 919a2713b6d2d7873a09ad85bd93cf4282606e5bf84d5884250f665a253ec06e qttools-everywhere-src-5.13.2.tar.xz
+# Hash from: https://download.qt.io/official_releases/qt/5.14/5.14.2/submodules/qttools-everywhere-src-5.14.2.tar.xz.sha256
+sha256  5bb0cf7832b88eb6bc9d4289f98307eb14b16a453ad6cf42cca13c4fe1a053c5  qttools-everywhere-src-5.14.2.tar.xz
 
 # Hashes for license files:
 sha256 8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643 LICENSE.GPL2
