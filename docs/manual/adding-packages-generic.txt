@@ -577,6 +577,14 @@ different steps of the build process.
   This is seldom used, as packages rarely have custom rules. *Do not use
   this variable*, unless you really know that you need to print help.
 
+* +LIBFOO_LINUX_CONFIG_FIXUPS+ lists the Linux kernel configuration
+  options that are needed to build and use this package, and without
+  which the package is fundamentally broken. This shall be a set of
+  calls to one of the kconfig tweaking option: `KCONFIG_ENABLE_OPT`,
+  `KCONFIG_DISABLE_OPT`, or `KCONFIG_SET_OPT`.
+  This is seldom used, as package usually have no strict requirements on
+  the kernel options.
+
 The preferred way to define these variables is:
 
 ----------------------
