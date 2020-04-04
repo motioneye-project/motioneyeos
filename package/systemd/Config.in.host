@@ -1,3 +1,4 @@
 # Select this if you need host systemd tools (e.g. systemctl)
 config BR2_PACKAGE_HOST_SYSTEMD
 	bool
+	depends on BR2_HOST_GCC_AT_LEAST_5
