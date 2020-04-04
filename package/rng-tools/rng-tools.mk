@@ -12,9 +12,7 @@ RNG_TOOLS_DEPENDENCIES = libsysfs jitterentropy-library host-pkgconf openssl
 # From git
 RNG_TOOLS_AUTORECONF = YES
 
-RNG_TOOLS_CONF_OPTS = \
-	--without-nistbeacon \
-	--without-pkcs11
+RNG_TOOLS_CONF_OPTS = --without-pkcs11
 
 # Work around for uClibc or musl toolchains which lack argp_*()
 # functions.
@@ -28,6 +26,13 @@ RNG_TOOLS_DEPENDENCIES += librtlsdr
 RNG_TOOLS_CONF_OPTS += --with-rtlsdr
 else
 RNG_TOOLS_CONF_OPTS += --without-rtlsdr
+endif
+
+ifeq ($(BR2_PACKAGE_RNG_TOOLS_NISTBEACON),y)
+RNG_TOOLS_DEPENDENCIES += jansson libcurl libxml2
+RNG_TOOLS_CONF_OPTS += --with-nistbeacon
+else
+RNG_TOOLS_CONF_OPTS += --without-nistbeacon
 endif
 
 define RNG_TOOLS_INSTALL_INIT_SYSV
