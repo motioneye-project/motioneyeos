@@ -257,6 +257,8 @@ EFL_CONF_OPTS += --disable-image-loader-webp
 endif
 
 ifeq ($(BR2_PACKAGE_POPPLER),y)
+# poppler needs c++11
+EFL_CONF_ENV += CXXFLAGS="$(TARGET_CXXFLAGS) -std=c++11"
 EFL_DEPENDENCIES += poppler
 EFL_CONF_OPTS += --enable-poppler
 else
