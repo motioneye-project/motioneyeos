@@ -16,5 +16,9 @@ KERNEL_MODULE_IMX_GPU_VIV_MODULE_MAKE_OPTS = \
 
 KERNEL_MODULE_IMX_GPU_VIV_MODULE_SUBDIRS = kernel-module-imx-gpu-viv-src
 
+define KERNEL_MODULE_IMX_GPU_VIV_MODULE_LINUX_CONFIG_FIXUPS
+	$(call KCONFIG_DISABLE_OPT,CONFIG_MXC_GPU_VIV)
+endef
+
 $(eval $(kernel-module))
 $(eval $(generic-package))
