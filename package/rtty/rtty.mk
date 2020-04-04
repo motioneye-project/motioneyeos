@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RTTY_VERSION = 7.1.2
+RTTY_VERSION = 7.1.3
 RTTY_SITE = https://github.com/zhaojh329/rtty/releases/download/v$(RTTY_VERSION)
 RTTY_LICENSE = MIT
 RTTY_LICENSE_FILES = LICENSE
