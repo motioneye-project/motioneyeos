@@ -67,6 +67,13 @@ config BR2_PACKAGE_FFMPEG_FFPROBE
 	  FFprobe is a utility to determine the audio and video
 	  characteristics of a container file.
 
+config BR2_PACKAGE_FFMPEG_XCBGRAB
+	bool "Build X11 screen grabbing"
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_LIBXCB
+	help
+	  X11 screen grabbing using libxcb.
+
 config BR2_PACKAGE_FFMPEG_AVRESAMPLE
 	bool "Build libavresample"
 	help
