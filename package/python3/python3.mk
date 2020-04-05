@@ -146,6 +146,10 @@ ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
 PYTHON3_CONF_ENV += ac_cv_func_wcsftime=no
 endif
 
+ifeq ($(BR2_PACKAGE_GETTEXT_PROVIDES_LIBINTL),y)
+PYTHON3_DEPENDENCIES += gettext
+endif
+
 PYTHON3_CONF_OPTS += \
 	--without-ensurepip \
 	--without-cxx-main \
