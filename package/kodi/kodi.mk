@@ -315,10 +315,6 @@ ifeq ($(BR2_PACKAGE_LIRC_TOOLS),y)
 KODI_DEPENDENCIES += lirc-tools
 endif
 
-ifeq ($(BR2_PACKAGE_KODI_LIBTHEORA),y)
-KODI_DEPENDENCIES += libtheora
-endif
-
 # kodi needs libva & libva-glx
 ifeq ($(BR2_PACKAGE_KODI_LIBVA)$(BR2_PACKAGE_MESA3D_DRI_DRIVER),yy)
 KODI_DEPENDENCIES += mesa3d libva

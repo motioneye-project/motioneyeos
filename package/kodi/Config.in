@@ -251,13 +251,6 @@ config BR2_PACKAGE_KODI_LIBSMBCLIENT
 	help
 	  Enable Samba support
 
-config BR2_PACKAGE_KODI_LIBTHEORA
-	bool "theora"
-	select BR2_PACKAGE_LIBTHEORA
-	help
-	  Enable Theora input support.
-	  Select this if you want to play back OGG/OGV files (Video).
-
 config BR2_PACKAGE_KODI_LIBUSB
 	bool "usb"
 	# https://github.com/xbmc/xbmc/blob/Jarvis/configure.ac#L1554

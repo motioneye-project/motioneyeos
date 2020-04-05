@@ -146,6 +146,12 @@ endif
 
 comment "Legacy options removed in 2020.05"
 
+config BR2_PACKAGE_KODI_LIBTHEORA
+	bool "libtheora support in Kodi was removed"
+	select BR2_LEGACY
+	help
+	  Kodi does not need libtheora
+
 config BR2_PACKAGE_CEGUI06
 	bool "BR2_PACKAGE_CEGUI06 was renamed"
 	select BR2_PACKAGE_CEGUI
