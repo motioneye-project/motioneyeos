@@ -1,13 +1,14 @@
 import infra.basetest
 
+
 class TestSysLinuxBase(infra.basetest.BRTest):
     x86_toolchain_config = \
         """
-	BR2_x86_i686=y
-	BR2_TOOLCHAIN_EXTERNAL=y
-	BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD=y
-	BR2_TOOLCHAIN_EXTERNAL_URL="http://toolchains.bootlin.com/downloads/releases/toolchains/x86-i686/tarballs/x86-i686--glibc--bleeding-edge-2018.11-1.tar.bz2"
-	BR2_TOOLCHAIN_EXTERNAL_GCC_8=y
+        BR2_x86_i686=y
+        BR2_TOOLCHAIN_EXTERNAL=y
+        BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD=y
+        BR2_TOOLCHAIN_EXTERNAL_URL="http://toolchains.bootlin.com/downloads/releases/toolchains/x86-i686/tarballs/x86-i686--glibc--bleeding-edge-2018.11-1.tar.bz2"
+        BR2_TOOLCHAIN_EXTERNAL_GCC_8=y
         BR2_TOOLCHAIN_EXTERNAL_HEADERS_4_14=y
         BR2_TOOLCHAIN_EXTERNAL_CUSTOM_GLIBC=y
         BR2_TOOLCHAIN_EXTERNAL_CXX=y
@@ -46,6 +47,7 @@ class TestSysLinuxBase(infra.basetest.BRTest):
         BR2_TARGET_SYSLINUX_EFI=y
         """
 
+
 class TestSysLinuxX86LegacyBios(TestSysLinuxBase):
     config = \
         TestSysLinuxBase.x86_toolchain_config + \
@@ -54,6 +56,7 @@ class TestSysLinuxX86LegacyBios(TestSysLinuxBase):
 
     def test_run(self):
         pass
+
 
 class TestSysLinuxX86EFI(TestSysLinuxBase):
     config = \
@@ -64,6 +67,7 @@ class TestSysLinuxX86EFI(TestSysLinuxBase):
     def test_run(self):
         pass
 
+
 class TestSysLinuxX86_64LegacyBios(TestSysLinuxBase):
     config = \
         TestSysLinuxBase.x86_64_toolchain_config + \
@@ -72,6 +76,7 @@ class TestSysLinuxX86_64LegacyBios(TestSysLinuxBase):
 
     def test_run(self):
         pass
+
 
 class TestSysLinuxX86_64EFI(TestSysLinuxBase):
     config = \
