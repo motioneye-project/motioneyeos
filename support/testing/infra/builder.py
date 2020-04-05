@@ -12,6 +12,23 @@ class Builder(object):
         self.builddir = builddir
         self.logfile = infra.open_log_file(builddir, "build", logtofile)
 
+    def is_defconfig_valid(self, configfile, defconfig):
+        """Check if the .config is contains all lines present in the defconfig."""
+        with open(configfile) as configf:
+            configlines = configf.readlines()
+
+        defconfiglines = defconfig.split("\n")
+
+        # Check that all the defconfig lines are still present
+        for defconfigline in defconfiglines:
+            if defconfigline + "\n" not in configlines:
+                self.logfile.write("WARN: defconfig can't be used\n")
+                self.logfile.write("      Missing: %s\n" % defconfigline.strip())
+                self.logfile.flush()
+                return False
+
+        return True
+
     def configure(self, make_extra_opts=[], make_extra_env={}):
         """Configure the build.
 
@@ -46,6 +63,9 @@ class Builder(object):
                               cwd=infra.basepath(), env=env)
         if ret != 0:
             raise SystemError("Cannot olddefconfig")
+
+        if not self.is_defconfig_valid(config_file, self.config):
+            raise SystemError("The defconfig is not valid")
 
     def build(self, make_extra_opts=[], make_extra_env={}):
         """Perform the build.
