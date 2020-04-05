@@ -396,6 +396,7 @@ F:	package/libsndfile/
 F:	package/libsoil/
 F:	package/libsoundtouch/
 F:	package/libsquish/
+F:	package/libudfread/
 F:	package/liburiparser/
 F:	package/libva/
 F:	package/libva-intel-driver/
