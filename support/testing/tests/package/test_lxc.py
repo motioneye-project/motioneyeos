@@ -7,6 +7,8 @@ class TestLxc(infra.basetest.BRTest):
     config = \
             """
             BR2_arm=y
+            BR2_cortex_a9=y
+            BR2_ARM_ENABLE_VFP=y
             BR2_TOOLCHAIN_EXTERNAL=y
             BR2_LINUX_KERNEL=y
             BR2_LINUX_KERNEL_CUSTOM_VERSION=y
