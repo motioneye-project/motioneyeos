@@ -56,8 +56,8 @@ LIBNSS_BUILD_VARS += NSS_DISABLE_ALTIVEC=1
 endif
 
 ifeq ($(BR2_ARM_CPU_HAS_NEON),)
-# Disable gcm-arm32-neon if neon is not supported
-LIBNSS_BUILD_VARS += NSS_DISABLE_GCM_ARM32_NEON=1
+# Disable arm32-neon if neon is not supported
+LIBNSS_BUILD_VARS += NSS_DISABLE_ARM32_NEON=1
 endif
 
 ifeq ($(BR2_ARCH_IS_64),y)
