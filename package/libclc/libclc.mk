@@ -25,7 +25,7 @@ LIBCLC_CONF_OPTS = \
 	--prefix=/usr \
 	--includedir=/usr/share \
 	--pkgconfigdir=/usr/lib/pkgconfig \
-	--with-cxx-compiler=$(HOSTCXX)
+	--with-cxx-compiler=$(HOSTCXX_NOCCACHE)
 
 define LIBCLC_CONFIGURE_CMDS
 	(cd $(@D); $(TARGET_CONFIGURE_OPTS) ./configure.py $(LIBCLC_CONF_OPTS))
