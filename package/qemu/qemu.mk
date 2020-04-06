@@ -305,6 +305,7 @@ define HOST_QEMU_CONFIGURE_CMDS
 		--python=$(HOST_DIR)/bin/python3 \
 		--disable-bzip2 \
 		--disable-libssh \
+		--disable-sdl \
 		--disable-vnc-jpeg \
 		--disable-vnc-png \
 		--disable-vnc-sasl \
