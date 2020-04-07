@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ASSIMP_VERSION = 4.1.0
+ASSIMP_VERSION = 5.0.1
 ASSIMP_SITE = $(call github,assimp,assimp,v$(ASSIMP_VERSION))
 ASSIMP_LICENSE = BSD-3-Clause
 ASSIMP_LICENSE_FILES = LICENSE
