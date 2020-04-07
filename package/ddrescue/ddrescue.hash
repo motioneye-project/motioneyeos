@@ -1,4 +1,4 @@
-# From https://lists.gnu.org/archive/html/info-gnu/2019-02/msg00012.html
-sha256 4b5d3feede70e3657ca6b3c7844f23131851cbb6af0cecc9721500f7d7021087 ddrescue-1.24.tar.lz
+# From https://lists.gnu.org/archive/html/info-gnu/2020-03/msg00002.html
+sha256  ce538ebd26a09f45da67d3ad3f7431932428231ceec7a2d255f716fa231a1063  ddrescue-1.25.tar.lz
 # Locally computed
-sha256 3d77c1a58fbde5ddba612d1fe09965e20a3804953eca12e8c1892298bb8a5eef  COPYING
+sha256  3d77c1a58fbde5ddba612d1fe09965e20a3804953eca12e8c1892298bb8a5eef  COPYING
