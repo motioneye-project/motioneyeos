@@ -112,6 +112,13 @@ else
 LIBARCHIVE_CONF_OPTS += --without-lzma
 endif
 
+ifeq ($(BR2_PACKAGE_ZSTD),y)
+LIBARCHIVE_DEPENDENCIES += zstd
+LIBARCHIVE_CONF_OPTS += --with-zstd
+else
+LIBARCHIVE_CONF_OPTS += --without-zstd
+endif
+
 # The only user of host-libarchive needs zlib support
 HOST_LIBARCHIVE_DEPENDENCIES = host-zlib
 HOST_LIBARCHIVE_CONF_OPTS = \
