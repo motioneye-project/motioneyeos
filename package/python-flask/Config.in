@@ -13,4 +13,4 @@ config BR2_PACKAGE_PYTHON_FLASK
 	  Flask is a microframework for Python based on Werkzeug,
 	  Jinja 2 and good intentions.
 
-	  http://flask.pocoo.org/
+	  https://palletsprojects.com/p/flask
