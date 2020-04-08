@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NETDATA_VERSION = 1.20.0
+NETDATA_VERSION = 1.21.0
 NETDATA_SITE = $(call github,netdata,netdata,v$(NETDATA_VERSION))
 NETDATA_LICENSE = GPL-3.0+
 NETDATA_LICENSE_FILES = LICENSE
