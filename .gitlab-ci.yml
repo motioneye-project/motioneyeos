@@ -496,7 +496,6 @@ tests.package.test_python_treq.TestPythonPy2Treq: { extends: .runtime_test }
 tests.package.test_python_treq.TestPythonPy3Treq: { extends: .runtime_test }
 tests.package.test_python_twisted.TestPythonPy2Twisted: { extends: .runtime_test }
 tests.package.test_python_twisted.TestPythonPy3Twisted: { extends: .runtime_test }
-tests.package.test_python_txaio.TestPythonPy2Txaio: { extends: .runtime_test }
 tests.package.test_python_txaio.TestPythonPy3Txaio: { extends: .runtime_test }
 tests.package.test_python_txtorcon.TestPythonPy2Txtorcon: { extends: .runtime_test }
 tests.package.test_python_txtorcon.TestPythonPy3Txtorcon: { extends: .runtime_test }
