@@ -456,7 +456,6 @@ tests.package.test_python_argh.TestPythonPy2Argh: { extends: .runtime_test }
 tests.package.test_python_argh.TestPythonPy3Argh: { extends: .runtime_test }
 tests.package.test_python_attrs.TestPythonPy2Attrs: { extends: .runtime_test }
 tests.package.test_python_attrs.TestPythonPy3Attrs: { extends: .runtime_test }
-tests.package.test_python_autobahn.TestPythonPy2Autobahn: { extends: .runtime_test }
 tests.package.test_python_autobahn.TestPythonPy3Autobahn: { extends: .runtime_test }
 tests.package.test_python_automat.TestPythonPy2Automat: { extends: .runtime_test }
 tests.package.test_python_automat.TestPythonPy3Automat: { extends: .runtime_test }
