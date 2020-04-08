@@ -567,4 +567,11 @@ ifeq ($(BR2_PACKAGE_ZLIB),y)
 VLC_DEPENDENCIES += zlib
 endif
 
+ifeq ($(BR2_PACKAGE_GNUTLS),y)
+VLC_CONF_OPTS += --enable-gnutls
+VLC_DEPENDENCIES += gnutls
+else
+VLC_CONF_OPTS += --disable-gnutls
+endif
+
 $(eval $(autotools-package))
