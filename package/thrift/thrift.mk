@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-THRIFT_VERSION = 0.12.0
+THRIFT_VERSION = 0.13.0
 THRIFT_SITE = http://www.us.apache.org/dist/thrift/$(THRIFT_VERSION)
 THRIFT_LICENSE = Apache-2.0
 THRIFT_LICENSE_FILES = LICENSE
