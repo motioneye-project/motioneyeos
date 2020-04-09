@@ -901,6 +901,27 @@
 	#11761: Building custom kernel 5.1-rc3 or later breaks on objtool
 	#11816: Only selected coreutils binaries are installed
 
+2019.02.11, released April 9th, 2020
+
+	Important / security related fixes.
+
+	core: Fix compatibility with make 4.3+. Also fixup /lib
+	references in libtool .la files, similar to how it is done for
+	/usr/*.
+
+	toolchain: Fix kernel headers validation check for external
+	toolchains.
+
+	Updated/fixed packages: barebox-aux, bluez5_utils, busybox,
+	civetweb, collectd, ffmpeg, gcc, gnutls, gvfs, haproxy,
+	hiredis, kmscube, libical, libopenssl, libsndfile,
+	linux-tools, ntp, php, pure-ftpd, screen, sysdig, tor,
+	util-linux, vala, vlc, xserver_xorg-server
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#12746: "sysdig" package description points to http://sysdig.org, ..
+
 2019.02.10, released March 16th, 2020
 
 	Important / security related fixes.
