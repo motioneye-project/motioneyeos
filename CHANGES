@@ -1,3 +1,38 @@
+2020.02.1, released April 10th, 2020
+
+	Important / security related fixes.
+
+	core: Also fixup /lib references in libtool .la files, similar
+	to how it is done for /usr/*.
+
+	Various fixes for builds with per-package target/host
+	directories.
+
+	toolchain: Fix kernel headers validation check for external
+	toolchains. Fix make 4.3+ compatibility in external toolchain
+	logic.
+
+	fs/initramfs: fix show-info so it also shows the usual
+	rootfs-related variables.
+
+	Updated/fixed packages: arm-trusted-firmware, barebox-aux,
+	bluez5_utils, bubblewrap, busybox, civetweb, cog, collectd,
+	ffmpeg, gcc, gnutls, gssdp, gvfs, haproxy, hiredis, hostapd,
+	kmscube, kodi-screensaver-rsxs, libical, libinput, libexif,
+	libopenssl, libsndfile, linux, linux-tools, llvm, localedef,
+	mcrypt, mesa3d, meson, monit, nftables, ntp, opencv3,
+	oprofile, php, pinentry, polkit, pure-ftpd, python-pyyaml,
+	qt5, quagga, radvd, rcw, redis, rocksdb, samba4, screen,
+	sdbusplus, swupdate, sysdig, sysklogd, syslinux, syslog-ng,
+	tor, tslib, uacme, util-linux, vala, vlc,
+	wireguard-linux-compat, wireguard-tools, wireshark,
+	wpa_supplicant, xserver_xorg-server
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#12711: host-localedef 2.30-20 fails to compile on fedora 32
+	#12746: "sysdig" package description points to http://sysdig.org, ..
+
 2020.02, released March 8th, 2020
 
 	Various fixes.
