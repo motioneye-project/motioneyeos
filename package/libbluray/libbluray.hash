@@ -1,4 +1,4 @@
-# From http://get.videolan.org/libbluray/1.1.2/libbluray-1.1.2.tar.bz2.sha512
-sha512 5a82af6c1840a1dcb31d06d90203c68e2c4f0bbadc9212eb0bb2776d42b0ab3793a769ebe07b3051be151e8b15876874d5a0658292f72b7126dd915a1ada3fe7  libbluray-1.1.2.tar.bz2
+# From http://download.videolan.org/pub/videolan/libbluray/1.2.0/libbluray-1.2.0.tar.bz2.sha512
+sha512 d10413b6b86ff2d2e7c4b0103546f2142727cc5209ddb7b227aa74e27384f2e0b9abee37bf8ccc5b0cdfcaeebfb0669cf20903a247df278a8ad6dbd27469d324  libbluray-1.2.0.tar.bz2
 # Locally computed
 sha256 b3aa400aca6d2ba1f0bd03bd98d03d1fe7489a3bbb26969d72016360af8a5c9d  COPYING
