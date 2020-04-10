@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-SUBVERSION_VERSION = 1.12.2
+SUBVERSION_VERSION = 1.13.0
 SUBVERSION_SOURCE = subversion-$(SUBVERSION_VERSION).tar.bz2
-SUBVERSION_SITE = http://mirror.catn.com/pub/apache/subversion
+SUBVERSION_SITE = https://downloads.apache.org/subversion
 SUBVERSION_LICENSE = Apache-2.0
 SUBVERSION_LICENSE_FILES = LICENSE
 SUBVERSION_DEPENDENCIES = \
