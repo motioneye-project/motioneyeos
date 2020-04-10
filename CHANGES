@@ -154,6 +154,31 @@
 	#12536: Linux-Headers extracting failure
 	#12546: Ninja 1.10 build Error
 
+2019.11.3, released April 10th, 2020
+
+	Important / security related fixes.
+
+	core: Fix compatibility with make 4.3+. Also fixup /lib
+	references in libtool .la files, similar to how it is done for
+	/usr/*.
+
+	toolchain: Fix kernel headers validation check for external
+	toolchains.
+
+	fs/initramfs: fix show-info so it also shows the usual
+	rootfs-related variables.
+
+	Updated/fixed packages: barebox-aux, bluez5_utils, busybox,
+	civetweb, cog, collectd, ffmpeg, gcc, gnutls, gssdp, gvfs, haproxy,
+	hiredis, hostapd, kmscube, libical, libopenssl, libsndfile,
+	linux-tools, llvm, monit, ntp, php, pure-ftpd, radvd, redis,
+	samba4, screen, sysdig, syslinux, syslog-ng, tor, uacme,
+	util-linux, vala, vlc, wpa_supplicant, xserver_xorg-server
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#12746: "sysdig" package description points to http://sysdig.org, ..
+
 2019.11.2, released March 16th, 2020
 
 	Important / security related fixes.
