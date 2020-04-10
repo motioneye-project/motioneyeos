@@ -1,0 +1,44 @@
+From 39292268308a3fd6233c2863df22232725d22b3a Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Fri, 10 Apr 2020 08:49:22 +0200
+Subject: [PATCH] src/libuwac/uwac-os.c: fix build with uclibc
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+O_TMPFILE is used since version 2.0.0 and
+https://github.com/FreeRDP/FreeRDP/commit/52ef8079eae74dfe89e6779c873101843b8cc42b
+
+However, this will result in the following build failure on uclibc or
+uclibc-ng:
+
+/home/fabrice/buildroot/output/build/freerdp-2.0.0/uwac/libuwac/uwac-os.c:228:18: error: ‘O_TMPFILE’ undeclared (first use in this function); did you mean ‘EMFILE’?
+  fd = open(path, O_TMPFILE | O_RDWR | O_EXCL, 0600);
+                  ^~~~~~~~~
+                  EMFILE
+
+To fix this build failure, define O_TMPFILE if needed
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/FreeRDP/FreeRDP/commit/39292268308a3fd6233c2863df22232725d22b3a]
+---
+ uwac/libuwac/uwac-os.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/uwac/libuwac/uwac-os.c b/uwac/libuwac/uwac-os.c
+index 799cdce9a5..4f8c8f5161 100644
+--- a/uwac/libuwac/uwac-os.c
++++ b/uwac/libuwac/uwac-os.c
+@@ -33,6 +33,11 @@
+ #define USE_SHM
+ #endif
+ 
++/* uClibc and uClibc-ng don't provide O_TMPFILE */
++#ifndef O_TMPFILE
++#define O_TMPFILE (020000000 | O_DIRECTORY)
++#endif
++
+ #include <sys/types.h>
+ #include <sys/socket.h>
+ #ifdef USE_SHM
