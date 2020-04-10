@@ -1,6 +1,6 @@
 # From https://github.com/Stellarium/stellarium/releases
-md5 2de84da8a2256f3239174e3ad8f83a5b  stellarium-0.19.3.tar.gz
-sha1 a82cfa21c8dcfbd0a0cf4e30c4ea017ceb2f87a5  stellarium-0.19.3.tar.gz
+md5 9c7059f6d3f0ea0f97147456f6d00069  stellarium-0.20.0.tar.gz
+sha1 2a86e4401d99efc7c46e182778522c4fb6cf7193  stellarium-0.20.0.tar.gz
+sha256 07ed1785d28f761511dc22f9b09ce70e96b5113fc7769fcdf4478f7a5a035370  stellarium-0.20.0.tar.gz
 # Locally computed
-sha256 176e15d8d18340cf8c8cfed14f364cbda345d94e77cc97589c163c45d9cb225d  stellarium-0.19.3.tar.gz
 sha256 3aeeb5bb98bf7041ab82cffe15efa28ac58ee2bdf162b71301f5c192be631259  COPYING
