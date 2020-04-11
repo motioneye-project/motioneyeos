@@ -12,6 +12,8 @@ P7ZIP_LICENSE_FILES = DOC/License.txt
 
 # 0001-CVE-2016-9296.patch
 P7ZIP_IGNORE_CVES += CVE-2016-9296
+# 0002-CVE-2017-17969.patch
+P7ZIP_IGNORE_CVES += CVE-2017-17969
 
 # p7zip buildsystem is a mess: it plays dirty tricks with CFLAGS and
 # CXXFLAGS, so we can't pass them. Instead, it accepts ALLFLAGS_C
