@@ -10,7 +10,7 @@ config BR2_PACKAGE_OPEN_LLDP
 	  configuration tool for Intel LLDP Agent with Enhanced Ethernet
 	  support for the Data Center.
 
-	  http://open-lldp.org/
+	  https://github.com/intel/openlldp/
 
 comment "open-lldp needs a toolchain w/ dynamic library, threads"
 	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS
