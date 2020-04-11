@@ -211,7 +211,7 @@ function show_versions() {
     show_json=$1
 
     # the /usr/libexec/list-versions-* helpers return a table with the following format:
-    #     <version>|<prerelease>|<board>|<url>|<date>
+    #     <version>|<prerelease>|<board>|<url>|<date|latest>
     versions=$(FW_USERNAME=${OS_FIRMWARE_USERNAME} FW_PASSWORD=${OS_FIRMWARE_PASSWORD} \
                /usr/libexec/list-versions-${OS_FIRMWARE_METHOD} ${OS_FIRMWARE_REPO})
 
@@ -230,9 +230,9 @@ function show_versions() {
         if [[ "${show_json}" == "true" ]]; then
             echo "{\"version\": \"${varr[0]}\"," \
                   "\"url\": \"${varr[3]}\"," \
-                  "\"board\": \"${varr[2]}\"," \
-                  "\"prerelease\": ${varr[1]}," \
-                  "\"date\": \"${varr[4]}\"}"
+                  "\"prerelease\": ${varr[1]:-false}," \
+                  "\"date\": \"${varr[4]}\"," \
+                  "\"latest\": ${varr[5]:-false}}"
         else
             echo ${varr[0]}
         fi

@@ -22,13 +22,33 @@ dates=$(echo "${xml_result}" | grep -oE '<LastModified>[^<]+<\/LastModified>' | 
 dates=(${dates})
 files=(${keys})
 
+function add_latest_flag() {
+    declare -A latest_stable_by_board
+    declare -A latest_prerelease_by_board
+    while read line; do
+        _IFS=${IFS} IFS="|" line_arr=(${line}) IFS=${_IFS}
+        latest="false"
+        prerelease=${line_arr[1]}
+        board=${line_arr[2]}
+        if [[ "${prerelease}" == "true" && -z "${latest_prerelease_by_board[${board}]}" ]]; then
+            latest="true"
+            latest_prerelease_by_board[${board}]="true"
+        elif [[ "${prerelease}" == "false" && -z "${latest_stable_by_board[${board}]}" ]]; then
+            latest="true"
+            latest_stable_by_board[${board}]="true"
+        fi
+        
+        echo "${line}|${latest}"
+    done
+}
+
 i=0
 for file in ${files[*]}; do
     [[ "${file}" =~ ^${path}/(.+)/(.+)$ ]] || continue
     version="${BASH_REMATCH[1]}"
     fname="${BASH_REMATCH[2]}"
-
     prerelease=false
+
     if [[ "${version}" =~ ^.*[abc]\.?[0-9]+$ ]] || # e.g. 0.4.1b2, 0.4.1b.2, 0.4.1-b.2
        [[ "${version}" =~ ^.*(alpha|beta|rc)\.?[0-9]+$ ]] || # e.g. 0.4.1beta2, 0.4.1beta.2, 0.4.1-beta.2
        [[ "${version}" =~ ^(dev|nightly).*$ ]]; then # e.g. dev20180314, nightly20180314
@@ -42,4 +62,4 @@ for file in ${files[*]}; do
 
     echo "${version}|${prerelease}|${board}|${final_url}|${date}"
     i=$((i + 1))
-done | semver-sort -r -t '|' -k 1
+done | semver-sort -r -t '|' -k 1 | add_latest_flag
