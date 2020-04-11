@@ -14,6 +14,7 @@ if BR2_PACKAGE_GR_OSMOSDR
 config BR2_PACKAGE_GR_OSMOSDR_PYTHON
 	bool "python support"
 	depends on BR2_PACKAGE_GNURADIO_PYTHON
+	depends on BR2_PACKAGE_PYTHON3
 	help
 	  Enable Python support
 
