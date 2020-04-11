@@ -100,6 +100,11 @@ define _json-info-pkg
 		"virtual": false$(comma)
 		$(call _json-info-pkg-details,$(1)) \
 	)
+	$(if $(filter target,$($(1)_TYPE)), \
+		"install_target": $(call yesno-to-bool,$($(1)_INSTALL_TARGET))$(comma) \
+		"install_staging": $(call yesno-to-bool,$($(1)_INSTALL_STAGING))$(comma) \
+		"install_images": $(call yesno-to-bool,$($(1)_INSTALL_IMAGES))$(comma) \
+	)
 	"dependencies": [
 		$(call make-comma-list,$(sort $($(1)_FINAL_ALL_DEPENDENCIES)))
 	],
@@ -112,11 +117,6 @@ define _json-info-pkg-details
 	"version": "$($(1)_DL_VERSION)",
 	"licenses": "$($(1)_LICENSE)",
 	"dl_dir": "$($(1)_DL_SUBDIR)",
-	$(if $(filter target,$($(1)_TYPE)), \
-		"install_target": $(call yesno-to-bool,$($(1)_INSTALL_TARGET))$(comma) \
-		"install_staging": $(call yesno-to-bool,$($(1)_INSTALL_STAGING))$(comma) \
-		"install_images": $(call yesno-to-bool,$($(1)_INSTALL_IMAGES))$(comma) \
-	)
 	"downloads": [
 	$(foreach dl,$(sort $($(1)_ALL_DOWNLOADS)),
 		{
