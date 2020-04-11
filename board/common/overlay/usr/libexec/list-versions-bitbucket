@@ -14,24 +14,9 @@ function check_prerelease() {
     fi
 }
 
-function add_latest_flag() {
-    declare -A latest_stable_by_board
-    declare -A latest_prerelease_by_board
-    while read line; do
-        _IFS=${IFS} IFS="|" line_arr=(${line}) IFS=${_IFS}
-        latest="false"
-        prerelease=${line_arr[1]}
-        board=${line_arr[2]}
-        if [[ "${prerelease}" == "true" && -z "${latest_prerelease_by_board[${board}]}" ]]; then
-            latest="true"
-            latest_prerelease_by_board[${board}]="true"
-        elif [[ "${prerelease}" == "false" && -z "${latest_stable_by_board[${board}]}" ]]; then
-            latest="true"
-            latest_stable_by_board[${board}]="true"
-        fi
-        
-        echo "${line}|${latest}"
-    done
+function add_published_flag() {
+    read line
+    echo "${line}|true"
 }
 
 extensions=".img.gz .img.xz .img"
@@ -43,5 +28,5 @@ rtrimstr=$(for e in ${extensions}; do echo -n " | rtrimstr(\"${e}\")"; done)
 jq_expr=".values[] | [{a: .name | split(\"-\"), url: .links.self.href, date: .created_on | split(\"T\")[0]}] |
          map((.a[2] ${rtrimstr}), \"false\", .a[1], .url, .date) | join(\"|\")"
 
-curl ${opts} ${url} | jq --raw-output "${jq_expr}" | while read line; do echo "${line}" | check_prerelease | add_latest_flag; done
+curl ${opts} ${url} | jq --raw-output "${jq_expr}" | while read line; do echo "${line}" | check_prerelease | add_published_flag; done
 exit ${PIPESTATUS[0]}

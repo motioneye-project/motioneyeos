@@ -8,21 +8,16 @@ fi
 opts="-s -S -f"
 test -n "${FW_USERNAME}" && opts+=" --user ${FW_USERNAME}:${FW_PASSWORD}"
 releases_url=https://api.github.com/repos/$1/releases
-latest_url=https://api.github.com/repos/$1/releases/latest
 
 # Get release info via GitHub API
-latest_version=$(curl ${opts} ${latest_url} | jq --raw-output ".name")
 releases=$(curl ${opts} ${releases_url})
 test $? == 0 || exit 1
-
-# Latest pre-release is the first one
-latest_prerelease=$(jq --raw-output | '[.[] | select(.prerelease)] | first | .name' <<< ${releases})
 
 # Format release lines
 jq_expr='.[] | {version: .name, prerelease: .prerelease | tostring} + 
          (.assets[] | {name: .name | split("-")[1], url: .browser_download_url}) + 
          ({date: .created_at | split("T")[0]}) +
-         ({latest: (.name=="'${latest_version}'")})
+         ({published: true})
          | flatten | join("|")'
 
 jq --raw-output "${jq_expr}" <<< ${releases}
