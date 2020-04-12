@@ -11,6 +11,13 @@ MC_LICENSE = GPL-3.0+
 MC_LICENSE_FILES = COPYING
 MC_DEPENDENCIES = libglib2 host-pkgconf
 
+ifeq ($(BR2_PACKAGE_GMP),y)
+MC_CONF_OPTS += --with-gpm-mouse
+MC_DEPENDENCIES += gpm
+else
+MC_CONF_OPTS += --without-gpm-mouse
+endif
+
 ifeq ($(BR2_PACKAGE_LIBSSH2),y)
 MC_CONF_OPTS += --enable-vfs-sftp
 MC_DEPENDENCIES += libssh2
