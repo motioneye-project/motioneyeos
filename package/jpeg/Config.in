@@ -43,6 +43,8 @@ source "$BR2_BASE_DIR/.br2-external.in.jpeg"
 
 endchoice
 
+source "package/jpeg-turbo/Config.in.options"
+
 config BR2_PACKAGE_HAS_JPEG
 	bool
 
