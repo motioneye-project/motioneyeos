@@ -146,6 +146,14 @@ endif
 
 comment "Legacy options removed in 2020.05"
 
+config BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_10K_QCA6174
+	bool "duplicate QCA6174 firmware symbol removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_LINUX_FIRMWARE_QUALCOMM_6174
+	help
+	  This config symbol duplicates existing symbol for QCA6174
+	  firmware.
+
 config BR2_PACKAGE_QT5CANVAS3D
 	bool "qt5canvas3d was removed"
 	select BR2_LEGACY

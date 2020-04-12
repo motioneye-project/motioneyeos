@@ -196,17 +196,6 @@ LINUX_FIRMWARE_FILES += ath10k/QCA988X/hw2.0/board.bin \
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.atheros_firmware
 endif
 
-# ath10k-qca6174
-ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_10K_QCA6174),y)
-LINUX_FIRMWARE_FILES += ath10k/QCA6174/hw3.0/board.bin \
-			ath10k/QCA6174/hw3.0/board-2.bin \
-			ath10k/QCA6174/hw3.0/firmware-4.bin \
-			ath10k/QCA6174/hw3.0/firmware-6.bin
-LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.atheros_firmware \
-				ath10k/QCA6174/hw3.0/notice_ath10k_firmware-4.txt \
-				ath10k/QCA6174/hw3.0/notice_ath10k_firmware-6.txt
-endif
-
 # sd8686 v8
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_LIBERTAS_SD8686_V8),y)
 LINUX_FIRMWARE_FILES += libertas/sd8686_v8.bin libertas/sd8686_v8_helper.bin
@@ -312,7 +301,11 @@ endif
 # qca6174
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_QUALCOMM_6174),y)
 LINUX_FIRMWARE_FILES += ath10k/QCA6174
-LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENSE.QualcommAtheros_ath10k
+LINUX_FIRMWARE_ALL_LICENSE_FILES += \
+	LICENSE.QualcommAtheros_ath10k \
+	ath10k/QCA6174/hw2.1/notice_ath10k_firmware-5.txt \
+	ath10k/QCA6174/hw3.0/notice_ath10k_firmware-4.txt \
+	ath10k/QCA6174/hw3.0/notice_ath10k_firmware-6.txt
 endif
 
 # CC2560(A)
