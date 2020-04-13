@@ -28,7 +28,8 @@ AZURE_IOT_SDK_C_LIBS += \
 	iothub_client/libiothub_client_mqtt_transport.a \
 	iothub_service_client/libiothub_service_client.a \
 	serializer/libserializer.a \
-	umqtt/libumqtt.a
+	umqtt/libumqtt.a \
+	libparson.a
 else
 AZURE_IOT_SDK_C_LIBS += \
 	uamqp/libuamqp.so \
@@ -41,7 +42,8 @@ AZURE_IOT_SDK_C_LIBS += \
 	iothub_client/libiothub_client_mqtt_transport.so \
 	iothub_service_client/libiothub_service_client.so \
 	serializer/libserializer.so \
-	umqtt/libumqtt.so.1.1.11
+	umqtt/libumqtt.so.1.1.11 \
+	libparson.so
 
 define AZURE_IOT_SDK_C_CREATE_SYMLINKS
 	ln -sf libumqtt.so.1.1.11 $(1)/usr/lib/libumqtt.so.1
