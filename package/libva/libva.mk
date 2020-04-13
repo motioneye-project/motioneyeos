@@ -5,12 +5,11 @@
 ################################################################################
 
 LIBVA_VERSION = 2.7.0
-LIBVA_SITE = $(call github,intel,libva,$(LIBVA_VERSION))
+LIBVA_SOURCE = libva-$(LIBVA_VERSION).tar.bz2
+LIBVA_SITE = https://github.com/intel/libva/releases/download/$(LIBVA_VERSION)
 LIBVA_LICENSE = MIT
 LIBVA_LICENSE_FILES = COPYING
 LIBVA_INSTALL_STAGING = YES
-# github tarball does not include configure
-LIBVA_AUTORECONF = YES
 LIBVA_DEPENDENCIES = host-pkgconf libdrm
 
 # libdrm is a hard-dependency
