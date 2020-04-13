@@ -44,18 +44,20 @@ AZURE_IOT_SDK_C_LIBS += \
 	umqtt/libumqtt.so
 endif
 
-define AZURE_IOT_SDK_C_INSTALL_STAGING_CMDS
+define AZURE_IOT_SDK_C_INSTALL_LIBS
 	$(foreach l,$(AZURE_IOT_SDK_C_LIBS), \
-		$(INSTALL) -D -m 0755 $(@D)/$(l) $(STAGING_DIR)/usr/lib/$(notdir $(l))
+		$(INSTALL) -D -m 0755 $(@D)/$(l) $(1)/usr/lib/$(notdir $(l))
 	)
+endef
+
+define AZURE_IOT_SDK_C_INSTALL_STAGING_CMDS
+	$(call AZURE_IOT_SDK_C_INSTALL_LIBS,$(STAGING_DIR))
 	cp -a $(@D)/c-utility/inc/* $(STAGING_DIR)/usr/include/
 	cp -a $(@D)/iothub_client/inc/* $(STAGING_DIR)/usr/include/
 endef
 
 define AZURE_IOT_SDK_C_INSTALL_TARGET_CMDS
-	$(foreach l,$(AZURE_IOT_SDK_C_LIBS), \
-		$(INSTALL) -D -m 0755 $(@D)/$(l) $(TARGET_DIR)/usr/lib/$(notdir $(l))
-	)
+	$(call AZURE_IOT_SDK_C_INSTALL_LIBS,$(TARGET_DIR))
 endef
 
 $(eval $(cmake-package))
