@@ -11,7 +11,7 @@ MC_LICENSE = GPL-3.0+
 MC_LICENSE_FILES = COPYING
 MC_DEPENDENCIES = libglib2 host-pkgconf
 
-ifeq ($(BR2_PACKAGE_GMP),y)
+ifeq ($(BR2_PACKAGE_GPM),y)
 MC_CONF_OPTS += --with-gpm-mouse
 MC_DEPENDENCIES += gpm
 else
