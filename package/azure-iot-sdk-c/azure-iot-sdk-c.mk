@@ -46,7 +46,7 @@ endif
 
 define AZURE_IOT_SDK_C_INSTALL_STAGING_CMDS
 	$(foreach l,$(AZURE_IOT_SDK_C_LIBS), \
-		$(INSTALL) -D -m 0755 $(@D)/$(l) $(STAGING_DIR)/usr/lib/
+		$(INSTALL) -D -m 0755 $(@D)/$(l) $(STAGING_DIR)/usr/lib/$(notdir $(l))
 	)
 	cp -a $(@D)/c-utility/inc/* $(STAGING_DIR)/usr/include/
 	cp -a $(@D)/iothub_client/inc/* $(STAGING_DIR)/usr/include/
@@ -54,7 +54,7 @@ endef
 
 define AZURE_IOT_SDK_C_INSTALL_TARGET_CMDS
 	$(foreach l,$(AZURE_IOT_SDK_C_LIBS), \
-		$(INSTALL) -D -m 0755 $(@D)/$(l) $(TARGET_DIR)/usr/lib/
+		$(INSTALL) -D -m 0755 $(@D)/$(l) $(TARGET_DIR)/usr/lib/$(notdir $(l))
 	)
 endef
 
