@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LLDPD_VERSION = 1.0.4
-LLDPD_SITE = http://media.luffy.cx/files/lldpd
+LLDPD_VERSION = 1.0.5
+LLDPD_SITE = https://media.luffy.cx/files/lldpd
 LLDPD_DEPENDENCIES = \
 	$(if $(BR2_PACKAGE_CHECK),check) \
 	host-pkgconf \
