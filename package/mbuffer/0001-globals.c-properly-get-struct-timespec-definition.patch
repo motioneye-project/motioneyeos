@@ -1,0 +1,38 @@
+From 1fc7ac1e29eb6a0311d2d4c209f55adb92740d50 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Mon, 13 Apr 2020 09:56:16 +0200
+Subject: [PATCH] globals.c: properly get 'struct timespec' definition
+
+'struct timespec' is defined in <time.h>, and according to man
+nanosleep(2), only available if _POSIX_C_SOURCE >= 199309L.
+
+Fixes:
+
+globals.c:90:2: error: storage size of 'Starttime' isn't known
+  Starttime;
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ globals.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/globals.c b/globals.c
+index 5c10312..1c0ce80 100644
+--- a/globals.c
++++ b/globals.c
+@@ -17,10 +17,11 @@
+  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  */
+ 
++#define _POSIX_C_SOURCE 199309L
+ #include "dest.h"
+ #include "globals.h"
+ #include <fcntl.h>
+-#include <sys/time.h>
++#include <time.h>
+ 
+ dest_t *Dest = 0;
+ 
+-- 
+2.25.2
+
