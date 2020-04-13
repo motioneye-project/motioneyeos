@@ -41,13 +41,19 @@ AZURE_IOT_SDK_C_LIBS += \
 	iothub_client/libiothub_client_mqtt_transport.so \
 	iothub_service_client/libiothub_service_client.so \
 	serializer/libserializer.so \
-	umqtt/libumqtt.so
+	umqtt/libumqtt.so.1.1.11
+
+define AZURE_IOT_SDK_C_CREATE_SYMLINKS
+	ln -sf libumqtt.so.1.1.11 $(1)/usr/lib/libumqtt.so.1
+	ln -sf libumqtt.so.1.1.11 $(1)/usr/lib/libumqtt.so
+endef
 endif
 
 define AZURE_IOT_SDK_C_INSTALL_LIBS
 	$(foreach l,$(AZURE_IOT_SDK_C_LIBS), \
 		$(INSTALL) -D -m 0755 $(@D)/$(l) $(1)/usr/lib/$(notdir $(l))
 	)
+	$(call AZURE_IOT_SDK_C_CREATE_SYMLINKS,$(1))
 endef
 
 define AZURE_IOT_SDK_C_INSTALL_STAGING_CMDS
