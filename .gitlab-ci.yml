@@ -226,6 +226,7 @@ mx6sx_udoo_neo_defconfig: { extends: .defconfig }
 mx6udoo_defconfig: { extends: .defconfig }
 nanopi_m1_defconfig: { extends: .defconfig }
 nanopi_m1_plus_defconfig: { extends: .defconfig }
+nanopi_neo4_defconfig: { extends: .defconfig }
 nanopi_neo_defconfig: { extends: .defconfig }
 nanopi_r1_defconfig: { extends: .defconfig }
 nexbox_a95x_defconfig: { extends: .defconfig }
