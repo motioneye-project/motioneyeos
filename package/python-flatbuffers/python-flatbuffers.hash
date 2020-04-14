@@ -1,3 +1,3 @@
 # md5, sha256 from https://pypi.org/pypi/flatbuffers/json
-md5  b5f6c2246f45636dd49d9ff8a00d7f1c  flatbuffers-1.11.tar.gz
-sha256  f24185db54193540e3d684dc98aa7c2d89882341641548ceb36fd2589fef6c4e  flatbuffers-1.11.tar.gz
+md5  b9a5b8dfbbb4751788529310118ea6db  flatbuffers-1.12.tar.gz
+sha256  63bb9a722d5e373701913e226135b28a6f6ac200d5cc7b4d919fa38d73b44610  flatbuffers-1.12.tar.gz
