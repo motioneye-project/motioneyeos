@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/h2/json
-md5	950b5a62a2a608dc4547a01edf99aa8f  h2-3.1.1.tar.gz
-sha256	b8a32bd282594424c0ac55845377eea13fa54fe4a8db012f3a198ed923dc3ab4  h2-3.1.1.tar.gz
+md5  197a99c09f344a0dd987fab9801dc8d0  h2-3.2.0.tar.gz
+sha256  875f41ebd6f2c44781259005b157faed1a5031df3ae5aa7bcb4628a6c0782f14  h2-3.2.0.tar.gz
 # Locally computed sha256 checksums
-sha256	663f9253e13519b82ab4a6b1caab6bed05aada70517f28cd0254be8a9fa19ed6  LICENSE
+sha256  663f9253e13519b82ab4a6b1caab6bed05aada70517f28cd0254be8a9fa19ed6  LICENSE
