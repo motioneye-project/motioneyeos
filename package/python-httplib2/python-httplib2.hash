@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/httplib2/json
-md5  4a55ae1d33721110bf81b4d197bfa862  httplib2-0.17.0.tar.gz
-sha256  de96d0a49f46d0ee7e0aae80141d37b8fcd6a68fb05d02e0b82c128592dd8261  httplib2-0.17.0.tar.gz
+md5  4c05b09eb6f6c20a31ca488c7a87dda9  httplib2-0.17.2.tar.gz
+sha256  eb7a6b137ae31e61c5f429083c5bebb71fe5fd1958e7f3d5c39b21b11cd4b290  httplib2-0.17.2.tar.gz
 # Locally computer sha256 checksums
-sha256  bbc124e160cd5c0381fe9560aaed43462dd60371210dbb2c87f00b7fec9a05ba  PKG-INFO
+sha256  4205f0d88e04380ba13b9c60e2f85771196b66ee84bf48971d30d82a78e84c3f  PKG-INFO
