@@ -17,12 +17,14 @@ was installed.
 
 [Upstream: https://github.com/SELinuxProject/selinux/pull/184]
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+[Refreshed for 3.0]
+Signed-off-by: Adam Duskett <Aduskett@gmail.com>
 ---
- src/Makefile | 3 +--
+ libselinux/src/Makefile | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/src/Makefile b/src/Makefile
-index 799df2b0..95684ed7 100644
+index 4b6a4d4..7b14ef1 100644
 --- a/src/Makefile
 +++ b/src/Makefile
 @@ -15,7 +15,6 @@ INCLUDEDIR ?= $(PREFIX)/include
@@ -43,5 +45,5 @@ index 799df2b0..95684ed7 100644
  install-rubywrap: rubywrap
  	test -d $(DESTDIR)$(RUBYINSTALL) || install -m 755 -d $(DESTDIR)$(RUBYINSTALL) 
 -- 
-2.21.0
+2.23.0
 

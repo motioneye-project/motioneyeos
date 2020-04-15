@@ -1,4 +1,7 @@
-fix undefined macros in musl
+From 78f7f09028fdd6a5e8e4e4b584749621eaef412f Mon Sep 17 00:00:00 2001
+From: Yann E. MORIN" <yann.morin.1998@free.fr>
+Date: Sat, 7 Dec 2019 17:24:50 -0800
+Subject: [PATCH] fix undefined macros in musl
 
 musl does not define glibc-specific macros, so use a simple version of
 the macro when it is not defined.
@@ -9,11 +12,13 @@ Domain, and we want to avoid license propagation, so this macro is
 completely written from scratch, and non-optimal.
 
 Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
-
-diff -durN libselinux-2.1.13.orig/src/booleans.c libselinux-2.1.13/src/booleans.c
---- libselinux-2.1.13.orig/src/booleans.c	2013-02-06 02:43:22.000000000 +0100
-+++ libselinux-2.1.13/src/booleans.c	2015-07-26 20:40:41.311801914 +0200
-@@ -62,6 +62,14 @@
+[Updated for 3.0]
+Signed-off-by: Adam Duskett <Aduskett@gmail.com>
+diff --git a/src/booleans.c b/src/booleans.c
+index ffa8d26..8569002 100644
+--- a/src/booleans.c
++++ b/src/booleans.c
+@@ -65,6 +65,14 @@ int security_get_boolean_names(char ***names, int *len)
  		goto bad;
  	}
  
@@ -26,5 +31,8 @@ diff -durN libselinux-2.1.13.orig/src/booleans.c libselinux-2.1.13/src/booleans.
 +#endif
 +
  	for (i = 0; i < *len; i++) {
- 		n[i] = (char *)malloc(_D_ALLOC_NAMLEN(namelist[i]));
+ 		n[i] = strdup(namelist[i]->d_name);
  		if (!n[i]) {
+-- 
+2.23.0
+

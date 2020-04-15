@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBSELINUX_VERSION = 2.9
-LIBSELINUX_SITE = https://github.com/SELinuxProject/selinux/releases/download/20190315
+LIBSELINUX_VERSION = 3.0
+LIBSELINUX_SITE = https://github.com/SELinuxProject/selinux/releases/download/20191204
 LIBSELINUX_LICENSE = Public Domain
 LIBSELINUX_LICENSE_FILES = LICENSE
 
@@ -27,18 +27,12 @@ LIBSELINUX_DEPENDENCIES += musl-fts
 LIBSELINUX_MAKE_OPTS += FTS_LDLIBS=-lfts
 endif
 
-ifeq ($(BR2_PACKAGE_PYTHON)$(BR2_PACKAGE_PYTHON3),y)
 ifeq ($(BR2_PACKAGE_PYTHON3),y)
 LIBSELINUX_DEPENDENCIES += python3 host-swig
-LIBSELINUX_PYLIBVER = python$(PYTHON3_VERSION_MAJOR)
-else ifeq ($(BR2_PACKAGE_PYTHON),y)
-LIBSELINUX_DEPENDENCIES += python host-swig
-LIBSELINUX_PYLIBVER = python$(PYTHON_VERSION_MAJOR)
-endif
 
 LIBSELINUX_MAKE_OPTS += \
 	$(PKG_PYTHON_DISTUTILS_ENV) \
-	PYTHON=$(LIBSELINUX_PYLIBVER)
+	PYTHON=python$(PYTHON3_VERSION_MAJOR)
 
 LIBSELINUX_MAKE_INSTALL_TARGETS += install-pywrap
 
@@ -49,7 +43,7 @@ define LIBSELINUX_BUILD_PYTHON_BINDINGS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
 		$(LIBSELINUX_MAKE_OPTS) swigify pywrap
 endef
-endif # python || python3
+endif # python3
 
 # Filter out D_FILE_OFFSET_BITS=64. This fixes errors caused by glibc
 # 2.22. We set CFLAGS and LDFLAGS here because we want to win over the
@@ -82,15 +76,7 @@ define LIBSELINUX_INSTALL_TARGET_CMDS
 endef
 
 HOST_LIBSELINUX_DEPENDENCIES = \
-	host-libsepol host-pcre host-swig
-
-ifeq ($(BR2_PACKAGE_PYTHON3),y)
-HOST_LIBSELINUX_DEPENDENCIES += host-python3
-HOST_LIBSELINUX_PYLIBVER = python$(PYTHON3_VERSION_MAJOR)
-else
-HOST_LIBSELINUX_DEPENDENCIES += host-python
-HOST_LIBSELINUX_PYLIBVER = python$(PYTHON_VERSION_MAJOR)
-endif
+	host-libsepol host-pcre host-swig host-python3
 
 HOST_LIBSELINUX_MAKE_OPTS = \
 	$(HOST_CONFIGURE_OPTS) \
@@ -98,7 +84,7 @@ HOST_LIBSELINUX_MAKE_OPTS = \
 	SHLIBDIR=$(HOST_DIR)/lib \
 	LDFLAGS="$(HOST_LDFLAGS) -lpcre -lpthread" \
 	$(HOST_PKG_PYTHON_DISTUTILS_ENV) \
-	PYTHON=$(HOST_LIBSELINUX_PYLIBVER)
+	PYTHON=python$(PYTHON3_VERSION_MAJOR)
 
 define HOST_LIBSELINUX_BUILD_CMDS
 	$(HOST_MAKE_ENV) $(MAKE1) -C $(@D) \
