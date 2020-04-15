@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-SEMODULE_UTILS_VERSION = 2.9
-SEMODULE_UTILS_SITE = https://github.com/SELinuxProject/selinux/releases/download/20190315
+SEMODULE_UTILS_VERSION = 3.0
+SEMODULE_UTILS_SITE = https://github.com/SELinuxProject/selinux/releases/download/20191204
 SEMODULE_UTILS_LICENSE = GPL-2.0
 SEMODULE_UTILS_LICENSE_FILES = COPYING
 SEMODULE_UTILS_DEPENDENCIES = libsepol
