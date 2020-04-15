@@ -12,32 +12,14 @@ through the serial console.
 How to build
 ============
 
-There are two build options: mainline support and vendor support.
+Default configuration provides the following BSP versions:
+ - Linux v5.6.3 (mainline)
+ - U-Boot v2020.01 (mainline)
+ - ATF v1.5-18.12.2 (Marvell)
 
-For the mainline BSP, we use:
- - Linux v4.19.2
- - U-Boot v2018.11
+To build images run the following commands:
 
-For the vendor BSP, we use the sources available from Marvell Github
-page at https://github.com/MarvellEmbeddedProcessors, which uses:
- - Linux v4.4.120
- - U-Boot v2018.03
-
-At the moment mainline support for the board is a work in
-progress. Mainline kernel 4.19 enables eth2 in 1Gb (RJ45 connector J5),
-copper 10Gb interfaces, and automatic configuration of select SFP
-modules on the SFP cages. The vendor BSP enables more hardware features
-out of the box, but lacks support for SFP detection and automatic
-configuration.
-
-To use the mainline BSP run the following commands:
-
-    $ make solidrun_macchiatobin_mainline_defconfig
-    $ make
-
-To use the vendor BSP run the following commands:
-
-    $ make solidrun_macchiatobin_marvell_defconfig
+    $ make solidrun_macchiatobin_defconfig
     $ make
 
 How to write the SD card
@@ -74,13 +56,15 @@ Insert the micro SDcard in the MacchiatoBin board and power it up.
 The serial console is accessible at the micro-USB Type-B connector
 marked CON9. The serial line settings are 115200 8N1.
 
-Note: the following text only applies to the vendor BSP from
-solidrun_macchiatobin_marvell_defconfig.
+U-Boot environment
+==================
 
-By default Marvell provided U-Boot will load its environment from the
-SPI flash. On the first boot SPI flash may be empty or it may contain a
-legacy environment that prevents proper boot. Then the following
-commands can be used to boot the board:
+By default current configuration provides U-Boot that keeps environment
+in SD/eMMC. However, if needed, u-boot-fragment.config can be tweaked
+so that U-Boot will keep environment in SPI flash. On the first boot
+SPI flash may be empty or it may contain a stale environment that
+prevents proper boot. Then the following commands can be used
+to boot the board:
 
 => ext4load mmc 1:1 0x01700000 /boot/uEnv-example.txt
 => env import -t 0x01700000 $filesize

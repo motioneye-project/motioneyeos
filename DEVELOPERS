@@ -2308,8 +2308,7 @@ F:	configs/linksprite_pcduino_defconfig
 F:	configs/orangepi_one_defconfig
 F:	configs/orangepi_pc_plus_defconfig
 F:	configs/orangepi_zero_defconfig
-F:	configs/solidrun_macchiatobin_mainline_defconfig
-F:	configs/solidrun_macchiatobin_marvell_defconfig
+F:	configs/solidrun_macchiatobin_defconfig
 F:	package/armbian-firmware/
 F:	package/hostapd/
 F:	package/rtl8189fs/
