@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-CHECKPOLICY_VERSION = 2.9
-CHECKPOLICY_SITE = https://github.com/SELinuxProject/selinux/releases/download/20190315
+CHECKPOLICY_VERSION = 3.0
+CHECKPOLICY_SITE = https://github.com/SELinuxProject/selinux/releases/download/20191204
 CHECKPOLICY_LICENSE = GPL-2.0
 CHECKPOLICY_LICENSE_FILES = COPYING
 
