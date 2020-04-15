@@ -146,6 +146,12 @@ endif
 
 comment "Legacy options removed in 2020.05"
 
+config BR2_PACKAGE_COLLECTD_LVM
+	bool "lvm support in collectd was removed"
+	select BR2_LEGACY
+	help
+	  collectd removed LVM plugin, liblvm2app has been deprecated
+
 config BR2_PACKAGE_PYTHON_PYASN_MODULES
 	bool "duplicate python-pyasn1-modules package removed"
 	select BR2_LEGACY
