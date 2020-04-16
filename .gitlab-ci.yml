@@ -243,6 +243,7 @@ olimex_a20_olinuxino_micro_defconfig: { extends: .defconfig }
 olimex_a33_olinuxino_defconfig: { extends: .defconfig }
 olimex_a64_olinuxino_defconfig: { extends: .defconfig }
 olimex_imx233_olinuxino_defconfig: { extends: .defconfig }
+olpc_xo1_defconfig: { extends: .defconfig }
 openblocks_a6_defconfig: { extends: .defconfig }
 orangepi_lite2_defconfig: { extends: .defconfig }
 orangepi_lite_defconfig: { extends: .defconfig }
