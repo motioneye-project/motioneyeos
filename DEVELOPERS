@@ -1545,6 +1545,7 @@ F:	package/fswebcam/
 N:	Lubomir Rintel <lkundrak@v3.sk>
 F:	board/olpc/
 F:	configs/olpc_xo1_defconfig
+F:	configs/olpc_xo175_defconfig
 
 N:	Ludovic Desroches <ludovic.desroches@microchip.com>
 F:	board/atmel/
