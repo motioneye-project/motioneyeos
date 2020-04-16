@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/tabledata/json
-md5	3a97a7bd3f2687a139578a79353a8188  tabledata-0.9.1.tar.gz
-sha256	a2c59603ecb56cd2161a72978d56876377ba6a27a3e6d87e1874ba4d5ab02796  tabledata-0.9.1.tar.gz
+md5  7d1ab52001d85d19d86f08a5ad8aab58  tabledata-1.1.2.tar.gz
+sha256  db893596ab9066e5c4f002ae0fed70657e3b75cceb52dd1de5a0e145e338d830  tabledata-1.1.2.tar.gz
 # Locally computed sha256 checksums
-sha256	bebbdf0524a147f89a615fff53d79bdc90cbc7631550fb4b725cd3f3bdcd24f6  LICENSE
+sha256  bebbdf0524a147f89a615fff53d79bdc90cbc7631550fb4b725cd3f3bdcd24f6  LICENSE
