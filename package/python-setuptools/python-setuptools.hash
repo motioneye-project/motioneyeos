@@ -1,4 +1,4 @@
 # From https://pypi.org/pypi/setuptools/json
-md5  89a592d733b31e180a4b6ad760c0685a  setuptools-41.4.0.zip
-sha256  7eae782ccf36b790c21bde7d86a4f303a441cd77036b25c559a602cf5186ce4d  setuptools-41.4.0.zip
+md5  32b6cdce670ce462086d246bea181e9d  setuptools-44.0.0.zip
+sha256  e5baf7723e5bb8382fc146e33032b241efc63314211a3a120aaa55d62d2bb008  setuptools-44.0.0.zip
 sha256  c32a3ac395af6321efd28be73d06a00f0db6ab887d1c21d4fec46128d2056d5a  LICENSE
