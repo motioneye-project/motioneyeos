@@ -1,6 +1,6 @@
 # md5, sha256 from https://pypi.org/pypi/pyzmq/json
-md5    d850bbab7c7f558b91c95b19028ff4b8  pyzmq-18.1.1.tar.gz
-sha256 8c69a6cbfa94da29a34f6b16193e7c15f5d3220cb772d6d17425ff3faa063a6d  pyzmq-18.1.1.tar.gz
-# Locally calculated
-sha256 aef3b80570351d44e29c22d080d4e9e106b34f3fdbc5cdf9636994474c72b1a2   COPYING.BSD
-sha256 44b23767df3c0fe27f88981f09bc7f50a1695cec4b24252fa5f55f03e76bcd6d   COPYING.LESSER
+md5  4650e45ebcf8e08620211c0e720d6066  pyzmq-19.0.0.tar.gz
+sha256  5e1f65e576ab07aed83f444e201d86deb01cd27dcf3f37c727bc8729246a60a8  pyzmq-19.0.0.tar.gz
+# Locally computed sha256 checksums
+sha256  aef3b80570351d44e29c22d080d4e9e106b34f3fdbc5cdf9636994474c72b1a2  COPYING.BSD
+sha256  44b23767df3c0fe27f88981f09bc7f50a1695cec4b24252fa5f55f03e76bcd6d  COPYING.LESSER
