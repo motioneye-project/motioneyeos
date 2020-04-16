@@ -1542,6 +1542,9 @@ F:	support/legal-info/
 N:	Lucas De Marchi <lucas.de.marchi@gmail.com>
 F:	package/fswebcam/
 
+N:	Lubomir Rintel <lkundrak@v3.sk>
+F:	board/olpc/
+
 N:	Ludovic Desroches <ludovic.desroches@microchip.com>
 F:	board/atmel/
 F:	configs/at91*
