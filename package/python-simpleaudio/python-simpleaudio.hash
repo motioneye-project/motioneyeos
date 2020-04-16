@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/simpleaudio/json
-md5	92f0a0891a198c000fedce0599b46c7b  simpleaudio-1.0.2.tar.gz
-sha256	4e0e4c0359f153408e9b8a65342ec0c1d014f36fbe9cdb594e9b6e5348916af8  simpleaudio-1.0.2.tar.gz
+md5  8bd62157c286824e289e1f258419b98c  simpleaudio-1.0.4.tar.gz
+sha256  691c88649243544db717e7edf6a9831df112104e1aefb5f6038a5d071e8cf41d  simpleaudio-1.0.4.tar.gz
 # Locally computed sha256 checksums
-sha256	b4340683e83f0f25ea40f992773ceec6c749c4d64ec2c09dfa49d7f5b029adbf  LICENSE.txt
+sha256  b4340683e83f0f25ea40f992773ceec6c749c4d64ec2c09dfa49d7f5b029adbf  LICENSE.txt
