@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/more-itertools/json
-md5	f647bfd27243a7bebe53b5ddb6a3b1c4  more-itertools-7.2.0.tar.gz
-sha256	409cd48d4db7052af495b09dec721011634af3753ae1ef92d2b32f73a745f832  more-itertools-7.2.0.tar.gz
+md5  55e7e0a5eabc5a57bc8353c65c6f9965  more-itertools-8.2.0.tar.gz
+sha256  b1ddb932186d8a6ac451e1d95844b382f55e12686d51ca0c68b6f61f2ab7a507  more-itertools-8.2.0.tar.gz
 # Locally computed sha256 checksums
 sha256  09f1c8c9e941af3e584d59641ea9b87d83c0cb0fd007eb5ef391a7e2643c1a46  LICENSE
