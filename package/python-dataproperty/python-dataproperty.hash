@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/dataproperty/json
-md5	8280a85691959d988e58f52c0ed3d311  DataProperty-0.43.1.tar.gz
-sha256	ac2bc221a53fcd2afa140d1feb45cadbe62b335f667dba1e08e3c43a93339103  DataProperty-0.43.1.tar.gz
+md5  14a3e13d611d063df43304c3adeb6d12  DataProperty-0.48.1.tar.gz
+sha256  96bd47c14b4aaba4780d77fa4d2c876cf35eb6848ab1df1a6338447b6c2c10e4  DataProperty-0.48.1.tar.gz
 # Locally computed sha256 checksums
-sha256	98799b7c99b561c5ffa3ac86600e501f761afa8e72af8a2515026445fe134105  LICENSE
+sha256  a93d75bcb0774e2990106380cadad6dcb2de193c55d435ffc56ba345a08b1dc2  LICENSE
