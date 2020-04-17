@@ -22,12 +22,12 @@ config BR2_PACKAGE_LIBSEPOL_POLICY_VERSION
 
 	  Here's a handy table to help you choose:
 	  kernel version   SElinux policy max version
-	  <= 2.6.x         25
-	  > 2.6 <= 3.5     26
-	  > 3.5 <= 3.14    28 (27 and 28 were added at the same time)
-	  > 3.14 <= 4.3    29
-	  > 4.3 <= 4.13    30
-	  > 4.13           31
+	  < 2.6.x          25
+	  >= 2.6 < 3.5     26
+	  >= 3.5 < 3.14    28 (27 and 28 were added at the same time)
+	  >= 3.14 < 4.3    29
+	  >= 4.3 < 4.13    30
+	  >= 4.13          31
 
 endif
 
