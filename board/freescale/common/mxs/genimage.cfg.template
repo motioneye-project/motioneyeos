@@ -8,6 +8,7 @@
 
 image boot.vfat {
 	vfat {
+		label = "boot"
 		files = {
 			%FILES%
 		}
