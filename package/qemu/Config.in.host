@@ -11,6 +11,7 @@ config BR2_PACKAGE_HOST_QEMU_ARCH_SUPPORTS
 	default y if BR2_mips
 	default y if BR2_mipsel
 	default y if BR2_nios2
+	default y if BR2_or1k
 	default y if BR2_powerpc
 	default y if BR2_powerpc64
 	default y if BR2_powerpc64le
