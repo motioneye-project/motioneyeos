@@ -259,6 +259,7 @@ F:	configs/raspberrypi4_64_defconfig
 
 N:	Asaf Kahlon <asafka7@gmail.com>
 F:	package/collectd/
+F:	package/libfuse3/
 F:	package/libuv/
 F:	package/python*
 F:	package/snmpclitools/

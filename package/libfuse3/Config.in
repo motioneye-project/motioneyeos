@@ -1,0 +1,14 @@
+config BR2_PACKAGE_LIBFUSE3
+	bool "libfuse3"
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # fork()
+	help
+	  The reference implementation of the Linux FUSE
+	  (Filesystem in Userspace) interface.
+
+	  https://github.com/libfuse/libfuse
+
+comment "libfuse3 needs a toolchain w/ threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
