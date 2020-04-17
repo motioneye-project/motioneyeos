@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-LIBGIT2_VERSION = 0.28.4
-LIBGIT2_SITE = $(call github,libgit2,libgit2,v$(LIBGIT2_VERSION))
-LIBGIT2_LICENSE = GPL-2.0 with linking exception
+LIBGIT2_VERSION = 1.0.0
+LIBGIT2_SITE = https://github.com/libgit2/libgit2/releases/download/v$(LIBGIT2_VERSION)
+LIBGIT2_LICENSE = GPL-2.0 with linking exception, MIT (sha1), wildmatch license (wildmatch)
 LIBGIT2_LICENSE_FILES = COPYING
 LIBGIT2_INSTALL_STAGING = YES
 
@@ -14,9 +14,11 @@ LIBGIT2_CONF_OPTS = \
 	-DUSE_GSSAPI=OFF \
 	-DBUILD_CLAR=OFF \
 	-DUSE_ICONV=ON \
+	-DREGEX_BACKEND=regcomp \
+	-DUSE_HTTP_PARSER=system \
 	-DTHREADSAFE=$(if $(BR2_TOOLCHAIN_HAS_THREADS),ON,OFF)
 
-LIBGIT2_DEPENDENCIES = zlib
+LIBGIT2_DEPENDENCIES = zlib libhttpparser
 
 # If libiconv is available (for !locale toolchains), then we can use
 # it for iconv support. Note that USE_ICONV=ON is still correct even
