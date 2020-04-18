@@ -123,9 +123,7 @@ endef
 # which makes manual installation necessary.
 define OPENJDK_INSTALL_TARGET_CMDS
 	mkdir -p $(TARGET_DIR)$(OPENJDK_INSTALL_BASE)
-	cp -dpfr $(@D)/build/linux-*-release/images/jre/bin/ \
-		$(TARGET_DIR)$(OPENJDK_INSTALL_BASE)/
-	cp -dpfr $(@D)/build/linux-*-release/images/jre/lib/ \
+	cp -dpfr $(@D)/build/linux-*-release/images/jre/* \
 		$(TARGET_DIR)$(OPENJDK_INSTALL_BASE)/
 	cd $(TARGET_DIR)/usr/bin && ln -snf ../..$(OPENJDK_INSTALL_BASE)/bin/* .
 endef
