@@ -46,6 +46,13 @@ OPENJDK_JVM_VARIANT = zero
 OPENJDK_DEPENDENCIES += libffi
 endif
 
+# OpenJDK installs a file named 'modules' in jre/lib, which gets installed as
+# /usr/lib/modules. However, with a merged /usr, this conflicts with the
+# directory named 'modules' installed by the kernel. If OpenJDK gets built
+# after the kernel, this manifests itself with: "cp: cannot overwrite
+# directory '/usr/lib/modules with non-directory."
+OPENJDK_INSTALL_BASE = /usr/lib/jvm
+
 # OpenJDK ignores some variables unless passed via the environment.
 # These variables are PATH, LD, CC, CXX, and CPP.
 # OpenJDK defaults ld to the ld binary but passes -Xlinker and -z as
@@ -75,6 +82,7 @@ OPENJDK_CONF_OPTS = \
 	--with-devkit=$(HOST_DIR) \
 	--with-extra-cflags="$(TARGET_CFLAGS)" \
 	--with-extra-cxxflags="$(TARGET_CXXFLAGS)" \
+	--with-extra-ldflags="-Wl,-rpath,$(OPENJDK_INSTALL_BASE)/lib,-rpath,$(OPENJDK_INSTALL_BASE)/lib/$(OPENJDK_JVM_VARIANT)" \
 	--with-giflib=system \
 	--with-jobs=$(PARALLEL_JOBS) \
 	--with-jvm-variants=$(OPENJDK_JVM_VARIANT) \
@@ -114,8 +122,12 @@ endef
 # Calling make install always builds and installs the JDK instead of the JRE,
 # which makes manual installation necessary.
 define OPENJDK_INSTALL_TARGET_CMDS
-	cp -dpfr $(@D)/build/linux-*-release/images/jre/bin/* $(TARGET_DIR)/usr/bin/
-	cp -dpfr $(@D)/build/linux-*-release/images/jre/lib/* $(TARGET_DIR)/usr/lib/
+	mkdir -p $(TARGET_DIR)$(OPENJDK_INSTALL_BASE)
+	cp -dpfr $(@D)/build/linux-*-release/images/jre/bin/ \
+		$(TARGET_DIR)$(OPENJDK_INSTALL_BASE)/
+	cp -dpfr $(@D)/build/linux-*-release/images/jre/lib/ \
+		$(TARGET_DIR)$(OPENJDK_INSTALL_BASE)/
+	cd $(TARGET_DIR)/usr/bin && ln -snf ../..$(OPENJDK_INSTALL_BASE)/bin/* .
 endef
 
 $(eval $(generic-package))
