@@ -43,4 +43,10 @@ define POLKIT_PERMISSIONS
 	/usr/bin/pkexec f 4755 root root - - - - -
 endef
 
+define POLKIT_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -D -m 644 $(POLKIT_PKGDIR)/polkit.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/polkit.service
+
+endef
+
 $(eval $(autotools-package))
