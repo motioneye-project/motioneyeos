@@ -46,6 +46,14 @@ OPENJDK_JVM_VARIANT = zero
 OPENJDK_DEPENDENCIES += libffi
 endif
 
+ifeq ($(BR2_PACKAGE_OPENJDK_FULL_JDK),y)
+OPENJDK_VARIANT = jdk
+OPENJDK_MAKE_TARGET = jdk-image
+else
+OPENJDK_VARIANT = jre
+OPENJDK_MAKE_TARGET = legacy-jre-image
+endif
+
 # OpenJDK installs a file named 'modules' in jre/lib, which gets installed as
 # /usr/lib/modules. However, with a merged /usr, this conflicts with the
 # directory named 'modules' installed by the kernel. If OpenJDK gets built
@@ -116,16 +124,25 @@ endef
 # Make -jn is unsupported. Instead, set the "--with-jobs=" configure option,
 # and use $(MAKE1).
 define OPENJDK_BUILD_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE1) -C $(@D) legacy-jre-image
+	$(TARGET_MAKE_ENV) $(OPENJDK_CONF_ENV) $(MAKE1) -C $(@D) $(OPENJDK_MAKE_TARGET)
 endef
 
 # Calling make install always builds and installs the JDK instead of the JRE,
 # which makes manual installation necessary.
 define OPENJDK_INSTALL_TARGET_CMDS
 	mkdir -p $(TARGET_DIR)$(OPENJDK_INSTALL_BASE)
-	cp -dpfr $(@D)/build/linux-*-release/images/jre/* \
+	cp -dpfr $(@D)/build/linux-*-release/images/$(OPENJDK_VARIANT)/* \
 		$(TARGET_DIR)$(OPENJDK_INSTALL_BASE)/
 	cd $(TARGET_DIR)/usr/bin && ln -snf ../..$(OPENJDK_INSTALL_BASE)/bin/* .
 endef
+
+# Demos and includes are not needed on the target
+ifeq ($(BR2_PACKAGE_OPENJDK_FULL_JDK),y)
+define OPENJDK_REMOVE_UNEEDED_JDK_DIRECTORIES
+	$(RM) -r $(TARGET_DIR)$(OPENJDK_INSTALL_BASE)/include/
+	$(RM) -r $(TARGET_DIR)$(OPENJDK_INSTALL_BASE)/demo/
+endef
+OPENJDK_TARGET_FINALIZE_HOOKS += OPENJDK_REMOVE_UNEEDED_JDK_DIRECTORIES
+endif
 
 $(eval $(generic-package))

@@ -48,6 +48,60 @@ config BR2_PACKAGE_OPENJDK
 
 if BR2_PACKAGE_OPENJDK
 
+config BR2_PACKAGE_OPENJDK_FULL_JDK
+	bool "Build the full JDK"
+	help
+	  Install the full JDK instead of just the run time.
+	  The full JDK includes several packages used for debugging and
+	  development. Some useful tools included with the JDK are:
+	    - javaws
+	      Command line tool for launching Java Web Start and setting
+	      various options.
+
+	    - jcmd:
+	      JVM Diagnostic Commands tool: Sends diagnostic command
+	      requests to a running Java Virtual Machine.
+
+	    - jinfo
+	      Configuration Info for Java: Prints configuration
+	      information for a given process or core file or a remote
+	      debug server.
+
+	    - jmap
+	      Memory Map for Java: Prints shared object memory maps or
+	      heap memory details of a given process or core file or a
+	      remote debug server.
+
+	    - jsadebugd
+	      Serviceability Agent Debug Daemon for Java: Attaches to a
+	      process or core file and acts as a debug server.
+
+	    - jstack
+	      Stack Trace for Java - Prints a stack trace of threads for
+	      a given process or core file or remote debug server.
+
+	    - jstat
+	      JVM Statistics Monitoring Tool: Attaches to an
+	      instrumented HotSpot Java virtual machine and collects and
+	      logs performance statistics as specified by the command
+	      line options.
+
+	    - jstatd
+	      JVM jstat Daemon - Launches an RMI server application that
+	      monitors for the creation and termination of instrumented
+	      HotSpot Java virtual machines and provides an interface to
+	      allow remote monitoring tools to attach to Java virtual
+	      machines running on the local system.
+
+	  Note:
+	  While the JDK also comes with several tools which can be used
+	  for developing java applications on a target, Buildroot does
+	  not support development on a target. Building the full JDK is
+	  supported for debugging purposes only.
+
+	  Selecting this option increases the file system by
+	  approximately 110M.
+
 choice
 	prompt "openjdk variant"
 	default BR2_PACKAGE_OPENJDK_JVM_VARIANT_SERVER if !BR2_powerpc
