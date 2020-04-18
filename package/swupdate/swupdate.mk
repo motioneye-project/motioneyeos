@@ -189,4 +189,23 @@ $(error No Swupdate configuration file specified, check your BR2_PACKAGE_SWUPDAT
 endif
 endif
 
+ifeq ($(BR2_PACKAGE_SWUPDATE_INSTALL_WEBSITE),y)
+define SWUPDATE_INSTALL_COMMON
+	mkdir -p $(TARGET_DIR)/etc/swupdate/conf.d \
+		$(TARGET_DIR)/usr/lib/swupdate/conf.d
+	$(INSTALL) -D -m 755 package/swupdate/swupdate.sh \
+		$(TARGET_DIR)/usr/lib/swupdate/swupdate.sh
+endef
+define SWUPDATE_INSTALL_INIT_SYSTEMD
+	$(SWUPDATE_INSTALL_COMMON)
+	$(INSTALL) -D -m 644 package/swupdate/swupdate.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/swupdate.service
+endef
+define SWUPDATE_INSTALL_INIT_SYSV
+	$(SWUPDATE_INSTALL_COMMON)
+	$(INSTALL) -D -m 755 package/swupdate/S80swupdate \
+		$(TARGET_DIR)/etc/init.d/S80swupdate
+endef
+endif
+
 $(eval $(kconfig-package))
