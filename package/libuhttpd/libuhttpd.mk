@@ -36,4 +36,11 @@ else
 LIBUHTTPD_CONF_OPTS += -DUHTTPD_SSL_SUPPORT=OFF
 endif
 
+# BUILD_SHARED_LIBS is handled in pkg-cmake.mk as it is a generic cmake variable
+ifeq ($(BR2_SHARED_STATIC_LIBS),y)
+LIBUHTTPD_CONF_OPTS += -DBUILD_STATIC_LIBS=ON
+else ifeq ($(BR2_SHARED_LIBS),y)
+LIBUHTTPD_CONF_OPTS += -DBUILD_STATIC_LIBS=OFF
+endif
+
 $(eval $(cmake-package))
