@@ -1763,7 +1763,6 @@ F:	package/python-crossbar/
 F:	package/python-lmdb/
 F:	package/python-mistune/
 F:	package/python-netaddr/
-F:	package/python-pyasn-modules/
 F:	package/python-pygments/
 F:	package/python-pynacl/
 F:	package/python-pytrie/

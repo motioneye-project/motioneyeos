@@ -146,6 +146,13 @@ endif
 
 comment "Legacy options removed in 2020.05"
 
+config BR2_PACKAGE_PYTHON_PYASN_MODULES
+	bool "duplicate python-pyasn1-modules package removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_PYTHON_PYASN1_MODULES
+	help
+	  This package was a duplicate of python-pyasn1-modules.
+
 config BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_10K_QCA6174
 	bool "duplicate QCA6174 firmware symbol removed"
 	select BR2_LEGACY
