@@ -152,6 +152,13 @@ config BR2_PACKAGE_COLLECTD_LVM
 	help
 	  collectd removed LVM plugin, liblvm2app has been deprecated
 
+config BR2_PACKAGE_PYTHON_PYASN
+	bool "duplicate python-pyasn1 package removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_PYTHON_PYASN1
+	help
+	  This package was a duplicate of python-pyasn1.
+
 config BR2_PACKAGE_PYTHON_PYASN_MODULES
 	bool "duplicate python-pyasn1-modules package removed"
 	select BR2_LEGACY
