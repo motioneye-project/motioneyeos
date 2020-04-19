@@ -64,4 +64,14 @@ else
 APCUPSD_CONF_OPTS += --disable-usb
 endif
 
+define APCUPSD_BUILD_CMDS
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)/src
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)/platforms
+endef
+
+define APCUPSD_INSTALL_TARGET_CMDS
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)/src DESTDIR=$(TARGET_DIR) install
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)/platforms DESTDIR=$(TARGET_DIR) install
+endef
+
 $(eval $(autotools-package))
