@@ -120,16 +120,14 @@ endif
 
 # We need the host version of macro_predef during the build, before
 # building it we need to prepare the makefile.
-# "The -j (parallel) flag must not be used with make"
-# (http://www.exim.org/exim-html-current/doc/html/spec_html/ch04.html)
 define EXIM_BUILD_CMDS
-	$(TARGET_MAKE_ENV) build=br $(MAKE1) -C $(@D) makefile
-	$(HOST_MAKE_ENV) $(MAKE1) -C $(@D)/build-br macro_predef \
+	$(TARGET_MAKE_ENV) build=br $(MAKE) -C $(@D) makefile
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)/build-br macro_predef \
 		CC=$(HOSTCC) \
 		LNCC=$(HOSTCC) \
 		CFLAGS="-std=c99 $(HOST_CFLAGS)" \
 		LFLAGS="-fPIC $(HOST_LDFLAGS)"
-	$(TARGET_MAKE_ENV) build=br $(MAKE1) -C $(@D) $(EXIM_STATIC_FLAGS) \
+	$(TARGET_MAKE_ENV) build=br $(MAKE) -C $(@D) $(EXIM_STATIC_FLAGS) \
 		CFLAGS="-std=c99 $(TARGET_CFLAGS)"
 endef
 
@@ -137,7 +135,7 @@ endef
 # something when installing...
 define EXIM_INSTALL_TARGET_CMDS
 	DESTDIR=$(TARGET_DIR) INSTALL_ARG="-no_chown -no_symlink" build=br \
-	  $(MAKE1) -C $(@D) $(EXIM_STATIC_FLAGS) \
+	  $(MAKE) -C $(@D) $(EXIM_STATIC_FLAGS) \
 		CFLAGS="-std=c99 $(TARGET_CFLAGS)" \
 		install
 	chmod u+s $(TARGET_DIR)/usr/sbin/exim
