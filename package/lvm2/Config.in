@@ -49,6 +49,7 @@ comment "lvm2 application library needs a glibc or uClibc toolchain"
 
 config BR2_PACKAGE_LVM2_LVMETAD
 	bool "install lvmetad"
+	depends on !BR2_TOOLCHAIN_USES_MUSL # lvm2-app-library
 	select BR2_PACKAGE_LVM2_APP_LIBRARY
 	help
 	  Install lvmetad
@@ -59,6 +60,9 @@ config BR2_PACKAGE_LVM2_LVMETAD
 	  consuming and may interfere with the normal work of the
 	  system.  lvmetad can be a disadvantage when disk event
 	  notifications from the system are unreliable.
+
+comment "lvmetad daemon needs a glibc or uClibc toolchain"
+	depends on BR2_TOOLCHAIN_USES_MUSL
 
 endif
 
