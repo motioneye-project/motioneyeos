@@ -8,7 +8,7 @@ config BR2_PACKAGE_LIBZIP
 	  This package also contains zipcmp, ziptorrent and zipmerge
 	  utilities.
 
-	  http://www.nih.at/libzip/
+	  https://libzip.org/
 
 comment "libzip needs a toolchain w/ dynamic library"
 	depends on BR2_STATIC_LIBS
