@@ -1,0 +1,653 @@
+From b6ec2208640456a9422a74b4f39a50ddb65e4970 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sat, 25 Jan 2020 10:42:20 +0100
+Subject: [PATCH] Drop u_char and u_short
+
+Replace u_char and u_short by unsigned char and unsigned short to fix
+build on musl
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/kravietz/pam_tacplus/commit/b6ec2208640456a9422a74b4f39a50ddb65e4970]
+---
+ libtac/include/libtac.h  |  8 ++--
+ libtac/include/tacplus.h | 88 ++++++++++++++++++++--------------------
+ libtac/lib/acct_r.c      |  4 +-
+ libtac/lib/acct_s.c      | 20 ++++-----
+ libtac/lib/attrib.c      |  6 +--
+ libtac/lib/authen_r.c    |  2 +-
+ libtac/lib/authen_s.c    | 14 +++----
+ libtac/lib/author_r.c    | 22 +++++-----
+ libtac/lib/author_s.c    | 18 ++++----
+ libtac/lib/cont_s.c      |  4 +-
+ libtac/lib/crypt.c       | 10 ++---
+ libtac/lib/header.c      |  2 +-
+ 12 files changed, 99 insertions(+), 99 deletions(-)
+
+diff --git a/libtac/include/libtac.h b/libtac/include/libtac.h
+index 4922bf7..d8c7289 100644
+--- a/libtac/include/libtac.h
++++ b/libtac/include/libtac.h
+@@ -96,7 +96,7 @@ typedef unsigned int u_int32_t;
+ 
+ struct tac_attrib {
+ 	char *attr;
+-	u_char attr_len;
++	unsigned char attr_len;
+ 	struct tac_attrib *next;
+ };
+ 
+@@ -169,12 +169,12 @@ int tac_connect_single(const struct addrinfo *, const char *, struct addrinfo *,
+ char *tac_ntop(const struct sockaddr *);
+ 
+ int tac_authen_send(int, const char *, const char *, const char *, const char *,
+-		u_char);
++		unsigned char);
+ int tac_authen_read(int, struct areply *);
+ int tac_cont_send_seq(int, const char *, int);
+ #define tac_cont_send(fd, pass) tac_cont_send_seq((fd), (pass), 3)
+-HDR *_tac_req_header(u_char, int);
+-void _tac_crypt(u_char *, const HDR *);
++HDR *_tac_req_header(unsigned char, int);
++void _tac_crypt(unsigned char *, const HDR *);
+ void tac_add_attrib(struct tac_attrib **, char *, char *);
+ void tac_free_attrib(struct tac_attrib **);
+ char *tac_acct_flag2str(int);
+diff --git a/libtac/include/tacplus.h b/libtac/include/tacplus.h
+index 90d7c8b..2ac8848 100644
+--- a/libtac/include/tacplus.h
++++ b/libtac/include/tacplus.h
+@@ -24,7 +24,7 @@
+ 
+ /* All tacacs+ packets have the same header format */
+ struct tac_plus_pak_hdr {
+-    u_char version;
++    unsigned char version;
+ 
+ #define TAC_PLUS_MAJOR_VER_MASK 0xf0
+ #define TAC_PLUS_MAJOR_VER      0xc0
+@@ -35,14 +35,14 @@ struct tac_plus_pak_hdr {
+ #define TAC_PLUS_MINOR_VER_1 0x01
+ #define TAC_PLUS_VER_1  (TAC_PLUS_MAJOR_VER | TAC_PLUS_MINOR_VER_1)
+ 
+-    u_char type;
++    unsigned char type;
+ 
+ #define TAC_PLUS_AUTHEN 0x01
+ #define TAC_PLUS_AUTHOR	0x02
+ #define TAC_PLUS_ACCT   0x03
+ 
+-    u_char seq_no;        /* packet sequence number */
+-    u_char encryption;    /* packet is encrypted or cleartext */
++    unsigned char seq_no;        /* packet sequence number */
++    unsigned char encryption;    /* packet is encrypted or cleartext */
+ 
+ #define TAC_PLUS_ENCRYPTED_FLAG      0x00    /* packet is encrypted */
+ #define TAC_PLUS_UNENCRYPTED_FLAG    0x01    /* packet is unencrypted */
+@@ -59,21 +59,21 @@ typedef struct tac_plus_pak_hdr HDR;
+ 
+ /* Authentication packet NAS sends to us */ 
+ struct authen_start {
+-    u_char action;
++    unsigned char action;
+ 
+ #define TAC_PLUS_AUTHEN_LOGIN    0x01
+ #define TAC_PLUS_AUTHEN_CHPASS   0x02
+ #define TAC_PLUS_AUTHEN_SENDPASS 0x03 /* deprecated */
+ #define TAC_PLUS_AUTHEN_SENDAUTH 0x04
+ 
+-    u_char priv_lvl;
++    unsigned char priv_lvl;
+ 
+ #define TAC_PLUS_PRIV_LVL_MIN  0x00
+ #define TAC_PLUS_PRIV_LVL_MAX  0x0f
+ #define TAC_PLUS_PRIV_LVL_USER 0x01
+ #define TAC_PLUS_PRIV_LVL_ROOT 0x0f
+ 
+-    u_char authen_type;
++    unsigned char authen_type;
+ 
+ #define TAC_PLUS_AUTHEN_TYPE_ASCII  0x01
+ #define TAC_PLUS_AUTHEN_TYPE_PAP    0x02
+@@ -81,7 +81,7 @@ struct authen_start {
+ #define TAC_PLUS_AUTHEN_TYPE_ARAP   0x04
+ #define TAC_PLUS_AUTHEN_TYPE_MSCHAP 0x05
+ 
+-    u_char service;
++    unsigned char service;
+ 
+ #define TAC_PLUS_AUTHEN_SVC_NONE    0x00
+ #define TAC_PLUS_AUTHEN_SVC_LOGIN   0x01
+@@ -94,19 +94,19 @@ struct authen_start {
+ #define TAC_PLUS_AUTHEN_SVC_NASI    0x08
+ #define TAC_PLUS_AUTHEN_SVC_FWPROXY 0x09
+ 
+-    u_char user_len;
+-    u_char port_len;
+-    u_char r_addr_len;
+-    u_char data_len;
++    unsigned char user_len;
++    unsigned char port_len;
++    unsigned char r_addr_len;
++    unsigned char data_len;
+ };
+ 
+ #define TAC_AUTHEN_START_FIXED_FIELDS_SIZE 8
+ 
+ /* Authentication continue packet NAS sends to us */ 
+ struct authen_cont {
+-    u_short user_msg_len;
+-    u_short user_data_len;
+-    u_char flags;
++    unsigned short user_msg_len;
++    unsigned short user_data_len;
++    unsigned char flags;
+ 
+ #define TAC_PLUS_CONTINUE_FLAG_ABORT 0x01
+ 
+@@ -116,7 +116,7 @@ struct authen_cont {
+ 
+ /* Authentication reply packet we send to NAS */ 
+ struct authen_reply {
+-    u_char status;
++    unsigned char status;
+ 
+ #define TAC_PLUS_AUTHEN_STATUS_PASS    0x01
+ #define TAC_PLUS_AUTHEN_STATUS_FAIL    0x02
+@@ -127,12 +127,12 @@ struct authen_reply {
+ #define TAC_PLUS_AUTHEN_STATUS_ERROR   0x07 
+ #define TAC_PLUS_AUTHEN_STATUS_FOLLOW  0x21
+ 
+-    u_char flags;
++    unsigned char flags;
+ 
+ #define TAC_PLUS_AUTHEN_FLAG_NOECHO 0x01
+ 
+-    u_short msg_len;
+-    u_short data_len;
++    unsigned short msg_len;
++    unsigned short data_len;
+ };
+ 
+ #define TAC_AUTHEN_REPLY_FIXED_FIELDS_SIZE 6
+@@ -158,29 +158,29 @@ struct authen_reply {
+ #define AUTHEN_METH_RCMD       TAC_PLUS_AUTHEN_METH_RCMD
+ 
+ struct acct {
+-    u_char flags;
++    unsigned char flags;
+ 
+ #define TAC_PLUS_ACCT_FLAG_MORE     0x01
+ #define TAC_PLUS_ACCT_FLAG_START    0x02
+ #define TAC_PLUS_ACCT_FLAG_STOP     0x04
+ #define TAC_PLUS_ACCT_FLAG_WATCHDOG 0x08
+ 	    
+-    u_char authen_method;
+-    u_char priv_lvl;
+-    u_char authen_type;
+-    u_char authen_service;
+-    u_char user_len;
+-    u_char port_len;
+-    u_char r_addr_len;
+-    u_char arg_cnt;    /* the number of cmd args */
++    unsigned char authen_method;
++    unsigned char priv_lvl;
++    unsigned char authen_type;
++    unsigned char authen_service;
++    unsigned char user_len;
++    unsigned char port_len;
++    unsigned char r_addr_len;
++    unsigned char arg_cnt;    /* the number of cmd args */
+ };
+ 
+ #define TAC_ACCT_REQ_FIXED_FIELDS_SIZE 9
+ 
+ struct acct_reply {
+-    u_short msg_len;
+-    u_short data_len;
+-    u_char status;
++    unsigned short msg_len;
++    unsigned short data_len;
++    unsigned char status;
+ 
+ #define TAC_PLUS_ACCT_STATUS_SUCCESS 0x1
+ #define TAC_PLUS_ACCT_STATUS_ERROR   0x2
+@@ -192,25 +192,25 @@ struct acct_reply {
+ 
+ /* An authorization request packet */
+ struct author {
+-    u_char authen_method;
+-    u_char priv_lvl;
+-    u_char authen_type;
+-    u_char service;
+-
+-    u_char user_len;
+-    u_char port_len;
+-    u_char r_addr_len;
+-    u_char arg_cnt;    /* the number of args */
++    unsigned char authen_method;
++    unsigned char priv_lvl;
++    unsigned char authen_type;
++    unsigned char service;
++
++    unsigned char user_len;
++    unsigned char port_len;
++    unsigned char r_addr_len;
++    unsigned char arg_cnt;    /* the number of args */
+ };
+ 
+ #define TAC_AUTHOR_REQ_FIXED_FIELDS_SIZE 8
+ 
+ /* An authorization reply packet */
+ struct author_reply {
+-    u_char status;
+-    u_char arg_cnt;
+-    u_short msg_len;
+-    u_short data_len;
++    unsigned char status;
++    unsigned char arg_cnt;
++    unsigned short msg_len;
++    unsigned short data_len;
+ 
+ #define TAC_PLUS_AUTHOR_STATUS_PASS_ADD  0x01
+ #define TAC_PLUS_AUTHOR_STATUS_PASS_REPL 0x02
+diff --git a/libtac/lib/acct_r.c b/libtac/lib/acct_r.c
+index 44992e6..29ed901 100644
+--- a/libtac/lib/acct_r.c
++++ b/libtac/lib/acct_r.c
+@@ -110,7 +110,7 @@ int tac_acct_read(int fd, struct areply *re) {
+     }
+ 
+     /* decrypt the body */
+-    _tac_crypt((u_char *) tb, &th);
++    _tac_crypt((unsigned char *) tb, &th);
+ 
+     /* Convert network byte order to host byte order */
+     tb->msg_len  = ntohs(tb->msg_len);
+@@ -133,7 +133,7 @@ int tac_acct_read(int fd, struct areply *re) {
+     /* save status and clean up */
+     if(tb->msg_len) {
+         msg=(char *) xcalloc(1, tb->msg_len+1);
+-        bcopy((u_char *) tb+TAC_ACCT_REPLY_FIXED_FIELDS_SIZE, msg, tb->msg_len);
++        bcopy((unsigned char *) tb+TAC_ACCT_REPLY_FIXED_FIELDS_SIZE, msg, tb->msg_len);
+         msg[(int)tb->msg_len] = '\0';
+         re->msg = msg;      /* Freed by caller */
+     }
+diff --git a/libtac/lib/acct_s.c b/libtac/lib/acct_s.c
+index db68067..4338ef2 100644
+--- a/libtac/lib/acct_s.c
++++ b/libtac/lib/acct_s.c
+@@ -50,14 +50,14 @@ int tac_acct_send(int fd, int type, const char *user, char *tty,
+ 
+     HDR *th;
+     struct acct tb;
+-    u_char user_len, port_len, r_addr_len;
++    unsigned char user_len, port_len, r_addr_len;
+     struct tac_attrib *a;
+     int i = 0;    /* arg count */
+     int pkt_len = 0;
+     int pktl = 0;
+     int w;    /* write count */
+-    u_char *pkt=NULL;
+-    /* u_char *pktp; */             /* obsolute */
++    unsigned char *pkt=NULL;
++    /* unsigned char *pktp; */             /* obsolute */
+     int ret = 0;
+ 
+     th = _tac_req_header(TAC_PLUS_ACCT, 0);
+@@ -71,11 +71,11 @@ int tac_acct_send(int fd, int type, const char *user, char *tty,
+         (tac_encryption) ? "yes" : "no", \
+         tac_acct_flag2str(type));
+         
+-    user_len=(u_char) strlen(user);
+-    port_len=(u_char) strlen(tty);
+-    r_addr_len=(u_char) strlen(r_addr);
++    user_len=(unsigned char) strlen(user);
++    port_len=(unsigned char) strlen(tty);
++    r_addr_len=(unsigned char) strlen(r_addr);
+ 
+-    tb.flags=(u_char) type;
++    tb.flags=(unsigned char) type;
+     tb.authen_method=tac_authen_method;
+     tb.priv_lvl=tac_priv_lvl;
+     if (!*tac_login) {
+@@ -96,7 +96,7 @@ int tac_acct_send(int fd, int type, const char *user, char *tty,
+     tb.r_addr_len=r_addr_len;
+ 
+     /* allocate packet */
+-    pkt=(u_char *) xcalloc(1, TAC_ACCT_REQ_FIXED_FIELDS_SIZE);
++    pkt=(unsigned char *) xcalloc(1, TAC_ACCT_REQ_FIXED_FIELDS_SIZE);
+     pkt_len=sizeof(tb);
+ 
+     /* fill attribute length fields */
+@@ -104,7 +104,7 @@ int tac_acct_send(int fd, int type, const char *user, char *tty,
+     while (a) {
+         pktl = pkt_len;
+         pkt_len += sizeof(a->attr_len);
+-        pkt = (u_char*) xrealloc(pkt, pkt_len);
++        pkt = (unsigned char*) xrealloc(pkt, pkt_len);
+ 
+         /* see comments in author_s.c
+         pktp=pkt + pkt_len;
+@@ -132,7 +132,7 @@ int tac_acct_send(int fd, int type, const char *user, char *tty,
+ #define PUTATTR(data, len) \
+     pktl = pkt_len; \
+     pkt_len += len; \
+-    pkt = (u_char*) xrealloc(pkt, pkt_len); \
++    pkt = (unsigned char*) xrealloc(pkt, pkt_len); \
+     bcopy(data, pkt + pktl, len);
+ 
+     /* fill user and port fields */
+diff --git a/libtac/lib/attrib.c b/libtac/lib/attrib.c
+index b8a7d82..c148288 100644
+--- a/libtac/lib/attrib.c
++++ b/libtac/lib/attrib.c
+@@ -29,14 +29,14 @@ void tac_add_attrib(struct tac_attrib **attr, char *name, char *value) {
+ 
+ void tac_add_attrib_pair(struct tac_attrib **attr, char *name, char sep, char *value) {
+     struct tac_attrib *a;
+-    u_char l1 = (u_char) strlen(name);
+-    u_char l2;
++    unsigned char l1 = (unsigned char) strlen(name);
++    unsigned char l2;
+     int total_len;
+ 
+     if (value == NULL) {
+         l2 = 0;
+     } else {
+-        l2 = (u_char) strlen(value);
++        l2 = (unsigned char) strlen(value);
+     }
+     total_len = l1 + l2 + 1; /* "name" + "=" + "value" */
+ 
+diff --git a/libtac/lib/authen_r.c b/libtac/lib/authen_r.c
+index cc03e9b..3ffdc4d 100644
+--- a/libtac/lib/authen_r.c
++++ b/libtac/lib/authen_r.c
+@@ -106,7 +106,7 @@ int tac_authen_read(int fd, struct areply *re) {
+ 	}
+ 
+ 	/* decrypt the body */
+-	_tac_crypt((u_char *) tb, &th);
++	_tac_crypt((unsigned char *) tb, &th);
+ 
+ 	/* Convert network byte order to host byte order */
+ 	tb->msg_len = ntohs(tb->msg_len);
+diff --git a/libtac/lib/authen_s.c b/libtac/lib/authen_s.c
+index b33d954..3bbb51a 100644
+--- a/libtac/lib/authen_s.c
++++ b/libtac/lib/authen_s.c
+@@ -34,7 +34,7 @@
+ 
+ /* assume digest points to a buffer MD5_LEN size */
+ static void
+-digest_chap(u_char digest[MD5_LBLOCK], uint8_t id,
++digest_chap(unsigned char digest[MD5_LBLOCK], uint8_t id,
+             const char *pass, unsigned pass_len,
+             const char *chal, unsigned chal_len) {
+ 
+@@ -46,8 +46,8 @@ digest_chap(u_char digest[MD5_LBLOCK], uint8_t id,
+      * for a single call.
+      */
+     MD5_Update(&mdcontext, &id, sizeof(id));
+-    MD5_Update(&mdcontext, (const u_char *)pass, pass_len);
+-    MD5_Update(&mdcontext, (const u_char *)chal, chal_len);
++    MD5_Update(&mdcontext, (const unsigned char *)pass, pass_len);
++    MD5_Update(&mdcontext, (const unsigned char *)chal, chal_len);
+     MD5_Final(digest, &mdcontext);
+ }
+ 
+@@ -62,7 +62,7 @@ digest_chap(u_char digest[MD5_LBLOCK], uint8_t id,
+  *             LIBTAC_STATUS_ASSEMBLY_ERR
+  */
+ int tac_authen_send(int fd, const char *user, const char *pass, const char *tty,
+-		const char *r_addr, u_char action) {
++		const char *r_addr, unsigned char action) {
+ 
+ 	HDR *th; /* TACACS+ packet header */
+ 	struct authen_start tb; /* message body */
+@@ -72,7 +72,7 @@ int tac_authen_send(int fd, const char *user, const char *pass, const char *tty,
+ 	int ret = 0;
+ 	char *chal = "1234123412341234";
+ 	char *token = NULL;
+-	u_char *pkt = NULL;
++	unsigned char *pkt = NULL;
+ 	const uint8_t id = 5;
+ 
+ 	th = _tac_req_header(TAC_PLUS_AUTHEN, 0);
+@@ -99,7 +99,7 @@ int tac_authen_send(int fd, const char *user, const char *pass, const char *tty,
+ 	r_addr_len = strlen(r_addr);
+ 
+ 	if (!strcmp(tac_login, "chap")) {
+-		u_char digest[MD5_LBLOCK];
++		unsigned char digest[MD5_LBLOCK];
+ 
+ 		digest_chap(digest, id, pass, pass_len, chal, chal_len);
+ 
+@@ -159,7 +159,7 @@ int tac_authen_send(int fd, const char *user, const char *pass, const char *tty,
+ 	}
+ 
+ 	/* build the packet */
+-	pkt = (u_char *) xcalloc(1, bodylength + 10);
++	pkt = (unsigned char *) xcalloc(1, bodylength + 10);
+ 
+ 	bcopy(&tb, pkt + pkt_len, sizeof(tb)); /* packet body beginning */
+ 	pkt_len += sizeof(tb);
+diff --git a/libtac/lib/author_r.c b/libtac/lib/author_r.c
+index a677de0..19a72c9 100644
+--- a/libtac/lib/author_r.c
++++ b/libtac/lib/author_r.c
+@@ -43,7 +43,7 @@ int tac_author_read(int fd, struct areply *re) {
+ 	struct author_reply *tb = NULL;
+ 	size_t len_from_header, len_from_body;
+ 	ssize_t packet_read;
+-	u_char *pktp = NULL;
++	unsigned char *pktp = NULL;
+ 	char *msg = NULL;
+ 	int timeleft = 0;
+ 	re->msg = NULL;
+@@ -114,7 +114,7 @@ int tac_author_read(int fd, struct areply *re) {
+ 	}
+ 
+ 	/* decrypt the body */
+-	_tac_crypt((u_char *) tb, &th);
++	_tac_crypt((unsigned char *) tb, &th);
+ 
+ 	/* Convert network byte order to host byte order */
+ 	tb->msg_len = ntohs(tb->msg_len);
+@@ -127,7 +127,7 @@ int tac_author_read(int fd, struct areply *re) {
+ 	len_from_body = TAC_AUTHOR_REPLY_FIXED_FIELDS_SIZE + tb->msg_len
+ 			+ tb->data_len;
+ 
+-	pktp = (u_char *) tb + TAC_AUTHOR_REPLY_FIXED_FIELDS_SIZE;
++	pktp = (unsigned char *) tb + TAC_AUTHOR_REPLY_FIXED_FIELDS_SIZE;
+ 
+ 	/* cycle through the arguments supplied in the packet */
+ 	for (r = 0; r < tb->arg_cnt && r < TAC_PLUS_MAX_ARGCOUNT;
+@@ -141,7 +141,7 @@ int tac_author_read(int fd, struct areply *re) {
+ 			free(tb);
+ 			return re->status;
+ 		}
+-		len_from_body += sizeof(u_char); /* add arg length field's size*/
++		len_from_body += sizeof(unsigned char); /* add arg length field's size*/
+ 		len_from_body += *pktp; /* add arg length itself */
+ 		pktp++;
+ 	}
+@@ -160,8 +160,8 @@ int tac_author_read(int fd, struct areply *re) {
+ 	if (tb->msg_len) {
+ 		char *msg = (char *) xcalloc(1, tb->msg_len + 1);
+ 		bcopy(
+-				(u_char *) tb + TAC_AUTHOR_REPLY_FIXED_FIELDS_SIZE
+-						+ (tb->arg_cnt) * sizeof(u_char), msg, tb->msg_len);
++				(unsigned char *) tb + TAC_AUTHOR_REPLY_FIXED_FIELDS_SIZE
++						+ (tb->arg_cnt) * sizeof(unsigned char), msg, tb->msg_len);
+ 		msg[(int) tb->msg_len] = '\0';
+ 		re->msg = msg; /* freed by caller */
+ 	}
+@@ -170,8 +170,8 @@ int tac_author_read(int fd, struct areply *re) {
+ 	if (tb->data_len) {
+ 		char *smsg = (char *) xcalloc(1, tb->data_len + 1);
+ 		bcopy(
+-				(u_char *) tb + TAC_AUTHOR_REPLY_FIXED_FIELDS_SIZE
+-						+ (tb->arg_cnt) * sizeof(u_char) + tb->msg_len, smsg,
++				(unsigned char *) tb + TAC_AUTHOR_REPLY_FIXED_FIELDS_SIZE
++						+ (tb->arg_cnt) * sizeof(unsigned char) + tb->msg_len, smsg,
+ 				tb->data_len);
+ 		smsg[(int) tb->data_len] = '\0';
+ 		TACSYSLOG(LOG_ERR, "%s: reply message: %s", __FUNCTION__, smsg);
+@@ -190,7 +190,7 @@ int tac_author_read(int fd, struct areply *re) {
+ 		/*FALLTHRU*/
+ 
+ 	case TAC_PLUS_AUTHOR_STATUS_PASS_ADD: {
+-		u_char *argp;
++		unsigned char *argp;
+ 
+ 		if (!re->msg)
+ 			re->msg = xstrdup(author_ok_msg);
+@@ -198,8 +198,8 @@ int tac_author_read(int fd, struct areply *re) {
+ 
+ 		/* add attributes received to attribute list returned to
+ 		 the client */
+-		pktp = (u_char *) tb + TAC_AUTHOR_REPLY_FIXED_FIELDS_SIZE;
+-		argp = pktp + (tb->arg_cnt * sizeof(u_char)) + tb->msg_len
++		pktp = (unsigned char *) tb + TAC_AUTHOR_REPLY_FIXED_FIELDS_SIZE;
++		argp = pktp + (tb->arg_cnt * sizeof(unsigned char)) + tb->msg_len
+ 				+ tb->data_len;
+ 		TACSYSLOG(LOG_DEBUG, "Args cnt %d", tb->arg_cnt);
+ 		/* argp points to current argument string
+diff --git a/libtac/lib/author_s.c b/libtac/lib/author_s.c
+index d067e2c..db05008 100644
+--- a/libtac/lib/author_s.c
++++ b/libtac/lib/author_s.c
+@@ -37,14 +37,14 @@ int tac_author_send(int fd, const char *user, char *tty, char *r_addr,
+ 
+ 	HDR *th;
+ 	struct author tb;
+-	u_char user_len, port_len, r_addr_len;
++	unsigned char user_len, port_len, r_addr_len;
+ 	struct tac_attrib *a;
+ 	int i = 0; /* attributes count */
+ 	int pkt_len = 0; /* current packet length */
+ 	int pktl = 0; /* temporary storage for previous pkt_len values */
+ 	int w; /* write() return value */
+-	u_char *pkt = NULL; /* packet building pointer */
+-	/* u_char *pktp; *//* obsolete */
++	unsigned char *pkt = NULL; /* packet building pointer */
++	/* unsigned char *pktp; *//* obsolete */
+ 	int ret = 0;
+ 
+ 	th = _tac_req_header(TAC_PLUS_AUTHOR, 0);
+@@ -59,9 +59,9 @@ int tac_author_send(int fd, const char *user, char *tty, char *r_addr,
+ 					__FUNCTION__, user,
+ 					tty, r_addr, tac_encryption ? "yes" : "no");
+ 
+-	user_len = (u_char) strlen(user);
+-	port_len = (u_char) strlen(tty);
+-	r_addr_len = (u_char) strlen(r_addr);
++	user_len = (unsigned char) strlen(user);
++	port_len = (unsigned char) strlen(tty);
++	r_addr_len = (unsigned char) strlen(r_addr);
+ 
+ 	tb.authen_method = tac_authen_method;
+ 	tb.priv_lvl = tac_priv_lvl;
+@@ -83,7 +83,7 @@ int tac_author_send(int fd, const char *user, char *tty, char *r_addr,
+ 	tb.r_addr_len = r_addr_len;
+ 
+ 	/* allocate packet */
+-	pkt = (u_char *) xcalloc(1, TAC_AUTHOR_REQ_FIXED_FIELDS_SIZE);
++	pkt = (unsigned char *) xcalloc(1, TAC_AUTHOR_REQ_FIXED_FIELDS_SIZE);
+ 	pkt_len = sizeof(tb);
+ 
+ 	/* fill attribute length fields */
+@@ -91,7 +91,7 @@ int tac_author_send(int fd, const char *user, char *tty, char *r_addr,
+ 	while (a) {
+ 		pktl = pkt_len;
+ 		pkt_len += sizeof(a->attr_len);
+-		pkt = (u_char*) xrealloc(pkt, pkt_len);
++		pkt = (unsigned char*) xrealloc(pkt, pkt_len);
+ 
+ 		/* bad method: realloc() is allowed to return different pointer
+ 		 with each call
+@@ -120,7 +120,7 @@ int tac_author_send(int fd, const char *user, char *tty, char *r_addr,
+ #define PUTATTR(data, len) \
+     pktl = pkt_len; \
+     pkt_len += len; \
+-    pkt = (u_char*) xrealloc(pkt, pkt_len); \
++    pkt = (unsigned char*) xrealloc(pkt, pkt_len); \
+     bcopy(data, pkt + pktl, len);
+ 
+ 	/* fill user and port fields */
+diff --git a/libtac/lib/cont_s.c b/libtac/lib/cont_s.c
+index e281567..50c01d9 100644
+--- a/libtac/lib/cont_s.c
++++ b/libtac/lib/cont_s.c
+@@ -41,7 +41,7 @@ int tac_cont_send_seq(int fd, const char *pass, int seq) {
+ 	int pass_len, bodylength, w;
+ 	int pkt_len = 0;
+ 	int ret = 0;
+-	u_char *pkt = NULL;
++	unsigned char *pkt = NULL;
+ 
+ 	th = _tac_req_header(TAC_PLUS_AUTHEN, 1);
+ 
+@@ -75,7 +75,7 @@ int tac_cont_send_seq(int fd, const char *pass, int seq) {
+ 	}
+ 
+ 	/* build the packet */
+-	pkt = (u_char *) xcalloc(1, bodylength);
++	pkt = (unsigned char *) xcalloc(1, bodylength);
+ 
+ 	bcopy(&tb, pkt + pkt_len, TAC_AUTHEN_CONT_FIXED_FIELDS_SIZE); /* packet body beginning */
+ 	pkt_len += TAC_AUTHEN_CONT_FIXED_FIELDS_SIZE;
+diff --git a/libtac/lib/crypt.c b/libtac/lib/crypt.c
+index b3e3158..5bf0107 100644
+--- a/libtac/lib/crypt.c
++++ b/libtac/lib/crypt.c
+@@ -36,7 +36,7 @@
+    Use data from packet header and secret, which
+    should be a global variable */
+ static void _tac_md5_pad(const HDR *hdr,
+-        u_char *new_digest, u_char *old_digest)  {
++        unsigned char *new_digest, unsigned char *old_digest)  {
+     unsigned tac_secret_len = strlen(tac_secret);
+     MD5_CTX mdcontext;
+ 
+@@ -45,8 +45,8 @@ static void _tac_md5_pad(const HDR *hdr,
+ 
+     /* place session_id, key, version and seq_no in buffer */
+     MD5_Init(&mdcontext);
+-    MD5_Update(&mdcontext, (const u_char *) &hdr->session_id, sizeof(hdr->session_id));
+-    MD5_Update(&mdcontext, (const u_char *) tac_secret, tac_secret_len);
++    MD5_Update(&mdcontext, (const unsigned char *) &hdr->session_id, sizeof(hdr->session_id));
++    MD5_Update(&mdcontext, (const unsigned char *) tac_secret, tac_secret_len);
+     MD5_Update(&mdcontext, &hdr->version, sizeof(hdr->version));
+     MD5_Update(&mdcontext, &hdr->seq_no, sizeof(hdr->seq_no));
+ 
+@@ -62,12 +62,12 @@ static void _tac_md5_pad(const HDR *hdr,
+ /* Perform encryption/decryption on buffer. This means simply XORing
+    each byte from buffer with according byte from pseudo-random
+    pad. */
+-void _tac_crypt(u_char *buf, const HDR *th) {
++void _tac_crypt(unsigned char *buf, const HDR *th) {
+     unsigned i, j, length = ntohl(th->datalength);
+  
+     /* null operation if no encryption requested */
+     if((tac_secret != NULL) && (th->encryption & TAC_PLUS_UNENCRYPTED_FLAG) != TAC_PLUS_UNENCRYPTED_FLAG) {
+-        u_char digest[MD5_LBLOCK];
++        unsigned char digest[MD5_LBLOCK];
+  
+         for (i=0; i<length; i++) {
+             j = i % MD5_LBLOCK;
+diff --git a/libtac/lib/header.c b/libtac/lib/header.c
+index 2156d2a..7331947 100644
+--- a/libtac/lib/header.c
++++ b/libtac/lib/header.c
+@@ -66,7 +66,7 @@ int tac_readtimeout_enable = 0;
+  * field depends on the TACACS+ request type and thus it
+  * cannot be predefined.
+  */
+-HDR *_tac_req_header(u_char type, int cont_session) {
++HDR *_tac_req_header(unsigned char type, int cont_session) {
+     HDR *th;
+ 
+     th=(HDR *) xcalloc(1, TAC_PLUS_HDR_SIZE);
