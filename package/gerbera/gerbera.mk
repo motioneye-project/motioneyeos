@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GERBERA_VERSION = 1.3.4
+GERBERA_VERSION = 1.4.0
 GERBERA_SITE = $(call github,gerbera,gerbera,v$(GERBERA_VERSION))
 GERBERA_LICENSE = GPL-2.0
 GERBERA_LICENSE_FILES = LICENSE.md
@@ -61,6 +61,13 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
 GERBERA_DEPENDENCIES += libiconv
+endif
+
+ifeq ($(BR2_PACKAGE_LIBMATROSKA),y)
+GERBERA_DEPENDENCIES += libmatroska
+GERBERA_CONF_OPTS += -DWITH_MATROSKA=ON
+else
+GERBERA_CONF_OPTS += -DWITH_MATROSKA=OFF
 endif
 
 ifeq ($(BR2_PACKAGE_MYSQL),y)
