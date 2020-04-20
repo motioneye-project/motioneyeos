@@ -2166,9 +2166,6 @@ F:	package/libfreeimage/
 N:	Renaud Aubin <root@renaud.io>
 F:	package/libhttpparser/
 
-N:	Rhys Williams <github@wilberforce.co.nz>
-F:	package/lirc-tools/
-
 N:	Ricardo Martincoski <ricardo.martincoski@datacom.com.br>
 F:	package/atop/
 F:	package/thermald/
