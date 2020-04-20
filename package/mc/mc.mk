@@ -11,6 +11,8 @@ MC_LICENSE = GPL-3.0+
 MC_LICENSE_FILES = COPYING
 MC_DEPENDENCIES = libglib2 host-pkgconf $(TARGET_NLS_DEPENDENCIES)
 MC_CONF_ENV = LIBS=$(TARGET_NLS_LIBS)
+# We're patching misc/Makefile.am
+MC_AUTORECONF = YES
 
 ifeq ($(BR2_PACKAGE_GPM),y)
 MC_CONF_OPTS += --with-gpm-mouse
