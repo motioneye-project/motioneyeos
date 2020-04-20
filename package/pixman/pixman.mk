@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-PIXMAN_VERSION = 0.38.4
-PIXMAN_SOURCE = pixman-$(PIXMAN_VERSION).tar.bz2
-PIXMAN_SITE = http://xorg.freedesktop.org/releases/individual/lib
+PIXMAN_VERSION = 0.40.0
+PIXMAN_SOURCE = pixman-$(PIXMAN_VERSION).tar.xz
+PIXMAN_SITE = https://xorg.freedesktop.org/releases/individual/lib
 PIXMAN_LICENSE = MIT
 PIXMAN_LICENSE_FILES = COPYING
 

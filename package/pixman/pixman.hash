@@ -1,6 +1,6 @@
-# From https://lists.x.org/archives/xorg-announce/2019-April/002991.html
-md5 16a350a8a40116ddf67632a1d2623711  pixman-0.38.4.tar.bz2
-sha1 87e1abc91ac4e5dfcc275f744f1d0ec3277ee7cd  pixman-0.38.4.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2020-April/003043.html
+sha256  da8ed9fe2d1c5ef8ce5d1207992db959226bd4e37e3f88acf908fd9a71e2704e  pixman-0.40.0.tar.xz
+sha512  8a60edb113d68791b41bd90b761ff7b3934260cb3dada3234c9351416f61394e4157353bc4d61b8f6c2c619de470f6feefffb4935bfcf79d291ece6285de7270  pixman-0.40.0.tar.xz
+
 # Locally computed
-sha256 84abb7fa2541af24d9c3b34bf75d6ac60cc94ac4410061bbb295b66a29221550  pixman-0.38.4.tar.bz2
-sha256 fac9270f0987b96ff4533fca3548c633e02083cbba4a0172a3b149b2e4019793  COPYING
+sha256  fac9270f0987b96ff4533fca3548c633e02083cbba4a0172a3b149b2e4019793  COPYING
