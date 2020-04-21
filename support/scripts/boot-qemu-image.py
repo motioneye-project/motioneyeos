@@ -2,9 +2,10 @@
 
 # This script expect to run from the Buildroot top directory.
 
+import os
 import pexpect
 import sys
-import os
+import time
 
 
 def main():
@@ -25,6 +26,10 @@ def main():
 
     # We want only stdout into the log to avoid double echo
     child.logfile = sys.stdout
+
+    # Let the spawn actually try to fork+exec to the wrapper, and then
+    # let the wrapper exec the qemu process.
+    time.sleep(1)
 
     try:
         child.expect(["buildroot login:", pexpect.TIMEOUT], timeout=60)
