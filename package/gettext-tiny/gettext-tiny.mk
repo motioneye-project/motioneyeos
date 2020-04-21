@@ -14,12 +14,11 @@ HOST_GETTEXT_TINY_LICENSE_FILES = LICENSE extra/COPYING
 GETTEXT_TINY_PROVIDES = gettext
 
 # needed for gettextize
-GETTEXT_TINY_ARCHIVE_VERSION = 0.19.8
+GETTEXT_TINY_ARCHIVE_VERSION = 0.20.1
 
 GETTEXT_TINY_EXTRA_GETTEXT_FILES = \
 	gettext-tools/misc/gettextize.in \
 	gettext-tools/po/Makevars.template \
-	gettext-runtime/m4/lock.m4 \
 	gettext-runtime/po/boldquot.sed \
 	gettext-runtime/po/en@boldquot.header \
 	gettext-runtime/po/en@quot.header \
@@ -83,7 +82,6 @@ define HOST_GETTEXT_TINY_INSTALL_CMDS
 
 	$(INSTALL) -m 0755 -D $(@D)/gettextize $(HOST_DIR)/bin/gettextize
 	$(INSTALL) -m 0644 -D $(@D)/build-aux/config.rpath $(HOST_DIR)/share/gettext-tiny/config.rpath
-	$(INSTALL) -m 0644 -D $(@D)/extra/lock.m4 $(HOST_DIR)/share/gettext-tiny/m4/lock.m4
 	$(INSTALL) -m 0644 -D $(@D)/extra/Makefile.in.in $(HOST_DIR)/share/gettext-tiny/po/Makefile.in.in
 	$(INSTALL) -m 0644 -D $(@D)/extra/boldquot.sed $(HOST_DIR)/share/gettext-tiny/po/boldquot.sed
 	$(INSTALL) -m 0644 -D $(@D)/extra/en@boldquot.header $(HOST_DIR)/share/gettext-tiny/po/en@boldquot.header
