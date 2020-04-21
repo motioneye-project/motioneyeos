@@ -1,4 +1,4 @@
 # From https://www.kernel.org/pub/software/network/iw/sha256sums.asc
-sha256	04afe857bc8dea67e461946de30ae1b012954b6965839c5c3fda7d0ed15505d5	iw-5.3.tar.xz
+sha256  a2469f677088d7b1070a7fbb28f3c747041697e8f6ec70783339cb1bc27a395f  iw-5.4.tar.xz
 # Locally calculated
-sha256	5932fb70481e128940168a5fdf133e6454293c0865c7e757874b235cb6daa2af	COPYING
+sha256  5932fb70481e128940168a5fdf133e6454293c0865c7e757874b235cb6daa2af  COPYING

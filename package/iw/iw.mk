@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-IW_VERSION = 5.3
+IW_VERSION = 5.4
 IW_SOURCE = iw-$(IW_VERSION).tar.xz
 IW_SITE = $(BR2_KERNEL_MIRROR)/software/network/iw
 IW_LICENSE = ISC
