@@ -194,6 +194,7 @@ N:	Andrey Yurovsky <yurovsky@gmail.com>
 F:	package/rauc/
 
 N:	Angelo Compagnucci <angelo.compagnucci@gmail.com>
+F:	package/apparmor/
 F:	package/corkscrew/
 F:	package/fail2ban/
 F:	package/i2c-tools/
