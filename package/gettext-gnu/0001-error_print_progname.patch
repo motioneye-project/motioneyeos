@@ -1,6 +1,11 @@
---- gettext-0.16.1.oorig/gettext-tools/gnulib-lib/error.h	2006-11-27 18:14:50.000000000 +0100
-+++ gettext-0.16.1/gettext-tools/gnulib-lib/error.h	2007-06-20 13:29:32.000000000 +0200
-@@ -50,7 +50,10 @@ extern void error_at_line (int __status,
+[Updated to apply cleanly with 0.20.1]
+Signed-off-by: Adam Duskett <Aduskett@gmail.com>
+---
+diff --git a/gettext-tools/gnulib-lib/error.h b/gettext-tools/gnulib-lib/error.h
+index 61771cc..4221684 100644
+--- a/gettext-tools/gnulib-lib/error.h
++++ b/gettext-tools/gnulib-lib/error.h
+@@ -68,7 +68,10 @@ extern void error_at_line (int __status, int __errnum, const char *__fname,
  /* If NULL, error will flush stdout, then print on stderr the program
     name, a colon and a space.  Otherwise, error will call this
     function without parameters instead.  */
@@ -10,5 +15,6 @@
 +#endif
 +void (*error_print_progname) (void);
  
- /* This variable is incremented each time `error' is called.  */
+ /* This variable is incremented each time 'error' is called.  */
  extern DLL_VARIABLE unsigned int error_message_count;
+--
