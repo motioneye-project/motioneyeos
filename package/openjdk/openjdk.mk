@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-OPENJDK_VERSION_MAJOR = 14
-OPENJDK_VERSION_MINOR = 36
+OPENJDK_VERSION_MAJOR = 14.0.1
+OPENJDK_VERSION_MINOR = 7
 OPENJDK_VERSION = $(OPENJDK_VERSION_MAJOR)+$(OPENJDK_VERSION_MINOR)
 OPENJDK_SOURCE = jdk-$(OPENJDK_VERSION).tar.gz
 OPENJDK_SITE = https://hg.openjdk.java.net/jdk-updates/jdk14u/archive
