@@ -1,6 +1,7 @@
 config BR2_PACKAGE_APCUPSD
 	bool "apcupsd"
 	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU # fork()
 	help
 	  A daemon for controlling APC UPSes.
@@ -64,6 +65,6 @@ comment "usb support needs a toolchain w/ threads"
 
 endif
 
-comment "apcupsd needs a toolchain w/ C++"
+comment "apcupsd needs a toolchain w/ C++, threads"
 	depends on BR2_USE_MMU
-	depends on !BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
