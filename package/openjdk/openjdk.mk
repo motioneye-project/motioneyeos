@@ -4,11 +4,20 @@
 #
 ################################################################################
 
+ifeq ($(BR2_OPENJDK_VERSION_LATEST),y)
 OPENJDK_VERSION_MAJOR = 14.0.1
 OPENJDK_VERSION_MINOR = 7
 OPENJDK_VERSION = $(OPENJDK_VERSION_MAJOR)+$(OPENJDK_VERSION_MINOR)
 OPENJDK_SOURCE = jdk-$(OPENJDK_VERSION).tar.gz
 OPENJDK_SITE = https://hg.openjdk.java.net/jdk-updates/jdk14u/archive
+else
+OPENJDK_VERSION_MAJOR = 11.0.7
+OPENJDK_VERSION_MINOR = 10
+OPENJDK_VERSION = $(OPENJDK_VERSION_MAJOR)+$(OPENJDK_VERSION_MINOR)
+OPENJDK_SOURCE = jdk-$(OPENJDK_VERSION).tar.gz
+OPENJDK_SITE = https://hg.openjdk.java.net/jdk-updates/jdk11u/archive
+endif
+
 OPENJDK_LICENSE = GPL-2.0+ with exception
 OPENJDK_LICENSE_FILES = LICENSE
 

@@ -48,6 +48,20 @@ config BR2_PACKAGE_OPENJDK
 
 if BR2_PACKAGE_OPENJDK
 
+choice
+	prompt "openjdk version"
+	default BR2_OPENJDK_VERSION_LATEST
+	help
+	  Select the version of OpenJDK you wish to use.
+
+config BR2_OPENJDK_VERSION_LTS
+	bool "LTS (OpenJDK 11)"
+
+config BR2_OPENJDK_VERSION_LATEST
+	bool "latest (OpenJDK 14)"
+
+endchoice
+
 config BR2_PACKAGE_OPENJDK_FULL_JDK
 	bool "Build the full JDK"
 	help
