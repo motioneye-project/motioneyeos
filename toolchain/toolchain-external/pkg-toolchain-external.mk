@@ -499,6 +499,12 @@ define TOOLCHAIN_EXTERNAL_FIXUP_UCLIBCNG_LDSO
 	fi
 endef
 
+define TOOLCHAIN_EXTERNAL_INSTALL_TARGET_LDD
+	$(Q)if test -f $(STAGING_DIR)/usr/bin/ldd ; then \
+		$(INSTALL) -D $(STAGING_DIR)/usr/bin/ldd $(TARGET_DIR)/usr/bin/ldd ; \
+		$(SED) 's:.*/bin/bash:#!/bin/sh:' $(TARGET_DIR)/usr/bin/ldd ; \
+	fi
+endef
 
 ################################################################################
 # inner-toolchain-external-package -- defines the generic installation rules
@@ -593,6 +599,7 @@ define $(2)_INSTALL_TARGET_CMDS
 	$$(TOOLCHAIN_EXTERNAL_INSTALL_TARGET_LIBS)
 	$$(TOOLCHAIN_EXTERNAL_INSTALL_TARGET_GDBSERVER)
 	$$(TOOLCHAIN_EXTERNAL_FIXUP_UCLIBCNG_LDSO)
+	$$(TOOLCHAIN_EXTERNAL_INSTALL_TARGET_LDD)
 endef
 
 # Call the generic package infrastructure to generate the necessary
