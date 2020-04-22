@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBSPATIALINDEX_VERSION = 1.9.0
+LIBSPATIALINDEX_VERSION = 1.9.3
 LIBSPATIALINDEX_SITE = \
 	https://github.com/libspatialindex/libspatialindex/releases/download/$(LIBSPATIALINDEX_VERSION)
 LIBSPATIALINDEX_SOURCE = spatialindex-src-$(LIBSPATIALINDEX_VERSION).tar.bz2
