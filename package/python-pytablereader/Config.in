@@ -1,6 +1,6 @@
 config BR2_PACKAGE_PYTHON_PYTABLEREADER
 	bool "python-pytablereader"
-	depends on BR2_PACKAGE_PYTHON3 # python-pathpy
+	depends on BR2_PACKAGE_PYTHON3 # python-mbstrdecoder, python-pathpy
 	select BR2_PACKAGE_PYTHON_BEAUTIFULSOUP4 # runtime
 	select BR2_PACKAGE_PYTHON_DATAPROPERTY # runtime
 	select BR2_PACKAGE_PYTHON_JSONSCHEMA # runtime
