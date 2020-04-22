@@ -11,7 +11,6 @@ config BR2_PACKAGE_OPENJDK_ARCH_SUPPORTS
 	default y if BR2_m68k
 	default y if BR2_powerpc || BR2_powerpc64 || BR2_powerpc64le
 	default y if BR2_sh
-	default y if BR2_sparc || BR2_sparc64
 
 config BR2_PACKAGE_OPENJDK
 	bool "openjdk"
