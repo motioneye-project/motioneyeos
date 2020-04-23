@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-UACME_VERSION = 1.2.2
+UACME_VERSION = 1.2.3
 # Released versions are on branch upstream/latest, tagged as
 # upstream/X.Y.Z Do not use vX.Y.Z tags from master, as they do not
 # include .tarball-version
