@@ -24,7 +24,7 @@ GCR_LICENSE = LGPL-2.1+
 GCR_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_PACKAGE_GOBJECT_INTROSPECTION),y)
-GCR_DEPENDENCIES += gobject-introspection
+GCR_DEPENDENCIES += gobject-introspection host-libxslt
 GCR_CONF_OPTS += --with-introspection
 else
 GCR_CONF_OPTS += --without-introspection
