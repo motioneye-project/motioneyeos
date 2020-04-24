@@ -1,6 +1,6 @@
 # retrieved by scancpan from http://cpan.metacpan.org/
-md5    53af7e7849492a8e3994ee379d12e348 Moo-2.003006.tar.gz
-sha256 bcb2092ab18a45005b5e2e84465ebf3a4999d8e82a43a09f5a94d859ae7f2472 Moo-2.003006.tar.gz
+md5  e542104553d616b15631b5c66ccee904  Moo-2.004000.tar.gz
+sha256  323240d000394cf38ec42e865b05cb8928f625c82c9391cd2cdc72b33c51b834  Moo-2.004000.tar.gz
 
 # computed by scancpan
-sha256 88f4a8719c584d756dcfeebc7f35643066354188bfb57c672fbafcd44e044e9c LICENSE
+sha256  0f2d6b537f7a735c981511875d832bc8ff767bf97d62848cf0bada964e40aadd  LICENSE
