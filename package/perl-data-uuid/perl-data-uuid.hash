@@ -1,6 +1,6 @@
 # retrieved by scancpan from http://cpan.metacpan.org/
-md5    71510bbcce760c394591fca83a9b5e6d Data-UUID-1.224.tar.gz
-sha256 c958c17502bbef5eccf40c040874895747f7f9b9f9e5192c18688370981bf47c Data-UUID-1.224.tar.gz
+md5  13468e0fb65a0b5ce27b8628cb2f0109  Data-UUID-1.226.tar.gz
+sha256  093d57ffa0d411a94bafafae495697db26f5c9d0277198fe3f7cf2be22996453  Data-UUID-1.226.tar.gz
 
 # computed by scancpan
-sha256 0560c8eea8e1fb8173faa6c2e9b7e9f8728b8ae8250a814709a53c30b778d5fb LICENSE
+sha256  0560c8eea8e1fb8173faa6c2e9b7e9f8728b8ae8250a814709a53c30b778d5fb  LICENSE
