@@ -1,0 +1,48 @@
+From c9fe40d9386a5e4cf99f44df9b98382d83f1c4f4 Mon Sep 17 00:00:00 2001
+From: Angelo Compagnucci <angelo@amarulasolutions.com>
+Date: Fri, 24 Apr 2020 17:34:24 +0200
+Subject: [PATCH] parser: binutils: fix compilation with libintl
+
+When libintl is available on the system, we need to link against the
+libintl library too.
+
+Signed-off-by: Angelo Compagnucci <angelo@amarulasolutions.com>
+---
+ binutils/Makefile | 4 ++++
+ parser/Makefile   | 5 +++++
+ 2 files changed, 9 insertions(+)
+
+diff --git a/binutils/Makefile b/binutils/Makefile
+index 11459bec..d8c1b634 100644
+--- a/binutils/Makefile
++++ b/binutils/Makefile
+@@ -56,6 +56,10 @@ SBINTOOLS = aa-status
+ 
+ AALIB = -Wl,-Bstatic -lapparmor  -Wl,-Bdynamic -lpthread
+ 
++ifdef WITH_LIBINTL
++	AALIB += -lintl
++endif
++
+ ifdef USE_SYSTEM
+   # Using the system libapparmor so Makefile dependencies can't be used
+   LIBAPPARMOR_A =
+diff --git a/parser/Makefile b/parser/Makefile
+index eab64be9..998230ee 100644
+--- a/parser/Makefile
++++ b/parser/Makefile
+@@ -91,6 +91,11 @@ AAREOBJECTS = $(AAREOBJECT)
+ AARE_LDFLAGS = -static-libgcc -static-libstdc++ -L. $(LDFLAGS)
+ AALIB = -Wl,-Bstatic -lapparmor -Wl,-Bdynamic -lpthread
+ 
++ifdef WITH_LIBINTL
++	AALIB += -lintl
++endif
++
++
+ ifdef USE_SYSTEM
+   # Using the system libapparmor so Makefile dependencies can't be used
+   LIBAPPARMOR_A =
+-- 
+2.25.1
+
