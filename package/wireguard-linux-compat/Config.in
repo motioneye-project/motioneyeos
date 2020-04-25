@@ -3,7 +3,7 @@ config BR2_PACKAGE_WIREGUARD_LINUX_COMPAT
 	depends on BR2_LINUX_KERNEL
 	# kernel module requires 3.10+
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
-	# kernel module incompatible with 5.6+
+	# kernel module in upstream linux since 5.6
 	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_6
 	help
 	  WireGuard is an extremely simple yet fast and modern VPN
@@ -23,5 +23,4 @@ config BR2_PACKAGE_WIREGUARD_LINUX_COMPAT
 
 comment "wireguard-linux-compat needs a toolchain w/ headers >= 3.10"
 	depends on BR2_LINUX_KERNEL
-	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_6
 	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
