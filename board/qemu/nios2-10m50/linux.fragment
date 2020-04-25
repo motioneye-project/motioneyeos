@@ -1,3 +1,3 @@
 # Embed the DTB in the kernel image
 CONFIG_NIOS2_DTB_SOURCE_BOOL=y
-CONFIG_NIOS2_DTB_SOURCE="arch/nios2/boot/dts/10m50_devboard.dts"
+CONFIG_NIOS2_DTB_SOURCE="10m50_devboard.dts"
