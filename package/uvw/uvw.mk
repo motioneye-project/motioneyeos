@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-UVW_VERSION = 2.3.1_libuv-v1.34
+UVW_VERSION = 2.5.0_libuv-v1.37
 UVW_SITE = $(call github,skypjack,uvw,v$(UVW_VERSION))
 UVW_INSTALL_STAGING = YES
 UVW_INSTALL_TARGET = NO
