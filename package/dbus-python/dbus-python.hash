@@ -1,6 +1,6 @@
 # Locally calculated after checking pgp signature
-sha256	cdd4de2c4f5e58f287b12013ed7b41dee81d503c8d0d2397c5bd2fb01badf260	dbus-python-1.2.12.tar.gz
+sha256  11238f1d86c995d8aed2e22f04a1e3779f0d70e587caffeab4857f3c662ed5a4  dbus-python-1.2.16.tar.gz
 
 # Locally calculated
-sha256	1e4562245383fdb5203b1769789e5b28bba21af4923aea7e8b2614f7f93623c0	COPYING
-sha256	064523e3ab64d6f03904132b2cc4a1bd8500586edb4cd050c2ff2b96aed4c33b	dbus-gmain/COPYING
+sha256  1e4562245383fdb5203b1769789e5b28bba21af4923aea7e8b2614f7f93623c0  COPYING
+sha256  064523e3ab64d6f03904132b2cc4a1bd8500586edb4cd050c2ff2b96aed4c33b  dbus-gmain/COPYING
