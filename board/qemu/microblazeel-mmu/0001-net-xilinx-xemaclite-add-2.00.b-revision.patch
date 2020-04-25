@@ -1,0 +1,34 @@
+From e96b73478232aa42b773cd19371808af69fd4b95 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@gmail.com>
+Date: Sat, 25 Apr 2020 09:49:11 +0200
+Subject: [PATCH] net: xilinx: xemaclite: add 2.00.b revision
+
+Patch added for the kernel 3.14
+- fix networking in Qemu using a small patch
+- disable DTS, because linux.bin does not include any DTB the
+  default Qemu included DTB is used and this is okay and works fine
+
+https://git.buildroot.net/buildroot/commit/board/qemu/microblazebe-mmu/xilinx-xemaclite.patch?id=fa2798548368d51998fad18d7f6d1ae0ed065b33
+
+[Romain: convert to git format]
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+Cc: Waldemar Brodkorb <wbx@openadk.org>
+---
+ drivers/net/ethernet/xilinx/xilinx_emaclite.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/ethernet/xilinx/xilinx_emaclite.c b/drivers/net/ethernet/xilinx/xilinx_emaclite.c
+index 0de52e70abcc..d8c13140ca77 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_emaclite.c
++++ b/drivers/net/ethernet/xilinx/xilinx_emaclite.c
+@@ -1278,6 +1278,7 @@ static const struct of_device_id xemaclite_of_match[] = {
+ 	{ .compatible = "xlnx,opb-ethernetlite-1.01.b", },
+ 	{ .compatible = "xlnx,xps-ethernetlite-1.00.a", },
+ 	{ .compatible = "xlnx,xps-ethernetlite-2.00.a", },
++	{ .compatible = "xlnx,xps-ethernetlite-2.00.b", },
+ 	{ .compatible = "xlnx,xps-ethernetlite-2.01.a", },
+ 	{ .compatible = "xlnx,xps-ethernetlite-3.00.a", },
+ 	{ /* end of list */ },
+-- 
+2.25.3
+

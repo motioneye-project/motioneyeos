@@ -24,7 +24,7 @@ BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE="4.19.91"
 BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
 BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="board/qemu/microblazeel-mmu/linux.config"
 BR2_LINUX_KERNEL_LINUX_BIN=y
-BR2_LINUX_KERNEL_PATCH="board/qemu/microblazeel-mmu/xilinx-xemaclite.patch"
+BR2_LINUX_KERNEL_PATCH="board/qemu/microblazeel-mmu/0001-net-xilinx-xemaclite-add-2.00.b-revision.patch"
 
 # host-qemu for gitlab testing
 BR2_PACKAGE_HOST_QEMU=y
