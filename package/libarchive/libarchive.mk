@@ -9,7 +9,6 @@ LIBARCHIVE_SITE = https://www.libarchive.de/downloads
 LIBARCHIVE_INSTALL_STAGING = YES
 LIBARCHIVE_LICENSE = BSD-2-Clause, BSD-3-Clause, CC0-1.0, OpenSSL, Apache-2.0
 LIBARCHIVE_LICENSE_FILES = COPYING
-LIBARCHIVE_CONF_OPTS = --without-mbedtls
 
 ifeq ($(BR2_PACKAGE_LIBARCHIVE_BSDTAR),y)
 ifeq ($(BR2_STATIC_LIBS),y)
@@ -90,6 +89,13 @@ ifeq ($(BR2_PACKAGE_LZO),y)
 LIBARCHIVE_DEPENDENCIES += lzo
 else
 LIBARCHIVE_CONF_OPTS += --without-lzo2
+endif
+
+ifeq ($(BR2_PACKAGE_MBEDTLS),y)
+LIBARCHIVE_DEPENDENCIES += mbedtls
+LIBARCHIVE_CONF_OPTS += --with-mbedtls
+else
+LIBARCHIVE_CONF_OPTS += --without-mbedtls
 endif
 
 ifeq ($(BR2_PACKAGE_NETTLE),y)
