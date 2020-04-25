@@ -111,13 +111,6 @@ else
 LIBARCHIVE_CONF_OPTS += --without-zlib
 endif
 
-ifeq ($(BR2_PACKAGE_ZSTD),y)
-LIBARCHIVE_CONF_OPTS += --with-zstd
-LIBARCHIVE_DEPENDENCIES += zstd
-else
-LIBARCHIVE_CONF_OPTS += --without-zstd
-endif
-
 # libarchive requires LZMA with thread support in the toolchain
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS)$(BR2_PACKAGE_XZ),yy)
 LIBARCHIVE_DEPENDENCIES += xz
