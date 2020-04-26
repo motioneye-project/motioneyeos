@@ -146,6 +146,13 @@ endif
 
 comment "Legacy options removed in 2020.05"
 
+config BR2_PACKAGE_PYTHON_PYCRYPTO
+	bool "python-pycrypto package removed"
+	select BR2_LEGACY
+	help
+	  This package has been removed, use python-pycryptodomex
+	  instead.
+
 config BR2_PACKAGE_MTDEV2TUIO
 	bool "mtdev2tuio package removed"
 	select BR2_LEGACY

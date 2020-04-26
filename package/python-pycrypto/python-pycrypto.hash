@@ -1,7 +1,0 @@
-# Locally calculated after checking pgp signature
-sha256  f2ce1e989b272cfcb677616763e0a2e7ec659effa67a88aa92b3a65528f60a3c  pycrypto-2.6.1.tar.gz
-# Locally computed
-sha256  15925a98d05c6d086c30943e4eacdbd361bcf76daa109b6e6dfc9d0c4ad9ed64  COPYRIGHT
-sha256  10c41e1aaf84bd3546d1ff7ef89454817744fd2c18cdd80a137e802095448016  LEGAL/copy/LICENSE.libtom
-sha256  253a271c681cd4b3f9503659fe754ee305efe68ebb6e8733b7f436d73845a32c  LEGAL/copy/LICENSE.python-2.2
-sha256  96f9a25274a59843715a26986e4a2427c312a1d86b9207f26fcafcea47a417fe  LEGAL/copy/LICENSE.original
