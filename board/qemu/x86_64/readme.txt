@@ -5,5 +5,3 @@ Run the emulation with:
 Optionally add -smp N to emulate a SMP system with N CPUs.
 
 The login prompt will appear in the graphical window.
-
-Tested with QEMU 2.12.0

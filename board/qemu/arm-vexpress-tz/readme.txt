@@ -29,8 +29,6 @@ number of cores.
 Note: "-netdev user,id=vmnic -device virtio-net-device,netdev=vmnic"
 brings network support that is used i.e. in OP-TEE regression tests.
 
-Tested with QEMU 2.12.0, and 3.1.0.
-
 
 -- Boot Details --
 

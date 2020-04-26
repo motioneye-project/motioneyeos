@@ -7,5 +7,3 @@ graphical window is the framebuffer.
 
 If you want to emulate more cores change "-smp 1" to "-smp 2" for
 dual-core or even "smp -4" for a quad-core configuration.
-
-Tested with QEMU 2.12.0
