@@ -16,6 +16,30 @@ config BR2_PACKAGE_UACME
 
 if BR2_PACKAGE_UACME
 
+choice
+	prompt "Crypto Backend"
+	help
+	  Select crypto library to be used in uacme.
+
+config BR2_PACKAGE_UACME_GNUTLS
+	bool "gnutls"
+	depends on BR2_PACKAGE_GNUTLS
+
+config BR2_PACKAGE_UACME_MBEDTLS
+	bool "mbedtls"
+	depends on BR2_PACKAGE_MBEDTLS
+	depends on !BR2_PACKAGE_UACME_UALPN
+
+comment "mbedtls crypto backend unavailable with ualpn"
+	depends on BR2_PACKAGE_MBEDTLS
+	depends on BR2_PACKAGE_UACME_UALPN
+
+config BR2_PACKAGE_UACME_OPENSSL
+	bool "openssl"
+	depends on BR2_PACKAGE_OPENSSL
+
+endchoice
+
 config BR2_PACKAGE_UACME_UALPN
 	bool "enable ualpn"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
