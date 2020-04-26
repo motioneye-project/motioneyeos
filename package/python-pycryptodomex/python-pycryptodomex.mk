@@ -15,3 +15,4 @@ PYTHON_PYCRYPTODOMEX_LICENSE = \
 PYTHON_PYCRYPTODOMEX_LICENSE_FILES = LICENSE.rst Doc/LEGAL/COPYRIGHT.pycrypto
 
 $(eval $(python-package))
+$(eval $(host-python-package))
