@@ -20,6 +20,11 @@ SG3_UTILS_AUTORECONF = YES
 # install the libsgutils2 library
 SG3_UTILS_INSTALL_STAGING = YES
 
+# Uses __atomic_fetch_add_4
+ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
+SG3_UTILS_CONF_ENV += LIBS="-latomic"
+endif
+
 ifeq ($(BR2_PACKAGE_SG3_UTILS_PROGS),)
 define SG3_UTILS_REMOVE_PROGS
 	for prog in \
