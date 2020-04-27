@@ -10,7 +10,7 @@ class TestLuaUtf8(TestLuaBase):
 
     def test_run(self):
         self.login()
-        self.module_test("utf8")
+        self.module_test("lua-utf8")
 
 
 class TestLuajitUtf8(TestLuaBase):
@@ -22,4 +22,4 @@ class TestLuajitUtf8(TestLuaBase):
 
     def test_run(self):
         self.login()
-        self.module_test("utf8")
+        self.module_test("lua-utf8")
