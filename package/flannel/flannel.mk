@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FLANNEL_VERSION = 0.5.5
+FLANNEL_VERSION = 0.12.0
 FLANNEL_SITE = https://github.com/coreos/flannel/archive
 FLANNEL_SOURCE = v$(FLANNEL_VERSION).tar.gz
 
