@@ -10,8 +10,12 @@ APCUPSD_LICENSE = GPL-2.0
 APCUPSD_LICENSE_FILES = COPYING
 APCUPSD_CONF_OPTS = --disable-test
 
-ifeq ($(BR2_PACKAGE_LIBUSB_COMPAT),y)
-APCUPSD_CONF_ENV = ac_cv_path_usbcfg=$(STAGING_DIR)/usr/bin/libusb-config
+ifneq ($(BR2_PACKAGE_APCUPSD_MODBUS_USB)$(BR2_PACKAGE_APCUPSD_USB),)
+APCUPSD_CONF_ENV += ac_cv_path_usbcfg=$(STAGING_DIR)/usr/bin/libusb-config
+ifeq ($(BR2_STATIC_LIBS),y)
+APCUPSD_DEPENDENCIES += host-pkgconf
+APCUPSD_CONF_ENV += LIBS="`$(PKG_CONFIG_HOST_BINARY) --libs libusb`"
+endif
 endif
 
 ifeq ($(BR2_PACKAGE_APCUPSD_APCSMART),y)
