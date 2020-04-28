@@ -1,5 +1,5 @@
 # Locally calculated after checking pgp signature
-sha256	18d8f1bf92c13c4d611502dbd6759e3a766ddc8467ec8a2eda3f589e40b9ac9c	cifs-utils-6.9.tar.bz2
+sha256  92fc29c8e9039637f3344267500f1fa381e2cccd7d10142f0c1676fa575904a7  cifs-utils-6.10.tar.bz2
 
 # Hash for license file:
-sha256	8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903	COPYING
+sha256  8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903  COPYING
