@@ -98,10 +98,9 @@ Note that:
    dependencies are automatically added as needed by the Python
    package infrastructure.
 
- * Similarly, it is not needed to add +host-setuptools+ and/or
-   +host-distutilscross+ dependencies to +PYTHON_FOO_DEPENDENCIES+ for
-   setuptools-based packages, since these are automatically added by
-   the Python infrastructure as needed.
+ * Similarly, it is not needed to add +host-setuptools+ to
+   +PYTHON_FOO_DEPENDENCIES+ for setuptools-based packages, since it's
+   automatically added by the Python infrastructure as needed.
 
 One variable specific to the Python infrastructure is mandatory:
 
