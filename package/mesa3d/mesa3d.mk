@@ -25,8 +25,7 @@ MESA3D_DEPENDENCIES = \
 
 MESA3D_CONF_OPTS = \
 	-Dgallium-omx=disabled \
-	-Dpower8=false \
-	-Dvalgrind=false
+	-Dpower8=false
 
 ifeq ($(BR2_PACKAGE_MESA3D_LLVM),y)
 MESA3D_DEPENDENCIES += host-llvm llvm
@@ -240,6 +239,13 @@ MESA3D_DEPENDENCIES += xlib_libXv xlib_libXvMC
 MESA3D_CONF_OPTS += -Dgallium-xvmc=true
 else
 MESA3D_CONF_OPTS += -Dgallium-xvmc=false
+endif
+
+ifeq ($(BR2_PACKAGE_VALGRIND),y)
+MESA3D_CONF_OPTS += -Dvalgrind=true
+MESA3D_DEPENDENCIES += valgrind
+else
+MESA3D_CONF_OPTS += -Dvalgrind=false
 endif
 
 ifeq ($(BR2_PACKAGE_LIBUNWIND),y)
