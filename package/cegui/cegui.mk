@@ -19,7 +19,8 @@ CEGUI_DEPENDENCIES = glm \
 		$(if $(BR2_PACKAGE_LIBGLEW),libglew) \
 		$(if $(BR2_PACKAGE_LIBICONV),libiconv)
 
-ifeq ($(BR2_PACKAGE_LIBEPOXY),y)
+# libepoxy support cannot be enabled together with libglew
+ifeq ($(BR2_PACKAGE_LIBEPOXY):$(BR2_PACKAGE_LIBGLEW),y:)
 CEGUI_DEPENDENCIES += libepoxy
 CEGUI_CONF_OPTS += -DCEGUI_USE_EPOXY=ON
 else
