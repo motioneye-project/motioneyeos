@@ -1,3 +1,6 @@
+# Retrieved from https://sourceforge.net/projects/c-icap/files/c-icap/0.5.x/
+md5  d59e767ee3733cd81cea02819f13ac72  c_icap-0.5.6.tar.gz
+sha1  361e36b63f895bd72bdd18aac5fe4192d4eff530  c_icap-0.5.6.tar.gz
 # Locally calculated
-sha256 5eafc7775ecb3fe49545451eaa31f045716d0242977588c0ba27c2c1b4683d8a c_icap-0.5.5.tar.gz
-sha256 36b6d3fa47916943fd5fec313c584784946047ec1337a78b440e5992cb595f89 COPYING
+sha256  9826c50fc34f8fd4a3115844b27c9816dd3fcc3e7e2a3b6bcc7094ec307802b7  c_icap-0.5.6.tar.gz
+sha256  36b6d3fa47916943fd5fec313c584784946047ec1337a78b440e5992cb595f89  COPYING
