@@ -1098,6 +1098,7 @@ F:	package/gnuradio/
 F:	package/gqrx/
 F:	package/gr-osmosdr/
 F:	package/libusbgx/
+F:	package/matio/
 F:	package/python-cheetah/
 F:	package/python-markdown/
 F:	package/python-remi/
