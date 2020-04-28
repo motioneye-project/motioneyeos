@@ -1,7 +1,7 @@
 # From http://sourceforge.net/projects/c-icap/files/c-icap-modules/0.5.x/
-md5 d5f1e553cfe60180f9fa22c9a13005be  c_icap_modules-0.5.3.tar.gz
-sha1 df76f30b2cc29aeef700f477693e7017eaa847f4  c_icap_modules-0.5.3.tar.gz
+md5  2f8c174f7a5414616f5a0a976ac4a221  c_icap_modules-0.5.4.tar.gz
+sha1  ec7bb138d7775895cd8b2e12adc41dbf48eba1b7  c_icap_modules-0.5.4.tar.gz
 
 # Locally calculated
-sha256 6e2f87a60379ffde26947c6e82ff0c7f614bc005588bf1efb40c74f69c82f925  c_icap_modules-0.5.3.tar.gz
-sha256 8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643  COPYING
+sha256  87409920c66027204e9cca5f20e137b63cd12daf6dfcd85c1fa62ab2bd1c57cc  c_icap_modules-0.5.4.tar.gz
+sha256  8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643  COPYING
