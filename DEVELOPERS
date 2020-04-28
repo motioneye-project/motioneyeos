@@ -506,18 +506,12 @@ F:	package/sunxi-boards/
 
 N:	Carlos Santos <unixmania@gmail.com>
 F:	package/busybox/
-F:	package/cups/
-F:	package/cups-filters/
-F:	package/gtest/
 F:	package/initscripts/
 F:	package/intel-microcode/
-F:	package/libpam-radius-auth/
-F:	package/libpam-tacplus/
 F:	package/liburiparser/
 F:	package/modem-manager/
 F:	package/pamtester/
 F:	package/pcm-tools/
-F:	package/perl-file-util/
 F:	package/skeleton-custom/
 F:	package/skeleton-init-common/
 F:	package/skeleton-init-none/
