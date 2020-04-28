@@ -33,12 +33,6 @@ config BR2_PACKAGE_WLROOTS
 
 if BR2_PACKAGE_WLROOTS
 
-config BR2_PACKAGE_WLROOTS_RDP
-	bool "RDP backend"
-	depends on BR2_PACKAGE_FREERDP
-	help
-	  Support Wayland sessions served using the RDP protocol
-
 config BR2_PACKAGE_WLROOTS_X11
 	bool "X11 backend"
 	depends on BR2_PACKAGE_XORG7

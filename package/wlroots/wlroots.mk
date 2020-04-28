@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-WLROOTS_VERSION = 0.8.1
+WLROOTS_VERSION = 0.10.1
 WLROOTS_SITE = https://github.com/swaywm/wlroots/releases/download/$(WLROOTS_VERSION)
 WLROOTS_LICENSE = MIT
 WLROOTS_INSTALL_STAGING = YES
@@ -42,13 +42,6 @@ WLROOTS_CONF_OPTS += -Dlogind=enabled -Dlogind-provider=systemd
 WLROOTS_DEPENDENCIES += systemd
 else
 WLROOTS_CONF_OPTS += -Dlogind=disabled
-endif
-
-ifeq ($(BR2_PACKAGE_WLROOTS_RDP),y)
-WLROOTS_CONF_OPTS += -Dfreerdp=enabled
-WLROOTS_DEPENDENCIES += freerdp
-else
-WLROOTS_CONF_OPTS += -Dfreerdp=disabled
 endif
 
 ifeq ($(BR2_PACKAGE_WLROOTS_X11),y)
