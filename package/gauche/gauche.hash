@@ -1,6 +1,6 @@
 # From https://sourceforge.net/projects/gauche/files/Gauche/
-sha1 ff7878ab19c56b49b4b6d77009300a3592cc903c  Gauche-0.9.8.tgz
-md5 efd1b12cd5708d9e1e4358ab2d2e1e32  Gauche-0.9.8.tgz
+sha1  ad5e15021764b733ec913cca8b77c9a53d4ee997  Gauche-0.9.9.tgz
+md5  20d8ed835ae0bc97cceed78a71f9857b  Gauche-0.9.9.tgz
 # Locally calculated
-sha256 3eb30d1051d8b48999fe46511c9f6983057735312c9832b7db13f9db140db74b  Gauche-0.9.8.tgz
-sha256 d537f80c0bb3cc203bc2675b766b9de9573243026fa3e8ad78368abd4b14aac8  COPYING
+sha256  4ca9325322a7efadb9680d156eb7b53521321c9ca4955c4cbe738bc2e1d7f7fb  Gauche-0.9.9.tgz
+sha256  13cb582677dbcdc5b34313c59b4a014e74ef2f5fd80e514a0bd98fd8a4e45bed  COPYING
