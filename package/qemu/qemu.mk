@@ -305,6 +305,7 @@ define HOST_QEMU_CONFIGURE_CMDS
 		--extra-ldflags="$(HOST_LDFLAGS)" \
 		--python=$(HOST_DIR)/bin/python3 \
 		--disable-bzip2 \
+		--disable-curl \
 		--disable-libssh \
 		--disable-sdl \
 		--disable-vnc-jpeg \
