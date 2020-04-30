@@ -4,15 +4,12 @@
 #
 ################################################################################
 
-SURICATA_VERSION = 4.1.5
+SURICATA_VERSION = 4.1.8
 SURICATA_SITE = https://www.openinfosecfoundation.org/download
 SURICATA_LICENSE = GPL-2.0
 SURICATA_LICENSE_FILES = COPYING LICENSE
-# We're patching configure.ac
+# We're patching python/Makefile.am
 SURICATA_AUTORECONF = YES
-
-# 0004-stream-reject-broken-ACK-packets.patch
-SURICATA_IGNORE_CVES += CVE-2019-18792
 
 SURICATA_DEPENDENCIES = \
 	host-pkgconf \
