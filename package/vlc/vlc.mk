@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-VLC_VERSION = 3.0.9.2
+VLC_VERSION = 3.0.10
 VLC_SITE = https://get.videolan.org/vlc/$(VLC_VERSION)
 VLC_SOURCE = vlc-$(VLC_VERSION).tar.xz
 VLC_LICENSE = GPL-2.0+, LGPL-2.1+
@@ -121,6 +121,13 @@ VLC_CONF_OPTS += --enable-avahi
 VLC_DEPENDENCIES += avahi
 else
 VLC_CONF_OPTS += --disable-avahi
+endif
+
+ifeq ($(BR2_PACKAGE_DAV1D),y)
+VLC_CONF_OPTS += --enable-dav1d
+VLC_DEPENDENCIES += dav1d
+else
+VLC_CONF_OPTS += --disable-dav1d
 endif
 
 ifeq ($(BR2_PACKAGE_DBUS),y)
