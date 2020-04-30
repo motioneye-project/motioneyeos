@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GENSIO_VERSION = 2.0.1
+GENSIO_VERSION = 2.0.3
 GENSIO_SITE = http://downloads.sourceforge.net/project/ser2net/ser2net
 GENSIO_LICENSE = LGPL-2.1+ (library), GPL-2.0+ (tools)
 GENSIO_LICENSE_FILES = COPYING.LIB COPYING
