@@ -1,6 +1,6 @@
 # From https://sourceforge.net/projects/ser2net/files/ser2net/
-md5  96498fab618ff23ae2791eefc86a5066  ser2net-4.1.6.tar.gz
-sha1  3b31fbbbdab2c658bb0dc19ed93c7d8474ecdd25  ser2net-4.1.6.tar.gz
+md5  504345864f6110d5b6b63ad1f2ba3ed9  ser2net-4.1.7.tar.gz
+sha1  8268c2f7937152a7bbbac6d2f289c257d11deb69  ser2net-4.1.7.tar.gz
 # Locally computed:
-sha256  757505db9afc21a448cb008a3b9a9040cdc17c348ef42a55c9e672d4ccf71e9f  ser2net-4.1.6.tar.gz
+sha256  55bbeeed58eda7514ba7a52d14a930e57e1e5c6fd785a84ca0dd7c3b5615e0a5  ser2net-4.1.7.tar.gz
 sha256  501f3108e6c03e5a0a5585ebaaa369171aead5319cd0a7a4dc1f66211c1f09f1  COPYING
