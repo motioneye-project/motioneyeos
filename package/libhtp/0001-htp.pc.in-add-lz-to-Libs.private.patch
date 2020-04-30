@@ -7,7 +7,7 @@ zlib is a mandatory dependency so add it to Libs.private otherwise
 static linking of packages linking with htp (e.g. suricata) will fail.
 
 Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
-[Upstream status: not sent yet]
+[Upstream status: https://github.com/OISF/libhtp/pull/294]
 ---
  htp.pc.in | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
