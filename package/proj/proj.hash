@@ -1,5 +1,5 @@
-# Fetched from http://download.osgeo.org/proj/proj-6.3.0.tar.gz.md5
-md5 09243feb4f243a2bdd455035a2007384 proj-6.3.0.tar.gz
+# Fetched from http://download.osgeo.org/proj/proj-7.0.1.tar.gz.md5
+md5  5ba7536b579a6c9e0ad822dbdd455985  proj-7.0.1.tar.gz
 # Locally calculated
-sha256 68ce9ba0005d442c2c1d238a3b9bc6654c358159b4af467b91e8d5b407c79c77 proj-6.3.0.tar.gz
-sha256 2dcac4af6990093ef48b896bfb81452d46a31b08d46cce34b27e83f93b2e37f6 COPYING
+sha256  a7026d39c9c80d51565cfc4b33d22631c11e491004e19020b3ff5a0791e1779f  proj-7.0.1.tar.gz
+sha256  2dcac4af6990093ef48b896bfb81452d46a31b08d46cce34b27e83f93b2e37f6  COPYING
