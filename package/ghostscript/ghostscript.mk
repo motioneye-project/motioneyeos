@@ -39,7 +39,6 @@ GHOSTSCRIPT_CONF_ENV = \
 
 GHOSTSCRIPT_CONF_OPTS = \
 	--disable-compile-inits \
-	--disable-cups \
 	--enable-fontconfig \
 	--with-fontpath=/usr/share/fonts \
 	--enable-freetype \
@@ -66,6 +65,15 @@ GHOSTSCRIPT_DEPENDENCIES += openjpeg
 GHOSTSCRIPT_CONF_OPTS += --enable-openjpeg
 else
 GHOSTSCRIPT_CONF_OPTS += --disable-openjpeg
+endif
+
+ifeq ($(BR2_PACKAGE_CUPS),y)
+GHOSTSCRIPT_DEPENDENCIES += cups
+GHOSTSCRIPT_CONF_OPTS  += \
+	CUPSCONFIG=$(STAGING_DIR)/usr/bin/cups-config \
+	--enable-cups
+else
+GHOSTSCRIPT_CONF_OPTS += --disable-cups
 endif
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBX11),y)
