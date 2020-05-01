@@ -11,10 +11,11 @@ CUPS_FILTERS_LICENSE_FILES = COPYING
 
 CUPS_FILTERS_DEPENDENCIES = cups libglib2 lcms2 qpdf fontconfig freetype jpeg
 
-CUPS_FILTERS_CONF_OPTS = --disable-imagefilters \
+CUPS_FILTERS_CONF_OPTS = \
 	--disable-mutool \
 	--disable-foomatic \
 	--disable-braille \
+	--enable-imagefilters \
 	--with-cups-config=$(STAGING_DIR)/usr/bin/cups-config \
 	--with-sysroot=$(STAGING_DIR) \
 	--with-pdftops=pdftops \
