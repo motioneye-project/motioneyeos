@@ -16,6 +16,12 @@ PKCS11_HELPER_CONF_OPTS = \
 	--disable-crypto-engine-polarssl \
 	--disable-crypto-engine-cryptoapi
 
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
+PKCS11_HELPER_CONF_OPTS += --enable-slotevent --enable-threading
+else
+PKCS11_HELPER_CONF_OPTS += --disable-slotevent --disable-threading
+endif
+
 ifeq ($(BR2_PACKAGE_GNUTLS),y)
 PKCS11_HELPER_DEPENDENCIES += gnutls
 PKCS11_HELPER_CONF_OPTS += --enable-crypto-engine-gnutls
