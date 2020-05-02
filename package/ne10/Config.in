@@ -15,6 +15,3 @@ config BR2_PACKAGE_NE10
 	  both assembler and NEON implementations.
 
 	  http://projectne10.github.io/Ne10/
-
-comment "ne10 needs a toolchain w/ neon"
-	depends on !BR2_PACKAGE_NE10_ARCH_SUPPORTS
