@@ -1,0 +1,46 @@
+From 65831b7ec829b0ae0ac9d691a2f8fbc2b26af677 Mon Sep 17 00:00:00 2001
+From: tbeu <tbeu@users.noreply.github.com>
+Date: Mon, 11 Nov 2019 22:03:54 +0100
+Subject: [PATCH] Fix illegal memory access
+
+As reported by https://github.com/tbeu/matio/issues/129
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/tbeu/matio/commit/65831b7ec829b0ae0ac9d691a2f8fbc2b26af677]
+---
+ src/mat5.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/src/mat5.c b/src/mat5.c
+index b76a331..5e3464e 100644
+--- a/src/mat5.c
++++ b/src/mat5.c
+@@ -989,10 +989,26 @@ ReadNextCell( mat_t *mat, matvar_t *matvar )
+                 /* Rank and Dimension */
+                 if ( uncomp_buf[0] == MAT_T_INT32 ) {
+                     int j;
++                    size_t size;
+                     cells[i]->rank = uncomp_buf[1];
+                     nbytes -= cells[i]->rank;
+                     cells[i]->rank /= 4;
+-                    cells[i]->dims = (size_t*)malloc(cells[i]->rank*sizeof(*cells[i]->dims));
++                    if ( 0 == do_clean && cells[i]->rank > 13 ) {
++                        int rank = cells[i]->rank;
++                        cells[i]->rank = 0;
++                        Mat_Critical("%d is not a valid rank", rank);
++                        continue;
++                    }
++                    err = SafeMul(&size, cells[i]->rank, sizeof(*cells[i]->dims));
++                    if ( err ) {
++                        if ( do_clean )
++                            free(dims);
++                        Mat_VarFree(cells[i]);
++                        cells[i] = NULL;
++                        Mat_Critical("Integer multiplication overflow");
++                        continue;
++                    }
++                    cells[i]->dims = (size_t*)malloc(size);
+                     if ( mat->byteswap ) {
+                         for ( j = 0; j < cells[i]->rank; j++ )
+                             cells[i]->dims[j] = Mat_uint32Swap(dims + j);

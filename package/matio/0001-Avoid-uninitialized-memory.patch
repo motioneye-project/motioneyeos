@@ -1,0 +1,27 @@
+From 651a8e28099edb5fbb9e4e1d4d3238848f446c9a Mon Sep 17 00:00:00 2001
+From: tbeu <tbeu@users.noreply.github.com>
+Date: Fri, 30 Aug 2019 09:21:26 +0200
+Subject: [PATCH] Avoid uninitialized memory
+
+As reported by https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=16856
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/tbeu/matio/commit/651a8e28099edb5fbb9e4e1d4d3238848f446c9a]
+---
+ src/mat4.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/mat4.c b/src/mat4.c
+index 601a3d6..93b4308 100644
+--- a/src/mat4.c
++++ b/src/mat4.c
+@@ -917,6 +917,8 @@ Mat_VarReadNextInfo4(mat_t *mat)
+     if ( tmp != readresult ) {
+         Mat_VarFree(matvar);
+         return NULL;
++    } else {
++        matvar->name[tmp - 1] = '\0';
+     }
+ 
+     matvar->internal->datapos = ftell((FILE*)mat->fp);

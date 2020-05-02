@@ -1,0 +1,47 @@
+From 7b4699854cc65874e13a8e6944cd8e62fa981068 Mon Sep 17 00:00:00 2001
+From: tbeu <tbeu@users.noreply.github.com>
+Date: Mon, 11 Nov 2019 21:58:41 +0100
+Subject: [PATCH] Fix illegal memory access
+
+As reported by https://github.com/tbeu/matio/issues/128
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/tbeu/matio/commit/7b4699854cc65874e13a8e6944cd8e62fa981068]
+---
+ src/mat5.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
+
+diff --git a/src/mat5.c b/src/mat5.c
+index 7f50da4..b76a331 100644
+--- a/src/mat5.c
++++ b/src/mat5.c
+@@ -1380,11 +1380,26 @@ ReadNextStructField( mat_t *mat, matvar_t *matvar )
+                 /* Rank and dimension */
+                 if ( uncomp_buf[0] == MAT_T_INT32 ) {
+                     int j;
++                    size_t size;
+                     fields[i]->rank = uncomp_buf[1];
+                     nbytes -= fields[i]->rank;
+                     fields[i]->rank /= 4;
+-                    fields[i]->dims = (size_t*)malloc(fields[i]->rank*
+-                                             sizeof(*fields[i]->dims));
++                    if ( 0 == do_clean && fields[i]->rank > 13 ) {
++                        int rank = fields[i]->rank;
++                        fields[i]->rank = 0;
++                        Mat_Critical("%d is not a valid rank", rank);
++                        continue;
++                    }
++                    err = SafeMul(&size, fields[i]->rank, sizeof(*fields[i]->dims));
++                    if ( err ) {
++                        if ( do_clean )
++                            free(dims);
++                        Mat_VarFree(fields[i]);
++                        fields[i] = NULL;
++                        Mat_Critical("Integer multiplication overflow");
++                        continue;
++                    }
++                    fields[i]->dims = (size_t*)malloc(size);
+                     if ( mat->byteswap ) {
+                         for ( j = 0; j < fields[i]->rank; j++ )
+                             fields[i]->dims[j] = Mat_uint32Swap(dims+j);
