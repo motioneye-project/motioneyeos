@@ -10,7 +10,6 @@ config BR2_PACKAGE_OGRE
 	depends on BR2_USE_WCHAR # use wchar_t
 	select BR2_PACKAGE_FREETYPE
 	select BR2_PACKAGE_LIBFREEIMAGE
-	select BR2_PACKAGE_LIBGLU # GL/glu.h
 	select BR2_PACKAGE_SDL2
 	select BR2_PACKAGE_SDL2_OPENGL
 	select BR2_PACKAGE_SDL2_X11 # use wmInfo.info.x11
