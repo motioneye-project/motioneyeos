@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CHECK_INTERVAL=30
+CHECK_INTERVAL=60
 
 
 test -n "${OS_VERSION}" || source /etc/init.d/base
@@ -19,12 +19,16 @@ get_throttled_since_boot() {
     test $((t & 262144)) -ne 0 && echo -n "throttled "
 }
 
+get_temp() {
+    t=$(</sys/class/thermal/thermal_zone0/temp)
+    echo "$((t / 1000))"
+}
+
 watch_now() {
     while true; do
-        t=$(get_throttled_now)
-        if [[ -n "${t}" ]]; then
-            logger -t throttlewatch -s "currently: ${t}"
-        fi
+        th=$(get_throttled_now)
+        te=$(get_temp)
+        logger -t throttlewatch "currently: ${th:-ok}, temperature: ${te} C"
 
         sleep ${CHECK_INTERVAL}
     done
@@ -34,7 +38,7 @@ watch_since_boot() {
     while true; do
         t=$(get_throttled_since_boot)
         if [[ -n "${t}" ]]; then
-            logger -t throttlewatch -s "since boot: ${t}"
+            logger -t throttlewatch "since boot: ${t}"
             break
         fi
         
@@ -62,4 +66,3 @@ case "$1" in
 esac
 
 exit $?
-

@@ -1,4 +1,4 @@
 #!/bin/sh
 
 sed -i 's/^initramfs.*//g' /boot/config.txt
-
+sed -i '/^ *$/d' /boot/config.txt  # Remove blank lines

@@ -7,4 +7,3 @@ fi
 
 old_boot=$1
 cp ${old_boot}/config.txt /boot
-

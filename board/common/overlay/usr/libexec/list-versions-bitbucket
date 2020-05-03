@@ -14,6 +14,11 @@ function check_prerelease() {
     fi
 }
 
+function add_published_flag() {
+    read line
+    echo "${line}|true"
+}
+
 extensions=".img.gz .img.xz .img"
 opts="-s -S -f"
 test -n "${FW_USERNAME}" && opts+=" --user ${FW_USERNAME}:${FW_PASSWORD}"
@@ -23,6 +28,5 @@ rtrimstr=$(for e in ${extensions}; do echo -n " | rtrimstr(\"${e}\")"; done)
 jq_expr=".values[] | [{a: .name | split(\"-\"), url: .links.self.href, date: .created_on | split(\"T\")[0]}] |
          map((.a[2] ${rtrimstr}), \"false\", .a[1], .url, .date) | join(\"|\")"
 
-curl ${opts} ${url} | jq --raw-output "${jq_expr}" | while read line; do echo "${line}" | check_prerelease; done
+curl ${opts} ${url} | jq --raw-output "${jq_expr}" | while read line; do echo "${line}" | check_prerelease | add_published_flag; done
 exit ${PIPESTATUS[0]}
-

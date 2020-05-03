@@ -4,4 +4,3 @@
 mkdir /system
 mount /dev/mmcblk0p2 /system
 /system/bin/busybox insmod /system/lib/modules/*/kernel/fs/nls/nls_cp437.ko
-
