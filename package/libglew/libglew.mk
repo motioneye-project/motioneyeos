@@ -15,6 +15,7 @@ LIBGLEW_DEPENDENCIES = libgl xlib_libX11 xlib_libXext xlib_libXi xlib_libXmu
 # using $TARGET_CONFIGURE_OPTS breaks compilation
 define LIBGLEW_BUILD_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
+		GLEW_NO_GLU="-DGLEW_NO_GLU" \
 		GLEW_DEST="/usr" LIBDIR="/usr/lib" \
 		AR="$(TARGET_AR)" CC="$(TARGET_CC)" \
 		LD="$(TARGET_CC)" STRIP="$(TARGET_STRIP)" \
@@ -23,12 +24,14 @@ endef
 
 define LIBGLEW_INSTALL_STAGING_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
+		GLEW_NO_GLU="-DGLEW_NO_GLU" \
 		GLEW_DEST="$(STAGING_DIR)/usr" LIBDIR="$(STAGING_DIR)/usr/lib" \
 		$(TARGET_CONFIGURE_OPTS) install
 endef
 
 define LIBGLEW_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
+		GLEW_NO_GLU="-DGLEW_NO_GLU" \
 		GLEW_DEST="$(TARGET_DIR)/usr" LIBDIR="$(TARGET_DIR)/usr/lib" \
 		$(TARGET_CONFIGURE_OPTS) install
 endef
