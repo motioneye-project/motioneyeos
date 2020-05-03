@@ -15,7 +15,7 @@ SUPERTUX_LICENSE_FILES = LICENSE.txt data/AUTHORS
 
 # Use bundled squirrel, tinygettext sexp-cpp packages which are hardcoded in
 # the CMake build system.
-SUPERTUX_DEPENDENCIES = host-pkgconf boost freetype libcurl libgl libglew libglu \
+SUPERTUX_DEPENDENCIES = host-pkgconf boost freetype libcurl libgl libglew \
 	libogg libpng libvorbis openal physfs sdl2 sdl2_image
 
 # CMAKE_BUILD_TYPE=Release: disable profiling code (-pg)
@@ -30,6 +30,7 @@ SUPERTUX_DEPENDENCIES = host-pkgconf boost freetype libcurl libgl libglew libglu
 # ENABLE_OPENGLES2=OFF: Disable opengles2 for now.
 SUPERTUX_CONF_OPTS += \
 	-DCMAKE_BUILD_TYPE=Release \
+	-DCMAKE_CXX_FLAGS="$(TARGET_CXXFLAGS) -DGLEW_NO_GLU" \
 	-DENABLE_BOOST_STATIC_LIBS=OFF \
 	-DBUILD_DOCUMENTATION=OFF \
 	-DENABLE_OPENGL=ON \
