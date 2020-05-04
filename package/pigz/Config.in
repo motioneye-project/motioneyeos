@@ -2,7 +2,6 @@ config BR2_PACKAGE_PIGZ
 	bool "pigz"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_ZLIB
-	select BR2_PACKAGE_HOST_ZLIB
 	help
 	  pigz, which stands for parallel implementation of gzip, is a
 	  fully functional replacement for gzip that exploits multiple
