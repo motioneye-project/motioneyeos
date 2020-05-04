@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SOLARUS_VERSION = 1.6.2
+SOLARUS_VERSION = 1.6.4
 SOLARUS_SITE = \
 	https://gitlab.com/solarus-games/solarus/-/archive/v$(SOLARUS_VERSION)
 SOLARUS_SOURCE = solarus-v$(SOLARUS_VERSION).tar.bz2
@@ -16,8 +16,8 @@ SOLARUS_LICENSE_FILES = license.txt
 # Install libsolarus.so
 SOLARUS_INSTALL_STAGING = YES
 
-SOLARUS_DEPENDENCIES = libgl libmodplug libogg libvorbis openal physfs sdl2 \
-	sdl2_image sdl2_ttf
+SOLARUS_DEPENDENCIES = glm libgl libmodplug libogg libvorbis openal physfs \
+	sdl2 sdl2_image sdl2_ttf
 
 # Disable launcher GUI (requires Qt5)
 SOLARUS_CONF_OPTS = \
