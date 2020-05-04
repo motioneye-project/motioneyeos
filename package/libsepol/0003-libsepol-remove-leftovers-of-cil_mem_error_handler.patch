@@ -1,0 +1,63 @@
+From 3d32fc24d6aff360a538c63dad08ca5c957551b0 Mon Sep 17 00:00:00 2001
+From: Ondrej Mosnacek <omosnace@redhat.com>
+Date: Thu, 23 Jan 2020 13:57:14 +0100
+Subject: [PATCH] libsepol: remove leftovers of cil_mem_error_handler
+
+Commit 4459d635b8f1 ("libsepol: Remove cil_mem_error_handler() function
+pointer") replaced cil_mem_error_handler usage with inline contents of
+the default handler. However, it left over the header declaration and
+two callers. Convert these as well and remove the header declaration.
+
+This also fixes a build failure with -fno-common.
+
+Upstream: https://github.com/SELinuxProject/selinux/commit/3d32fc24d6aff360a538c63dad08ca5c957551b0
+
+Fixes: 4459d635b8f1 ("libsepol: Remove cil_mem_error_handler() function pointer")
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+Signed-off-by: Matt Weber <matthew.weber@rockwellcollins.com>
+---
+ cil/src/cil_mem.h     | 1 -
+ cil/src/cil_strpool.c | 8 ++++----
+ 2 files changed, 4 insertions(+), 5 deletions(-)
+
+diff --git a/cil/src/cil_mem.h b/cil/src/cil_mem.h
+index 902ce131..794f02a3 100644
+--- a/cil/src/cil_mem.h
++++ b/cil/src/cil_mem.h
+@@ -36,7 +36,6 @@ void *cil_calloc(size_t num_elements, size_t element_size);
+ void *cil_realloc(void *ptr, size_t size);
+ char *cil_strdup(const char *str);
+ int cil_asprintf(char **strp, const char *fmt, ...);
+-void (*cil_mem_error_handler)(void);
+ 
+ #endif /* CIL_MEM_H_ */
+ 
+diff --git a/cil/src/cil_strpool.c b/cil/src/cil_strpool.c
+index 97d4c4b9..2598bbf3 100644
+--- a/cil/src/cil_strpool.c
++++ b/cil/src/cil_strpool.c
+@@ -80,8 +80,8 @@ char *cil_strpool_add(const char *str)
+ 		int rc = hashtab_insert(cil_strpool_tab, (hashtab_key_t)strpool_ref->str, strpool_ref);
+ 		if (rc != SEPOL_OK) {
+ 			pthread_mutex_unlock(&cil_strpool_mutex);
+-			(*cil_mem_error_handler)();
+-			pthread_mutex_lock(&cil_strpool_mutex);
++			cil_log(CIL_ERR, "Failed to allocate memory\n");
++			exit(1);
+ 		}
+ 	}
+ 
+@@ -104,8 +104,8 @@ void cil_strpool_init(void)
+ 		cil_strpool_tab = hashtab_create(cil_strpool_hash, cil_strpool_compare, CIL_STRPOOL_TABLE_SIZE);
+ 		if (cil_strpool_tab == NULL) {
+ 			pthread_mutex_unlock(&cil_strpool_mutex);
+-			(*cil_mem_error_handler)();
+-			return;
++			cil_log(CIL_ERR, "Failed to allocate memory\n");
++			exit(1);
+ 		}
+ 	}
+ 	cil_strpool_readers++;
+-- 
+2.17.1
+
