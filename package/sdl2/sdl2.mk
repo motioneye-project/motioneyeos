@@ -20,6 +20,16 @@ SDL2_CONF_OPTS += \
 	--disable-pulseaudio \
 	--disable-video-wayland
 
+# We are using autotools build system for sdl2, so the sdl2-config.cmake
+# include path are not resolved like for sdl2-config script.
+# Remove sdl2-config.cmake file and avoid unsafe include path if this
+# file is used by a cmake based package.
+# https://bugzilla.libsdl.org/show_bug.cgi?id=4597
+define SDL2_REMOVE_SDL2_CONFIG_CMAKE
+	rm -rf $(STAGING_DIR)/usr/lib/cmake/SDL2
+endef
+SDL2_POST_INSTALL_STAGING_HOOKS += SDL2_REMOVE_SDL2_CONFIG_CMAKE
+
 # We must enable static build to get compilation successful.
 SDL2_CONF_OPTS += --enable-static
 
