@@ -16,6 +16,9 @@ FFMPEG_LICENSE += and GPL-2.0+
 FFMPEG_LICENSE_FILES += COPYING.GPLv2
 endif
 
+# 0001-avcodec-cbs_jpeg-Check-length-for-SOS.patch
+FFMPEG_IGNORE_CVES += CVE-2020-12284
+
 FFMPEG_CONF_OPTS = \
 	--prefix=/usr \
 	--enable-avfilter \
