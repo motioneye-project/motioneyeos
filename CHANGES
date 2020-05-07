@@ -1,4 +1,4 @@
-2020.05-rc1, to be released
+2020.05-rc1, released May 7th 2020
 
 	Addition of support for gobject-introspection: both the
 	gobject-introspection package itself, but also introspection
