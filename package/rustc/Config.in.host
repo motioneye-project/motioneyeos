@@ -49,6 +49,9 @@ choice
 
 config BR2_PACKAGE_HOST_RUST
 	bool "host rust"
+	# RUSTC_TARGET_NAME must be set for building host-rust
+	# otherwise config.toml is broken.
+	depends on BR2_PACKAGE_HOST_RUSTC_TARGET_ARCH_SUPPORTS
 	# triggers ICE on trunc_int_for_mode, at explow.c:56
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_5 || !BR2_aarch64
 	help
