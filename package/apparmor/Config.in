@@ -34,7 +34,7 @@ config BR2_PACKAGE_APPARMOR_UTILS
 	depends on BR2_PACKAGE_PYTHON3
 	select BR2_PACKAGE_PYTHON3_READLINE
 	help
-	  A set of utilities (written in pyhon):
+	  A set of utilities (written in python):
 	    aa-audit          aa-disable      aa-logprof
 	    aa-autodep        aa-easyprof     aa-mergeprof
 	    aa-cleanprof      aa-enforce      aa-status
