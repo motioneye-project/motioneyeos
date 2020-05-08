@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FREERDP_VERSION = 2.0.0
+FREERDP_VERSION = 2.1.0
 FREERDP_SITE = https://pub.freerdp.com/releases
 FREERDP_DEPENDENCIES = libglib2 openssl zlib
 FREERDP_LICENSE = Apache-2.0
