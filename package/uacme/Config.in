@@ -19,6 +19,7 @@ if BR2_PACKAGE_UACME
 config BR2_PACKAGE_UACME_UALPN
 	bool "enable ualpn"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_PACKAGE_OPENSSL || BR2_PACKAGE_GNUTLS
 	select BR2_PACKAGE_LIBEV
 	help
 	  Build and install ualpn, the transparent proxying tls-alpn-01
@@ -26,5 +27,8 @@ config BR2_PACKAGE_UACME_UALPN
 
 comment "ualpn needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
+comment "ualpn needs either OpenSSL or GnuTLS"
+	depends on !(BR2_PACKAGE_OPENSSL || BR2_PACKAGE_GNUTLS)
 
 endif
