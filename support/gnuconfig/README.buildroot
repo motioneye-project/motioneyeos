@@ -24,4 +24,4 @@ Currently no patches are needed, but they may be needed again in the
 future.
 
 The current Buildroot version is based on the Git commit
-dafd8e767ec87b90aac62f0fcedd11944c84b50a of the config.git repository.
+104ee6463c4bfaac3f3029d9be9bdd6e93879323 of the config.git repository.
