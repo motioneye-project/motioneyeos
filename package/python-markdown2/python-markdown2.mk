@@ -11,4 +11,8 @@ PYTHON_MARKDOWN2_SETUP_TYPE = setuptools
 PYTHON_MARKDOWN2_LICENSE = MIT
 PYTHON_MARKDOWN2_LICENSE_FILES = LICENSE.txt
 
+# 0001-Fix-for-issue-348-incomplete-tags-with-punctuation-after-as-part-of.patch
+# 0002-Better-fix-for-issue-348.patch
+PYTHON_MARKDOWN2_IGNORE_CVES += CVE-2020-11888
+
 $(eval $(python-package))
