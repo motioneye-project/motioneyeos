@@ -1,6 +1,5 @@
 config BR2_PACKAGE_PYTHON_FUTURE
 	bool "python-future"
-	depends on BR2_PACKAGE_PYTHON
 	help
 	  Easy, clean, reliable Python 2/3 compatibility.
 
