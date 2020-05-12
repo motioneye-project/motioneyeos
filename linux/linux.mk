@@ -363,6 +363,7 @@ define LINUX_KCONFIG_FIXUP_CMDS
 		$(call KCONFIG_ENABLE_OPT,CONFIG_FB)
 		$(call KCONFIG_ENABLE_OPT,CONFIG_LOGO)
 		$(call KCONFIG_ENABLE_OPT,CONFIG_LOGO_LINUX_CLUT224))
+	$(call KCONFIG_DISABLE_OPT,CONFIG_GCC_PLUGINS)
 	$(PACKAGES_LINUX_CONFIG_FIXUPS)
 endef
 
@@ -423,7 +424,10 @@ endif
 # '$(LINUX_TARGET_NAME)' targets separately because calling them in
 # the same $(MAKE) invocation has shown to cause parallel build
 # issues.
+# The call to disable gcc-plugins is a stop-gap measure:
+#   http://lists.busybox.net/pipermail/buildroot/2020-May/282727.html
 define LINUX_BUILD_CMDS
+	$(call KCONFIG_DISABLE_OPT,CONFIG_GCC_PLUGINS)
 	$(foreach dts,$(call qstrip,$(BR2_LINUX_KERNEL_CUSTOM_DTS_PATH)), \
 		cp -f $(dts) $(LINUX_ARCH_PATH)/boot/dts/
 	)
