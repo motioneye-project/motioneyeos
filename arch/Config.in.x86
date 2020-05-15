@@ -1,6 +1,8 @@
 # i386/x86_64 cpu features
 config BR2_X86_CPU_HAS_MMX
 	bool
+config BR2_X86_CPU_HAS_3DNOW
+	bool
 config BR2_X86_CPU_HAS_SSE
 	bool
 config BR2_X86_CPU_HAS_SSE2
@@ -155,15 +157,18 @@ config BR2_x86_k6_2
 	bool "k6-2"
 	depends on !BR2_x86_64
 	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_3DNOW
 config BR2_x86_athlon
 	bool "athlon"
 	depends on !BR2_x86_64
 	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_3DNOW
 config BR2_x86_athlon_4
 	bool "athlon-4"
 	depends on !BR2_x86_64
 	select BR2_X86_CPU_HAS_MMX
 	select BR2_X86_CPU_HAS_SSE
+	select BR2_X86_CPU_HAS_3DNOW
 config BR2_x86_opteron
 	bool "opteron"
 	select BR2_X86_CPU_HAS_MMX
@@ -209,6 +214,7 @@ config BR2_x86_c3
 	bool "Via/Cyrix C3 (Samuel/Ezra cores)"
 	depends on !BR2_x86_64
 	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_3DNOW
 config BR2_x86_c32
 	bool "Via C3-2 (Nehemiah cores)"
 	depends on !BR2_x86_64
