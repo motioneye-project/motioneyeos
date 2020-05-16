@@ -85,6 +85,8 @@ config BR2_PACKAGE_RPI_FIRMWARE_INSTALL_DTB_OVERLAYS
 	default y
 	depends on BR2_PACKAGE_RPI_FIRMWARE_INSTALL_DTBS \
 		|| BR2_LINUX_KERNEL_DTS_SUPPORT
+	select BR2_LINUX_KERNEL_DTB_OVERLAY_SUPPORT \
+		if BR2_LINUX_KERNEL_DTS_SUPPORT
 	help
 	  Say 'y' here if you need to load one or more of the DTB
 	  overlays, to support HATs (Hardware Attached on Top, add-on
