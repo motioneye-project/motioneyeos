@@ -14,7 +14,7 @@ LIBSSH2_CONF_OPTS = --disable-examples-build
 # 0003-packet-c-improve-message-parsing.patch
 LIBSSH2_IGNORE_CVES += CVE-2019-17498
 
-# building from a git clone
+# patch touching configure.ac and acinclude.m4
 LIBSSH2_AUTORECONF = YES
 
 ifeq ($(BR2_PACKAGE_LIBSSH2_MBEDTLS),y)
