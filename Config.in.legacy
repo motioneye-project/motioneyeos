@@ -146,6 +146,13 @@ endif
 
 comment "Legacy options removed in 2020.05"
 
+config BR2_PACKAGE_EZXML
+	bool "ezxml package removed"
+	select BR2_LEGACY
+	help
+	  The ezXML package was removed as it is affected by several
+	  CVEs and is not maintained anymore (no release since 2006).
+
 config BR2_PACKAGE_COLLECTD_LVM
 	bool "lvm support in collectd was removed"
 	select BR2_LEGACY
