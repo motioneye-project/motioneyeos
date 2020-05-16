@@ -9,6 +9,8 @@ cpp = '@TARGET_CROSS@g++'
 ar = '@TARGET_CROSS@ar'
 strip = '@TARGET_CROSS@strip'
 pkgconfig = '@HOST_DIR@/bin/pkgconf'
+g-ir-compiler = '@STAGING_DIR@/usr/bin/g-ir-compiler'
+g-ir-scanner = '@STAGING_DIR@/usr/bin/g-ir-scanner'
 
 [properties]
 needs_exe_wrapper = true
