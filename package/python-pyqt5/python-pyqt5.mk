@@ -65,7 +65,10 @@ endif
 
 ifeq ($(BR2_PACKAGE_QT5LOCATION),y)
 PYTHON_PYQT5_DEPENDENCIES += qt5location
-PYTHON_PYQT5_MODULES += QtLocation QtPositioning
+PYTHON_PYQT5_MODULES += QtPositioning
+ifeq ($(BR2_PACKAGE_QT5DECLARATIVE_QUICK),y)
+PYTHON_PYQT5_MODULES += QtLocation
+endif
 endif
 
 ifeq ($(BR2_PACKAGE_QT5MULTIMEDIA),y)
