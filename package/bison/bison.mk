@@ -12,5 +12,6 @@ BISON_LICENSE_FILES = COPYING
 # parallel build issue in examples/c/reccalc/
 BISON_MAKE = $(MAKE1)
 HOST_BISON_DEPENDENCIES = host-m4
+HOST_BISON_CONF_OPTS = --enable-relocatable
 
 $(eval $(host-autotools-package))
