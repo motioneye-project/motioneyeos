@@ -2396,6 +2396,7 @@ F:	package/libscrypt/
 N:	Stephan Hoffmann <sho@relinux.de>
 F:	package/cache-calibrator/
 F:	package/gtest/
+F:	package/libhttpserver/
 F:	package/mtdev/
 
 N:	Steve Calfee <stevecalfee@gmail.com>
