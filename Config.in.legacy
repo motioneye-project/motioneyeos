@@ -146,6 +146,13 @@ endif
 
 comment "Legacy options removed in 2020.05"
 
+config BR2_PACKAGE_MTDEV2TUIO
+	bool "mtdev2tuio package removed"
+	select BR2_LEGACY
+	help
+	  The mtdev2tuio package was removed as it breaks the builds
+	  every now and then and is not maintained upstream.
+
 config BR2_PACKAGE_EZXML
 	bool "ezxml package removed"
 	select BR2_LEGACY

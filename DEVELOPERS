@@ -2397,7 +2397,6 @@ N:	Stephan Hoffmann <sho@relinux.de>
 F:	package/cache-calibrator/
 F:	package/gtest/
 F:	package/mtdev/
-F:	package/mtdev2tuio/
 
 N:	Steve Calfee <stevecalfee@gmail.com>
 F:	package/python-pymysql/
