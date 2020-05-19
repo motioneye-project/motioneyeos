@@ -1,0 +1,50 @@
+From df4d2000a22db673a788b8e57e8e7c0cc3cee777 Mon Sep 17 00:00:00 2001
+From: Leonard Chan <leonardchan@google.com>
+Date: Thu, 3 Oct 2019 18:53:04 -0700
+Subject: [PATCH] Make vboot_version extern in header
+
+When enabling `-fno-common` in Fuchsia, we get a bunch of linker errors
+when linking futility:
+
+```
+ld.lld: error: duplicate symbol: vboot_version
+>>> defined at futility.h:43 (../../third_party/vboot_reference/futility/futility.h:43)
+>>>            host_x63-asan_no_detect_leaks/obj/third_party/vboot_reference/futility/futility.cmd_bdb.c.o:(vboot_version)
+>>> defined at futility.h:43 (../../third_party/vboot_reference/futility/futility.h:43)
+>>>            host_x64-asan_no_detect_leaks/obj/third_party/vboot_reference/futility/futility.cmd_create.c.o:(.bss.vboot_version+0x0)
+```
+
+and think this is because -fno-common places vboot_version for
+unitialized global variables in the BSS section of each object file.
+Making it extern instead resolves each reference to its definition in
+futility/misc.c.
+
+Change-Id: I591f07abd1f975a8a9d078bb4366e2e0861390b4
+Reviewed-on: https://chromium-review.googlesource.com/c/chromiumos/platform/vboot_reference/+/1839207
+Reviewed-by: Julius Werner <jwerner@chromium.org>
+Reviewed-by: Joel Kitching <kitching@chromium.org>
+Commit-Queue: Julius Werner <jwerner@chromium.org>
+Tested-by: Julius Werner <jwerner@chromium.org>
+
+Patch taken from upstream: https://chromium.googlesource.com/chromiumos/platform/vboot_reference/+/df4d2000a22db673a788b8e57e8e7c0cc3cee777
+Signed-off-by: Heiko Thiery <heiko.thiery@gmail.com>
+---
+ futility/futility.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/futility/futility.h b/futility/futility.h
+index 3bce1106..5dc426dd 100644
+--- a/futility/futility.h
++++ b/futility/futility.h
+@@ -41,7 +41,7 @@ enum vboot_version  {
+ };
+ 
+ /* What's our preferred API & data format? */
+-enum vboot_version vboot_version;
++extern enum vboot_version vboot_version;
+ 
+ /* Here's a structure to define the commands that futility implements. */
+ struct futil_cmd_t {
+-- 
+2.20.1
+
