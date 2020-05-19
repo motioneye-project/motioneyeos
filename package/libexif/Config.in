@@ -6,4 +6,4 @@ config BR2_PACKAGE_LIBEXIF
 	  image. The EXIF library allows you to parse an EXIF file
 	  and read the data from those tags.
 
-	  http://libexif.sf.net
+	  https://libexif.github.io
