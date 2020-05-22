@@ -33,9 +33,8 @@ main() {
     # Trap any unexpected error to generate a meaningful error message
     trap "error 'unexpected error while generating ${ofile}\n'" ERR
 
-    do_validate ${@//:/ }
-
     mkdir -p "${outputdir}"
+    do_validate "${outputdir}" ${@//:/ }
     do_mk "${outputdir}"
     do_kconfig "${outputdir}"
 }
@@ -51,7 +50,9 @@ main() {
 # snippet means that there were no error.
 #
 do_validate() {
+    local outputdir="${1}"
     local br2_ext
+    shift
 
     if [ ${#} -eq 0 ]; then
         # No br2-external tree is valid
@@ -60,7 +61,7 @@ do_validate() {
 
     for br2_ext in "${@}"; do
         do_validate_one "${br2_ext}"
-    done
+    done >"${outputdir}/.br2-external.mk"
 }
 
 do_validate_one() {
