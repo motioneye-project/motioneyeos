@@ -1,3 +1,62 @@
+2020.05-rc2, released May 22nd 2020
+
+	Fixes all over the tree.
+
+	U-Boot: Support building with Python 3.x instead of Python
+	2.x. Since U-Boot 2020.01, various U-Boot build scripts use
+	Python 3.x instead of Python 2.x, so add an option to pull in
+	host-python3 rather than host-python. Also fix a number of
+	defconfigs to use this new option.
+
+	Updated/fixed packages: apparmor, binutils, bison, brltty,
+	c-icap, cegui, checkpolicy, clamav, crda, cvs, docker-cli,
+	docker-engine, domoticz, elf2flt, exfatprogs, fakeroot,
+	ffmpeg, freerdp, gcc, glibc, gnuconfig, irrlicht, kmod,
+	libexif, libpam-tacplus, libssh2, libv4l, libvncserver,
+	localedef, lrzip, mariadb, matchbox, mbuffer, mesa3d,
+	mesa3d-headers, meson, netsniff-ng, openldap, openocd,
+	optee-os, p7zip, paho-mqtt-c, php, piglit, pigz,
+	python-argon2-cffi, python-attrs, python-future,
+	python-markdown, python-pycryptodomex, python-pyqt5, qt5base,
+	rpi-firmware, rustc, squashfs, squid, stella, suricata,
+	systemd, uacme, uclibc, util-linux, vboot-utils
+
+	New packages: python3-pyelftools
+
+	Removed packages: ezxml, mtdev2tuio, python-pycrypto
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#10551: PowerPC SPE and Musl
+	#12256: package tar is outdated (1.29 is 3 years old)
+	#12271: python-iptables runtime dependencies
+	#12321: host-generic-package: PKG_DL_OPTS not used for host package
+	#12391: CMake-based host package fails to include output/host/include
+	#12431: ethernet no detected on nanopi neo 2
+	#12521: RISCV RV32IA selected, RV64GC output
+	#12586: avahi failure
+	#12596: host-e2fsprogs: tune2fs incompatibility on older glibc..
+	#12611: ntp hash is not matching with upstream 4.2.8p13
+	#12626: PHP missing header files within 2020.02
+	#12631: glibc support Power-PC SPE
+	#12656: bison fails to relocate with relocate-sdk.sh
+	#12661: cups problems in buildroot
+	#12686: recipe for target 'install_dev' failed (libcrypto.so:..
+	#12691: host-rust build fails
+	#12761: Buildroot fails when building GCNano binaries for the STM..
+	#12786: Systemd spawns two getty processes when the getty port..
+	#12806: There are multiple issues in buildroot that faults cups..
+	#12826: nodejs-12.16.1: error: 'uv_sleep' was not declared in..
+	#12831: RPI-firmware package: DTB-overlay dependency
+	#12836: libunwind: package does not show up in menuconfig for..
+	#12841: util-linux/sfdisk 2.35.1 fails on sector-size header
+	#12866: should we be disabling bash executable path caching?
+	#12886: GMP built in wrong order (?)
+	#12891: QEMU, libvirt-bin, qemu-kvm Package Support required
+	#12901: GStreamer doesn't build on 2020-05 rc1 with GObject..
+	#12906: qt PrefixPath is wrong on 2020.05-rc1
+	#12921: nodejs-12.16.1: error: overriding 'virtual icu_65::..
+
 2020.05-rc1, released May 7th 2020
 
 	Addition of support for gobject-introspection: both the
