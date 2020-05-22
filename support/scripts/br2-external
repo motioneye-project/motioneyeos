@@ -75,7 +75,7 @@ do_validate_one() {
         error "'%s': permission denied\n" "${br2_ext}"
     fi
     if [ ! -f "${br2_ext}/external.desc" ]; then
-        error "'%s': does not have a name (in 'external.desc'). See %s\n" \
+        error "'%s': does not have an 'external.desc'. See %s\n" \
             "${br2_ext}" "${MANUAL_URL}"
     fi
     br2_name="$(sed -r -e '/^name: +(.*)$/!d; s//\1/' "${br2_ext}/external.desc")"
