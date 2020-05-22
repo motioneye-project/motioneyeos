@@ -14,7 +14,7 @@ DOVECOT_DEPENDENCIES = \
 	host-pkgconf \
 	$(if $(BR2_PACKAGE_LIBICONV),libiconv) \
 	openssl
-# 0002-lib-ssl-iostream-Do-not-build-static-test-iostream-s.patch
+# 0001-lib-ssl-iostream-Do-not-build-static-test-iostream-s.patch
 DOVECOT_AUTORECONF = YES
 # add host-gettext for AM_ICONV macro
 DOVECOT_DEPENDENCIES += host-gettext
