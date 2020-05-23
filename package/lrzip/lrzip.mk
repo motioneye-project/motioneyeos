@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LRZIP_VERSION = 8781292dd5833c04eeead51d4a5bd02dc6432dc7
+LRZIP_VERSION = 7f3bf46203bf45ea115d8bd9f310ea219be88af4
 LRZIP_SITE = $(call github,ckolivas,lrzip,$(LRZIP_VERSION))
 LRZIP_AUTORECONF = YES
 LRZIP_LICENSE = GPL-2.0+
