@@ -66,6 +66,8 @@ include::contribute.txt[]
 
 include::developers.txt[]
 
+include::release-engineering.txt[]
+
 = Appendix
 
 include::appendix.txt[]
