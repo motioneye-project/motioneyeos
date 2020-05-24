@@ -146,6 +146,15 @@ endif
 
 comment "Legacy options removed in 2020.05"
 
+config BR2_PACKAGE_WIRINGPI
+	bool "wiringpi package removed"
+	select BR2_LEGACY
+	help
+	  The author of wiringpi has deprecated the package, and
+	  completely removed the git tree that was serving the
+	  sources, with this message:
+	  Please look for alternatives for wiringPi
+
 config BR2_PACKAGE_PYTHON_PYCRYPTO
 	bool "python-pycrypto package removed"
 	select BR2_LEGACY

@@ -2058,7 +2058,6 @@ F:	package/postgresql/
 F:	package/qt5/
 F:	package/quotatool/
 F:	package/racehound/
-F:	package/wiringpi/
 
 N:	Peter Thompson <peter.macleod.thompson@gmail.com>
 F:	package/sdl2_gfx/
