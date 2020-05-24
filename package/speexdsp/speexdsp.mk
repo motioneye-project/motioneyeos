@@ -5,7 +5,7 @@
 ################################################################################
 
 SPEEXDSP_VERSION = SpeexDSP-1.2.0
-SPEEXDSP_SITE = https://git.xiph.org/speexdsp.git
+SPEEXDSP_SITE = https://gitlab.xiph.org/xiph/speexdsp.git
 SPEEXDSP_SITE_METHOD = git
 SPEEXDSP_LICENSE = BSD-3-Clause
 SPEEXDSP_LICENSE_FILES = COPYING
