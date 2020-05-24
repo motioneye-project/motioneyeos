@@ -176,6 +176,19 @@ date="$( _git log -1 --pretty=format:%cD )"
 # There might be submodules, so fetch them.
 if [ ${recurse} -eq 1 ]; then
     _git submodule update --init --recursive
+
+    # Older versions of git will store the absolute path of the git tree
+    # in the .git of submodules, while newer versions just use relative
+    # paths. Detect and fix the older variants to use relative paths, so
+    # that the archives are reproducible across a wider range of git
+    # versions. However, we can't do that if git is too old and uses
+    # full repositories for submodules.
+    cmd='printf "%s\n" "${path}/"'
+    for module_dir in $( _git submodule --quiet foreach "'${cmd}'" ); do
+        [ -f "${module_dir}/.git" ] || continue
+        relative_dir="$( sed -r -e 's,/+,/,g; s,[^/]+/,../,g' <<<"${module_dir}" )"
+        sed -r -i -e "s:^gitdir\: $(pwd)/:gitdir\: "${relative_dir}":" "${module_dir}/.git"
+    done
 fi
 
 # Generate the archive, sort with the C locale so that it is reproducible.
