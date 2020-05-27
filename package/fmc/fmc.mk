@@ -5,7 +5,8 @@
 ################################################################################
 
 FMC_VERSION = fsl-sdk-v2.0
-FMC_SITE = git://git.freescale.com/ppc/sdk/fmc.git
+FMC_SITE = https://source.codeaurora.org/external/qoriq/qoriq-yocto-sdk/fmc
+FMC_SITE_METHOD = git
 FMC_LICENSE = MIT
 FMC_LICENSE_FILES = COPYING
 FMC_DEPENDENCIES = libxml2 tclap fmlib
