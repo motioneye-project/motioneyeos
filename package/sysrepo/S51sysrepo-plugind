@@ -1,7 +1,7 @@
 #!/bin/sh
 
 DAEMON="sysrepo-plugind"
-PIDFILE="/var/run/$DAEMON.pid"
+EXECUTABLE="/usr/bin/$DAEMON"
 
 SYSREPO_PLUGIND_ARGS=""
 
@@ -10,7 +10,7 @@ SYSREPO_PLUGIND_ARGS=""
 
 start() {
 	printf 'Starting %s: ' "$DAEMON"
-	start-stop-daemon -S -q -x "/usr/bin/$DAEMON" \
+	start-stop-daemon -S -q -x "$EXECUTABLE" \
 		-- $SYSREPO_PLUGIND_ARGS
 	status=$?
 	if [ "$status" -eq 0 ]; then
@@ -23,7 +23,7 @@ start() {
 
 stop() {
 	printf 'Stopping %s: ' "$DAEMON"
-	start-stop-daemon -K -q -p $PIDFILE
+	start-stop-daemon -K -q -x "$EXECUTABLE"
 	status=$?
 	if [ "$status" -eq 0 ]; then
 		echo "OK"
