@@ -49,7 +49,7 @@ prepare_ap_iface() {
     fi
 
     msg_begin "Preparing AP interface"
-    iw dev ${wlan_interface} interface add ${OS_AP} type __ap &>/dev/null
+    iw dev ${wlan_iface} interface add ${OS_AP} type __ap &>/dev/null
     test $? == 0 && msg_done || msg_fail
 }
 
