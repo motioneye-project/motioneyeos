@@ -37,20 +37,17 @@ watch() {
     done
 }
 
-prepare_ap_iface() {
-    # Only prepare AP interfaces of format "apX"
-    if ! [[ "${OS_AP}" =~ ap([[:digit:]]) ]]; then
-        return
-    fi
-
-    wlan_iface=wlan${BASH_REMATCH[1]}
-    if ! iw dev ${wlan_iface} info &>/dev/null; then
-        return  # No wlan interface
-    fi
-
-    msg_begin "Preparing AP interface"
-    iw dev ${wlan_iface} interface add ${OS_AP} type __ap &>/dev/null
-    test $? == 0 && msg_done || msg_fail
+prepare_ap_ifaces() {
+    wifi_ifaces=$(ip link | grep -oE 'wlan[[:digit:]]')
+    msg_begin "Preparing AP interfaces"
+    ap_ifaces=""
+    for iface in ${wifi_ifaces}; do
+        ap_iface=ap${iface: -1}
+        if iw dev ${iface} interface add ${ap_iface} type __ap &>/dev/null; then
+            ap_ifaces+="${ap_iface} "
+        fi
+    done
+    msg_done "${ap_ifaces:-none}"
 }
 
 start_hostapd() {
@@ -88,7 +85,7 @@ stop_hostapd() {
 }
 
 start() {
-    prepare_ap_iface
+    prepare_ap_ifaces
     
     if [[ -s ${CONF} ]]; then
         start_hostapd
