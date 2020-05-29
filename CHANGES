@@ -1,3 +1,25 @@
+2020.05-rc3, released May 29th, 2020
+
+	Fixes all over the tree.
+
+	Infrastructure: Support checking download hashes for packages
+	coming from Subversion.
+
+	Defconfigs: Increase boot partition size to 64MB for Freescale
+	boards to allow space for bigger kernels.
+
+	Updated/fixed packages: audit, bind, dovecot, efl, erlang,
+	ffmpeg, fio, gerbera, gnupg, leveldb, lrzip, ltrace, matio,
+	mesa3d, mp4v2, prosody, qemu, qt5declarative, speexdsp,
+	systemd, tremor, uboot-tools, unbound, wireshark
+
+	Removed packages: wiringpi
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#12361: Init system (systemd) kills login on Raspberry Pi Zero
+	#12686: recipe for target 'install_dev' failed (libcrypto.so..)
+
 2020.05-rc2, released May 22nd 2020
 
 	Fixes all over the tree.
