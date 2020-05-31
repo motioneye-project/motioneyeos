@@ -1,3 +1,3 @@
-# From http://ftp.gnome.org/pub/gnome/sources/glib-networking/2.61/glib-networking-2.61.1.sha256sum
-sha256  a3acbe8953ba80e408bdc4a3e8c240fd9447181c7e800a175c3105604c38bad5 glib-networking-2.61.1.tar.xz
-sha256	dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551 COPYING
+# From http://ftp.gnome.org/pub/gnome/sources/glib-networking/2.62/glib-networking-2.62.4.sha256sum
+sha256  c18f289eec480fdce12044c0a06f77521edf9f460d16ad4213de61f2a3b294cf  glib-networking-2.62.4.tar.xz
+sha256  dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551  COPYING
