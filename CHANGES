@@ -1,3 +1,11 @@
+2020.05, released June 1st, 2020
+
+	Various fixes.
+
+	Updated/fixed packages: arm-trusted-firmware, gcc, mp4v2, fmc,
+	fmlib, glib-networking, libusb-compat, linux, qt5webengine,
+	sysrepo, wampcc, xen
+
 2020.05-rc3, released May 29th, 2020
 
 	Fixes all over the tree.
