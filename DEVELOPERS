@@ -487,9 +487,6 @@ N:	Biagio Montaruli <biagio.hkr@gmail.com>
 F:	board/acmesystems/
 F:	configs/acmesystems_*
 
-N:	Bimal Jacob <bimal.jacob@rockwellcollins.com>
-F:	package/nginx-upload/
-
 N:	Bogdan Radulescu <bogdan@nimblex.net>
 F:	package/iftop/
 F:	package/ncdu/
@@ -660,9 +657,6 @@ F:	package/openldap/
 
 N:	David du Colombier <0intro@gmail.com>
 F:	package/x264/
-
-N:	David Graziano <david.graziano@rockwellcollins.com>
-F:	package/libcsv/
 
 N:	David Lechner <david@lechnology.com>
 F:	board/lego/ev3/
@@ -1224,11 +1218,6 @@ F:	package/python-pexpect/
 F:	package/python-ptyprocess/
 F:	package/zynq-boot-bin/
 
-N:	Jared Bents <jared.bents@rockwellcollins.com>
-F:	package/davici/
-F:	package/python-filelock/
-F:	package/python-pysftp/
-
 N:	Jarkko Sakkinen <jarkko.sakkinen@intel.com>
 F:	package/quota/
 
@@ -1659,6 +1648,7 @@ F:	package/cgroupfs-mount/
 F:	package/crda/
 F:	package/cunit/
 F:	package/dacapo/
+F:	package/davici/
 F:	package/dnsmasq/
 F:	package/dosfstools/
 F:	package/eigen/
@@ -1708,6 +1698,7 @@ F:	package/protobuf-c/
 F:	package/protobuf/
 F:	package/python-bunch/
 F:	package/python-colorama/
+F:	package/python-filelock/
 F:	package/python-flask-cors/
 F:	package/python-iptables/
 F:	package/python-ipy/
@@ -1715,6 +1706,7 @@ F:	package/python-posix-ipc/
 F:	package/python-pycairo/
 F:	package/python-pypcap/
 F:	package/python-pyrex/
+F:	package/python-pysftp/
 F:	package/python-tinyrpc/
 F:	package/python-txdbus/
 F:	package/raptor/
@@ -1924,9 +1916,6 @@ F:	package/openjpeg/
 
 N:	Olivier Singla <olivier.singla@gmail.com>
 F:	package/shellinabox/
-
-N:	Paresh Chaudhary <paresh.chaudhary@rockwellcollins.com>
-F:	package/checksec/
 
 N:	Parnell Springmeyer <parnell@digitalmentat.com>
 F:	package/scrypt/
