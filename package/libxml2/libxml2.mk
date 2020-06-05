@@ -49,6 +49,11 @@ else
 LIBXML2_CONF_OPTS += --without-iconv
 endif
 
+define LIBXML2_CLEANUP_XML2CONF
+	rm -f $(TARGET_DIR)/usr/lib/xml2Conf.sh
+endef
+LIBXML2_POST_INSTALL_TARGET_HOOKS += LIBXML2_CLEANUP_XML2CONF
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
