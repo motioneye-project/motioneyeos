@@ -39,6 +39,13 @@ else
 OPENSSH_CONF_OPTS += --without-ssl-engine
 endif
 
+ifeq ($(BR2_PACKAGE_AUDIT),y)
+OPENSSH_DEPENDENCIES += audit
+OPENSSH_CONF_OPTS += --with-audit=linux
+else
+OPENSSH_CONF_OPTS += --without-audit
+endif
+
 ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
 define OPENSSH_INSTALL_PAM_CONF
 	$(INSTALL) -D -m 644 $(@D)/contrib/sshd.pam.generic $(TARGET_DIR)/etc/pam.d/sshd
