@@ -20,9 +20,11 @@
 #
 ################################################################################
 
-define PKG_PYTHON_SYSCONFIGDATA_NAME
-$(basename $(notdir $(wildcard $(PYTHON3_PATH)/_sysconfigdata__linux_*.py)))
-endef
+# basename does not evaluate if a file exists, so we must check to ensure
+# the _sysconfigdata__linux_*.py file exists. The "|| true" is added to return
+# an empty string if the file does not exist.
+PKG_PYTHON_SYSCONFIGDATA_PATH = $(PYTHON#_PATH)/_sysconfigdata__linux_*.py
+PKG_PYTHON_SYSCONFIGDATA_NAME = `{ [ -e $(PKG_PYTHON_SYSCONFIGDATA_PATH) ] && basename $(PKG_PYTHON_SYSCONFIGDATA_PATH) .py; } || true`
 
 # Target distutils-based packages
 PKG_PYTHON_DISTUTILS_ENV = \
