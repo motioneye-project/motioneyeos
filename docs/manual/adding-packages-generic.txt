@@ -452,7 +452,7 @@ not and can not work as people would expect it should:
   of the manifest file for this package.
 
 * +LIBFOO_ACTUAL_SOURCE_TARBALL+ only applies to packages whose
-  +LIBFOO_SITE+ / +LIBTOO_SOURCE+ pair points to an archive that does
+  +LIBFOO_SITE+ / +LIBFOO_SOURCE+ pair points to an archive that does
   not actually contain source code, but binary code. This a very
   uncommon case, only known to apply to external toolchains which come
   already compiled, although theoretically it might apply to other
