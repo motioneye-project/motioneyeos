@@ -18,7 +18,6 @@ test -x ${PROG} || exit 0
 test -n "${OS_VERSION}" || source /etc/init.d/base
 
 prepare_conf ${CONF} ${SYS_CONF} ${BOOT_CONF}
-test -s ${CONF} || exit 0
 
 test -s ${WATCH_CONF} && source ${WATCH_CONF}
 
@@ -38,7 +37,20 @@ watch() {
     done
 }
 
-start() {
+prepare_ap_ifaces() {
+    wifi_ifaces=$(ip link | grep -oE 'wlan[[:digit:]]')
+    msg_begin "Preparing AP interfaces"
+    ap_ifaces=""
+    for iface in ${wifi_ifaces}; do
+        ap_iface=ap${iface: -1}
+        if iw dev ${iface} interface add ${ap_iface} type __ap &>/dev/null; then
+            ap_ifaces+="${ap_iface} "
+        fi
+    done
+    msg_done "${ap_ifaces:-none}"
+}
+
+start_hostapd() {
     msg_begin "Starting hostapd"
 
     # wait up to 5 seconds for interface
@@ -65,11 +77,25 @@ start() {
     test -n "${module}" && msg_done "done (${module})"|| msg_done
 }
 
-stop() {
+stop_hostapd() {
     msg_begin "Stopping hostpad"
     killall hostapd &>/dev/null
     ps | grep hostapd | grep -v $$ | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
     msg_done
+}
+
+start() {
+    prepare_ap_ifaces
+    
+    if [[ -s ${CONF} ]]; then
+        start_hostapd
+    fi
+}
+
+stop() {
+    if [[ -s ${CONF} ]]; then
+        stop_hostapd
+    fi
 }
 
 case "$1" in
@@ -90,4 +116,3 @@ case "$1" in
         echo "Usage: $0 {start|stop|restart}"
         exit 1
 esac
-
