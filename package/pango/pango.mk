@@ -12,7 +12,7 @@ PANGO_INSTALL_STAGING = YES
 PANGO_LICENSE = LGPL-2.0+
 PANGO_LICENSE_FILES = COPYING
 
-PANGO_CONF_OPTS = -Duse_fontconfig=true -Dintrospection=false
+PANGO_CONF_OPTS = -Duse_fontconfig=true
 HOST_PANGO_CONF_OPTS = -Duse_fontconfig=true -Dintrospection=false
 
 PANGO_DEPENDENCIES = \
@@ -32,6 +32,13 @@ HOST_PANGO_DEPENDENCIES = \
 	host-harfbuzz \
 	host-fontconfig \
 	host-freetype
+
+ifeq ($(BR2_PACKAGE_GOBJECT_INTROSPECTION),y)
+PANGO_CONF_OPTS += -Dintrospection=true
+PANGO_DEPENDENCIES += gobject-introspection
+else
+PANGO_CONF_OPTS += -Dintrospection=false
+endif
 
 ifeq ($(BR2_PACKAGE_XORG7),y)
 PANGO_DEPENDENCIES += xlib_libX11
