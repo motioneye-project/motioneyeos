@@ -354,6 +354,13 @@ endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_V4L2),y)
 GST1_PLUGINS_GOOD_CONF_OPTS += -Dv4l2=enabled
+# Enable use of gudev if available, for device probing and monitoring.
+ifeq ($(BR2_PACKAGE_LIBGUDEV),y)
+GST1_PLUGINS_GOOD_DEPENDENCIES += libgudev
+GST1_PLUGINS_GOOD_CONF_OPTS += -Dv4l2-gudev=enabled
+else
+GST1_PLUGINS_GOOD_CONF_OPTS += -Dv4l2-gudev=disabled
+endif
 else
 GST1_PLUGINS_GOOD_CONF_OPTS += -Dv4l2=disabled
 endif
