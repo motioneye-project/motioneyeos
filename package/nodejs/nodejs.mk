@@ -11,6 +11,7 @@ NODEJS_DEPENDENCIES = host-python host-nodejs c-ares \
 	libuv zlib nghttp2 \
 	$(call qstrip,$(BR2_PACKAGE_NODEJS_MODULES_ADDITIONAL_DEPS))
 HOST_NODEJS_DEPENDENCIES = host-libopenssl host-python host-zlib
+NODEJS_INSTALL_STAGING = YES
 NODEJS_LICENSE = MIT (core code); MIT, Apache and BSD family licenses (Bundled components)
 NODEJS_LICENSE_FILES = LICENSE
 
@@ -214,6 +215,17 @@ define NODEJS_INSTALL_MODULES
 	$(NPM) install -g $(NODEJS_MODULES_LIST)
 endef
 endif
+
+define NODEJS_INSTALL_STAGING_CMDS
+	$(TARGET_MAKE_ENV) PYTHON=$(HOST_DIR)/bin/python2 \
+		$(MAKE) -C $(@D) install \
+		DESTDIR=$(STAGING_DIR) \
+		$(TARGET_CONFIGURE_OPTS) \
+		NO_LOAD=cctest.target.mk \
+		PATH=$(@D)/bin:$(BR_PATH) \
+		LDFLAGS="$(NODEJS_LDFLAGS)" \
+		LD="$(TARGET_CXX)"
+endef
 
 define NODEJS_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) PYTHON=$(HOST_DIR)/bin/python2 \
