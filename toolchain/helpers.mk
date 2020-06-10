@@ -184,7 +184,7 @@ check_gcc_version = \
 		exit 0 ; \
 	fi; \
 	real_version=`$(1) -dumpversion` ; \
-	if [[ ! "$${real_version}" =~ ^$${expected_version}\. ]] ; then \
+	if [[ ! "$${real_version}." =~ ^$${expected_version}\. ]] ; then \
 		printf "Incorrect selection of gcc version: expected %s.x, got %s\n" \
 			"$${expected_version}" "$${real_version}" ; \
 		exit 1 ; \
