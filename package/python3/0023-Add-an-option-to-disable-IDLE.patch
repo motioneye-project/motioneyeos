@@ -52,7 +52,7 @@ diff --git a/configure.ac b/configure.ac
 index 99bbc37b07..8c9706582e 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -3284,6 +3284,12 @@ AC_ARG_ENABLE(lib2to3,
+@@ -3305,6 +3305,12 @@ AC_ARG_ENABLE(lib2to3,
  	AS_HELP_STRING([--disable-lib2to3], [disable lib2to3]),
  	[ LIB2TO3="${enableval}" ], [ LIB2TO3=yes ])
  

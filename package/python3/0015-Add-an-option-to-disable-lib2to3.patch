@@ -80,7 +80,7 @@ diff --git a/configure.ac b/configure.ac
 index f53cc86d89..caa8eaf88a 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -3225,6 +3225,12 @@ AC_ARG_ENABLE(test-modules,
+@@ -3246,6 +3246,12 @@ AC_ARG_ENABLE(test-modules,
  	AS_HELP_STRING([--disable-test-modules], [disable test modules]),
  	[ TEST_MODULES="${enableval}" ], [ TEST_MODULES=yes ])
  

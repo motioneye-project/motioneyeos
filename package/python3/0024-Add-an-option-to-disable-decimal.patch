@@ -20,7 +20,7 @@ diff --git a/configure.ac b/configure.ac
 index 8c9706582e..e6255babb6 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -3006,13 +3006,20 @@ fi
+@@ -3012,13 +3012,20 @@ fi
  AC_SUBST(LIBFFI_INCLUDEDIR)
  
  # Check for use of the system libmpdec library
@@ -44,8 +44,8 @@ index 8c9706582e..e6255babb6 100644
 +fi
 +AC_SUBST(MPDEC)
  
- # Check for support for loadable sqlite extensions
- AC_MSG_CHECKING(for --enable-loadable-sqlite-extensions)
+ # Check whether _decimal should use a coroutine-local or thread-local context
+ AC_MSG_CHECKING(for --with-decimal-contextvar)
 diff --git a/setup.py b/setup.py
 index 9f09b3d985..a7f2e23d87 100644
 --- a/setup.py

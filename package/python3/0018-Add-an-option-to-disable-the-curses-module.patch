@@ -41,7 +41,7 @@ diff --git a/configure.ac b/configure.ac
 index b5922451cc..ea422a86a9 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -3231,6 +3231,15 @@ if test "$TK" = "no"; then
+@@ -3252,6 +3252,15 @@ if test "$TK" = "no"; then
     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _tkinter"
  fi
  

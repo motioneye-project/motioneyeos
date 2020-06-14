@@ -12,9 +12,9 @@ diff --git a/configure.ac b/configure.ac
 index e6255babb6..5809233aac 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -3021,6 +3021,12 @@ else
- fi
- AC_SUBST(MPDEC)
+@@ -3042,6 +3042,12 @@ fi
+ 
+ AC_MSG_RESULT($with_decimal_contextvar)
  
 +AC_ARG_ENABLE(ossaudiodev,
 +	AS_HELP_STRING([--disable-ossaudiodev], [disable OSSAUDIODEV]),

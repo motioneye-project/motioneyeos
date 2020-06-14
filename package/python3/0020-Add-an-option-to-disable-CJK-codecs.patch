@@ -12,7 +12,7 @@ diff --git a/configure.ac b/configure.ac
 index 3c1e2c088d..30a92f9c2e 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -3230,6 +3230,12 @@ if test "$SQLITE3" = "no" ; then
+@@ -3251,6 +3251,12 @@ if test "$SQLITE3" = "no" ; then
     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _sqlite3"
  fi
  

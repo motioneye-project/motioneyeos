@@ -12,7 +12,7 @@ diff --git a/configure.ac b/configure.ac
 index d07e371c57..55ab6c3c26 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -3309,6 +3309,15 @@ if test "$CURSES" = "no"; then
+@@ -3330,6 +3330,15 @@ if test "$CURSES" = "no"; then
     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _curses _curses_panel"
  fi
  

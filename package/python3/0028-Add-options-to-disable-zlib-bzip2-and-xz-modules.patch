@@ -12,7 +12,7 @@ diff --git a/configure.ac b/configure.ac
 index b64518eed5..d07e371c57 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -3273,6 +3273,24 @@ AC_ARG_ENABLE(readline,
+@@ -3294,6 +3294,24 @@ AC_ARG_ENABLE(readline,
  	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} readline"
  	  fi])
  

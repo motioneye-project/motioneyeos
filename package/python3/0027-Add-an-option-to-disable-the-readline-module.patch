@@ -12,7 +12,7 @@ diff --git a/configure.ac b/configure.ac
 index 6b09bafda4..b64518eed5 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -3267,6 +3267,12 @@ AC_ARG_ENABLE(openssl,
+@@ -3288,6 +3288,12 @@ AC_ARG_ENABLE(openssl,
  	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} ssl _ssl _hashlib"
  	  fi])
  

@@ -95,7 +95,7 @@ diff --git a/configure.ac b/configure.ac
 index 7872b4dfee..b820d18c7c 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -3213,6 +3213,11 @@ if test "$posix_threads" = "yes"; then
+@@ -3234,6 +3234,11 @@ if test "$posix_threads" = "yes"; then
        AC_CHECK_FUNCS(pthread_getcpuclockid)
  fi
  

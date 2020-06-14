@@ -12,7 +12,7 @@ diff --git a/configure.ac b/configure.ac
 index 20f326db46..99bbc37b07 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -3242,6 +3242,12 @@ AC_ARG_ENABLE(nis,
+@@ -3263,6 +3263,12 @@ AC_ARG_ENABLE(nis,
      	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} nis"
    	  fi])
  

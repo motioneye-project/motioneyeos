@@ -47,7 +47,7 @@ diff --git a/configure.ac b/configure.ac
 index ea422a86a9..3c1e2c088d 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2955,13 +2955,21 @@ PKG_PROG_PKG_CONFIG
+@@ -2961,13 +2961,21 @@ PKG_PROG_PKG_CONFIG
  AC_SUBST(DISABLED_EXTENSIONS)
  
  # Check for use of the system expat library

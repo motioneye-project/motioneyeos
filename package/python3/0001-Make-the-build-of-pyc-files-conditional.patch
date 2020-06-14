@@ -38,7 +38,7 @@ diff --git a/configure.ac b/configure.ac
 index a189d42c2c..4690cdba9f 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -1085,6 +1085,12 @@ fi
+@@ -1091,6 +1091,12 @@ fi
  
  AC_MSG_CHECKING(LDLIBRARY)
  

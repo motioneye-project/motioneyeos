@@ -78,7 +78,7 @@ diff --git a/configure.ac b/configure.ac
 index ffeec102b7..7872b4dfee 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2952,6 +2952,8 @@ LIBS="$withval $LIBS"
+@@ -2958,6 +2958,8 @@ LIBS="$withval $LIBS"
  
  PKG_PROG_PKG_CONFIG
  
