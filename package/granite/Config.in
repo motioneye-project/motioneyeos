@@ -10,7 +10,7 @@ config BR2_PACKAGE_GRANITE
 	  An extension to GTK+ that provides several useful widgets and
 	  classes to ease application development.
 
-	  https://launchpad.net/granite
+	  https://github.com/elementary/granite
 
 comment "granite needs libgtk3 and a toolchain w/ wchar, threads"
 	depends on BR2_USE_MMU
