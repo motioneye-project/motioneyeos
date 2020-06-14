@@ -1,4 +1,4 @@
-From 3a4962ede0d12bac66b38e0843f6e2ea75b03d50 Mon Sep 17 00:00:00 2001
+From 71295eec724f89ef5f5822c17cf44480335225cd Mon Sep 17 00:00:00 2001
 From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
 Date: Sat, 15 Feb 2020 15:13:59 +0100
 Subject: [PATCH] mesonbuild/dependencies/base.py: add pkg_config_static
@@ -16,23 +16,26 @@ Fixes:
  - http://autobuild.buildroot.org/results/0d36952def63cb69628697fa6408aeb6ce10cb5b
 
 Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Romain: Fix if condition, pkg_config_static is a string not a boolean]
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
 ---
- mesonbuild/dependencies/base.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mesonbuild/dependencies/base.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/mesonbuild/dependencies/base.py b/mesonbuild/dependencies/base.py
-index a83e3d6c..913bff6b 100644
+index 5636602e..de4e87bc 100644
 --- a/mesonbuild/dependencies/base.py
 +++ b/mesonbuild/dependencies/base.py
-@@ -840,7 +840,7 @@ class PkgConfigDependency(ExternalDependency):
+@@ -858,7 +858,8 @@ class PkgConfigDependency(ExternalDependency):
      def _set_libs(self):
          env = None
          libcmd = [self.name, '--libs']
 -        if self.static:
-+        if self.static or self.env.properties[self.for_machine].get('pkg_config_static', False):
++        if self.static or \
++           (self.env.properties[self.for_machine].get('pkg_config_static', None) == 'true'):
              libcmd.append('--static')
          # Force pkg-config to output -L fields even if they are system
          # paths so we can do manual searching with cc.find_library() later.
 -- 
-2.24.1
+2.25.4
 
