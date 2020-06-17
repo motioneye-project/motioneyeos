@@ -93,7 +93,7 @@ OPENJDK_CONF_OPTS = \
 	--enable-openjdk-only \
 	--enable-unlimited-crypto \
 	--openjdk-target=$(GNU_TARGET_NAME) \
-	--with-boot-jdk=$(HOST_DIR) \
+	--with-boot-jdk=$(HOST_OPENJDK_BIN_ROOT_DIR) \
 	--with-stdc++lib=dynamic \
 	--with-debug-level=release \
 	--with-devkit=$(HOST_DIR) \

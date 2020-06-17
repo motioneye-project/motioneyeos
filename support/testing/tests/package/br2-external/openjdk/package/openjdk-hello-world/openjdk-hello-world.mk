@@ -8,7 +8,7 @@ OPENJDK_HELLO_WORLD_DEPENDENCIES = openjdk
 
 define OPENJDK_HELLO_WORLD_BUILD_CMDS
 	$(INSTALL) -D $(OPENJDK_HELLO_WORLD_PKGDIR)/HelloWorld.java $(@D)/HelloWorld.java
-	$(HOST_DIR)/bin/javac $(@D)/HelloWorld.java
+	$(JAVAC) $(@D)/HelloWorld.java
 endef
 
 define OPENJDK_HELLO_WORLD_INSTALL_TARGET_CMDS

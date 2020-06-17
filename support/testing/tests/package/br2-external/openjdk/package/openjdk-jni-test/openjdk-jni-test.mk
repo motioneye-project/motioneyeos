@@ -10,7 +10,7 @@ JNI_INCLUDE_PATH = $(BUILD_DIR)/openjdk-$(OPENJDK_VERSION)/build/linux-aarch64-s
 
 define OPENJDK_JNI_TEST_BUILD_CMDS
 	# Compile Java classes and generate native headers
-	$(HOST_DIR)/bin/javac -d $(@D) -h $(@D) \
+	$(JAVAC) -d $(@D) -h $(@D) \
 		$(OPENJDK_JNI_TEST_PKGDIR)/JniTest.java \
 		$(OPENJDK_JNI_TEST_PKGDIR)/JniWrapper.java \
 		$(OPENJDK_JNI_TEST_PKGDIR)/JniHelper.java
