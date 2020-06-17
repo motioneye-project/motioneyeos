@@ -1,5 +1,5 @@
 # Locally calculated after checking pgp signature
-# https://github.com/appneta/tcpreplay/releases/download/v4.3.2/tcpreplay-4.3.2.tar.xz.asc
+# https://github.com/appneta/tcpreplay/releases/download/v4.3.3/tcpreplay-4.3.3.tar.xz.asc
 # using key 84E4FA215C934A7D97DC76D5E9E2149793BDE17E
-sha256 955aed6a40f49a5b8c1234fd0a928edc5c665d94b7755ab5769c30938e33f380  tcpreplay-4.3.2.tar.xz
-sha256 5971b0c544622f4b210a9cc56436a970685d3b0666e373c09e3cf9304db15d05  docs/LICENSE
+sha256  5e960e2a4432f583adbd11fa0855d17b73d9e0f2d6453b749f27aacaee53bab5  tcpreplay-4.3.3.tar.xz
+sha256  5971b0c544622f4b210a9cc56436a970685d3b0666e373c09e3cf9304db15d05  docs/LICENSE
