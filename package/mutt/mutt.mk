@@ -13,6 +13,9 @@ MUTT_CONF_OPTS = --disable-doc --disable-smtp
 # We're patching configure.ac
 MUTT_AUTORECONF = YES
 
+# 0003-Prevent-possible-IMAP-MITM-via-PREAUTH-response.patch
+MUTT_IGNORE_CVES += CVE-2020-14093
+
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
 MUTT_DEPENDENCIES += libiconv
 MUTT_CONF_OPTS += --enable-iconv
