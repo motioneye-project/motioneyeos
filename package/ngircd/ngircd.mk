@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NGIRCD_VERSION = 25
+NGIRCD_VERSION = 26
 NGIRCD_SOURCE = ngircd-$(NGIRCD_VERSION).tar.xz
 NGIRCD_SITE = https://arthur.barton.de/pub/ngircd
 NGIRCD_LICENSE = GPL-2.0+
@@ -18,8 +18,8 @@ NGIRCD_CONF_OPTS += --without-pam
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
-NGIRCD_CONF_OPTS += --with-openssl=$(STAGING_DIR)/usr
-NGIRCD_DEPENDENCIES += openssl
+NGIRCD_CONF_OPTS += --with-openssl
+NGIRCD_DEPENDENCIES += host-pkgconf openssl
 else
 NGIRCD_CONF_OPTS += --without-openssl
 ifeq ($(BR2_PACKAGE_GNUTLS),y)
