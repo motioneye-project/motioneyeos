@@ -21,7 +21,7 @@ endef
 
 ifeq ($(BR2_PER_PACKAGE_DIRECTORIES),y)
 define QT5_QT_CONF_FIXUP
-        $(QT5_INSTALL_QT_CONF)
+	$(QT5_INSTALL_QT_CONF)
 endef
 endif
 
