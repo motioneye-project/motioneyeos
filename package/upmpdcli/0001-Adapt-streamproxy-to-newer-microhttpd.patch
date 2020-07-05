@@ -1,0 +1,106 @@
+From 4fd8a07b560dcd4ad5706684d512d33707de3da0 Mon Sep 17 00:00:00 2001
+From: Jean-Francois Dockes <jf@dockes.org>
+Date: Fri, 3 Jul 2020 19:26:37 +0200
+Subject: [PATCH] Adapt streamproxy to newer microhttpd where results are now
+ an enum
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+[downloaded from upstream commit
+ https://framagit.org/medoc92/upmpdcli/-/commit/4fd8a07b560dcd4ad5706684d512d33707de3da0]
+---
+ src/mediaserver/cdplugins/streamproxy.cpp | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
+
+diff --git a/src/mediaserver/cdplugins/streamproxy.cpp b/src/mediaserver/cdplugins/streamproxy.cpp
+index abc57915..8d283834 100644
+--- a/src/mediaserver/cdplugins/streamproxy.cpp
++++ b/src/mediaserver/cdplugins/streamproxy.cpp
+@@ -28,6 +28,11 @@
+ #include <fcntl.h>
+ #include <microhttpd.h>
+ 
++
++#if MHD_VERSION < 0x00097002
++typedef int MHD_Result;
++#endif
++
+ #include <mutex>
+ #include <condition_variable>
+ #include <unordered_map>
+@@ -155,7 +160,7 @@ public:
+     ~Internal();
+     bool startMHD();
+ 
+-    int answerConn(
++    MHD_Result answerConn(
+         struct MHD_Connection *connection, const char *url, 
+         const char *method, const char *version, 
+         const char *upload_data, size_t *upload_data_size,
+@@ -202,7 +207,7 @@ StreamProxy::Internal::Internal(int _listenport, UrlTransFunc _urltrans)
+ }
+ 
+ 
+-static int answer_to_connection(
++static MHD_Result answer_to_connection(
+     void *cls, struct MHD_Connection *conn, 
+     const char *url, const char *method, const char *version, 
+     const char *upload_data, size_t *upload_data_size,
+@@ -214,7 +219,7 @@ static int answer_to_connection(
+         return internal->answerConn(
+             conn, url, method, version, upload_data, upload_data_size, con_cls);
+     } else {
+-        return -1;
++        return MHD_NO;
+     }
+ }
+ 
+@@ -238,8 +243,8 @@ static int print_out_key (void *cls, enum MHD_ValueKind kind,
+ }
+ #endif /* PRINT_KEYS */
+ 
+-static int mapvalues_cb(void *cls, enum MHD_ValueKind kind, 
+-                        const char *key, const char *value)
++static MHD_Result mapvalues_cb(void *cls, enum MHD_ValueKind kind, 
++                               const char *key, const char *value)
+ {
+     unordered_map<string,string> *mp = (unordered_map<string,string> *)cls;
+     if (mp) {
+@@ -307,7 +312,7 @@ static bool processRange(struct MHD_Connection *mhdconn, uint64_t& offset)
+     return true;
+ }
+ 
+-int StreamProxy::Internal::answerConn(
++MHD_Result StreamProxy::Internal::answerConn(
+     struct MHD_Connection *mhdconn, const char *_url,
+     const char *method, const char *version, 
+     const char *upload_data, size_t *upload_data_size,
+@@ -352,7 +357,7 @@ int StreamProxy::Internal::answerConn(
+                 return MHD_NO;
+             }
+             MHD_add_response_header (response, "Location", url.c_str());
+-            int ret = MHD_queue_response(mhdconn, 302, response);
++            MHD_Result ret = MHD_queue_response(mhdconn, 302, response);
+             MHD_destroy_response(response);
+             return ret;
+         }
+@@ -393,7 +398,7 @@ int StreamProxy::Internal::answerConn(
+         int code = httpcode ? httpcode : MHD_HTTP_INTERNAL_SERVER_ERROR;
+         struct MHD_Response *response =
+             MHD_create_response_from_buffer(0, 0, MHD_RESPMEM_PERSISTENT);
+-        int ret = MHD_queue_response(mhdconn, code, response);
++        MHD_Result ret = MHD_queue_response(mhdconn, code, response);
+         MHD_destroy_response(response);
+         LOGINF("StreamProxy::answerConn (1): return with http code: " <<
+                code << endl);
+@@ -434,7 +439,7 @@ int StreamProxy::Internal::answerConn(
+     if (reader->fetcher->fetchDone(&fetchcode, &httpcode)) {
+         code = httpcode ? httpcode : MHD_HTTP_INTERNAL_SERVER_ERROR;
+     }
+-    int ret = MHD_queue_response(mhdconn, code, response);
++    MHD_Result ret = MHD_queue_response(mhdconn, code, response);
+     MHD_destroy_response(response);
+     return ret;
+ }
+-- 
+GitLab
+
