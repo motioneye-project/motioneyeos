@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-JQ_VERSION = a97638713ad30653d424f136018098c4b0e5c71b
+JQ_VERSION = a17dd3248a666d01be75f6b16be37e80e20b0954
 JQ_SITE = $(call github,stedolan,jq,$(JQ_VERSION))
 JQ_LICENSE = MIT (code), CC-BY-3.0 (documentation)
 JQ_LICENSE_FILES = COPYING
