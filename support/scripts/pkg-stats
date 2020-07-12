@@ -1002,7 +1002,7 @@ def dump_json(packages, defconfigs, stats, date, commit, output):
 
 
 def resolvepath(path):
-        return os.path.abspath(os.path.expanduser(path))
+    return os.path.abspath(os.path.expanduser(path))
 
 
 def parse_args():
