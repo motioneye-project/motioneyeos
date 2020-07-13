@@ -21,7 +21,7 @@ EXIV2_IGNORE_CVES += CVE-2019-17402
 # 0002-fix_1011_jp2_readmetadata_loop.patch
 EXIV2_IGNORE_CVES += CVE-2019-20421
 
-EXIV2_CONF_OPTS += -DEXIV2_ENABLE_BUILD_SAMPLES=OFF
+EXIV2_CONF_OPTS += -DEXIV2_BUILD_SAMPLES=OFF
 
 # The following CMake variable disables a TRY_RUN call in the -pthread
 # test which is not allowed when cross-compiling.
