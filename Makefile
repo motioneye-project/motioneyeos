@@ -757,6 +757,7 @@ ifneq ($(BR2_PACKAGE_GDB),y)
 endif
 ifneq ($(BR2_PACKAGE_BASH),y)
 	rm -rf $(TARGET_DIR)/usr/share/bash-completion
+	rm -rf $(TARGET_DIR)/etc/bash_completion.d
 endif
 ifneq ($(BR2_PACKAGE_ZSH),y)
 	rm -rf $(TARGET_DIR)/usr/share/zsh
