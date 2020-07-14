@@ -13,7 +13,10 @@ LXC_INSTALL_STAGING = YES
 # We're patching configure.ac
 LXC_AUTORECONF = YES
 
-LXC_CONF_OPTS = --disable-apparmor --with-distro=buildroot \
+LXC_CONF_OPTS = \
+	--disable-apparmor \
+	--disable-examples \
+	--with-distro=buildroot \
 	--disable-werror \
 	$(if $(BR2_PACKAGE_BASH),,--disable-bash)
 
