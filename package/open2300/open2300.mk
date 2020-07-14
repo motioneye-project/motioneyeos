@@ -19,12 +19,8 @@ OPEN2300_LDFLAGS = $(TARGET_LDFLAGS)
 ifeq ($(BR2_PACKAGE_MYSQL),y)
 OPEN2300_DEPENDENCIES += mysql
 OPEN2300_BINS += mysql2300 mysqlhistlog2300
-OPEN2300_CFLAGS += -I$(STAGING_DIR)/usr/include/mysql
-OPEN2300_LDFLAGS += -L$(STAGING_DIR)/usr/lib/mysql -lmysqlclient
-ifeq ($(BR2_STATIC_LIBS),y)
-# mysql needs -lz, so we need to specify it for static builds
-OPEN2300_LDFLAGS += -lz
-endif
+OPEN2300_CFLAGS += $(shell $(STAGING_DIR)/usr/bin/mysql_config --cflags)
+OPEN2300_LDFLAGS += $(shell $(STAGING_DIR)/usr/bin/mysql_config --libs)
 endif
 
 define OPEN2300_BUILD_CMDS
