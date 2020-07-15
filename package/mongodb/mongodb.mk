@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-MONGODB_VERSION_BASE = 4.2.4
-MONGODB_VERSION = r$(MONGODB_VERSION_BASE)
-MONGODB_SITE = $(call github,mongodb,mongo,$(MONGODB_VERSION))
+MONGODB_VERSION = 4.2.8
+MONGODB_SITE = https://fastdl.mongodb.org/src
+MONGODB_SOURCE = mongodb-src-r$(MONGODB_VERSION).tar.gz
 
 MONGODB_LICENSE = Apache-2.0 (drivers), SSPL (database)
 MONGODB_LICENSE_FILES = APACHE-2.0.txt LICENSE-Community.txt
@@ -41,7 +41,7 @@ MONGODB_SCONS_OPTS = \
 	--use-system-zlib
 
 # need to pass mongo version when not building from git repo
-MONGODB_SCONS_OPTS += MONGO_VERSION=$(MONGODB_VERSION_BASE)-
+MONGODB_SCONS_OPTS += MONGO_VERSION=$(MONGODB_VERSION)-
 
 # WiredTiger database storage engine only supported on 64 bits
 ifeq ($(BR2_ARCH_IS_64),y)
