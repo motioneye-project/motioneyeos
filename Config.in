@@ -516,13 +516,14 @@ config BR2_OPTIMIZE_S
 	  This is the default.
 
 config BR2_OPTIMIZE_FAST
-	bool "optimize for fast"
+	bool "optimize for fast (may break packages!)"
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_6
 	help
 	  Optimize for fast. Disregard strict standards
 	  compliance. -Ofast enables all -O3 optimizations. It also
 	  enables optimizations that are not valid for all
-	  standard-compliant programs. It turns on -ffast-math and the
+	  standard-compliant programs, so be careful, as it may break
+	  some packages. It turns on -ffast-math and the
 	  Fortran-specific -fstack-arrays, unless -fmax-stack-var-size
 	  is specified, and -fno-protect-parens.
 
