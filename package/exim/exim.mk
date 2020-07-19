@@ -123,8 +123,8 @@ endif
 define EXIM_BUILD_CMDS
 	$(TARGET_MAKE_ENV) build=br $(MAKE) -C $(@D) makefile
 	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)/build-br macro_predef \
-		CC=$(HOSTCC) \
-		LNCC=$(HOSTCC) \
+		CC="$(HOSTCC)" \
+		LNCC="$(HOSTCC)" \
 		CFLAGS="-std=c99 $(HOST_CFLAGS)" \
 		LFLAGS="-fPIC $(HOST_LDFLAGS)"
 	$(TARGET_MAKE_ENV) build=br $(MAKE) -C $(@D) $(EXIM_STATIC_FLAGS) \
