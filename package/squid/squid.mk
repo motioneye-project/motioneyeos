@@ -62,6 +62,13 @@ else
 SQUID_CONF_OPTS += --without-gnutls
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+SQUID_CONF_OPTS += --with-systemd
+SQUID_DEPENDENCIES += systemd
+else
+SQUID_CONF_OPTS += --without-systemd
+endif
+
 define SQUID_CLEANUP_TARGET
 	rm -f $(addprefix $(TARGET_DIR)/usr/bin/, \
 		RunCache RunAccel)
