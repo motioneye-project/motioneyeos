@@ -1,3 +1,6 @@
 # From https://sourceforge.net/projects/lksctp/files/lksctp-tools/
 md5	68e9b8fa4d4e331029b247b72d46d7a5	lksctp-tools-1.0.17.tar.gz
 sha1	941b0b5c39e364a971f514bba66120435660e518	lksctp-tools-1.0.17.tar.gz
+# Locally computed
+sha256  dee5f35e583183abb9212938643ecb2d858fd89e2e286f4b1d903f65d49d6c76  COPYING.lib
+sha256  cc2a6651c315b233ebc110b49ea3c6452eff9a28f8bc051ffd2bb92a8dcfa3d2  COPYING

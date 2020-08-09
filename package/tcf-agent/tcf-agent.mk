@@ -24,9 +24,6 @@ TCF_AGENT_CONF_OPTS = \
 define TCF_AGENT_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 package/tcf-agent/tcf-agent.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/tcf-agent.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -fs ../../../../usr/lib/systemd/system/tcf-agent.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/tcf-agent.service
 endef
 
 define TCF_AGENT_INSTALL_INIT_SYSV

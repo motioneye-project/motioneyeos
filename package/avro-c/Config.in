@@ -1,0 +1,27 @@
+comment "avro-c needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+
+config BR2_PACKAGE_AVRO_C
+	bool "avro-c"
+	depends on !BR2_STATIC_LIBS  # Avro unconditionally compiles shared libs
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	select BR2_PACKAGE_JANSSON
+	help
+	  Select this option to install the Avro C language bindings,
+	  and the command line tools avroappend, avrocat, avromod and
+	  avropipe.
+
+	  Apache Avro is a data serialization system.
+	  Avro provides:
+	  - Rich data structures.
+	  - A compact, fast, binary data format.
+	  - A container file, to store persistent data.
+	  - Remote procedure call (RPC).
+	  - Simple integration with dynamic languages.
+	  - Code generation is not required to read or write data
+	    files nor to use or implement RPC protocols.
+	  - Code generation as an optional optimization,
+	    only worth implementing for statically typed languages.
+
+	  http://avro.apache.org/

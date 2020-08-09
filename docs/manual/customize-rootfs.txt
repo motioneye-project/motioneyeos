@@ -145,7 +145,7 @@ It is recommended to use the existing mechanisms to set file permissions
 The difference between post-build scripts (above) and fakeroot scripts,
   is that post-build scripts are not called in the fakeroot context.
 +
-.Note;
+.Note:
 Using `fakeroot` is not an absolute substitute for actually being root.
   `fakeroot` only ever fakes the file access rights and types (regular,
   block-or-char device...) and uid/gid; these are emulated in-memory.

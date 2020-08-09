@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_FLATBUFFERS
+	bool "python-flatbuffers"
+	help
+	  The FlatBuffers serialization format for Python.
+
+	  https://github.com/google/flatbuffers

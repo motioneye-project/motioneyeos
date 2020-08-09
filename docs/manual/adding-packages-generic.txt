@@ -142,7 +142,7 @@ All these steps rely on the +$(@D)+ variable, which
 contains the directory where the source code of the package has been
 extracted.
 
-On lines 31..43, we define a user that is used by this package (e.g.
+On lines 31..33, we define a user that is used by this package (e.g.
 to run a daemon as non-root) (+LIBFOO_USERS+).
 
 On line 35..37, we define a device-node file used by this package
@@ -358,9 +358,11 @@ not and can not work as people would expect it should:
 * +LIBFOO_DEPENDENCIES+ lists the dependencies (in terms of package
   name) that are required for the current target package to
   compile. These dependencies are guaranteed to be compiled and
-  installed before the configuration of the current package starts. In
-  a similar way, +HOST_LIBFOO_DEPENDENCIES+ lists the dependencies for
-  the current host package.
+  installed before the configuration of the current package starts.
+  However, modifications to configuration of these dependencies will
+  not force a rebuild of the current package. In a similar way,
+  +HOST_LIBFOO_DEPENDENCIES+ lists the dependencies for the current
+  host package.
 
 * +LIBFOO_EXTRACT_DEPENDENCIES+ lists the dependencies (in terms of
   package name) that are required for the current target package to be
@@ -372,9 +374,9 @@ not and can not work as people would expect it should:
 * +LIBFOO_PATCH_DEPENDENCIES+ lists the dependencies (in terms of
   package name) that are required for the current package to be
   patched. These dependencies are guaranteed to be extracted and
-  patched before the current package is patched. In a similar way,
-  +HOST_LIBFOO_PATCH_DEPENDENCIES+ lists the dependencies for the
-  current host package.
+  patched (but not necessarily built) before the current package is
+  patched. In a similar way, +HOST_LIBFOO_PATCH_DEPENDENCIES+ lists
+  the dependencies for the current host package.
   This is seldom used; usually, +LIBFOO_DEPENDENCIES+ is what you
   really want to use.
 
@@ -429,13 +431,17 @@ not and can not work as people would expect it should:
   the +license+ field of the manifest file for this package. +
   The expected format for this variable must comply with the following rules:
   ** If different parts of the package are released under different
-  licenses, then +comma+ separate licenses (e.g. +`LIBFOO_LICENSE =
-  GPL-2.0+, LGPL-2.1+`+). If there is clear distinction between which
-  component is licensed under what license, then annotate the license
-  with that component, between parenthesis (e.g. +`LIBFOO_LICENSE =
-  GPL-2.0+ (programs), LGPL-2.1+ (libraries)`+).
+     licenses, then +comma+ separate licenses (e.g. +`LIBFOO_LICENSE =
+     GPL-2.0+, LGPL-2.1+`+). If there is clear distinction between which
+     component is licensed under what license, then annotate the license
+     with that component, between parenthesis (e.g. +`LIBFOO_LICENSE =
+     GPL-2.0+ (programs), LGPL-2.1+ (libraries)`+).
+  ** If some licenses are conditioned on a sub-option being enabled, append
+     the conditional licenses with a comma (e.g.: `FOO_LICENSE += , GPL-2.0+
+     (programs)`); the infrastructure will internally remove the space before
+     the comma.
   ** If the package is dual licensed, then separate licenses with the
-  +or+ keyword (e.g. +`LIBFOO_LICENSE = AFL-2.1 or GPL-2.0+`+).
+     +or+ keyword (e.g. +`LIBFOO_LICENSE = AFL-2.1 or GPL-2.0+`+).
 
 * +LIBFOO_LICENSE_FILES+ is a space-separated list of files in the package
   tarball that contain the license(s) under which the package is released.
@@ -446,7 +452,7 @@ not and can not work as people would expect it should:
   of the manifest file for this package.
 
 * +LIBFOO_ACTUAL_SOURCE_TARBALL+ only applies to packages whose
-  +LIBFOO_SITE+ / +LIBTOO_SOURCE+ pair points to an archive that does
+  +LIBFOO_SITE+ / +LIBFOO_SOURCE+ pair points to an archive that does
   not actually contain source code, but binary code. This a very
   uncommon case, only known to apply to external toolchains which come
   already compiled, although theoretically it might apply to other
@@ -481,6 +487,20 @@ not and can not work as people would expect it should:
   variable, unless the package installs binary blobs outside the default
   locations, `/lib/firmware`, `/usr/lib/firmware`, `/lib/modules`,
   `/usr/lib/modules`, and `/usr/share`, which are automatically excluded.
+
+* +LIBFOO_IGNORE_CVES+ is a space-separated list of CVEs that tells
+  Buildroot CVE tracking tools which CVEs should be ignored for this
+  package. This is typically used when the CVE is fixed by a patch in
+  the package, or when the CVE for some reason does not affect the
+  Buildroot package. A Makefile comment must always precede the
+  addition of a CVE to this variable. Example:
+
+----------------------
+# 0001-fix-cve-2020-12345.patch
+LIBFOO_IGNORE_CVES += CVE-2020-12345
+# only when built with libbaz, which Buildroot doesn't support
+LIBFOO_IGNORE_CVES += CVE-2020-54321
+----------------------
 
 The recommended way to define these variables is to use the following
 syntax:
@@ -536,18 +556,34 @@ different steps of the build process.
   should utilize this step if it has binaries which would be similar
   to the kernel image, bootloader or root filesystem images.
 
-* +LIBFOO_INSTALL_INIT_SYSV+ and +LIBFOO_INSTALL_INIT_SYSTEMD+ list the
-  actions to install init scripts either for the systemV-like init systems
-  (busybox, sysvinit, etc.) or for the systemd units. These commands
-  will be run only when the relevant init system is installed (i.e. if
-  systemd is selected as the init system in the configuration, only
-  +LIBFOO_INSTALL_INIT_SYSTEMD+ will be run).
+* +LIBFOO_INSTALL_INIT_SYSV+, +LIBFOO_INSTALL_INIT_OPENRC+ and
+  +LIBFOO_INSTALL_INIT_SYSTEMD+ list the actions to install init
+  scripts either for the systemV-like init systems (busybox,
+  sysvinit, etc.), openrc or for the systemd units. These commands
+  will be run only when the relevant init system is installed (i.e.
+  if systemd is selected as the init system in the configuration,
+  only +LIBFOO_INSTALL_INIT_SYSTEMD+ will be run). The only exception
+  is when openrc is chosen as init system and +LIBFOO_INSTALL_INIT_OPENRC+
+  has not been set, in such situation +LIBFOO_INSTALL_INIT_SYSV+ will
+  be called, since openrc supports sysv init scripts.
+  When systemd is used as the init system, buildroot will automatically enable
+  all services using the +systemctl preset-all+ command in the final phase of
+  image building. You can add preset files to prevent a particular unit from
+  being automatically enabled by buildroot.
 
 * +LIBFOO_HELP_CMDS+ lists the actions to print the package help, which
   is included to the main +make help+ output. These commands can print
   anything in any format.
   This is seldom used, as packages rarely have custom rules. *Do not use
   this variable*, unless you really know that you need to print help.
+
+* +LIBFOO_LINUX_CONFIG_FIXUPS+ lists the Linux kernel configuration
+  options that are needed to build and use this package, and without
+  which the package is fundamentally broken. This shall be a set of
+  calls to one of the kconfig tweaking option: `KCONFIG_ENABLE_OPT`,
+  `KCONFIG_DISABLE_OPT`, or `KCONFIG_SET_OPT`.
+  This is seldom used, as package usually have no strict requirements on
+  the kernel options.
 
 The preferred way to define these variables is:
 
@@ -578,6 +614,13 @@ In the action definitions, you can use the following variables:
 * +$(TARGET_CROSS)+ to get the cross-compilation toolchain prefix
 
 * Of course the +$(HOST_DIR)+, +$(STAGING_DIR)+ and +$(TARGET_DIR)+
-  variables to install the packages properly.
+  variables to install the packages properly. Those variables point to
+  the global _host_, _staging_ and _target_ directories, unless
+  _per-package directory_ support is used, in which case they point to
+  the current package _host_, _staging_ and _target_ directories. In
+  both cases, it doesn't make any difference from the package point of
+  view: it should simply use +HOST_DIR+, +STAGING_DIR+ and
+  +TARGET_DIR+. See xref:top-level-parallel-build[] for more details
+  about _per-package directory_ support.
 
 Finally, you can also use hooks. See xref:hooks[] for more information.

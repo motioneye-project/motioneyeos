@@ -1,2 +1,4 @@
 # From https://lists.x.org/archives/xorg-announce/2016-November/002739.html
-sha256 f7c900f21752683402992b288d5a2826de7a6c0c0abac2aadd7e8a409e170388  xf86-input-keyboard-1.9.0.tar.bz2
+sha256  f7c900f21752683402992b288d5a2826de7a6c0c0abac2aadd7e8a409e170388  xf86-input-keyboard-1.9.0.tar.bz2
+# Locally calculated
+sha256  b91b17c53724c79685e3025a38028b7d48c966fdd239e0efe2d98874d3c139a0  COPYING

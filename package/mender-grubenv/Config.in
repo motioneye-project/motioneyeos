@@ -1,0 +1,43 @@
+config BR2_PACKAGE_MENDER_GRUBENV
+	bool "mender-grubenv"
+	depends on BR2_TARGET_GRUB2_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_MENDER # runtime
+	# grubenv provides it's own fw_printenv.
+	depends on !BR2_PACKAGE_UBOOT_TOOLS_FWPRINTENV
+	depends on BR2_TARGET_GRUB2
+	help
+	  Contains the boot scripts and tools used by Mender to
+	  integrate with the GRUB bootloader.
+
+	  The following Grub modules must be selected for this package:
+	  loadenv hashsum echo halt gcry_sha256 test
+
+	  https://github.com/mendersoftware/grub-mender-grubenv
+
+if BR2_PACKAGE_MENDER_GRUBENV
+
+config BR2_PACKAGE_MENDER_GRUBENV_DEFINES
+	string "path to grubenv defines"
+	help
+	  Specify a path to the mender grubenv defines file.
+	  If no path is specified, the example file in the source
+	  directory will be used.
+
+	  The example file in the source directory sets the following:
+	  mender_rootfsa_part=2
+	  mender_rootfsb_part=3
+	  mender_kernel_root_base=/dev/mmcblk0p
+	  mender_grub_storage_device=hd0
+	  kernel_imagetype=bzImage
+
+endif
+
+comment "mender-grubenv needs a grub2 bootloader"
+	depends on BR2_TARGET_GRUB2_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_MENDER
+	depends on !BR2_TARGET_GRUB2
+
+comment "mender-grubenv does not work with uboot-tools fw_printenv"
+	depends on BR2_TARGET_GRUB2_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_MENDER
+	depends on BR2_PACKAGE_UBOOT_TOOLS_FWPRINTENV

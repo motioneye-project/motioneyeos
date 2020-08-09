@@ -1,0 +1,37 @@
+From 85dcca5997cf3822d6456a5c9c59c46b56adfbb8 Mon Sep 17 00:00:00 2001
+From: Max Filippov <jcmvbkbc@gmail.com>
+Date: Wed, 4 Mar 2020 14:54:27 -0800
+Subject: [PATCH] bfd: xtensa: fix PR ld/25630
+
+bfd/
+2020-03-05  Max Filippov  <jcmvbkbc@gmail.com>
+
+	* elf32-xtensa.c (shrink_dynamic_reloc_sections): Shrink dynamic
+	relocation sections for any removed reference to a dynamic symbol.
+
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+---
+ bfd/elf32-xtensa.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/bfd/elf32-xtensa.c b/bfd/elf32-xtensa.c
+index 12ff9f772aaf..65e14d87940c 100644
+--- a/bfd/elf32-xtensa.c
++++ b/bfd/elf32-xtensa.c
+@@ -10148,10 +10148,9 @@ shrink_dynamic_reloc_sections (struct bfd_link_info *info,
+ 
+   if ((r_type == R_XTENSA_32 || r_type == R_XTENSA_PLT)
+       && (input_section->flags & SEC_ALLOC) != 0
+-      && (dynamic_symbol || bfd_link_pic (info))
+-      && (!h || h->root.type != bfd_link_hash_undefweak
+-	  || (dynamic_symbol
+-	      && (bfd_link_dll (info) || info->export_dynamic))))
++      && (dynamic_symbol
++	  || (bfd_link_pic (info)
++	      && (!h || h->root.type != bfd_link_hash_undefweak))))
+     {
+       asection *srel;
+       bfd_boolean is_plt = FALSE;
+-- 
+2.20.1
+

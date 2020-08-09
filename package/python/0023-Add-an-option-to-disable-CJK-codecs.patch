@@ -1,18 +1,20 @@
-From cb848dae763a3f57e31d734d3be6889f660fa0d0 Mon Sep 17 00:00:00 2001
+From 6761066addfb6028e183d7fe4322b283af18117f Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Tue, 7 Mar 2017 22:29:31 +0100
 Subject: [PATCH] Add an option to disable CJK codecs
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[Peter: update for 2.7.16]
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
 ---
  configure.ac | 6 ++++++
  1 file changed, 6 insertions(+)
 
 diff --git a/configure.ac b/configure.ac
-index 63ee545..6a854ab 100644
+index 2f5759a890..862c8ae516 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2822,6 +2822,12 @@ if test "$SQLITE3" = "no" ; then
+@@ -2851,6 +2851,12 @@ if test "$SQLITE3" = "no" ; then
     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _sqlite3"
  fi
  
@@ -26,5 +28,5 @@ index 63ee545..6a854ab 100644
  AC_ARG_ENABLE(tk,
  	AS_HELP_STRING([--disable-tk], [disable tk]),
 -- 
-2.7.4
+2.11.0
 

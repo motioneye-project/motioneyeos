@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+$(dirname $0)/g-ir-scanner-qemuwrapper $(dirname $0)/g-ir-compiler.real "$@"

@@ -1,0 +1,18 @@
+config BR2_PACKAGE_PTM2HUMAN_ARCH_SUPPORTS
+	bool
+	default y if BR2_arm
+	default y if BR2_armeb
+	default y if BR2_aarch64
+	default y if BR2_aarch64_be
+
+config BR2_PACKAGE_PTM2HUMAN
+	bool "ptm2human"
+	depends on BR2_PACKAGE_PTM2HUMAN_ARCH_SUPPORTS
+	help
+	  ptm2human is a decoder for trace data outputted by Program
+	  Trace Macrocell (PTM) and Embedded Trace Macrocell
+	  (ETMv4). It deconstructs ID packets and data packets
+	  from the formatter of ARM Coresight ETB, and then
+	  translates the trace data to a human-readable format.
+
+	  https://github.com/hwangcc23/ptm2human

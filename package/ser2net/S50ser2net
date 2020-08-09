@@ -5,7 +5,7 @@
 
 start() {
     printf  "Starting ser2net: "
-    if [ ! -f /etc/ser2net.conf ] ; then
+    if [ ! -f /etc/ser2net.conf ] && [ ! -f /etc/ser2net/ser2net.yaml ] ; then
 	echo "no configuration file"
 	exit 1
     fi

@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PERL_MOJOLICIOUS_PLUGIN_AUTHORIZATION
+	bool "perl-mojolicious-plugin-authorization"
+	select BR2_PACKAGE_PERL_MOJOLICIOUS # runtime
+	help
+	  A plugin to make authorization a bit easier.
+
+	  https://metacpan.org/module/Mojolicious::Plugin::Authorization

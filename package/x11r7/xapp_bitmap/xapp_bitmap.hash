@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2015-January/002518.html
-sha256	806cdeb80f5466ba9121e8cc6c6af82d3e4b32ef1a57bc5a76c15887640ec35d	bitmap-1.0.8.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2019-February/002941.html
+md5 b94172053ffa282bd88274f1e6a677f1  bitmap-1.0.9.tar.bz2
+sha1 26ba3130b14a2db81b427f2353ac21301c5d2527  bitmap-1.0.9.tar.bz2
+sha256 e0f3afad5272d796f54c33fa1b5bd1fb3f62843a54b28c87196d06a35123e5f5  bitmap-1.0.9.tar.bz2
+sha512 873c626c72a0f4025fe8c8aeedbf3fe4ee5657fb487ad7410406a20da518c0358041dc45c2549926cc10e1d031977073b9d1ddb32830fdce95b716a52fe44456  bitmap-1.0.9.tar.bz2
+# Locally computed
+sha256 03be44611edac06827bd13c0815a67ecd37ffe8fb1b9e210d6545d79bec89a3a  COPYING

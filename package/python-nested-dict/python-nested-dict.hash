@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/nested-dict/json
+md5	e08e2e8de6d002f9ddda4eea5a4528c2  nested_dict-1.61.tar.gz
+sha256	de0fb5bac82ba7bcc23736f09373f18628ea57f92bbaa13480d23f261c41e771  nested_dict-1.61.tar.gz
+# Locally computed sha256 checksums
+sha256	c84eb6b667b91fd9b8991f500c168354eb51af5b2dd970d8ee51ce336d9aeed1  LICENSE.TXT

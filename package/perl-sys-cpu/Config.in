@@ -5,5 +5,7 @@ config BR2_PACKAGE_PERL_SYS_CPU
 	  Perl module for getting information about the system CPU
 	  (Sys::CPU).
 
+	  http://search.cpan.org/dist/Sys-CPU/
+
 comment "perl-sys-cpu needs a toolchain w/ dynamic library"
 	depends on BR2_STATIC_LIBS

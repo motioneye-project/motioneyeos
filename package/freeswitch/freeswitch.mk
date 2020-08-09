@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-FREESWITCH_VERSION = 1.8.5
-FREESWITCH_SOURCE = freeswitch-$(FREESWITCH_VERSION).tar.xz
-FREESWITCH_SITE = http://files.freeswitch.org/freeswitch-releases
+FREESWITCH_VERSION = 1.10.2
+FREESWITCH_SOURCE = freeswitch-$(FREESWITCH_VERSION).-release.tar.xz
+FREESWITCH_SITE = https://files.freeswitch.org/freeswitch-releases
 # External modules need headers/libs from staging
 FREESWITCH_INSTALL_STAGING = YES
 FREESWITCH_LICENSE = MPL-1.1, \
@@ -164,7 +164,7 @@ FREESWITCH_PRE_CONFIGURE_HOOKS += FREESWITCH_ENABLE_MODULES
 # mod_isac supports a limited set of archs
 # src/mod/codecs/mod_isac/typedefs.h
 ifeq ($(BR2_i386)$(BR2_mips)$(BR2_mipsel)$(BR2_mips64)$(BR2_mips64el)$(BR2_x86_64),y)
-FREESWITCH_LICENSE := $(FREESWITCH_LICENSE), BSD-3-Clause (mod_isac)
+FREESWITCH_LICENSE += , BSD-3-Clause (mod_isac)
 FREESWITCH_LICENSE_FILES += src/mod/codecs/mod_isac/LICENSE
 FREESWITCH_ENABLED_MODULES += codecs/mod_isac
 endif
@@ -218,6 +218,13 @@ endif
 ifeq ($(BR2_PACKAGE_LIBMEMCACHED),y)
 FREESWITCH_DEPENDENCIES += libmemcached
 FREESWITCH_ENABLED_MODULES += applications/mod_memcache
+endif
+
+ifeq ($(BR2_PACKAGE_LIBOPENH264),y)
+FREESWITCH_LICENSE += , BSD-2-Clause (libopenh264)
+FREESWITCH_LICENSE_FILES += docs/OPENH264_BINARY_LICENSE.txt
+FREESWITCH_DEPENDENCIES += libopenh264
+FREESWITCH_ENABLED_MODULES += codecs/mod_openh264
 endif
 
 ifeq ($(BR2_PACKAGE_LIBPNG),y)
@@ -278,12 +285,8 @@ endif
 ifeq ($(BR2_PACKAGE_POSTGRESQL),y)
 FREESWITCH_CONF_ENV += \
 	ac_cv_path_PG_CONFIG=$(STAGING_DIR)/usr/bin/pg_config
-FREESWITCH_CONF_OPTS += \
-	--enable-core-pgsql-pkgconfig \
-	--enable-core-pgsql-support
 FREESWITCH_DEPENDENCIES += postgresql
-else
-FREESWITCH_CONF_OPTS += --disable-core-pgsql-support
+FREESWITCH_ENABLED_MODULES += databases/mod_pgsql
 endif
 
 ifeq ($(BR2_PACKAGE_UNIXODBC),y)
@@ -300,12 +303,45 @@ FREESWITCH_DEPENDENCIES += xz
 endif
 
 ifeq ($(BR2_TOOLCHAIN_GCC_AT_LEAST_4_8)$(BR2_PACKAGE_FFMPEG),yy)
-FREESWITCH_LICENSE := $(FREESWITCH_LICENSE), BSD-3-Clause (libvpx, libyuv)
+FREESWITCH_LICENSE += , BSD-3-Clause (libvpx, libyuv)
 FREESWITCH_LICENSE_FILES += libs/libvpx/LICENSE libs/libyuv/LICENSE
 FREESWITCH_CONF_OPTS += --enable-libvpx --enable-libyuv
 FREESWITCH_DEPENDENCIES += host-yasm ffmpeg
 FREESWITCH_ENABLED_MODULES += applications/mod_av applications/mod_fsv
 FREESWITCH_MAKE_ENV += CROSS=$(TARGET_CROSS)
+
+# Freeswitch's buildsystem forgets to pass important environment
+# variables and config options when it configures libvpx, so
+# pre-build libvpx manually, so Freeswitch does not attempt to run
+# its flawed commands...
+# Freeswitch only ever uses the static libtrary, that's hard-coded,
+# we can't do anything about that...
+# From package/libvpx/libvpx.mk:
+# - this is not a true autotools package.  It is based on the ffmpeg
+#   build system.
+# - ld is being used with cc options. therefore, pretend ld is cc.
+define FREESWITCH_BUILD_LIBVPX
+	cd $(@D)/libs/libvpx && \
+	$(TARGET_CONFIGURE_OPTS) \
+	$(TARGET_CONFIGURE_ARGS) \
+	LD="$(TARGET_CC)" \
+	CROSS=$(GNU_TARGET_NAME) \
+	./configure \
+		--target=generic-gnu \
+		--enable-pic \
+		--prefix=/usr \
+		--disable-shared --enable-static \
+		--disable-examples \
+		--disable-docs \
+		--disable-unit-tests && \
+	$(TARGET_MAKE_ENV) \
+	$(LIBVPX_MAKE_ENV) \
+	$(MAKE) \
+		-C $(@D)/libs/libvpx \
+		all
+endef
+FREESWITCH_PRE_BUILD_HOOKS += FREESWITCH_BUILD_LIBVPX
+
 else
 FREESWITCH_CONF_OPTS += --disable-libvpx --disable-libyuv
 endif

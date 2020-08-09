@@ -1,5 +1,6 @@
 config BR2_PACKAGE_BIRD
 	bool "bird"
+	depends on !BR2_nios2 # relocations don't fit
 	depends on BR2_USE_MMU # fork()
 	help
 	  BIRD Internet Routing Daemon
@@ -19,5 +20,62 @@ config BR2_PACKAGE_BIRD_CLIENT
 	select BR2_PACKAGE_READLINE
 	help
 	  Enable the BIRD client
+
+comment "protocol support"
+
+config BR2_PACKAGE_BIRD_BABEL
+	bool "babel"
+	help
+	  Enable Babel protocol.
+
+config BR2_PACKAGE_BIRD_BFD
+	bool "bfd"
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	help
+	  Enable BFD protocol.
+
+comment "BFD protocol needs a toolchain w/ NPTL"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL
+
+config BR2_PACKAGE_BIRD_BGP
+	bool "bgp"
+	default y
+	help
+	  Enable BGP protocol.
+
+config BR2_PACKAGE_BIRD_MRT
+	bool "mrt"
+	help
+	  Enable MRT protocol.
+
+config BR2_PACKAGE_BIRD_OSPF
+	bool "ospf"
+	help
+	  Enable OSPFv2 and OSPFv3 protocol.
+
+config BR2_PACKAGE_BIRD_PERF
+	bool "perf"
+	help
+	  Enable Perf protocol.
+
+config BR2_PACKAGE_BIRD_PIPE
+	bool "pipe"
+	help
+	  Enable Pipe protocol.
+
+config BR2_PACKAGE_BIRD_RADV
+	bool "radv"
+	help
+	  Enable RAdv protocol.
+
+config BR2_PACKAGE_BIRD_RIP
+	bool "rip"
+	help
+	  Enable RIP protocol.
+
+config BR2_PACKAGE_BIRD_STATIC
+	bool "static"
+	help
+	  Enable Static protocol.
 
 endif

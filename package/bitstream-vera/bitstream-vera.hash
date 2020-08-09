@@ -1,2 +1,4 @@
 # From http://ftp.gnome.org/pub/GNOME/sources/ttf-bitstream-vera/1.10/ttf-bitstream-vera-1.10.tar.bz2.sha256sum
-sha256	db5b27df7bbb318036ebdb75acd3e98f1bd6eb6608fb70a67d478cd243d178dc	ttf-bitstream-vera-1.10.tar.bz2
+sha256  db5b27df7bbb318036ebdb75acd3e98f1bd6eb6608fb70a67d478cd243d178dc  ttf-bitstream-vera-1.10.tar.bz2
+# locally computed
+sha256  3361d054759a2fc686a2c058be82deaf9c2e6fe549be9004d7935a6c1736315d  COPYRIGHT.TXT

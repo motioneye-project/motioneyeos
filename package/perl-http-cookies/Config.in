@@ -5,4 +5,4 @@ config BR2_PACKAGE_PERL_HTTP_COOKIES
 	help
 	  HTTP cookie jars.
 
-	  https://github.com/libwww-perl/http-cookies
+	  https://github.com/libwww-perl/HTTP-Cookies

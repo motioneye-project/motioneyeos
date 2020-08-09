@@ -1,0 +1,52 @@
+From a46b3f48d27f6a229627ef731fc23e3971056caa Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sat, 25 Jan 2020 10:51:36 +0100
+Subject: [PATCH] Fix unused parameters with musl
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/kravietz/pam_tacplus/commit/a46b3f48d27f6a229627ef731fc23e3971056caa]
+---
+ support.c | 1 +
+ tacc.c    | 3 +++
+ 2 files changed, 4 insertions(+)
+
+diff --git a/support.c b/support.c
+index 6e3fe45..76a5102 100644
+--- a/support.c
++++ b/support.c
+@@ -116,6 +116,7 @@ int converse(pam_handle_t *pamh, int nargs, const struct pam_message *message,
+ int tacacs_get_password(pam_handle_t *pamh, int flags __Unused,
+                         int ctrl, char **password) {
+ 
++    (void) flags;
+     const void *pam_pass;
+     char *pass = NULL;
+ 
+diff --git a/tacc.c b/tacc.c
+index 302058a..ef9d081 100644
+--- a/tacc.c
++++ b/tacc.c
+@@ -498,6 +498,7 @@ int main(int argc, char **argv) {
+ }
+ 
+ void sighandler(int sig __Unused) {
++    (void) sig;
+     TACDEBUG(LOG_DEBUG, "caught signal %d", sig);
+ }
+ 
+@@ -602,12 +603,14 @@ void showversion(char *progname) {
+ }
+ 
+ void timeout_handler(int signum __Unused) {
++    (void) signum;
+     syslog(LOG_ERR, "timeout reading password from user %s", g_user);
+ }
+ 
+ #ifdef TACDEBUG_AT_RUNTIME
+ void logmsg(int level __Unused, const char *fmt, ...)
+ {
++    (void) level;
+     va_list ap;
+ 
+     va_start(ap, fmt);

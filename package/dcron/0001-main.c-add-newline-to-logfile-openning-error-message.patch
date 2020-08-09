@@ -1,0 +1,26 @@
+From 2710bc67cd920323da9b23a3d60193577bd43d71 Mon Sep 17 00:00:00 2001
+From: Carlos Santos <unixmania@gmail.com>
+Date: Sat, 20 Jul 2019 00:27:31 -0300
+Subject: [PATCH] main.c: add newline to logfile openning error message
+
+Signed-off-by: Carlos Santos <unixmania@gmail.com>
+---
+ main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main.c b/main.c
+index 0eba280..2606db8 100644
+--- a/main.c
++++ b/main.c
+@@ -261,7 +261,7 @@ main(int ac, char **av)
+ 				dup2(fd, 2);
+ 			} else {
+ 				int n = errno;
+-				fdprintf(2, "failed to open logfile '%s', reason: %s", LogFile, strerror(n));
++				fdprintf(2, "failed to open logfile '%s', reason: %s\n", LogFile, strerror(n));
+ 				exit(n);
+ 			}
+ 		}
+-- 
+2.18.1
+

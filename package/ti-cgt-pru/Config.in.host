@@ -7,6 +7,7 @@ config BR2_PACKAGE_HOST_TI_CGT_PRU_ARCH_SUPPORTS
 config BR2_PACKAGE_HOST_TI_CGT_PRU
 	bool "host ti-cgt-pru"
 	depends on BR2_PACKAGE_HOST_TI_CGT_PRU_ARCH_SUPPORTS
+	select BR2_HOSTARCH_NEEDS_IA32_LIBS
 	help
 	  This package provides the Code Generation Tools for the PRU
 	  unit found on some TI processors e.g. AM3358.

@@ -1,5 +1,6 @@
 config BR2_PACKAGE_DNSMASQ
 	bool "dnsmasq"
+	depends on BR2_USE_MMU # fork()
 	help
 	  A lightweight DNS and DHCP server. It is intended to provide
 	  coupled DNS and DHCP service to a LAN.
@@ -29,8 +30,7 @@ config BR2_PACKAGE_DNSMASQ_DNSSEC
 
 config BR2_PACKAGE_DNSMASQ_IDN
 	bool "IDN support"
-	depends on BR2_USE_WCHAR
-	select BR2_PACKAGE_LIBIDN
+	select BR2_PACKAGE_LIBIDN2 if !BR2_PACKAGE_LIBIDN
 	help
 	  Enable IDN support in dnsmasq.
 	  This option is a big space taker since it pulls in many

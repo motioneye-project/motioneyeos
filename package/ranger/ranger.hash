@@ -1,2 +1,4 @@
 # Locally calculated after checking pgp signature
-sha256 94f6e342daee4445f15db5a7440a11138487c49cc25da0c473bbf1b8978f5b79 ranger-1.7.2.tar.gz
+sha256  94f6e342daee4445f15db5a7440a11138487c49cc25da0c473bbf1b8978f5b79  ranger-1.7.2.tar.gz
+# Locally computed
+sha256  fa3b40d44066b033ac8a134b792a4a4a1915aa7bc7757098e0f67080648a3271  AUTHORS

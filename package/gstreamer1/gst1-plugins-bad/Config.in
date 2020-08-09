@@ -46,15 +46,15 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOFXBAD
 	help
 	  Audio filters plugin
 
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOLATENCY
+	bool "audiolatency"
+	help
+	  Audio latency plugin
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOMIXMATRIX
 	bool "audiomixmatrix"
 	help
 	  Audio N:M mixer plugin
-
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_COMPOSITOR
-	bool "compositor"
-	help
-	  Video compositor plugin
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOVISUALIZERS
 	bool "audiovisualizers"
@@ -217,6 +217,11 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_PNM
 	help
 	  PNM plugin
 
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_PROXY
+	bool "proxy"
+	help
+	  Proxy plugin
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_RAWPARSE
 	bool "rawparse"
 	help
@@ -263,9 +268,6 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SUBENC
 	help
 	  subtitle encoders
 
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_STEREO
-	bool "stereo"
-
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_TIMECODE
 	bool "timecode"
 
@@ -278,11 +280,6 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VIDEOFRAME_AUDIOLEVEL
 	bool "videoframe_audiolevel"
 	help
 	  videoframe_audiolevel
-
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_IQA
-	bool "iqa"
-	help
-	  Image Quality Assessment
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VIDEOPARSERS
 	bool "videoparsers"
@@ -311,6 +308,24 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_ASSRENDER
 	bool "assrender"
 	select BR2_PACKAGE_LIBASS
 
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_BLUEZ
+	bool "bluez"
+	depends on BR2_USE_WCHAR # bluez5_utils -> libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # bluez5_utils -> dbus, libglib2
+	depends on BR2_USE_MMU # bluez5_utils -> dbus
+	depends on !BR2_STATIC_LIBS # bluez5_utils -> uses dlfcn
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4 # bluez5_utils
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # bluez5_utils
+	select BR2_PACKAGE_BLUEZ5_UTILS
+	help
+	  Bluetooth audio A2DP/AVDTP sink, AVDTP source plugin
+
+comment "bluez plugin needs a toolchain w/ wchar, threads, headers >= 3.4, dynamic library"
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
+		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4 || BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on BR2_USE_MMU
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_BZ2
 	bool "bz2"
 	select BR2_PACKAGE_BZIP2
@@ -332,11 +347,12 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DASH
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DECKLINK
 	bool "decklink"
 	depends on BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_STATIC_LIBS # <dlfcn.h>
 	help
 	  Blackmagic Decklink plugin
 
-comment "decklink needs a toolchain w/ C++"
-	depends on !BR2_INSTALL_LIBSTDCPP
+comment "decklink needs a toolchain w/ C++, dynamic library"
+	depends on !BR2_INSTALL_LIBSTDCPP  || BR2_STATIC_LIBS
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DIRECTFB
 	bool "directfb"
@@ -376,6 +392,19 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_FDK_AAC
 comment "fdk-aac needs a toolchain w/ C++"
 	depends on BR2_PACKAGE_FDK_AAC_ARCH_SUPPORTS
 	depends on !BR2_INSTALL_LIBSTDCPP
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_FLUIDSYNTH
+	bool "fluidsynth"
+	depends on BR2_USE_WCHAR # fluidsynth
+	depends on BR2_TOOLCHAIN_HAS_THREADS # fluidsynth
+	depends on BR2_USE_MMU # fluidsynth
+	select BR2_PACKAGE_FLUIDSYNTH
+	help
+	  Fluidsynth MIDI decoder plugin
+
+comment "fluidsynth needs a toolchain w/ threads, wchar"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_GL
 	bool "gl"
@@ -434,9 +463,18 @@ comment "ttml needs a toolchain w/ wchar, threads, C++"
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_MPEG2ENC
 	bool "mpeg2enc"
+	depends on BR2_USE_MMU # fork
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_LIBMPEG2
+	select BR2_PACKAGE_MJPEGTOOLS
 	help
 	  High-quality MPEG-1/2 video encoder
+
+comment "mpeg2enc needs a toolchain w/ threads, C++"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS \
+		|| !BR2_INSTALL_LIBSTDCPP
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_MUSEPACK
 	bool "musepack"
@@ -459,27 +497,6 @@ comment "openal plugin needs a toolchain w/ NPTL, C++"
 	depends on BR2_PAKCAGE_OPENAL_ARCH_SUPPORTS
 	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL \
 		|| !BR2_INSTALL_LIBSTDCPP
-
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_OPENCV
-	bool "opencv"
-	depends on BR2_PACKAGE_OPENCV
-	# Remove the following opencv modules when gstreamer fixes the
-	# problem of including the old "cv.h" header
-	# bug: https://bugzilla.gnome.org/show_bug.cgi?id=725163
-	select BR2_PACKAGE_OPENCV_LIB_CALIB3D
-	select BR2_PACKAGE_OPENCV_LIB_CONTRIB
-	select BR2_PACKAGE_OPENCV_LIB_FEATURES2D
-	select BR2_PACKAGE_OPENCV_LIB_FLANN
-	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
-	select BR2_PACKAGE_OPENCV_LIB_LEGACY
-	select BR2_PACKAGE_OPENCV_LIB_ML
-	select BR2_PACKAGE_OPENCV_LIB_OBJDETECT
-	select BR2_PACKAGE_OPENCV_LIB_VIDEO
-	help
-	  GStreamer OpenCV Plugins
-
-comment "opencv plugin needs OpenCV-2.4"
-	depends on !BR2_PACKAGE_OPENCV
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_OPENH264
 	bool "openh264"
@@ -512,12 +529,14 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_RSVG
 	bool "rsvg"
 	depends on BR2_INSTALL_LIBSTDCPP # librsvg -> pango
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # librsvg -> pango -> harfbuzz
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # librsvg -> pango -> harfbuzz
 	select BR2_PACKAGE_LIBRSVG
 	help
 	  RSVG plugin library
 
-comment "rsvg plugin needs a toolchain w/ C++"
-	depends on !BR2_INSTALL_LIBSTDCPP
+comment "rsvg plugin needs a toolchain w/ C++, gcc >= 4.8"
+	depends on !BR2_INSTALL_LIBSTDCPP || \
+		!BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SBC
@@ -537,9 +556,6 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SRTP
 	bool "srtp"
 	select BR2_PACKAGE_LIBSRTP
 
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VCD
-	bool "vcd"
-
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VOAACENC
 	bool "voaacenc"
 	select BR2_PACKAGE_VO_AACENC
@@ -548,6 +564,8 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WAYLAND
 	bool "wayland"
 	default y
 	depends on BR2_PACKAGE_WAYLAND
+	depends on BR2_TOOLCHAIN_HAS_THREADS #  libdrm -> libpthread-stubs
+	select BR2_PACKAGE_LIBDRM
 	select BR2_PACKAGE_WAYLAND_PROTOCOLS
 	help
 	  Wayland Video Sink
@@ -558,6 +576,17 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WEBP
 	help
 	  Webp image format plugin
 
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WEBRTC
+	bool "webrtc"
+	depends on !BR2_STATIC_LIBS # libnice -> gnutls
+	select BR2_PACKAGE_GST1_PLUGINS_BASE # libgstsdp
+	select BR2_PACKAGE_LIBNICE
+	help
+	  WebRTC plugins (webrtcbin - a bin for webrtc connections)
+
+comment "webrtc needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WEBRTCDSP
 	bool "webrtcdsp"
 	# All depends from webrtc-audio-processing
@@ -566,7 +595,6 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WEBRTCDSP
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
 	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
 	select BR2_PACKAGE_WEBRTC_AUDIO_PROCESSING
-	select BR2_PACKAGE_WEBRTC
 	help
 	  WebRTC echo-cancellation, gain control and noise suppression
 
@@ -574,6 +602,16 @@ comment "webrtcdsp needs a toolchain w/ C++, NPTL, gcc >= 4.8"
 	depends on BR2_PACKAGE_WEBRTC_AUDIO_PROCESSING_ARCH_SUPPORTS
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS_NPTL \
 		|| !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WPE
+	bool "wpe"
+	default y
+	depends on BR2_PACKAGE_WPEWEBKIT
+	depends on BR2_PACKAGE_GST1_PLUGINS_BASE_HAS_LIB_OPENGL
+
+comment "wpe needs the gst1-plugins-base opengl library and wpewebkit"
+	depends on !BR2_PACKAGE_WPEWEBKIT \
+		|| !BR2_PACKAGE_GST1_PLUGINS_BASE_HAS_LIB_OPENGL
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_X265
 	bool "x265"
@@ -586,5 +624,18 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_X265
 
 comment "x265 needs a toolchain w/ C++, dynamic library"
 	depends on !BR2_INSTALL_LIBSTDCPP || BR2_STATIC_LIBS
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_ZBAR
+	bool "zbar"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # zbar-> libv4l
+	depends on BR2_USE_MMU # zbar-> libv4l
+	depends on BR2_INSTALL_LIBSTDCPP # zbar-> libv4l
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0 # zbar -> libv4l
+	select BR2_PACKAGE_ZBAR
+
+comment "zbar plugin needs a toolchain w/ threads, C++ and headers >= 3.0"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS \
+		|| !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
 
 endif

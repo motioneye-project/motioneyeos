@@ -1,11 +1,8 @@
 config BR2_PACKAGE_QT5BASE
 	bool "qt5base"
 	select BR2_PACKAGE_ZLIB
-	select BR2_PACKAGE_PCRE if BR2_PACKAGE_QT5_VERSION_5_6
-	select BR2_PACKAGE_PCRE_16 if BR2_PACKAGE_QT5_VERSION_5_6
-	select BR2_PACKAGE_PCRE_UTF if BR2_PACKAGE_QT5_VERSION_5_6
-	select BR2_PACKAGE_PCRE2 if BR2_PACKAGE_QT5_VERSION_LATEST
-	select BR2_PACKAGE_PCRE2_16 if BR2_PACKAGE_QT5_VERSION_LATEST
+	select BR2_PACKAGE_PCRE2
+	select BR2_PACKAGE_PCRE2_16
 	help
 	  Qt is a cross-platform application and UI framework for
 	  developers using C++.
@@ -236,7 +233,9 @@ config BR2_PACKAGE_QT5BASE_FONTCONFIG
 
 config BR2_PACKAGE_QT5BASE_HARFBUZZ
 	bool "harfbuzz support"
-	select BR2_PACKAGE_HARFBUZZ if BR2_TOOLCHAIN_HAS_SYNC_4
+	select BR2_PACKAGE_HARFBUZZ if \
+		BR2_TOOLCHAIN_HAS_SYNC_4 && \
+		BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
 	help
 	  This option enables HarfBuzz support (either system harfbuzz
 	  if the toolchain supports __sync for 4 bytes, or the qt
@@ -273,7 +272,6 @@ config BR2_PACKAGE_QT5BASE_DBUS
 
 config BR2_PACKAGE_QT5BASE_ICU
 	bool "Enable ICU support"
-	depends on BR2_HOST_GCC_AT_LEAST_4_8 # icu
 	depends on !BR2_BINFMT_FLAT # icu
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # icu
 	select BR2_PACKAGE_ICU
@@ -281,16 +279,9 @@ config BR2_PACKAGE_QT5BASE_ICU
 	  This option enables ICU support in Qt5. This is for example
 	  needed for Qt5Webkit.
 
-comment "icu support needs a toolchain w/ gcc >= 4.8, host gcc >= 4.8"
+comment "icu support needs a toolchain w/ gcc >= 4.8"
 	depends on !BR2_BINFMT_FLAT
-	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 || \
-		!BR2_HOST_GCC_AT_LEAST_4_8
-
-config BR2_PACKAGE_QT5BASE_OPENSSL
-	bool
-	# No OpenSSL 1.1.x support in Qt 5.6.x
-	default y if BR2_PACKAGE_QT5_VERSION_5_6 && BR2_PACKAGE_LIBRESSL
-	default y if BR2_PACKAGE_QT5_VERSION_LATEST && BR2_PACKAGE_OPENSSL
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
 
 config BR2_PACKAGE_QT5BASE_TSLIB
 	bool "Enable Tslib support"

@@ -8,7 +8,7 @@ QT5BASE_VERSION = $(QT5_VERSION)
 QT5BASE_SITE = $(QT5_SITE)
 QT5BASE_SOURCE = qtbase-$(QT5_SOURCE_TARBALL_PREFIX)-$(QT5BASE_VERSION).tar.xz
 
-QT5BASE_DEPENDENCIES = host-pkgconf zlib
+QT5BASE_DEPENDENCIES = host-pkgconf pcre2 zlib
 QT5BASE_INSTALL_STAGING = YES
 
 # A few comments:
@@ -18,6 +18,9 @@ QT5BASE_INSTALL_STAGING = YES
 #     want to use the Buildroot packaged zlib
 #  * -system-pcre because pcre is mandatory to build Qt, and we
 #    want to use the one packaged in Buildroot
+#  * -no-feature-relocatable to work around path mismatch
+#     while searching qml files and buildroot BR2_ROOTFS_MERGED_USR
+#     feature enabled
 QT5BASE_CONFIGURE_OPTS += \
 	-optimized-qmake \
 	-no-cups \
@@ -25,12 +28,20 @@ QT5BASE_CONFIGURE_OPTS += \
 	-system-zlib \
 	-system-pcre \
 	-no-pch \
-	-shared
+	-shared \
+	-no-feature-relocatable
 
-ifeq ($(BR2_PACKAGE_QT5_VERSION_5_6),y)
-QT5BASE_DEPENDENCIES += pcre
-else
-QT5BASE_DEPENDENCIES += pcre2
+# starting from version 5.9.0, -optimize-debug is enabled by default
+# for debug builds and it overrides -O* with -Og which is not what we
+# want.
+QT5BASE_CONFIGURE_OPTS += -no-optimize-debug
+
+QT5BASE_CFLAGS = $(TARGET_CFLAGS)
+QT5BASE_CXXFLAGS = $(TARGET_CXXFLAGS)
+
+ifeq ($(BR2_TOOLCHAIN_HAS_GCC_BUG_90620),y)
+QT5BASE_CFLAGS += -O0
+QT5BASE_CXXFLAGS += -O0
 endif
 
 ifeq ($(BR2_X86_CPU_HAS_SSE2),)
@@ -49,7 +60,7 @@ else ifeq ($(BR2_X86_CPU_HAS_AVX2),)
 QT5BASE_CONFIGURE_OPTS += -no-avx2
 else
 # no buildroot BR2_X86_CPU_HAS_AVX512 option yet for qt configure
-# option '-no-avx512' (available for latest only)
+# option '-no-avx512'
 endif
 
 ifeq ($(BR2_PACKAGE_LIBDRM),y)
@@ -63,6 +74,12 @@ endif
 ifeq ($(BR2_PACKAGE_MESA3D_OPENGL_EGL),y)
 QT5BASE_CONFIGURE_OPTS += -gbm
 QT5BASE_DEPENDENCIES += mesa3d
+else ifeq ($(BR2_PACKAGE_GCNANO_BINARIES),y)
+QT5BASE_CONFIGURE_OPTS += -gbm
+QT5BASE_DEPENDENCIES += gcnano-binaries
+else ifeq ($(BR2_PACKAGE_TI_SGX_LIBGBM),y)
+QT5BASE_CONFIGURE_OPTS += -gbm
+QT5BASE_DEPENDENCIES += ti-sgx-libgbm
 else
 QT5BASE_CONFIGURE_OPTS += -no-gbm
 endif
@@ -73,20 +90,11 @@ else
 QT5BASE_CONFIGURE_OPTS += -release
 endif
 
-ifeq ($(BR2_PACKAGE_QT5_VERSION_5_6),y)
-QT5BASE_CONFIGURE_OPTS += -largefile
-endif
-
 QT5BASE_CONFIGURE_OPTS += -opensource -confirm-license
-ifeq ($(BR2_PACKAGE_QT5_VERSION_LATEST),y)
 QT5BASE_LICENSE = GPL-2.0+ or LGPL-3.0, GPL-3.0 with exception(tools), GFDL-1.3 (docs)
 QT5BASE_LICENSE_FILES = LICENSE.GPL2 LICENSE.GPL3 LICENSE.GPL3-EXCEPT LICENSE.LGPLv3 LICENSE.FDL
-else
-QT5BASE_LICENSE = GPL-3.0 or LGPL-2.1 with exception or LGPL-3.0, GFDL-1.3 (docs)
-QT5BASE_LICENSE_FILES = LICENSE.GPLv3 LICENSE.LGPLv21 LGPL_EXCEPTION.txt LICENSE.LGPLv3 LICENSE.FDL
-endif
 ifeq ($(BR2_PACKAGE_QT5BASE_EXAMPLES),y)
-QT5BASE_LICENSE := $(QT5BASE_LICENSE), BSD-3-Clause (examples)
+QT5BASE_LICENSE += , BSD-3-Clause (examples)
 QT5BASE_LICENSE_FILES += header.BSD
 endif
 
@@ -124,7 +132,6 @@ endif
 
 ifeq ($(BR2_PACKAGE_QT5BASE_GUI),y)
 QT5BASE_CONFIGURE_OPTS += -gui -system-freetype
-QT5BASE_CONFIGURE_OPTS += $(if $(BR2_PACKAGE_QT5_VERSION_5_6),-I$(STAGING_DIR)/usr/include/freetype2)
 QT5BASE_DEPENDENCIES += freetype
 else
 QT5BASE_CONFIGURE_OPTS += -no-gui -no-freetype
@@ -138,7 +145,7 @@ QT5BASE_DEPENDENCIES += harfbuzz
 else
 # qt harfbuzz otherwise (using QAtomic instead)
 QT5BASE_CONFIGURE_OPTS += -qt-harfbuzz
-QT5BASE_LICENSE := $(QT5BASE_LICENSE), MIT (harfbuzz)
+QT5BASE_LICENSE += , MIT (harfbuzz)
 QT5BASE_LICENSE_FILES += src/3rdparty/harfbuzz-ng/COPYING
 endif
 else
@@ -153,7 +160,9 @@ QT5BASE_CONFIGURE_OPTS += $(if $(BR2_PACKAGE_QT5BASE_DIRECTFB),-directfb,-no-dir
 QT5BASE_DEPENDENCIES   += $(if $(BR2_PACKAGE_QT5BASE_DIRECTFB),directfb)
 
 ifeq ($(BR2_PACKAGE_QT5BASE_XCB),y)
-QT5BASE_CONFIGURE_OPTS += -xcb -system-xkbcommon
+QT5BASE_CONFIGURE_OPTS += -xcb
+QT5BASE_CONFIGURE_OPTS += -xkbcommon
+
 QT5BASE_DEPENDENCIES   += \
 	libxcb \
 	xcb-util-wm \
@@ -188,15 +197,8 @@ else
 QT5BASE_CONFIGURE_OPTS += -no-eglfs
 endif
 
-ifeq ($(BR2_PACKAGE_QT5_VERSION_5_6),y)
-# No OpenSSL 1.1.x support in Qt 5.6.x
-# LibreSSL works with shared linkage only and -fpermissive patch
-QT5BASE_CONFIGURE_OPTS += $(if $(BR2_PACKAGE_LIBRESSL),-openssl-linked,-no-openssl)
-QT5BASE_DEPENDENCIES   += $(if $(BR2_PACKAGE_LIBRESSL),openssl)
-else
 QT5BASE_CONFIGURE_OPTS += $(if $(BR2_PACKAGE_OPENSSL),-openssl,-no-openssl)
 QT5BASE_DEPENDENCIES   += $(if $(BR2_PACKAGE_OPENSSL),openssl)
-endif
 
 QT5BASE_CONFIGURE_OPTS += $(if $(BR2_PACKAGE_QT5BASE_FONTCONFIG),-fontconfig,-no-fontconfig)
 QT5BASE_DEPENDENCIES   += $(if $(BR2_PACKAGE_QT5BASE_FONTCONFIG),fontconfig)
@@ -220,16 +222,6 @@ QT5BASE_DEPENDENCIES   += $(if $(BR2_PACKAGE_QT5BASE_ICU),icu)
 
 QT5BASE_CONFIGURE_OPTS += $(if $(BR2_PACKAGE_QT5BASE_EXAMPLES),-make,-nomake) examples
 
-ifeq ($(BR2_PACKAGE_QT5_VERSION_5_6),y)
-# gstreamer 0.10 support is broken in qt5multimedia
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BASE),y)
-QT5BASE_CONFIGURE_OPTS += -gstreamer 1.0
-QT5BASE_DEPENDENCIES   += gst1-plugins-base
-else
-QT5BASE_CONFIGURE_OPTS += -no-gstreamer
-endif
-endif
-
 ifeq ($(BR2_PACKAGE_LIBINPUT),y)
 QT5BASE_CONFIGURE_OPTS += -libinput
 QT5BASE_DEPENDENCIES += libinput
@@ -237,7 +229,6 @@ else
 QT5BASE_CONFIGURE_OPTS += -no-libinput
 endif
 
-ifeq ($(BR2_PACKAGE_QT5_VERSION_LATEST),y)
 # only enable gtk support if libgtk3 X11 backend is enabled
 ifeq ($(BR2_PACKAGE_LIBGTK3)$(BR2_PACKAGE_LIBGTK3_X11),yy)
 QT5BASE_CONFIGURE_OPTS += -gtk
@@ -245,40 +236,20 @@ QT5BASE_DEPENDENCIES += libgtk3
 else
 QT5BASE_CONFIGURE_OPTS += -no-gtk
 endif
-endif
 
-# Build the list of libraries to be installed on the target
-QT5BASE_INSTALL_LIBS_y                                 += Qt5Core
-QT5BASE_INSTALL_LIBS_$(BR2_PACKAGE_QT5BASE_XCB)        += Qt5XcbQpa
-QT5BASE_INSTALL_LIBS_$(BR2_PACKAGE_QT5BASE_NETWORK)    += Qt5Network
-QT5BASE_INSTALL_LIBS_$(BR2_PACKAGE_QT5BASE_CONCURRENT) += Qt5Concurrent
-QT5BASE_INSTALL_LIBS_$(BR2_PACKAGE_QT5BASE_SQL)        += Qt5Sql
-QT5BASE_INSTALL_LIBS_$(BR2_PACKAGE_QT5BASE_TEST)       += Qt5Test
-QT5BASE_INSTALL_LIBS_$(BR2_PACKAGE_QT5BASE_XML)        += Qt5Xml
-QT5BASE_INSTALL_LIBS_$(BR2_PACKAGE_QT5BASE_OPENGL_LIB) += Qt5OpenGL
-ifeq ($(BR2_PACKAGE_QT5_VERSION_LATEST),y)
-QT5BASE_INSTALL_LIBS_$(BR2_PACKAGE_QT5BASE_EGLFS)      += Qt5EglFSDeviceIntegration
-ifeq ($(BR2_PACKAGE_MESA3D_OPENGL_EGL),y)
-QT5BASE_INSTALL_LIBS_$(BR2_PACKAGE_QT5BASE_EGLFS)      += Qt5EglFsKmsSupport
-endif
+ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+QT5BASE_CONFIGURE_OPTS += -journald
+QT5BASE_DEPENDENCIES += systemd
 else
-QT5BASE_INSTALL_LIBS_$(BR2_PACKAGE_QT5BASE_EGLFS)      += Qt5EglDeviceIntegration
+QT5BASE_CONFIGURE_OPTS += -no-journald
 endif
 
-QT5BASE_INSTALL_LIBS_$(BR2_PACKAGE_QT5BASE_GUI)          += Qt5Gui
-QT5BASE_INSTALL_LIBS_$(BR2_PACKAGE_QT5BASE_WIDGETS)      += Qt5Widgets
-QT5BASE_INSTALL_LIBS_$(BR2_PACKAGE_QT5BASE_PRINTSUPPORT) += Qt5PrintSupport
-
-QT5BASE_INSTALL_LIBS_$(BR2_PACKAGE_QT5BASE_DBUS) += Qt5DBus
-
-ifeq ($(BR2_PACKAGE_QT5_VERSION_LATEST),y)
 ifeq ($(BR2_PACKAGE_IMX_GPU_VIV),y)
 # use vivante backend
 QT5BASE_EGLFS_DEVICE = EGLFS_DEVICE_INTEGRATION = eglfs_viv
-else ifeq ($(BR2_PACKAGE_SUNXI_MALI)$(BR2_PACKAGE_SUNXI_MALI_MAINLINE),y)
+else ifeq ($(BR2_PACKAGE_SUNXI_MALI_MAINLINE),y)
 # use mali backend
 QT5BASE_EGLFS_DEVICE = EGLFS_DEVICE_INTEGRATION = eglfs_mali
-endif
 endif
 
 ifneq ($(QT5BASE_CONFIG_FILE),)
@@ -288,7 +259,7 @@ endef
 endif
 
 QT5BASE_ARCH_CONFIG_FILE = $(@D)/mkspecs/devices/linux-buildroot-g++/arch.conf
-ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC)$(BR2_PACKAGE_QT5_VERSION_LATEST),yy)
+ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
 # Qt 5.8 needs atomics, which on various architectures are in -latomic
 define QT5BASE_CONFIGURE_ARCH_CONFIG
 	printf 'LIBS += -latomic\n' >$(QT5BASE_ARCH_CONFIG_FILE)
@@ -331,70 +302,12 @@ define QT5BASE_CONFIGURE_CMDS
 		-nomake tests \
 		-device buildroot \
 		-device-option CROSS_COMPILE="$(TARGET_CROSS)" \
-		-device-option BR_COMPILER_CFLAGS="$(TARGET_CFLAGS)" \
-		-device-option BR_COMPILER_CXXFLAGS="$(TARGET_CXXFLAGS)" \
+		-device-option BR_COMPILER_CFLAGS="$(QT5BASE_CFLAGS)" \
+		-device-option BR_COMPILER_CXXFLAGS="$(QT5BASE_CXXFLAGS)" \
 		$(QT5BASE_CONFIGURE_OPTS) \
 	)
 endef
 
-define QT5BASE_BUILD_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)
-endef
+QT5BASE_POST_INSTALL_STAGING_HOOKS += QT5_INSTALL_QT_CONF
 
-# The file "qt.conf" can be used to override the hard-coded paths that are
-# compiled into the Qt library. We need it to make "qmake" relocatable.
-define QT5BASE_INSTALL_QT_CONF
-	sed -e "s|@@HOST_DIR@@|$(HOST_DIR)|" -e "s|@@STAGING_DIR@@|$(STAGING_DIR)|" \
-		$(QT5BASE_PKGDIR)/qt.conf.in > $(HOST_DIR)/bin/qt.conf
-endef
-
-define QT5BASE_INSTALL_STAGING_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) install
-	$(QT5_LA_PRL_FILES_FIXUP)
-	$(QT5BASE_INSTALL_QT_CONF)
-endef
-
-define QT5BASE_INSTALL_TARGET_LIBS
-	for lib in $(QT5BASE_INSTALL_LIBS_y); do \
-		cp -dpf $(STAGING_DIR)/usr/lib/lib$${lib}.so.* $(TARGET_DIR)/usr/lib || exit 1 ; \
-	done
-endef
-
-define QT5BASE_INSTALL_TARGET_PLUGINS
-	if [ -d $(STAGING_DIR)/usr/lib/qt/plugins/ ] ; then \
-		mkdir -p $(TARGET_DIR)/usr/lib/qt/plugins ; \
-		cp -dpfr $(STAGING_DIR)/usr/lib/qt/plugins/* $(TARGET_DIR)/usr/lib/qt/plugins ; \
-	fi
-endef
-
-ifeq ($(BR2_PACKAGE_QT5_VERSION_5_6),y)
-define QT5BASE_INSTALL_TARGET_FONTS
-	if [ -d $(STAGING_DIR)/usr/lib/fonts/ ] ; then \
-		mkdir -p $(TARGET_DIR)/usr/lib/fonts ; \
-		cp -dpfr $(STAGING_DIR)/usr/lib/fonts/* $(TARGET_DIR)/usr/lib/fonts ; \
-	fi
-endef
-endif
-
-define QT5BASE_INSTALL_TARGET_EXAMPLES
-	if [ -d $(STAGING_DIR)/usr/lib/qt/examples/ ] ; then \
-		mkdir -p $(TARGET_DIR)/usr/lib/qt/examples ; \
-		cp -dpfr $(STAGING_DIR)/usr/lib/qt/examples/* $(TARGET_DIR)/usr/lib/qt/examples ; \
-	fi
-endef
-
-ifeq ($(BR2_STATIC_LIBS),y)
-define QT5BASE_INSTALL_TARGET_CMDS
-	$(QT5BASE_INSTALL_TARGET_FONTS)
-	$(QT5BASE_INSTALL_TARGET_EXAMPLES)
-endef
-else
-define QT5BASE_INSTALL_TARGET_CMDS
-	$(QT5BASE_INSTALL_TARGET_LIBS)
-	$(QT5BASE_INSTALL_TARGET_PLUGINS)
-	$(QT5BASE_INSTALL_TARGET_FONTS)
-	$(QT5BASE_INSTALL_TARGET_EXAMPLES)
-endef
-endif
-
-$(eval $(generic-package))
+$(eval $(qmake-package))

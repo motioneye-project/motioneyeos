@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/channels-redis/json
+md5	9ec9ffd467e181906f257d6c0dbabf45  channels_redis-2.4.1.tar.gz
+sha256	ddfa0c067085fdce24fb80d9c0b848638cbdbf0e1167f14eb2e99d635ad216e6  channels_redis-2.4.1.tar.gz
+# Locally computed sha256 checksums
+sha256	b846415d1b514e9c1dff14a22deb906d794bc546ca6129f950a18cd091e2a669  LICENSE

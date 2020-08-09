@@ -1,4 +1,5 @@
 #md5 from https://pypi.python.org/pypi?:action=show_md5&digest=e4bbe5d4a98016efef882b2b2f47defb
 md5     e4bbe5d4a98016efef882b2b2f47defb pyratemp-0.3.2.tgz
 # Locally calculated:
-sha256 c45ed656ada482a02fe780495f37a695e7671accb04f918f7e7f18abf877bc71 pyratemp-0.3.2.tgz
+sha256  c45ed656ada482a02fe780495f37a695e7671accb04f918f7e7f18abf877bc71  pyratemp-0.3.2.tgz
+sha256  3de57a97f9c8492808867ae2ac2b33b422a8a34d29d0ea981b9e85c0963462db  LICENSE

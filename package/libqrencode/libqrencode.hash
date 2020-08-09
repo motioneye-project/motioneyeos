@@ -1,5 +1,5 @@
-# From http://fukuchi.org/works/qrencode/qrencode-4.0.0.tar.gz.sha
-sha512	fdbcee3ef90abf780dcbe495cef3e6ac5449a4a0aaa87d1a1a4f71d97fe6d96974d8132f7e227133cddb5ab73600e968821634752fc0d75113ca0959aae9a5d0	qrencode-4.0.0.tar.gz
+# From http://fukuchi.org/works/qrencode/qrencode-4.0.2.tar.gz.sha
+sha512	c3e3834574ec059a4b571427b29d6f5f26bd806fd7498b9bba778f4eceab6ebe5733eef0f3c4f6af91eb3f2e9310f93f6d7b337c28e85c72db7e59bd79be77a9	qrencode-4.0.2.tar.gz
 
 # Hash for license file:
 sha256	a9bdde5616ecdd1e980b44f360600ee8783b1f99b8cc83a2beb163a0a390e861	COPYING

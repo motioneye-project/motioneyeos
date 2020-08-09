@@ -1,2 +1,7 @@
-# From http://lists.freedesktop.org/pipermail/xorg/2014-June/056671.html
-sha256	8f7032f2c1c64352b5423f6b48a8ebdc339cc63064af34d66a6c9aa79759e202	libICE-1.0.9.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2019-July/003006.html
+md5 76d77499ee7120a56566891ca2c0dbcf  libICE-1.0.10.tar.bz2
+sha1 5b5eb125d4f43a3ab8153b0f850963ee6c982c24  libICE-1.0.10.tar.bz2
+sha256 6f86dce12cf4bcaf5c37dddd8b1b64ed2ddf1ef7b218f22b9942595fb747c348  libICE-1.0.10.tar.bz2
+sha512 2f1ef2c32c833c71894a08fa7e7ed53f301f6c7bd22485d71c12884d8e8b36b99f362ec886349dcc84d08edc81c8b2cea035320831d64974edeba021b433c468  libICE-1.0.10.tar.bz2
+# Locally computed
+sha256 60105b7ea93cb07a67fee8443b092b727e3db7f0dff4fbe05bc6cd7747fb53c8  COPYING

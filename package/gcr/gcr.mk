@@ -4,11 +4,16 @@
 #
 ################################################################################
 
-GCR_VERSION_MAJOR = 3.20
+GCR_VERSION_MAJOR = 3.34
 GCR_VERSION = $(GCR_VERSION_MAJOR).0
 GCR_SITE = http://ftp.acc.umu.se/pub/gnome/sources/gcr/$(GCR_VERSION_MAJOR)
 GCR_SOURCE = gcr-$(GCR_VERSION).tar.xz
-GCR_DEPENDENCIES = host-intltool host-pkgconf libgcrypt libglib2 p11-kit
+GCR_DEPENDENCIES = \
+	host-pkgconf \
+	libgcrypt \
+	libglib2 \
+	p11-kit \
+	$(TARGET_NLS_DEPENDENCIES)
 GCR_INSTALL_STAGING = YES
 GCR_CONF_ENV = ac_cv_path_GNUPG=/usr/bin/gpg2
 GCR_CONF_OPTS = \
@@ -17,6 +22,13 @@ GCR_CONF_OPTS = \
 # Even though COPYING is v2 the code states v2.1+
 GCR_LICENSE = LGPL-2.1+
 GCR_LICENSE_FILES = COPYING
+
+ifeq ($(BR2_PACKAGE_GOBJECT_INTROSPECTION),y)
+GCR_DEPENDENCIES += gobject-introspection host-libxslt
+GCR_CONF_OPTS += --with-introspection
+else
+GCR_CONF_OPTS += --without-introspection
+endif
 
 # Only the X11 backend is supported for the simple GUI
 ifeq ($(BR2_PACKAGE_LIBGTK3_X11),y)

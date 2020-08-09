@@ -7,3 +7,5 @@ config BR2_PACKAGE_GTKPERF
 	  predefined GTK+ widgets
 	  e.g. (opening comboboxes, toggling buttons, scrolling text
 	  yms.) and this way define the speed of device/platform.
+
+	  http://gtkperf.sourceforge.net/

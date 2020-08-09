@@ -1,0 +1,23 @@
+config BR2_PACKAGE_TPM2_TOTP
+	bool "tpm2-totp"
+	depends on !BR2_STATIC_LIBS # tpm2-tss
+	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM # glibc < 2.20
+	select BR2_PACKAGE_LIBQRENCODE
+	select BR2_PACKAGE_TPM2_TSS
+	help
+	  This is a reimplementation of Matthew Garrett's tpmtotp
+	  software for TPM 2.0 using the tpm2-tss software stack. Its
+	  purpose is to attest the trustworthiness of a device against
+	  a human using time-based one-time passwords (TOTP),
+	  facilitating the Trusted Platform Module (TPM) to bind the
+	  TOTP secret to the known trustworthy system state. In
+	  addition to the original tpmtotp, given the new capabilities
+	  of in-TPM hmac calculation, the tpm2-totp's secret HMAC keys
+	  do not have to be exported from the TPM to the CPU's RAM on
+	  boot anymore.
+
+	  https://github.com/tpm2-software/tpm2-totp
+
+comment "tpm2-totp needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM

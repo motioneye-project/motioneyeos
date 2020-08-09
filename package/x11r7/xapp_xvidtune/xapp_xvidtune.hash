@@ -1,2 +1,4 @@
 # From http://lists.x.org/archives/xorg-announce/2013-January/002129.html
-sha256	24e5e103933a04bfb2e1d18562619ed74031ab515e7343eb546bacdbcbeecf01	xvidtune-1.0.3.tar.bz2
+sha256  24e5e103933a04bfb2e1d18562619ed74031ab515e7343eb546bacdbcbeecf01  xvidtune-1.0.3.tar.bz2
+# Locally computed
+sha256  f3da8eaed19e27e4f67e6f076d4ebdb8d649e15a8ad33a415fb65a23de1b6689  COPYING

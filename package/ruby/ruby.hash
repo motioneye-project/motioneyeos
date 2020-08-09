@@ -1,5 +1,5 @@
-# https://www.ruby-lang.org/en/news/2019/04/01/ruby-2-4-6-released/
-sha256 25da31b9815bfa9bba9f9b793c055a40a35c43c6adfb1fdbd81a09099f9b529c  ruby-2.4.6.tar.xz
+# https://www.ruby-lang.org/en/news/2019/10/02/ruby-2-4-9-released/
+sha256 0c4e000253ef7187feeb940a01a1c7594f28d63aa16f978e892a0e2864f58614  ruby-2.4.9.tar.xz
 # License files, Locally calculated
 sha256 609292a6d848ab223073944fc2d844449391a5ba2055a8b5baf1726bc13b39cb  LEGAL
 sha256 f5eb1b2956d5f7a67b2e5722a3749bc2fe86f9c580f2e3f5a08519cf073b5864  COPYING

@@ -1,0 +1,38 @@
+From 604c931bc673c507254a84c0f423c9ec8ce6e3a1 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Thu, 10 Oct 2019 20:36:46 +0200
+Subject: [PATCH] include/Makefile.am: don't install lightning.h twice
+
+Commit 17164ed32d8f3530153b9cad67a4399c65f24512 added lightning.h to
+nodist_include_HEADERS without removing it from include_HEADERS
+
+This raises the following error on one of the buildroot autobuilders:
+/usr/bin/install -c -m 644 lightning.h '/home/test/autobuild/run/instance-3/output-1/target/usr/include'
+/usr/bin/install -c -m 644 lightning.h '/home/test/autobuild/run/instance-3/output-1/target/usr/include'
+/usr/bin/install: cannot create regular file `/home/test/autobuild/run/instance-3/output-1/target/usr/include/lightning.h': File exists
+
+Fix this by removing lightning.h from include_HEADERS
+
+Fixes:
+ - http://autobuild.buildroot.org/results/05ebc75598627d2a08e08e194f51cb8464f97b95
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ include/Makefile.am | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/include/Makefile.am b/include/Makefile.am
+index e754dd3..8f91594 100644
+--- a/include/Makefile.am
++++ b/include/Makefile.am
+@@ -14,7 +14,6 @@
+ # License for more details.
+ #
+ 
+-include_HEADERS = lightning.h
+ SUBDIRS =		\
+ 	lightning
+ 
+-- 
+2.23.0
+

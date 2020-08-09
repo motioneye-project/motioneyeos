@@ -1,0 +1,83 @@
+From aa3698d2eb38788b66b146faaa83ce4994c984e8 Mon Sep 17 00:00:00 2001
+From: Grzegorz Blach <grzegorz@blach.pl>
+Date: Fri, 20 Sep 2019 21:07:10 +0000
+Subject: [PATCH] Fix cross-compilation
+
+Signed-off-by: Grzegorz Blach <grzegorz@blach.pl>
+---
+ Makefile | 24 ------------------------
+ setup.py | 21 ++++++++-------------
+ 2 files changed, 8 insertions(+), 37 deletions(-)
+ delete mode 100644 Makefile
+
+diff --git a/Makefile b/Makefile
+deleted file mode 100644
+index b8da8f5..0000000
+--- a/Makefile
++++ /dev/null
+@@ -1,24 +0,0 @@
+-.PHONY: clean lib
+-
+-SRC = lib
+-BUILD = lib-built
+-OBJECTS = $(BUILD)/ws2811.o $(BUILD)/rpihw.o $(BUILD)/pcm.o $(BUILD)/pwm.o $(BUILD)/dma.o $(BUILD)/mailbox.o
+-LIB = libws2811.a
+-
+-all: $(BUILD) $(BUILD)/version.h $(BUILD)/$(LIB)
+-
+-$(BUILD):
+-	mkdir -p $(BUILD)
+-
+-$(BUILD)/version.h:
+-	cp version.h $(BUILD)/version.h
+-
+-$(OBJECTS): $(BUILD)/%.o : $(SRC)/%.c
+-	gcc $< -o $@ -c -g -O2 -Wall -Werror -fPIC
+-
+-$(BUILD)/$(LIB): $(OBJECTS)
+-	ar rc $@ $^
+-	ranlib $@
+-
+-clean:
+-	-rm -f $(OBJECTS) $(BUILD)/$(LIB) $(BUILD)/version.h
+diff --git a/library/setup.py b/library/setup.py
+index b6785ec..1639574 100755
+--- a/setup.py
++++ b/setup.py
+@@ -8,14 +8,6 @@ from setuptools import setup, find_packages, Extension
+ from setuptools.command.build_py import build_py
+ import subprocess
+ 
+-class CustomInstallCommand(build_py):
+-    """Customized install to run library Makefile"""
+-    def run(self):
+-        print("Compiling ws281x library...")
+-        proc =subprocess.Popen(["make"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+-        print(proc.stderr.read())
+-        build_py.run(self)
+-
+ setup(name              = 'rpi_ws281x',
+       version           = '4.2.2',
+       author            = 'Jeremy Garff <jer@jers.net>, Phil Howard <phil@pimoroni.com>',
+@@ -24,10 +16,13 @@ setup(name              = 'rpi_ws281x',
+       long_description  = open('README.rst').read() + "\n" + open('CHANGELOG.txt').read(),
+       license           = 'MIT',
+       url               = 'https://github.com/rpi-ws281x/rpi-ws281x-python/',
+-      cmdclass          = {'build_py':CustomInstallCommand},
+       packages          = ['rpi_ws281x'],
+       ext_modules       = [Extension('_rpi_ws281x', 
+-                                     sources=['rpi_ws281x_wrap.c'],
+-                                     include_dirs=['lib/'],
+-                                     library_dirs=['lib-built/'],
+-                                     libraries=['ws2811'])])
++                                     include_dirs=['.'],
++                                     sources=['rpi_ws281x_wrap.c',
++                                         'lib/dma.c',
++                                         'lib/mailbox.c',
++                                         'lib/pcm.c',
++                                         'lib/pwm.c',
++                                         'lib/rpihw.c',
++                                         'lib/ws2811.c'])])
+-- 
+2.23.0
+

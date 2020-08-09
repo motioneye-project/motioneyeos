@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-AZMQ_VERSION = v1.0.2
-AZMQ_SITE = $(call github,zeromq,azmq,$(AZMQ_VERSION))
+AZMQ_VERSION = 1.0.2
+AZMQ_SITE = $(call github,zeromq,azmq,v$(AZMQ_VERSION))
 AZMQ_DEPENDENCIES = boost zeromq
 AZMQ_LICENSE = BSL-1.0
 AZMQ_LICENSE_FILES = LICENSE-BOOST_1_0

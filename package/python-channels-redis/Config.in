@@ -1,0 +1,18 @@
+config BR2_PACKAGE_PYTHON_CHANNELS_REDIS
+	bool "python-channels-redis"
+	depends on BR2_INSTALL_LIBSTDCPP # python-channels -> python-daphne
+	depends on BR2_PACKAGE_PYTHON3 # python-channels
+	select BR2_PACKAGE_PYTHON_AIOREDIS # runtime
+	select BR2_PACKAGE_PYTHON_ASGIREF # runtime
+	select BR2_PACKAGE_PYTHON_CHANNELS # runtime
+	select BR2_PACKAGE_PYTHON_MSGPACK # runtime
+	help
+	  A Django Channels channel layer that uses Redis as its
+	  backing store, and supports both a single-server and
+	  sharded configurations, as well as group support.
+
+	  http://github.com/django/channels_redis/
+
+comment "python-channels-redis needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
+	depends on BR2_PACKAGE_PYTHON3

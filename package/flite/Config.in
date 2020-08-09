@@ -10,7 +10,7 @@ config BR2_PACKAGE_FLITE
 	  an alternative synthesis engine to Festival for voices built
 	  using the FestVox suite of voice building tools.
 
-	  http://www.speech.cs.cmu.edu/flite
+	  http://www.festvox.org/flite
 
 comment "flite needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR

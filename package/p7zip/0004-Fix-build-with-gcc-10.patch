@@ -1,0 +1,32 @@
+From 78b760eae21d7b340c69e8abab8ca706e1e00adc Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20S=C3=B8rensen?= <stefan.sorensen@spectralink.com>
+Date: Mon, 4 May 2020 09:19:46 +0200
+Subject: [PATCH] Fix build with gcc 10.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Add cast to code that mixes HRESULT (aka long) and DWORD (aka unsigned
+int) which causes an narrowing error with gcc 10.
+
+Signed-off-by: Stefan Sørensen <stefan.sorensen@spectralink.com>
+---
+ CPP/Windows/ErrorMsg.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/CPP/Windows/ErrorMsg.cpp b/CPP/Windows/ErrorMsg.cpp
+index 99684ae..ab48352 100644
+--- a/CPP/Windows/ErrorMsg.cpp
++++ b/CPP/Windows/ErrorMsg.cpp
+@@ -13,7 +13,7 @@ UString MyFormatMessage(DWORD errorCode)
+   const char * txt = 0;
+   AString msg;
+ 
+-  switch(errorCode) {
++  switch((HRESULT)errorCode) {
+     case ERROR_NO_MORE_FILES   : txt = "No more files"; break ;
+     case E_NOTIMPL             : txt = "E_NOTIMPL"; break ;
+     case E_NOINTERFACE         : txt = "E_NOINTERFACE"; break ;
+-- 
+2.26.2
+

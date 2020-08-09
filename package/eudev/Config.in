@@ -5,6 +5,7 @@ config BR2_PACKAGE_EUDEV
 	depends on BR2_USE_WCHAR # needs C99 compiler
 	depends on !BR2_STATIC_LIBS # kmod
 	select BR2_PACKAGE_HAS_UDEV
+	select BR2_PACKAGE_UDEV_GENTOO_SCRIPTS if BR2_INIT_OPENRC
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
 	select BR2_PACKAGE_KMOD
@@ -29,8 +30,9 @@ config BR2_PACKAGE_EUDEV_RULES_GEN
 config BR2_PACKAGE_EUDEV_ENABLE_HWDB
 	bool "enable hwdb installation"
 	default y
+	select BR2_PACKAGE_HOST_EUDEV # for udevadm, during target-finalize
 	help
-	  Enables hardware database installation to /etc/udev/hwdb.d
+	  Enables hardware database installation to /etc/udev/hwdb.bin
 
 endif
 

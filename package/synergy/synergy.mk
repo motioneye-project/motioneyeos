@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-SYNERGY_VERSION = v2.0.12-beta
-SYNERGY_SITE = $(call github,symless,synergy-core,$(SYNERGY_VERSION))
+SYNERGY_VERSION = 2.0.12-beta
+SYNERGY_SITE = $(call github,symless,synergy-core,v$(SYNERGY_VERSION))
 SYNERGY_LICENSE = GPL-2.0
 SYNERGY_LICENSE_FILES = LICENSE
 SYNERGY_DEPENDENCIES = xlib_libX11 xlib_libXtst

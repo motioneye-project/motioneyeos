@@ -9,9 +9,9 @@ config BR2_PACKAGE_LEAFNODE2
 
 	  Leafnode-2 needs inetd, check chapter 14 of the documentation
 	  at:
-	  http://www.dt.e-technik.uni-dortmund.de/~ma/leafnode/beta/leafnode-readme.txt
+	  http://krusty.dt.e-technik.tu-dortmund.de/~ma/leafnode/beta/leafnode-readme.txt
 
 	  For example, you can add this line to inetd.conf:
 	  nntp    stream  tcp     nowait  news    /usr/sbin/leafnode
 
-	  http://www.dt.e-technik.tu-dortmund.de/~ma/leafnode/beta
+	  http://krusty.dt.e-technik.tu-dortmund.de/~ma/leafnode/beta

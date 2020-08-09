@@ -1,5 +1,6 @@
 config BR2_PACKAGE_PYTHON_PATHPY
 	bool "python-pathpy"
+	depends on BR2_PACKAGE_PYTHON3
 	help
 	  path.py implements a path objects as first-class
 	  entities, allowing common operations on files to

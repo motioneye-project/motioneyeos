@@ -1,0 +1,11 @@
+config BR2_PACKAGE_PERL_CRYPT_OPENSSL_AES
+	bool "perl-crypt-openssl-aes"
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_OPENSSL
+	help
+	  A Perl wrapper around OpenSSL's AES library.
+
+	  https://metacpan.org/release/Crypt-OpenSSL-AES
+
+comment "perl-crypt-openssl-aes needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

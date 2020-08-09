@@ -1,2 +1,3 @@
 # Locally calculated
-sha256 d7d954376ae7c131a0884c7c80b0b9e8270b6f574182df59ce4f2fbbae322854 erlang-p1-oauth2-0.6.3.tar.gz
+sha256 55bf54133ce0882fab59f813ddf9ed4dac1e051a53fb4bd1c0565136ebb4d6ac erlang-p1-oauth2-0.6.5.tar.gz
+sha256 0ecddd0a5e35b7fcdab451f54c5bb688fac8365cdf6b0da0ac64b7895a0770f3 LICENSE

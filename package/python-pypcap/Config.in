@@ -6,4 +6,4 @@ config BR2_PACKAGE_PYTHON_PYPCAP
 	  The pypcap module is an object-oriented wrapper of the C
 	  libpcap library.
 
-	  https://code.google.com/p/pypcap/
+	  https://github.com/dugsong/pypcap

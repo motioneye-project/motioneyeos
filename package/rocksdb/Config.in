@@ -1,0 +1,26 @@
+config BR2_PACKAGE_ROCKSDB
+	bool "rocksdb"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # C++11
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_WCHAR
+	depends on !BR2_TOOLCHAIN_HAS_GCC_BUG_64735 # std::future
+	help
+	  The RocksDB library provides a persistent key value store.
+	  Keys and values are arbitrary byte arrays. The keys are
+	  ordered within the key value store according to a
+	  user-specified comparator function.
+
+	  The library is maintained by the Facebook Database Engineering
+	  Team, and is based on LevelDB, by Sanjay Ghemawat and Jeff
+	  Dean at Google.
+
+	  http://rocksdb.org
+
+comment "rocksdb needs a toolchain w/ C++, threads, wchar, gcc >= 4.8"
+	depends on !BR2_INSTALL_LIBSTDCPP || \
+		!BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR || \
+		!BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+
+comment "rocksdb needs a toolchain not affected by GCC bug 64735"
+	depends on BR2_TOOLCHAIN_HAS_GCC_BUG_64735

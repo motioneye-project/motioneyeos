@@ -1,0 +1,36 @@
+From 0552a8ffdfbb9807fcef4498011907caa5de2ace Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
+Date: Thu, 9 Jan 2020 15:11:32 +0100
+Subject: [PATCH] drop autoconf.h from tools
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+We need to build u-boot tools without a board configuration for the target.
+
+imximage uses the DCD address from Kconfig to display this information
+to the user. The default value for all i.MX platforms is 0x00910000,
+except for i.MX7ULP, which has a DCD address of 0x2f010000.
+
+The default value printed before version 2020.01 was 0x00910000.
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ tools/imximage.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/tools/imximage.c b/tools/imximage.c
+index d7edd3c52f..f8d21fa06a 100644
+--- a/tools/imximage.c
++++ b/tools/imximage.c
+@@ -11,7 +11,6 @@
+ #include "imagetool.h"
+ #include <image.h>
+ #include "imximage.h"
+-#include <generated/autoconf.h>
+ 
+ #define UNDEFINED 0xFFFFFFFF
+ 
+-- 
+2.25.0
+

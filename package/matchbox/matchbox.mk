@@ -10,7 +10,7 @@ MATCHBOX_SITE = http://downloads.yoctoproject.org/releases/matchbox/matchbox-win
 MATCHBOX_LICENSE = GPL-2.0+
 MATCHBOX_LICENSE_FILES = COPYING
 
-MATCHBOX_DEPENDENCIES = matchbox-lib
+MATCHBOX_DEPENDENCIES = expat matchbox-lib
 MATCHBOX_CONF_OPTS = \
 	--enable-expat \
 	--disable-gconf \

@@ -3,6 +3,7 @@ config BR2_PACKAGE_ACSCCID
 	depends on BR2_TOOLCHAIN_HAS_THREADS # pcsc-lite, libusb
 	depends on BR2_USE_MMU # pcsc-lite
 	depends on !BR2_STATIC_LIBS # pcsc-lite
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	select BR2_PACKAGE_PCSC_LITE
 	# Even though there is a --disable-libusb option, it has in
 	# fact no effect, and acsccid really requires libusb.

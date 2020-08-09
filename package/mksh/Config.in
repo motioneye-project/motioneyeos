@@ -14,7 +14,7 @@ config BR2_PACKAGE_MKSH
 	  secure shell not cut off modern extensions; a shell with
 	  Unicode support; an actively developed, current, and
 	  portable product; one with developers that listen to
-	  their users’ requests and implement them if they
+	  their users' requests and implement them if they
 	  actually make sense.
 
 	  mksh aims to replace pdksh in all but very rare use cases

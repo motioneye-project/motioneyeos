@@ -1,4 +1,5 @@
-# From https://sourceforge.net/projects/qpdf/files/qpdf/8.2.1/qpdf-8.2.1.sha512/download
-sha512	ef3aeb4a7ca3ec48ab62341533eedcb2a6d0985767317ab72c22f0c0ecfef6849bfdc34b1bcec6427c7bde166143adb409c895ff40d8be6628e6323e27697a8c  qpdf-8.2.1.tar.gz
+# From https://sourceforge.net/projects/qpdf/files/qpdf/9.1.1/qpdf-9.1.1.sha512/download
+sha512  008a11fef663a57ca173631f2053988023babea6c333cfe01db0ef955c8cd36d387ed9f2039f55bd5f9ca94c7a8e400461a09a15c5f89e03bc0817fdd0d3d585  qpdf-9.1.1.tar.gz
 # Locally computed:
+sha256  cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30  LICENSE.txt
 sha256  fb929ac30decb4dc3a2eea2bec6c43296a797c5d2d602deb3784ee39430583d5  Artistic-2.0

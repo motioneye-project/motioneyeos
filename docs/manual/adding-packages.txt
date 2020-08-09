@@ -41,6 +41,8 @@ include::adding-packages-cargo.txt[]
 
 include::adding-packages-golang.txt[]
 
+include::adding-packages-qmake.txt[]
+
 include::adding-packages-kernel-module.txt[]
 
 include::adding-packages-asciidoc.txt[]

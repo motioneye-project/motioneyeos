@@ -1,0 +1,3 @@
+# Select this if you need host eudev tools (e.g. udevadm)
+config BR2_PACKAGE_HOST_EUDEV
+	bool

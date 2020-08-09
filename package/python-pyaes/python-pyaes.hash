@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/pyaes/json
+md5	20fd5c6e29dcfdd08098e85a859a54ec  pyaes-1.6.1.tar.gz
+sha256	02c1b1405c38d3c370b085fb952dd8bea3fadcee6411ad99f312cc129c536d8f  pyaes-1.6.1.tar.gz
+# Locally computed sha256 checksums
+sha256	1efe6c78b28b4203d397ea9b68bdc9c658d21cd9afaf8ae8223def83f2a7ebbd  LICENSE.txt

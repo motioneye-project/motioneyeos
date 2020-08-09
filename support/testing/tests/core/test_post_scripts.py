@@ -20,7 +20,7 @@ class TestPostScripts(infra.basetest.BRTest):
 
     def check_post_log_file(self, f, what, target_dir):
         lines = {}
-        with open(os.path.join(self.builddir, "build", f), 'rb') as csvfile:
+        with open(os.path.join(self.builddir, "build", f), newline='') as csvfile:
             r = csv.reader(csvfile, delimiter=',')
             for row in r:
                 lines[row[0]] = row[1]

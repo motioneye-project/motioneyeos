@@ -1,0 +1,27 @@
+From 1af7bc09451e0b779f7bfb0dcc58ffb3abe9c584 Mon Sep 17 00:00:00 2001
+From: Gary Bisson <bisson.gary@gmail.com>
+Date: Tue, 11 Feb 2020 15:30:12 +0100
+Subject: [PATCH] lnx_def.h: fix conflicting declaration of __time64_t
+
+Signed-off-by: Gary Bisson <bisson.gary@gmail.com>
+---
+ MfgToolLib/lnx_def.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/MfgToolLib/lnx_def.h b/MfgToolLib/lnx_def.h
+index c6869dd..a38bb99 100644
+--- a/MfgToolLib/lnx_def.h
++++ b/MfgToolLib/lnx_def.h
+@@ -124,7 +124,9 @@ typedef unsigned long * ULONG_PTR;
+ typedef char * LPOLESTR;
+ typedef void * HDEVINFO;
+ typedef unsigned long long ULONGLONG;
++#ifndef __time64_t
+ typedef long long __time64_t;
++#endif
+ typedef long long __int64;
+ typedef unsigned long DWORD_PTR;
+ typedef unsigned int UINT;
+-- 
+2.25.0
+

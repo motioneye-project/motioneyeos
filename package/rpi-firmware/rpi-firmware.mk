@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RPI_FIRMWARE_VERSION = 878d27e23ff2f1c9a35d1b1fc8fe71e06083b823
+RPI_FIRMWARE_VERSION = 5574077183389cd4c65077ba18b59144ed6ccd6d
 RPI_FIRMWARE_SITE = $(call github,raspberrypi,firmware,$(RPI_FIRMWARE_VERSION))
 RPI_FIRMWARE_LICENSE = BSD-3-Clause
 RPI_FIRMWARE_LICENSE_FILES = boot/LICENCE.broadcom
@@ -41,20 +41,19 @@ define RPI_FIRMWARE_INSTALL_TARGET_CMDS
 endef
 endif # INSTALL_VCDBG
 
-define RPI_FIRMWARE_INSTALL_IMAGES_CMDS
-    cp $(@D)/boot/fixup4cd.dat $(@D)/boot/fixup4_cd.dat
-    cp $(@D)/boot/fixup4x.dat $(@D)/boot/fixup4_x.dat
-    cp $(@D)/boot/fixup4db.dat $(@D)/boot/fixup4_db.dat
-    cp $(@D)/boot/start4cd.elf $(@D)/boot/start4_cd.elf
-    cp $(@D)/boot/start4x.elf $(@D)/boot/start4_x.elf
-    cp $(@D)/boot/start4db.elf $(@D)/boot/start4_db.elf
+ifeq ($(BR2_PACKAGE_RPI_FIRMWARE_VARIANT_PI),y)
+# bootcode.bin is not used on rpi4, because it has been replaced by boot code in the onboard EEPROM
+define RPI_FIRMWARE_INSTALL_BOOTCODE_BIN
 	$(INSTALL) -D -m 0644 $(@D)/boot/bootcode.bin $(BINARIES_DIR)/rpi-firmware/bootcode.bin
-	$(INSTALL) -D -m 0644 $(@D)/boot/start$(BR2_PACKAGE_RPI_FIRMWARE_BOOT).elf $(BINARIES_DIR)/rpi-firmware/start.elf
-	$(INSTALL) -D -m 0644 $(@D)/boot/fixup$(BR2_PACKAGE_RPI_FIRMWARE_BOOT).dat $(BINARIES_DIR)/rpi-firmware/fixup.dat
-	$(INSTALL) -D -m 0644 $(@D)/boot/start4$(BR2_PACKAGE_RPI_FIRMWARE_BOOT).elf $(BINARIES_DIR)/rpi-firmware/start4.elf
-	$(INSTALL) -D -m 0644 $(@D)/boot/fixup4$(BR2_PACKAGE_RPI_FIRMWARE_BOOT).dat $(BINARIES_DIR)/rpi-firmware/fixup4.dat
+endef
+endif
+
+define RPI_FIRMWARE_INSTALL_IMAGES_CMDS
 	$(INSTALL) -D -m 0644 package/rpi-firmware/config.txt $(BINARIES_DIR)/rpi-firmware/config.txt
 	$(INSTALL) -D -m 0644 package/rpi-firmware/cmdline.txt $(BINARIES_DIR)/rpi-firmware/cmdline.txt
+	$(INSTALL) -D -m 0644 $(@D)/boot/start$(BR2_PACKAGE_RPI_FIRMWARE_BOOT).elf $(BINARIES_DIR)/rpi-firmware/start.elf
+	$(INSTALL) -D -m 0644 $(@D)/boot/fixup$(BR2_PACKAGE_RPI_FIRMWARE_BOOT).dat $(BINARIES_DIR)/rpi-firmware/fixup.dat
+	$(RPI_FIRMWARE_INSTALL_BOOTCODE_BIN)
 	$(RPI_FIRMWARE_INSTALL_DTB)
 	$(RPI_FIRMWARE_INSTALL_DTB_OVERLAYS)
 endef

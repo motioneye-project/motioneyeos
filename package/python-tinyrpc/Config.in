@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PYTHON_TINYRPC
+	bool "python-tinyrpc"
+	select BR2_PACKAGE_PYTHON_SIX # runtime
+	help
+	  A small, modular, transport and protocol neutral RPC
+	  library that, among other things, supports JSON-RPC and
+	  zmq.
+
+	  http://github.com/mbr/tinyrpc

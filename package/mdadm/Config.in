@@ -5,7 +5,7 @@ config BR2_PACKAGE_MDADM
 	help
 	  Utility for managing Linux Software RAID arrays.
 
-	  http://neil.brown.name/blog/mdadm
+	  https://raid.wiki.kernel.org/index.php/A_guide_to_mdadm
 
 comment "mdadm needs a toolchain w/ dynamic library"
 	depends on BR2_STATIC_LIBS

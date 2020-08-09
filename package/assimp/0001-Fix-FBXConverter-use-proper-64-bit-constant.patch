@@ -13,14 +13,16 @@ Use proper 64-bit constant for CONVERT_FBX_TIME(time) conversion, fixes:
   code/FBXConverter.cpp:2888: error: integer constant is too large for 'long' type
 
 Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+[Rebased on 5.0.1]
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
 ---
- code/FBXConverter.cpp | 2 +-
+ code/FBX/FBXConverter.cpp | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/code/FBXConverter.cpp b/code/FBXConverter.cpp
+diff --git a/code/FBX/FBXConverter.cpp b/code/FBXConverter.cpp
 index e0c6b9c..b1e9a71 100644
---- a/code/FBXConverter.cpp
-+++ b/code/FBXConverter.cpp
+--- a/code/FBX/FBXConverter.cpp
++++ b/code/FBX/FBXConverter.cpp
 @@ -67,7 +67,7 @@ namespace FBX {
  
  #define MAGIC_NODE_TAG "_$AssimpFbx$"

@@ -1,3 +1,5 @@
 # Locally computed based on signature
 # https://gnupg.org/ftp/gcrypt/gnupg/gnupg-1.4.23.tar.bz2.sig
-sha256	c9462f17e651b6507848c08c430c791287cd75491f8b5a8b50c6ed46b12678ba	gnupg-1.4.23.tar.bz2
+sha256  c9462f17e651b6507848c08c430c791287cd75491f8b5a8b50c6ed46b12678ba  gnupg-1.4.23.tar.bz2
+# locally computed
+sha256  fc82ca8b6fdb18d4e3e85cfd8ab58d1bcd3f1b29abe782895abd91d64763f8e7  COPYING

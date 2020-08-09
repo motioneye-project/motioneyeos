@@ -1,18 +1,29 @@
 config BR2_PACKAGE_SYSTEMD_ARCH_SUPPORTS
 	bool
-	# see src/shared/architecture.h
-	default y if BR2_arm || BR2_armeb || BR2_i386 || BR2_mips || \
-		BR2_mipsel || BR2_powerpc || BR2_powerpc64 || \
-		BR2_powerpc64le || BR2_sh4 || BR2_sh4eb || \
-		BR2_sh4a || BR2_sh4aeb || BR2_sparc || BR2_x86_64 || \
-		BR2_aarch64 || BR2_m68k || BR2_arc
+	# see src/basic/architecture.h
+	default y if BR2_arc
+	default y if BR2_aarch64 || BR2_aarch64_be
+	default y if BR2_arm || BR2_armeb
+	default y if BR2_i386 || BR2_x86_64
+	default y if BR2_m68k
+	default y if BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el
+	default y if BR2_powerpc || BR2_powerpc64 || BR2_powerpc64le
+	default y if BR2_nios2
+	default y if BR2_riscv
+	default y if BR2_sh4 || BR2_sh4eb || BR2_sh4a || BR2_sh4aeb
+	default y if BR2_sparc || BR2_sparc64
 
 menuconfig BR2_PACKAGE_SYSTEMD
 	bool "systemd"
 	depends on BR2_INIT_SYSTEMD
+	depends on BR2_PACKAGE_SYSTEMD_ARCH_SUPPORTS
+	depends on BR2_USE_MMU
 	depends on !BR2_STATIC_LIBS # kmod
-	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus
-	depends on BR2_USE_MMU # dbus
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_TOOLCHAIN_HAS_SSP
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_5
+	depends on BR2_HOST_GCC_AT_LEAST_5 # host-systemd
 	select BR2_PACKAGE_HAS_UDEV
 	select BR2_PACKAGE_DBUS # runtime dependency only
 	select BR2_PACKAGE_LIBCAP
@@ -20,6 +31,7 @@ menuconfig BR2_PACKAGE_SYSTEMD
 	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
 	select BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
 	select BR2_PACKAGE_UTIL_LINUX_BINARIES
+	select BR2_PACKAGE_UTIL_LINUX_AGETTY
 	select BR2_PACKAGE_UTIL_LINUX_MOUNT
 	select BR2_PACKAGE_UTIL_LINUX_NOLOGIN
 	select BR2_PACKAGE_UTIL_LINUX_FSCK
@@ -28,6 +40,7 @@ menuconfig BR2_PACKAGE_SYSTEMD
 	select BR2_PACKAGE_KMOD_TOOLS
 	select BR2_TARGET_TZ_INFO
 	select BR2_NEEDS_HOST_UTF8_LOCALE
+	select BR2_PACKAGE_HOST_SYSTEMD # for systemctl preset-all, during target-finalize
 	help
 	  systemd is a system and service manager for Linux,
 	  compatible with SysV and LSB init scripts. systemd provides
@@ -77,6 +90,34 @@ if BR2_PACKAGE_SYSTEMD
 config BR2_PACKAGE_PROVIDES_UDEV
 	default "systemd"
 
+config BR2_PACKAGE_SYSTEMD_BOOT
+	bool "systemd-boot"
+	depends on BR2_i386 || BR2_x86_64
+	select BR2_PACKAGE_GNU_EFI
+	help
+	  systemd-boot is a simple UEFI boot manager which executes
+	  configured EFI images. The default entry is selected by a
+	  configured pattern (glob) or an on-screen menu.
+
+	  systemd-boot operates on the EFI System Partition (ESP)
+	  only. Configuration file fragments, kernels, initrds, other
+	  EFI images need to reside on the ESP. Linux kernels need to
+	  be built with CONFIG_EFI_STUB to be able to be directly
+	  executed as an EFI image.
+
+	  See the Grub2 help text for details on preparing an EFI
+	  capable disk image using systemd-boot: the instructions are
+	  exactly the same, except that the systemd-boot configuration
+	  files will be located in /loader/ inside the EFI partition.
+
+	  https://www.freedesktop.org/wiki/Software/systemd/systemd-boot/
+
+config BR2_PACKAGE_SYSTEMD_BOOT_EFI_ARCH
+	string
+	default "ia32"  if BR2_i386
+	default "x64"   if BR2_x86_64
+	depends on BR2_PACKAGE_SYSTEMD_BOOT
+
 config BR2_PACKAGE_SYSTEMD_JOURNAL_GATEWAY
 	bool "HTTP server for journal events"
 	select BR2_PACKAGE_LIBMICROHTTPD
@@ -86,6 +127,20 @@ config BR2_PACKAGE_SYSTEMD_JOURNAL_GATEWAY
 	  listens on port 19531 by default.
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-journal-gatewayd.service.html
+
+config BR2_PACKAGE_SYSTEMD_JOURNAL_REMOTE
+	bool "enable systemd-journal-remote"
+	depends on BR2_PACKAGE_SYSTEMD_JOURNAL_GATEWAY
+	select BR2_PACKAGE_LIBCURL
+	help
+	  systemd-journal-remote is a command to receive serialized
+	  journal events and store them to journal files. Input
+	  streams are in the Journal Export Format[1], i.e. like the
+	  output from journalctl --output=export. For transport over
+	  the network, this serialized stream is usually carried over
+	  an HTTPS connection.
+
+	  https://www.freedesktop.org/software/systemd/man/systemd-journal-remote.service.html
 
 config BR2_PACKAGE_SYSTEMD_BACKLIGHT
 	bool "enable backlight support"
@@ -112,6 +167,16 @@ config BR2_PACKAGE_SYSTEMD_COREDUMP
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-coredump.html
 
+config BR2_PACKAGE_SYSTEMD_PSTORE
+	bool "enable pstore support"
+	default y
+	help
+	  When this features is enabled, additional tools and services
+	  are built to support archiving contents of the persistent
+	  storage filesytem.
+
+	  https://www.freedesktop.org/software/systemd/man/systemd-pstore.html
+
 config BR2_PACKAGE_SYSTEMD_FIRSTBOOT
 	bool "enable firstboot support"
 	help
@@ -127,6 +192,28 @@ config BR2_PACKAGE_SYSTEMD_HIBERNATE
 	  are built to support suspending and resuming the system.
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-sleep.html
+
+config BR2_PACKAGE_SYSTEMD_HOMED
+	bool "enable home daemon"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # cryptsetup -> lvm2
+	depends on BR2_USE_MMU # cryptsetup -> lvm2
+	depends on !BR2_STATIC_LIBS # cryptsetup -> lvm2
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # cryptsetup -> json-c
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_12 # fscrypt_key
+	select BR2_PACKAGE_CRYPTSETUP
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_UTIL_LINUX_LIBFDISK
+	help
+	  systemd-homed is a system service that may be used to create,
+	  remove, change or inspect home directories.
+
+	  https://www.freedesktop.org/software/systemd/man/systemd-homed.service.html
+
+comment "homed support needs a toolchain w/ threads, dynamic library, kernel headers >= 4.12"
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || \
+		BR2_STATIC_LIBS || BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_12
 
 config BR2_PACKAGE_SYSTEMD_HOSTNAMED
 	bool "enable hostname daemon"
@@ -215,7 +302,12 @@ config BR2_PACKAGE_SYSTEMD_NETWORKD
 
 config BR2_PACKAGE_SYSTEMD_POLKIT
 	bool "enable polkit support"
-	depends on BR2_TOOLCHAIN_USES_GLIBC # polkit
+	depends on BR2_HOST_GCC_AT_LEAST_4_9 # polkit
+	depends on BR2_INSTALL_LIBSTDCPP # polkit
+	depends on BR2_PACKAGE_SPIDERMONKEY_ARCH_SUPPORTS # polkit
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_9 # polkit
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # polkit
+	depends on BR2_USE_WCHAR # libglib2
 	select BR2_PACKAGE_POLKIT
 	help
 	  If enabled, systemd is built with polkit support and policy
@@ -225,8 +317,13 @@ config BR2_PACKAGE_SYSTEMD_POLKIT
 
 	  http://wiki.freedesktop.org/www/Software/polkit/
 
-comment "polkit support needs a glibc toolchain"
-	depends on !BR2_TOOLCHAIN_USES_GLIBC
+comment "polkit support needs a toolchain with C++, wchar, NPTL, gcc >= 4.9"
+	depends on BR2_PACKAGE_SPIDERMONKEY_ARCH_SUPPORTS
+	depends on !BR2_INSTALL_LIBSTDCPP || \
+		!BR2_TOOLCHAIN_HAS_THREADS_NPTL || \
+		!BR2_HOST_GCC_AT_LEAST_4_9 || \
+		!BR2_TOOLCHAIN_GCC_AT_LEAST_4_9 || \
+		!BR2_USE_WCHAR
 
 config BR2_PACKAGE_SYSTEMD_QUOTACHECK
 	bool "enable quotacheck tools"
@@ -247,6 +344,16 @@ config BR2_PACKAGE_SYSTEMD_RANDOMSEED
 	  increases the amount of available entropy early at boot.
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-random-seed.service.html
+
+config BR2_PACKAGE_SYSTEMD_REPART
+	bool "enable repart support"
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_UTIL_LINUX_LIBFDISK
+	help
+	  systemd-repart grows and adds partitions to a partition table,
+	  based on the configuration files described in repart.d.
+
+	  https://www.freedesktop.org/software/systemd/man/systemd-repart.html
 
 config BR2_PACKAGE_SYSTEMD_RESOLVED
 	bool "enable resolve daemon"
@@ -322,6 +429,18 @@ config BR2_PACKAGE_SYSTEMD_TMPFILES
 	  tmpfiles.d(5).
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-tmpfiles.html
+
+config BR2_PACKAGE_SYSTEMD_USERDB
+	bool "enable userdb daemon"
+	help
+	  systemd-userdbd is a system service that multiplexes
+	  user/group lookups to all local services that provide JSON
+	  user/group record definitions to the system. In addition it
+	  synthesizes JSON user/group records from classic UNIX/glibc
+	  NSS user/group records in order to provide full backwards
+	  compatibility.
+
+	  https://www.freedesktop.org/software/systemd/man/systemd-userdbd.service.html
 
 config BR2_PACKAGE_SYSTEMD_VCONSOLE
 	bool "enable vconsole tool"

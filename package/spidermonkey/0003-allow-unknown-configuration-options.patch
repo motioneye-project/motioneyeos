@@ -1,0 +1,35 @@
+From 4a06a1a6a71293decb83aee7adb74bc709493106 Mon Sep 17 00:00:00 2001
+From: Philip Chimento <philip.chimento@gmail.com>
+Date: Wed, 5 Jul 2017 22:57:09 -0700
+Subject: [PATCH] allow unknown configuration options
+
+By default, if an unknown parameter is passed to configure, an error is raised.
+Replace the raise with a pass and continue.
+
+Fixes: https://bugzilla.mozilla.org/show_bug.cgi?id=1379540
+
+Signed-off-by: Philip Chimento <philip.chimento@gmail.com>
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+---
+ js/src/configure                               | 9 +++++++++
+ python/mozbuild/mozbuild/configure/__init__.py | 2 +-
+ python/mozbuild/mozbuild/configure/options.py  | 6 +++++-
+ 3 files changed, 15 insertions(+), 2 deletions(-)
+ create mode 100755 js/src/configure
+
+diff --git a/python/mozbuild/mozbuild/configure/__init__.py b/python/mozbuild/mozbuild/configure/__init__.py
+index 0fe640ca..09b460d3 100644
+--- a/python/mozbuild/mozbuild/configure/__init__.py
++++ b/python/mozbuild/mozbuild/configure/__init__.py
+@@ -421,7 +421,7 @@ def run(self, path=None):
+         # All options should have been removed (handled) by now.
+         for arg in self._helper:
+             without_value = arg.split('=', 1)[0]
+-            raise InvalidOptionError('Unknown option: %s' % without_value)
++            pass
+ 
+         # Run the execution queue
+         for func, args in self._execution_queue:
+--
+2.23.0
+

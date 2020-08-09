@@ -1,0 +1,16 @@
+config BR2_PACKAGE_HOST_PYTHON
+	bool "host python"
+	help
+	  The python language interpreter. Host package.
+
+	  http://www.python.org/
+
+if BR2_PACKAGE_HOST_PYTHON
+
+config BR2_PACKAGE_HOST_PYTHON_SSL
+	bool "ssl"
+	select BR2_PACKAGE_HOST_OPENSSL
+	help
+	  _ssl module for host Python.
+
+endif

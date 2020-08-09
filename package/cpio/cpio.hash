@@ -1,2 +1,7 @@
+# From https://lists.gnu.org/archive/html/info-gnu/2019-11/msg00002.html
+md5 f3438e672e3fa273a7dc26339dd1eed6  cpio-2.13.tar.bz2
+sha1 4dcefc0e1bc36b11506a354768d82b15e3fe6bb8  cpio-2.13.tar.bz2
 # Locally calculated after checking pgp signature
-sha256	08a35e92deb3c85d269a0059a27d4140a9667a6369459299d08c17f713a92e73	cpio-2.12.tar.gz
+sha256 eab5bdc5ae1df285c59f2a4f140a98fc33678a0bf61bdba67d9436ae26b46f6d  cpio-2.13.tar.bz2
+# Locally calculated
+sha256 fc82ca8b6fdb18d4e3e85cfd8ab58d1bcd3f1b29abe782895abd91d64763f8e7  COPYING

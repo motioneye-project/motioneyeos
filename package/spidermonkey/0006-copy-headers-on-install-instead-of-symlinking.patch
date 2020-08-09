@@ -1,0 +1,34 @@
+From 903a79a1efff18fc7cc50db09a3fe5d768adc9a8 Mon 19 Mar 2018 09:58:06 +0100
+From: Rico Tzschichholz <ricotz@ubuntu.com>
+Date: Wed, 5 Jul 2017 22:45:59 -0700
+Subject: build: Copy headers on install instead of symlinking
+
+Patch ported from mozjs52 by Philip Chimento
+
+Signed-off-by: Rico Tzschichholz <ricotz@ubuntu.com>
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+---
+ python/mozbuild/mozbuild/backend/recursivemake.py | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/python/mozbuild/mozbuild/backend/recursivemake.py b/python/mozbuild/mozbuild/backend/recursivemake.py
+index dd9020d..6918ef8 100644
+--- a/python/mozbuild/mozbuild/backend/recursivemake.py
++++ b/python/mozbuild/mozbuild/backend/recursivemake.py
+@@ -1427,11 +1427,11 @@ class RecursiveMakeBackend(CommonBackend):
+                                 raise Exception("Wildcards are only supported in the filename part of "
+                                                 "srcdir-relative or absolute paths.")
+ 
+-                            install_manifest.add_pattern_link(basepath, wild, path)
++                            install_manifest.add_pattern_copy(basepath, wild, path)
+                         else:
+-                            install_manifest.add_pattern_link(f.srcdir, f, path)
++                            install_manifest.add_pattern_copy(f.srcdir, f, path)
+                     else:
+-                        install_manifest.add_link(f.full_path, dest)
++                        install_manifest.add_copy(f.full_path, dest)
+                 else:
+                     install_manifest.add_optional_exists(dest)
+                     backend_file.write('%s_FILES += %s\n' % (
+--
+2.23.0

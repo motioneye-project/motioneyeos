@@ -1,0 +1,33 @@
+From 4ed48324b032857c95e6803409d5def9660d5b46 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Sun, 22 Mar 2020 11:42:35 +0100
+Subject: [PATCH] vc4_bufmgr: fix time_t printf
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fixes:
+
+  error: format ‘%ld’ expects argument of type ‘long int’, but argument 3 has type ‘time_t’ {aka ‘long long int’}
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ src/gallium/drivers/vc4/vc4_bufmgr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/gallium/drivers/vc4/vc4_bufmgr.c b/src/gallium/drivers/vc4/vc4_bufmgr.c
+index f7ac1698ee3..a786e8ee939 100644
+--- a/src/gallium/drivers/vc4/vc4_bufmgr.c
++++ b/src/gallium/drivers/vc4/vc4_bufmgr.c
+@@ -100,7 +100,7 @@ vc4_bo_dump_stats(struct vc4_screen *screen)
+                 struct timespec time;
+                 clock_gettime(CLOCK_MONOTONIC, &time);
+                 fprintf(stderr, "  now:               %ld\n",
+-                        time.tv_sec);
++                        (long)time.tv_sec);
+         }
+ }
+ 
+-- 
+2.25.1
+

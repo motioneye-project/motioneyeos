@@ -1,5 +1,5 @@
 # https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/sha256sums.asc
-sha256	693c8ac51e983ee678205571ef272439d83afe62dd8e424ea14ad9790bc35162  libcap-2.25.tar.xz
+sha256	dac1792d0118bee6aae6ba7fb93ff1602c6a9bda812fd63916eee1435b9c486a  libcap-2.27.tar.xz
 
 # Hash for license file:
 sha256	088cabde4662b4121258d298b0b2967bc1abffa134457ed9bc4a359685ab92bc  License

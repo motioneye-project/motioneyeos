@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/dominate/json, sha256 locally computed
-md5     45bd97e6f7888aac24ae86013c57638e  dominate-2.3.1.tar.gz
-sha256  4b8ce6f33633c9dd9175b228d21c00c801b6bd0327747cd5e17fc2da934c3a69  dominate-2.3.1.tar.gz
+# md5, sha256 from https://pypi.org/pypi/dominate/json
+md5	27d3aa7e0d67902c505e248e705e5e2e  dominate-2.4.0.tar.gz
+sha256	a92474b4312bd8b4c1789792f3ec8c571cd8afa8e7502a2b1c64dd48cd67e59c  dominate-2.4.0.tar.gz
+# Locally computed sha256 checksums
+sha256	9ccf26cfe845e0eb8bb58053e47366e7ab6b697ae010f7650978d4b71b7d1fc1  LICENSE.txt

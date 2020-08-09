@@ -5,6 +5,8 @@ config BR2_PACKAGE_MATCHBOX_COMMON
 	help
 	  Common desktop folders and matchbox-session script.
 
+	  http://git.yoctoproject.org/cgit/cgit.cgi/matchbox-common/
+
 config BR2_PACKAGE_MATCHBOX_COMMON_PDA
 	bool "PDA style app folder"
 	depends on BR2_PACKAGE_MATCHBOX_COMMON

@@ -1,0 +1,111 @@
+From ad4cb0403c58430bf34a15e72f2edcf0f4317977 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sat, 1 Feb 2020 23:38:11 +0100
+Subject: [PATCH] Check for sys/auxv.h
+
+Check for sys/auxv.h and getauxval before using them as they are not
+always available (for example on uclibc)
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/facebook/rocksdb/pull/6359]
+---
+ CMakeLists.txt                    |  5 +++++
+ build_tools/build_detect_platform | 14 ++++++++++++++
+ util/crc32c.cc                    |  4 +++-
+ util/crc32c_arm64.cc              |  6 ++++++
+ 4 files changed, 28 insertions(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 017fe8675..32fc5cb30 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -481,6 +481,11 @@ if(HAVE_SCHED_GETCPU)
+   add_definitions(-DROCKSDB_SCHED_GETCPU_PRESENT)
+ endif()
+ 
++check_cxx_symbol_exists(getauxval auvx.h HAVE_AUXV_GETAUXVAL)
++if(HAVE_AUXV_GETAUXVAL)
++  add_definitions(-DROCKSDB_AUXV_GETAUXVAL_PRESENT)
++endif()
++
+ include_directories(${PROJECT_SOURCE_DIR})
+ include_directories(${PROJECT_SOURCE_DIR}/include)
+ include_directories(SYSTEM ${PROJECT_SOURCE_DIR}/third-party/gtest-1.8.1/fused-src)
+diff --git a/build_tools/build_detect_platform b/build_tools/build_detect_platform
+index 36a013f6f..2535d8124 100755
+--- a/build_tools/build_detect_platform
++++ b/build_tools/build_detect_platform
+@@ -506,6 +506,20 @@ EOF
+         fi
+     fi
+ 
++    if ! test $ROCKSDB_DISABLE_AUXV_GETAUXVAL; then
++        # Test whether getauxval is supported
++        $CXX $CFLAGS -x c++ - -o /dev/null 2>/dev/null  <<EOF
++          #include <sys/auxv.h>
++          int main() {
++            uint64_t auxv = getauxval(AT_HWCAP);
++            (void)auxv;
++          }
++EOF
++        if [ "$?" = 0 ]; then
++            COMMON_FLAGS="$COMMON_FLAGS -DROCKSDB_AUXV_GETAUXVAL_PRESENT"
++        fi
++    fi
++
+     if ! test $ROCKSDB_DISABLE_ALIGNED_NEW; then
+         # Test whether c++17 aligned-new is supported
+         $CXX $PLATFORM_CXXFLAGS -faligned-new -x c++ - -o /dev/null 2>/dev/null <<EOF
+diff --git a/util/crc32c.cc b/util/crc32c.cc
+index 9e838b830..3063884db 100644
+--- a/util/crc32c.cc
++++ b/util/crc32c.cc
+@@ -25,7 +25,9 @@
+ #include "util/crc32c_ppc_constants.h"
+ 
+ #if __linux__
++#ifdef ROCKSDB_AUXV_GETAUXVAL_PRESENT
+ #include <sys/auxv.h>
++#endif
+ 
+ #ifndef PPC_FEATURE2_VEC_CRYPTO
+ #define PPC_FEATURE2_VEC_CRYPTO 0x02000000
+@@ -451,7 +453,7 @@ uint32_t ExtendPPCImpl(uint32_t crc, const char *buf, size_t size) {
+ static int arch_ppc_probe(void) {
+   arch_ppc_crc32 = 0;
+ 
+-#if defined(__powerpc64__)
++#if defined(__powerpc64__) && defined(ROCKSDB_AUXV_GETAUXVAL_PRESENT)
+   if (getauxval(AT_HWCAP2) & PPC_FEATURE2_VEC_CRYPTO) arch_ppc_crc32 = 1;
+ #endif /* __powerpc64__ */
+ 
+diff --git a/util/crc32c_arm64.cc b/util/crc32c_arm64.cc
+index 591c623a5..61b2ccaba 100644
+--- a/util/crc32c_arm64.cc
++++ b/util/crc32c_arm64.cc
+@@ -8,7 +8,9 @@
+ #if defined(__linux__) && defined(HAVE_ARM64_CRC)
+ 
+ #include <asm/hwcap.h>
++#ifdef ROCKSDB_AUXV_GETAUXVAL_PRESENT
+ #include <sys/auxv.h>
++#endif
+ #ifndef HWCAP_CRC32
+ #define HWCAP_CRC32 (1 << 7)
+ #endif
+@@ -34,8 +36,12 @@
+ #endif
+ 
+ uint32_t crc32c_runtime_check(void) {
++#ifdef ROCKSDB_AUXV_GETAUXVAL_PRESENT
+   uint64_t auxv = getauxval(AT_HWCAP);
+   return (auxv & HWCAP_CRC32) != 0;
++#else
++  return 0;
++#endif
+ }
+ 
+ uint32_t crc32c_arm64(uint32_t crc, unsigned char const *data,
+-- 
+2.24.1
+

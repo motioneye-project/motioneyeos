@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/crcmod/json, sha256 locally computed
+# md5 from https://pypi.python.org/pypi/crcmod/json
 md5	2d5b92117d958dcead94f9e17f54cd32  crcmod-1.7.tar.gz
+# Locally computed
 sha256	dc7051a0db5f2bd48665a990d3ec1cc305a466a77358ca4492826f41f283601e  crcmod-1.7.tar.gz
+sha256  89480768826f408daea1f3caff0509c2cc9606e10f6bb0ccfd12a3d604842c35  LICENSE

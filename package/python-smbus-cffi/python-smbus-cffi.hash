@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi?:action=show_md5&digest=f621c871bd658ee665751ad78e3b2df9, sha256 locally computed
+# md5 from https://pypi.python.org/pypi?:action=show_md5&digest=f621c871bd658ee665751ad78e3b2df9
 md5     f621c871bd658ee665751ad78e3b2df9  smbus-cffi-0.5.1.tar.gz
+# Locally computed
 sha256  fb4195aaabfc01586863f60d3190b5cb1bf8f12622fd597e23e48768dad6bde8  smbus-cffi-0.5.1.tar.gz
+sha256  d54f57bf73bd1ff19a424b6deab6ff08f6089a2469c8de360b167f755e4ecb4c  LICENSE

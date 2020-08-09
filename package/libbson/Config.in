@@ -5,5 +5,7 @@ config BR2_PACKAGE_LIBBSON
 	  libbson is a library providing useful routines related to
 	  building, parsing, and iterating BSON documents.
 
+	  http://mongoc.org/libbson/
+
 comment "libbson needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS

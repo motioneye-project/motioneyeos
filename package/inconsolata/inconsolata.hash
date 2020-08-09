@@ -1,2 +1,4 @@
 # From http://snapshot.debian.org/archive/debian/20091207T044352Z/pool/main/t/ttf-inconsolata/ttf-inconsolata_001.010-2.dsc
-sha256	ecf8ba44911fcb3c9683aef1ca2b3cfbafa119a3e93c682f448850e1ae08ce93	ttf-inconsolata_001.010.orig.tar.gz
+sha256  ecf8ba44911fcb3c9683aef1ca2b3cfbafa119a3e93c682f448850e1ae08ce93  ttf-inconsolata_001.010.orig.tar.gz
+# Locally computed
+sha256  8bbed014d1c85a9e3f36703816833c9538e140fea88c2bc3a745ce2449dc18ab  OFL.txt

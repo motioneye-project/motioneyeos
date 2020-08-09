@@ -4,9 +4,13 @@
 #
 ################################################################################
 
-ICU_VERSION = 60.2
-ICU_SOURCE = icu4c-$(subst .,_,$(ICU_VERSION))-src.tgz
-ICU_SITE = http://download.icu-project.org/files/icu4c/$(ICU_VERSION)
+# Git tags (and therefore versions on release-monitoring.org) use the
+# XX-Y format, but the tarballs are named XX_Y and the containing
+# directories XX.Y.
+ICU_VERSION = 65-1
+ICU_SOURCE = icu4c-$(subst -,_,$(ICU_VERSION))-src.tgz
+ICU_SITE = \
+	https://github.com/unicode-org/icu/releases/download/release-$(ICU_VERSION)
 ICU_LICENSE = ICU License
 ICU_LICENSE_FILES = LICENSE
 

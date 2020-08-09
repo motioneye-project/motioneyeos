@@ -1,2 +1,6 @@
 # From http://downloads.yoctoproject.org/releases/matchbox/matchbox-window-manager/1.2/matchbox-window-manager-1.2.tar.bz2.md5
-md5	3e158dcf57823b55c926d95b245500fb	matchbox-window-manager-1.2.tar.bz2
+md5  3e158dcf57823b55c926d95b245500fb  matchbox-window-manager-1.2.tar.bz2
+
+# Locally computed
+sha256  81a23a4af797cf350759fd5ac738797015a66dd5dba2f3d9f3c6908506c1ceff  matchbox-window-manager-1.2.tar.bz2
+sha256  231f7edcc7352d7734a96eef0b8030f77982678c516876fcb81e25b32d68564c  COPYING

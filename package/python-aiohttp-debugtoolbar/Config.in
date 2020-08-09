@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PYTHON_AIOHTTP_DEBUGTOOLBAR
+	bool "python-aiohttp-debugtoolbar"
+	depends on BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYTHON_AIOHTTP # runtime
+	select BR2_PACKAGE_PYTHON_AIOHTTP_JINJA2 # runtime
+	help
+	  debugtoolbar for aiohttp.
+
+	  https://github.com/aio-libs/aiohttp_debugtoolbar

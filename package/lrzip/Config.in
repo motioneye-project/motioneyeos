@@ -1,0 +1,24 @@
+config BR2_PACKAGE_LRZIP
+	bool "lrzip"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_LZO
+	select BR2_PACKAGE_BZIP2
+	help
+	  A compression utility that excels at compressing large files
+	  (usually > 10-50 MB). Larger files and/or more free RAM means
+	  that the utility will be able to more effectively compress
+	  your files (ie: faster / smaller size), especially if the
+	  filesize(s) exceed 100 MB. You can either choose to optimise
+	  for speed (fast compression / decompression) or size,
+	  but not both.
+
+	  https://github.com/ckolivas/lrzip
+
+comment "lrzip needs a toolchain w/ wchar, threads, C++"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
+		!BR2_INSTALL_LIBSTDCPP

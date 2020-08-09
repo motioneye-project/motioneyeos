@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_PYCAIRO
+	bool "python-pycairo"
+	depends on BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_CAIRO
+	help
+	  Python interface for cairo.
+
+	  https://pycairo.readthedocs.io

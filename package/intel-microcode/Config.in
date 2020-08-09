@@ -5,3 +5,14 @@ config BR2_PACKAGE_INTEL_MICROCODE
 	  This package provides an Intel microcode data file that can be
 	  used to correct processor errors. The iucode-tool package and
 	  proper kernel support are required to upload the microcode.
+
+	  https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files
+
+config BR2_PACKAGE_INTEL_MICROCODE_INSTALL_TARGET
+	bool "install microcode files to /lib/firmware in target"
+	default y
+	depends on BR2_PACKAGE_INTEL_MICROCODE
+	help
+	  Select this option to have the microcode files installed to
+	  /lib/firmware/intel-ucode in the target root filesystem, in
+	  addition to the images directory.

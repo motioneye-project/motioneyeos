@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DAHDI_LINUX_VERSION = 2.11.1
+DAHDI_LINUX_VERSION = 3.0.0
 DAHDI_LINUX_SITE = http://downloads.asterisk.org/pub/telephony/dahdi-linux/releases
 
 # We need to download all thoe firmware blobs ourselves, otherwise

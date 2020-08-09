@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-DTACH_VERSION = v0.9
-DTACH_SITE = $(call github,crigler,dtach,$(DTACH_VERSION))
+DTACH_VERSION = 0.9
+DTACH_SITE = $(call github,crigler,dtach,v$(DTACH_VERSION))
 DTACH_LICENSE = GPL-2.0+
 DTACH_LICENSE_FILES = COPYING
 

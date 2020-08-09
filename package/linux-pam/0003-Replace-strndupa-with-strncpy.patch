@@ -1,0 +1,75 @@
+From 91d4678388b2a7d768ee2ec8cc569e11fc223ffd Mon Sep 17 00:00:00 2001
+From: Rosen Penev <rosenp@gmail.com>
+Date: Sun, 15 Jul 2018 20:43:44 -0700
+Subject: [PATCH] Replace strndupa with strncpy
+
+glibc only. A static string is better.
+
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+[Retrieved from:
+https://github.com/linux-pam/linux-pam/commit/91d4678388b2a7d768ee2ec8cc569e11fc223ffd]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ modules/pam_exec/pam_exec.c | 31 +++++++++++--------------------
+ 1 file changed, 11 insertions(+), 20 deletions(-)
+
+diff --git a/modules/pam_exec/pam_exec.c b/modules/pam_exec/pam_exec.c
+index 52dc6818..6cad16e4 100644
+--- a/modules/pam_exec/pam_exec.c
++++ b/modules/pam_exec/pam_exec.c
+@@ -102,7 +102,7 @@ call_exec (const char *pam_type, pam_handle_t *pamh,
+   int use_stdout = 0;
+   int optargc;
+   const char *logfile = NULL;
+-  const char *authtok = NULL;
++  char authtok[PAM_MAX_RESP_SIZE] = {};
+   pid_t pid;
+   int fds[2];
+   int stdout_fds[2];
+@@ -180,12 +180,12 @@ call_exec (const char *pam_type, pam_handle_t *pamh,
+ 	      if (resp)
+ 		{
+ 		  pam_set_item (pamh, PAM_AUTHTOK, resp);
+-		  authtok = strndupa (resp, PAM_MAX_RESP_SIZE);
++		  strncpy (authtok, resp, sizeof(authtok) - 1);
+ 		  _pam_drop (resp);
+ 		}
+ 	    }
+ 	  else
+-	    authtok = strndupa (void_pass, PAM_MAX_RESP_SIZE);
++	    strncpy (authtok, void_pass, sizeof(authtok) - 1);
+ 
+ 	  if (pipe(fds) != 0)
+ 	    {
+@@ -225,23 +225,14 @@ call_exec (const char *pam_type, pam_handle_t *pamh,
+ 
+       if (expose_authtok) /* send the password to the child */
+ 	{
+-	  if (authtok != NULL)
+-	    {            /* send the password to the child */
+-	      if (debug)
+-		pam_syslog (pamh, LOG_DEBUG, "send password to child");
+-	      if (write(fds[1], authtok, strlen(authtok)+1) == -1)
+-		pam_syslog (pamh, LOG_ERR,
+-			    "sending password to child failed: %m");
+-	      authtok = NULL;
+-	    }
+-	  else
+-	    {
+-	      if (write(fds[1], "", 1) == -1)   /* blank password */
+-		pam_syslog (pamh, LOG_ERR,
+-			    "sending password to child failed: %m");
+-	    }
+-        close(fds[0]);       /* close here to avoid possible SIGPIPE above */
+-        close(fds[1]);
++	  if (debug)
++	    pam_syslog (pamh, LOG_DEBUG, "send password to child");
++	  if (write(fds[1], authtok, strlen(authtok)) == -1)
++	    pam_syslog (pamh, LOG_ERR,
++			      "sending password to child failed: %m");
++
++          close(fds[0]);       /* close here to avoid possible SIGPIPE above */
++          close(fds[1]);
+ 	}
+ 
+       if (use_stdout)

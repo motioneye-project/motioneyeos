@@ -4,28 +4,11 @@
 #
 ################################################################################
 
-FLITE_VERSION = 1.4
+FLITE_VERSION = 2.1
 FLITE_SOURCE = flite-$(FLITE_VERSION)-release.tar.bz2
-FLITE_SITE = http://www.speech.cs.cmu.edu/flite/packed/flite-$(FLITE_VERSION)
-# $ tar tf flite-1.4-release.tar.bz2
-# ...
-# flite-1.4-release//install-sh
-# flite-1.4-release//mkinstalldirs
-# flite-1.4-release//Exports.def
-# flite-1.4-release//flite.sln
-# flite-1.4-release//fliteDll.vcproj
-# flite-1.4-release/config/Makefile
-# flite-1.4-release/config/common_make_rules
-# flite-1.4-release/config/project.mak
-# flite-1.4-release/config/config.in
-# flite-1.4-release/config/system.mak.in
-#
-# So, we set FLITE_STRIP_COMPONENTS=0 to avoid writing to "/", and then
-# build in flite-1.4-release/
-FLITE_STRIP_COMPONENTS = 0
-FLITE_SUBDIR = flite-$(FLITE_VERSION)-release
+FLITE_SITE = http://www.festvox.org/flite/packed/flite-$(FLITE_VERSION)
 FLITE_LICENSE = BSD-4-Clause
-FLITE_LICENSE_FILES = $(FLITE_SUBDIR)/COPYING
+FLITE_LICENSE_FILES = COPYING
 
 FLITE_INSTALL_STAGING = YES
 # Patching configure.in

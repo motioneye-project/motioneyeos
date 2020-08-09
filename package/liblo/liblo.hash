@@ -1,6 +1,7 @@
-# From http://sourceforge.net/projects/liblo/files/liblo/0.29/
-sha1	6aa69456787d3d6ef915281b4a0f8f2c79548ce3	liblo-0.29.tar.gz
-md5	b0e70bc0fb2254addf94adddf85cffd3		liblo-0.29.tar.gz
+# From http://sourceforge.net/projects/liblo/files/liblo/0.30/
+sha1	152a3260d186f111a71508dc0ed709984960f130	liblo-0.30.tar.gz
+md5	fa1a9d45f86fc18fb54019f670ff2262		liblo-0.30.tar.gz
 
 # Locally computed
+sha256	  30a7c9de49a25ed7f2425a7a7415f5b14739def62431423d3419ea26fb978d1b	liblo-0.30.tar.gz
 sha256	  5df07007198989c622f5d41de8d703e7bef3d0e79d62e24332ee739a452af62a	COPYING

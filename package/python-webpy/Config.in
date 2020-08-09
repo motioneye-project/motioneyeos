@@ -1,7 +1,8 @@
 config BR2_PACKAGE_PYTHON_WEBPY
 	bool "python-webpy"
-	depends on BR2_PACKAGE_PYTHON
-	select BR2_PACKAGE_PYTHON_HASHLIB
+	depends on BR2_PACKAGE_PYTHON3 # python-cheroot
+	select BR2_PACKAGE_PYTHON_CHEROOT # runtime
+	select BR2_PACKAGE_PYTHON_MARKDOWN # runtime
 	help
 	  web.py is a web framework for Python that is as simple as it
 	  is powerful.

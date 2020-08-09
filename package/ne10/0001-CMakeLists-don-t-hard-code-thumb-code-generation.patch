@@ -1,29 +1,30 @@
-From 9ff39800cec5f1dabba246b253794582d611bc6d Mon Sep 17 00:00:00 2001
-From: Baruch Siach <baruch@tkos.co.il>
-Date: Fri, 20 Feb 2015 10:44:15 -0600
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Cody Guldner <cody.guldner@rockwellcollins.com>
+Date: Tue, 14 Apr 2020 09:12:01 -0500
 Subject: [PATCH] CMakeLists: don't hard code thumb code generation
 
-Migrating to version 1.2.0
+Migrating to version 1.2.1
 
 Signed-off-by: Baruch Siach <baruch@tkos.co.il>
 Signed-off-by: Clayton Shotwell <clayton.shotwell@rockwellcollins.com>
+Signed-off-by: Cody Guldner <cody.guldner@rockwellcollins.com>
 ---
  CMakeLists.txt | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index fdf01ec..34ae26e 100644
+index fc2a5e3..25da215 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -84,7 +84,7 @@ if(ANDROID_PLATFORM)
-     ${ANDROID_TOOLCHAIN_PATH}/arm-linux-androideabi-ar
-     ${ANDROID_TOOLCHAIN_PATH}/arm-linux-androideabi-ranlib")
+@@ -135,7 +135,7 @@ if(ANDROID_PLATFORM)
+     ${CMAKE_C_FLAGS}")
  elseif(GNULINUX_PLATFORM)
--    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mthumb-interwork -mthumb -march=armv7-a -mfpu=vfp3")
-+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mthumb-interwork -march=armv7-a -mfpu=vfp3")
-     set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS} -mthumb-interwork -mthumb -march=armv7-a -mfpu=neon")
- elseif(IOS_PLATFORM)
-     #set minimal target ios version.If not provided this option, Xcode
+     if(${NE10_TARGET_ARCH} STREQUAL "armv7")
+-      set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mthumb-interwork -mthumb -march=armv7-a -mfpu=vfp3 -funsafe-math-optimizations")
++      set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mthumb-interwork -march=armv7-a -mfpu=vfp3 -funsafe-math-optimizations")
+       set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS} -mthumb-interwork -mthumb -march=armv7-a -mfpu=neon")
+       # Turn on asm optimization for Linux on ARM v7.
+       set(NE10_ASM_OPTIMIZATION on)
 -- 
-1.9.1
+2.23.0
 

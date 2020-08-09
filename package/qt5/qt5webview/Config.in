@@ -1,0 +1,16 @@
+config BR2_PACKAGE_QT5WEBVIEW
+	bool "qt5webview"
+	depends on BR2_PACKAGE_QT5WEBENGINE
+	help
+	  Qt is a cross-platform application and UI framework for
+	  developers using C++.
+
+	  Qt WebView provides a way to display web content in
+	  a QML application without necessarily including
+	  a full web browser stack by using native APIs where
+	  it makes sense.
+
+	  https://doc.qt.io/qt-5/qtwebview-index.html
+
+comment "qt5webview needs qt5webengine module"
+	depends on !BR2_PACKAGE_QT5WEBENGINE

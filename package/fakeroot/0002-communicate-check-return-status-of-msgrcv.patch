@@ -1,7 +1,7 @@
 From a853f21633693f9eefc4949660253a5328d2d2f3 Mon Sep 17 00:00:00 2001
 From: "Yann E. MORIN" <yann.morin.1998@free.fr>
 Date: Sun, 13 Aug 2017 23:21:54 +0200
-Subject: [PATCH 1/1] communicate: check return status of msgrcv()
+Subject: [PATCH] communicate: check return status of msgrcv()
 
 msgrcv can return with -1 to indicate an error condition.
 One such error is to have been interrupted by a signal.

@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/simplesqlite/json, sha256 locally computed
-md5	be05735a65f91bf0bb47c2bfcf474dd3  SimpleSQLite-0.15.0.tar.gz
-sha256	319cf4fd660a2a8ba1d77bac65e3cb3bed30ef5e2b2f98aab558026a29bbefec  SimpleSQLite-0.15.0.tar.gz
+# md5, sha256 from https://pypi.org/pypi/simplesqlite/json
+md5	f1d4f2ec14e2c782a62e451587477598  SimpleSQLite-0.45.2.tar.gz
+sha256	0b19c99c36b63173a715649f94a2fc3aee8deb9b70c683d584bca85e5930244b  SimpleSQLite-0.45.2.tar.gz
+# Locally computed sha256 checksums
+sha256	98799b7c99b561c5ffa3ac86600e501f761afa8e72af8a2515026445fe134105  LICENSE

@@ -1,0 +1,4 @@
+# From https://github.com/OP-TEE/optee_test/archive/3.7.0.tar.gz
+sha256 6486ba7eba8ea8b43278032c9d6ea1d6b35340a7f76ef4c6f34efbca3d80265d  optee-test-3.7.0.tar.gz
+# Locally computed
+sha256 6e6810981f0ddab9e0d44399d0700a15d9f760a3c2843cc866659c2074139ae7  LICENSE.md

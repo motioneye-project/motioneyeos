@@ -4,3 +4,5 @@ config BR2_PACKAGE_MATCHBOX_FAKEKEY
 	select BR2_PACKAGE_XLIB_LIBXTST
 	help
 	  Library for simulating key press events under X11.
+
+	  http://git.yoctoproject.org/cgit/cgit.cgi/libfakekey/

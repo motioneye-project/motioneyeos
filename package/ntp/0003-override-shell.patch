@@ -1,0 +1,20 @@
+sntp/libopts/m4/libopts.m4: allow override shell with POSIX_SHELL
+
+Pull in fix from upstream AutoGen [1] to accept POSIX_SHELL from the
+environment during the configure step.
+
+[1] http://git.savannah.gnu.org/cgit/autogen.git/commit/?id=db064b9a252f3ef3d8db25411ea0edb0ff8ea758
+
+Signed-off-by: James Byrne <james.byrne@origamienergy.com>
+
+diff --git a/sntp/libopts/m4/libopts.m4 b/sntp/libopts/m4/libopts.m4
+--- a/sntp/libopts/m4/libopts.m4
++++ b/sntp/libopts/m4/libopts.m4
+@@ -114,6 +114,7 @@
+   AC_PROG_SED
+   [while :
+   do
++      test -x "$POSIX_SHELL" && break
+       POSIX_SHELL=`which bash`
+       test -x "$POSIX_SHELL" && break
+       POSIX_SHELL=`which dash`

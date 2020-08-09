@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NGINX_VERSION = 1.15.7
+NGINX_VERSION = 1.17.9
 NGINX_SITE = http://nginx.org/download
 NGINX_LICENSE = BSD-2-Clause
 NGINX_LICENSE_FILES = LICENSE
@@ -250,6 +250,11 @@ NGINX_DEPENDENCIES += nginx-naxsi
 NGINX_CONF_OPTS += --add-module=$(NGINX_NAXSI_DIR)/naxsi_src
 endif
 
+ifeq ($(BR2_PACKAGE_NGINX_MODSECURITY),y)
+NGINX_DEPENDENCIES += nginx-modsecurity
+NGINX_CONF_OPTS += --add-module=$(NGINX_MODSECURITY_DIR)
+endif
+
 # Debug logging
 NGINX_CONF_OPTS += $(if $(BR2_PACKAGE_NGINX_DEBUG),--with-debug)
 
@@ -281,11 +286,6 @@ endef
 define NGINX_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 0644 package/nginx/nginx.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/nginx.service
-
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-
-	ln -fs ../../../../usr/lib/systemd/system/nginx.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/nginx.service
 endef
 
 define NGINX_INSTALL_INIT_SYSV

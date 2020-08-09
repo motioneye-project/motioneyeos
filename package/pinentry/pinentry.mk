@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PINENTRY_VERSION = 1.0.0
+PINENTRY_VERSION = 1.1.0
 PINENTRY_SOURCE = pinentry-$(PINENTRY_VERSION).tar.bz2
 PINENTRY_SITE = https://www.gnupg.org/ftp/gcrypt/pinentry
 PINENTRY_LICENSE = GPL-2.0+
@@ -34,6 +34,15 @@ PINENTRY_CONF_OPTS += --enable-libsecret
 PINENTRY_DEPENDENCIES += libsecret
 else
 PINENTRY_CONF_OPTS += --disable-libsecret
+endif
+
+# pinentry-fltk backend
+ifeq ($(BR2_PACKAGE_PINENTRY_FLTK),y)
+PINENTRY_CONF_ENV += ac_cv_path_FLTK_CONFIG=$(STAGING_DIR)/usr/bin/fltk-config
+PINENTRY_CONF_OPTS += --enable-pinentry-fltk
+PINENTRY_DEPENDENCIES += fltk
+else
+PINENTRY_CONF_OPTS += --disable-pinentry-fltk
 endif
 
 # pinentry-ncurses backend

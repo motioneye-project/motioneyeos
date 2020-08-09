@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBMSPACK
+	bool "libmspack"
+	help
+	  libmspack is a portable library for some loosely related
+	  Microsoft compression formats
+
+	  https://www.cabextract.org.uk/libmspack

@@ -4,44 +4,47 @@ config BR2_PACKAGE_HOST_BINUTILS_SUPPORTS_CFI
 	bool
 	default y
 	depends on !BR2_microblaze
-	depends on !(BR2_nios2 && (BR2_BINUTILS_VERSION_2_28_X || BR2_BINUTILS_VERSION_2_29_X))
 
 choice
 	prompt "Binutils Version"
-	default BR2_BINUTILS_VERSION_2_28_X if BR2_ARM_INSTRUCTIONS_THUMB
-	default BR2_BINUTILS_VERSION_2_28_X if BR2_ARM_INSTRUCTIONS_THUMB2
-	default BR2_BINUTILS_VERSION_2_29_X if !BR2_arc
+	default BR2_BINUTILS_VERSION_2_32_X if !BR2_arc && !BR2_csky
 	default BR2_BINUTILS_VERSION_ARC if BR2_arc
+	default BR2_BINUTILS_VERSION_CSKY if BR2_csky
 	help
 	  Select the version of binutils you wish to use.
 
-config BR2_BINUTILS_VERSION_2_28_X
-	bool "binutils 2.28.1"
-	depends on !BR2_arc
-	depends on !BR2_riscv
-
-config BR2_BINUTILS_VERSION_2_29_X
-	bool "binutils 2.29.1"
-	depends on !BR2_riscv
-
-config BR2_BINUTILS_VERSION_2_30_X
-	bool "binutils 2.30"
-
 config BR2_BINUTILS_VERSION_2_31_X
 	bool "binutils 2.31.1"
+	depends on !BR2_csky
+
+config BR2_BINUTILS_VERSION_2_32_X
+	bool "binutils 2.32"
+	depends on !BR2_csky
+
+config BR2_BINUTILS_VERSION_2_33_X
+	bool "binutils 2.33.1"
+	depends on !BR2_csky
+	# https://github.com/uclinux-dev/elf2flt/pull/16
+	# https://github.com/uclinux-dev/elf2flt/issues/12
+	depends on !BR2_BINFMT_FLAT
 
 config BR2_BINUTILS_VERSION_ARC
 	bool "binutils arc (2.31)"
 	depends on BR2_arc
+
+config BR2_BINUTILS_VERSION_CSKY
+	bool "binutils csky"
+	depends on BR2_csky
+
 endchoice
 
 config BR2_BINUTILS_VERSION
 	string
-	default "arc-2018.09-release"	if BR2_BINUTILS_VERSION_ARC
-	default "2.28.1"	if BR2_BINUTILS_VERSION_2_28_X
-	default "2.29.1"	if BR2_BINUTILS_VERSION_2_29_X
-	default "2.30"		if BR2_BINUTILS_VERSION_2_30_X
+	default "arc-2019.09-release"	if BR2_BINUTILS_VERSION_ARC
+	default "c66d8bbcebfddf713b2b436e1b135e6b125a55a5" if BR2_BINUTILS_VERSION_CSKY
 	default "2.31.1"	if BR2_BINUTILS_VERSION_2_31_X
+	default "2.32"		if BR2_BINUTILS_VERSION_2_32_X
+	default "2.33.1"	if BR2_BINUTILS_VERSION_2_33_X
 
 config BR2_BINUTILS_ENABLE_LTO
 	bool

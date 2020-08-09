@@ -1,0 +1,34 @@
+config BR2_PACKAGE_UACME
+	bool "uacme"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_OPENSSL if !(BR2_PACKAGE_GNUTLS || BR2_PACKAGE_MBEDTLS)
+	select BR2_PACKAGE_LIBCURL
+	help
+	  uacme is a client for the ACMEv2 protocol described in
+	  RFC8555, written in plain C with minimal dependencies
+	  (libcurl and either of GnuTLS, OpenSSL or mbedTLS). The
+	  ACMEv2 protocol allows a Certificate Authority
+	  (https://letsencrypt.org is a popular one) and an applicant
+	  to automate the process of verification and certificate
+	  issuance.
+
+	  https://github.com/ndilieto/uacme
+
+if BR2_PACKAGE_UACME
+
+config BR2_PACKAGE_UACME_UALPN
+	bool "enable ualpn"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_PACKAGE_OPENSSL || BR2_PACKAGE_GNUTLS
+	select BR2_PACKAGE_LIBEV
+	help
+	  Build and install ualpn, the transparent proxying tls-alpn-01
+	  challenge responder.
+
+comment "ualpn needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
+comment "ualpn needs either OpenSSL or GnuTLS"
+	depends on !(BR2_PACKAGE_OPENSSL || BR2_PACKAGE_GNUTLS)
+
+endif

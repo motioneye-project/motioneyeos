@@ -1,0 +1,114 @@
+From https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-005
+
+Signed-off-by: Pascal de Bruijn <p.debruijn@unilogic.nl>
+
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	5.0
+Patch-ID:	bash50-005
+
+Bug-Reported-by:	Brad Spencer <bspencer@blackberry.com>
+Bug-Reference-ID:	<1b993ff2-ce4f-662a-6be4-393457362e47@blackberry.com>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2019-01/msg00250.html
+
+Bug-Description:
+
+In certain cases, bash optimizes out a fork() call too early and prevents
+traps from running.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-5.0-patched/command.h	2018-07-20 21:16:31.000000000 -0400
+--- b/command.h	2019-02-20 11:09:36.000000000 -0500
+***************
+*** 187,190 ****
+--- 188,192 ----
+  #define CMD_LASTPIPE	    0x2000
+  #define CMD_STDPATH	    0x4000	/* use standard path for command lookup */
++ #define CMD_TRY_OPTIMIZING  0x8000	/* try to optimize this simple command */
+  
+  /* What a command looks like. */
+*** ../bash-5.0-patched/builtins/evalstring.c	2018-12-26 11:19:21.000000000 -0500
+--- b/builtins/evalstring.c	2019-01-29 14:15:19.000000000 -0500
+***************
+*** 101,104 ****
+--- 101,113 ----
+  }
+  
++ int
++ can_optimize_connection (command)
++      COMMAND *command;
++ {
++   return (*bash_input.location.string == '\0' &&
++ 	  (command->value.Connection->connector == AND_AND || command->value.Connection->connector == OR_OR || command->value.Connection->connector == ';') &&
++ 	  command->value.Connection->second->type == cm_simple);
++ }
++ 
+  void
+  optimize_fork (command)
+***************
+*** 106,110 ****
+  {
+    if (command->type == cm_connection &&
+!       (command->value.Connection->connector == AND_AND || command->value.Connection->connector == OR_OR) &&
+        should_suppress_fork (command->value.Connection->second))
+      {
+--- 115,120 ----
+  {
+    if (command->type == cm_connection &&
+!       (command->value.Connection->connector == AND_AND || command->value.Connection->connector == OR_OR || command->value.Connection->connector == ';') &&
+!       (command->value.Connection->second->flags & CMD_TRY_OPTIMIZING) &&
+        should_suppress_fork (command->value.Connection->second))
+      {
+***************
+*** 413,418 ****
+  		  command->value.Simple->flags |= CMD_NO_FORK;
+  		}
+! 	      else if (command->type == cm_connection)
+! 		optimize_fork (command);
+  #endif /* ONESHOT */
+  
+--- 423,438 ----
+  		  command->value.Simple->flags |= CMD_NO_FORK;
+  		}
+! 
+! 	      /* Can't optimize forks out here execept for simple commands.
+! 		 This knows that the parser sets up commands as left-side heavy
+! 		 (&& and || are left-associative) and after the single parse,
+! 		 if we are at the end of the command string, the last in a
+! 		 series of connection commands is
+! 		 command->value.Connection->second. */
+! 	      else if (command->type == cm_connection && can_optimize_connection (command))
+! 		{
+! 		  command->value.Connection->second->flags |= CMD_TRY_OPTIMIZING;
+! 		  command->value.Connection->second->value.Simple->flags |= CMD_TRY_OPTIMIZING;
+! 		}
+  #endif /* ONESHOT */
+  
+*** ../bash-5.0-patched/execute_cmd.c	2018-12-05 09:05:14.000000000 -0500
+--- b/execute_cmd.c	2019-01-25 15:59:00.000000000 -0500
+***************
+*** 2768,2771 ****
+--- 2768,2773 ----
+  	   (exec_result != EXECUTION_SUCCESS)))
+  	{
++ 	  optimize_fork (command);
++ 
+  	  second = command->value.Connection->second;
+  	  if (ignore_return && second)
+*** ../bash-5.0/patchlevel.h	2016-06-22 14:51:03.000000000 -0400
+--- b/patchlevel.h	2016-10-01 11:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 4
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 5
+  
+  #endif /* _PATCHLEVEL_H_ */

@@ -1,0 +1,60 @@
+From 73bf6d25ddb7a2cb73bceda3d880174b1d1e4a26 Mon Sep 17 00:00:00 2001
+From: Yousong Zhou <yszhou4tech@gmail.com>
+Date: Wed, 17 Jun 2015 21:18:05 +0800
+Subject: [PATCH] build: ignore pam_lastlog when logwtmp is not available.
+
+* configure.ac: check logwtmp and set COND_BUILD_PAM_LASTLOG
+* modules/pam_lastlog/Makefile.am: check COND_BUILD_PAM_LASTLOG
+
+Signed-off-by: Yousong Zhou <yszhou4tech@gmail.com>
+[Retrieved from:
+https://github.com/linux-pam/linux-pam/commit/73bf6d25ddb7a2cb73bceda3d880174b1d1e4a26]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ configure.ac        | 2 ++
+ modules/Makefile.am | 8 ++++++--
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 69748614..4d1b1965 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -534,8 +534,10 @@ AC_CHECK_FUNCS(getutent_r getpwnam_r getpwuid_r getgrnam_r getgrgid_r getspnam_r
+ AC_CHECK_FUNCS(getgrouplist getline getdelim)
+ AC_CHECK_FUNCS(inet_ntop inet_pton innetgr)
+ AC_CHECK_FUNCS([ruserok_af ruserok], [break])
++AC_CHECK_FUNCS([logwtmp])
+ 
+ AM_CONDITIONAL([COND_BUILD_PAM_RHOSTS], [test "$ac_cv_func_ruserok_af" = yes -o "$ac_cv_func_ruserok" = yes])
++AM_CONDITIONAL([COND_BUILD_PAM_LASTLOG], [test "$ac_cv_func_logwtmp" = yes])
+ 
+ AC_CHECK_FUNCS(unshare, [UNSHARE=yes], [UNSHARE=no])
+ AM_CONDITIONAL([HAVE_UNSHARE], [test "$UNSHARE" = yes])
+diff --git a/modules/Makefile.am b/modules/Makefile.am
+index 9ad26a9b..b98dc5c8 100644
+--- a/modules/Makefile.am
++++ b/modules/Makefile.am
+@@ -6,9 +6,13 @@ if COND_BUILD_PAM_RHOSTS
+ 	MAYBE_PAM_RHOSTS = pam_rhosts
+ endif
+ 
++if COND_BUILD_PAM_LASTLOG
++	MAYBE_PAM_LASTLOG = pam_lastlog
++endif
++
+ SUBDIRS := pam_access pam_cracklib pam_debug pam_deny pam_echo \
+ 	pam_env pam_exec pam_faildelay pam_filter pam_ftp \
+-	pam_group pam_issue pam_keyinit pam_lastlog pam_limits \
++	pam_group pam_issue pam_keyinit pam_limits \
+ 	pam_listfile pam_localuser pam_loginuid pam_mail \
+ 	pam_mkhomedir pam_motd pam_namespace pam_nologin \
+ 	pam_permit pam_pwhistory pam_rootok pam_securetty \
+@@ -16,7 +20,7 @@ SUBDIRS := pam_access pam_cracklib pam_debug pam_deny pam_echo \
+ 	pam_succeed_if pam_tally pam_tally2 pam_time pam_timestamp \
+ 	pam_tty_audit pam_umask \
+ 	pam_unix pam_userdb pam_warn pam_wheel pam_xauth \
+-	$(MAYBE_PAM_RHOSTS)
++	$(MAYBE_PAM_RHOSTS) $(MAYBE_PAM_LASTLOG)
+ 
+ CLEANFILES = *~
+ 

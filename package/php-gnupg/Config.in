@@ -1,6 +1,5 @@
 config BR2_PACKAGE_PHP_GNUPG
 	bool "php-gnupg"
-	depends on BR2_PACKAGE_PHP
 	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS # ligpgme
 	depends on BR2_USE_MMU # libassuan
 	select BR2_PACKAGE_LIBGPGME

@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBCLI_VERSION = c63c9d35144939c8b4fa3c5394aed2e29ff517b0
-LIBCLI_SITE = $(call github,dparrish,libcli,$(LIBCLI_VERSION))
+LIBCLI_VERSION = 1.10.2
+LIBCLI_SITE = $(call github,dparrish,libcli,V$(LIBCLI_VERSION))
 LIBCLI_LICENSE = LGPL-2.1
 LIBCLI_LICENSE_FILES = COPYING
 LIBCLI_INSTALL_STAGING = YES

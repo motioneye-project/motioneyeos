@@ -1,6 +1,7 @@
 config BR2_PACKAGE_PERL_HTTP_DATE
 	bool "perl-http-date"
+	select BR2_PACKAGE_PERL_TIMEDATE # runtime
 	help
-	  date conversion routines.
+	  HTTP::Date - date conversion routines.
 
-	  https://metacpan.org/release/HTTP-Date
+	  https://github.com/libwww-perl/HTTP-Date

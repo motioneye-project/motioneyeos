@@ -1,2 +1,3 @@
 # Locally computed
-sha256 2a902f825ccc1885c5dccd83e1ccee104aa30e601c9964a24f49459f76f674b9 am335x-pru-package-5f374ad57cc195f28bf5e585c3d446aba6ee7096.tar.gz
+sha256  2a902f825ccc1885c5dccd83e1ccee104aa30e601c9964a24f49459f76f674b9  am335x-pru-package-5f374ad57cc195f28bf5e585c3d446aba6ee7096.tar.gz
+sha256  f0fcdf9b2090896389eb4b784f23be96d5544c5ce5282d84f82ae9a8e8331beb  pru_sw/utils/LICENCE.txt

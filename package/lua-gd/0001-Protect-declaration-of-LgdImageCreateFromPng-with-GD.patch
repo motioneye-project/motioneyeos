@@ -1,0 +1,34 @@
+From 78afd1c5f1ceaed05b78ac42c297d87a493295fd Mon Sep 17 00:00:00 2001
+From: spacewander <spacewanderlzx@gmail.com>
+Date: Tue, 31 Oct 2017 15:48:30 +0800
+Subject: [PATCH] Protect declaration of LgdImageCreateFromPng* with GD_PNG
+ feature test macro
+
+If GD_PNG is false, neither LgdImageCreateFromPng nor
+LgdImageCreateFromPngPtr would be implemented. We should avoid declaring
+them too.
+
+Fetch from: https://github.com/ittner/lua-gd/pull/8
+Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
+---
+ luagd.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/luagd.c b/luagd.c
+index 9730ff7..98bc03e 100644
+--- a/luagd.c
++++ b/luagd.c
+@@ -2168,8 +2168,10 @@ static const luaL_Reg LgdFunctions[] =
+     { "createFromGif",          LgdImageCreateFromGif },
+     { "createFromGifStr",       LgdImageCreateFromGifPtr },
+ #endif
++#ifdef GD_PNG
+     { "createFromPng",          LgdImageCreateFromPng },
+     { "createFromPngStr",       LgdImageCreateFromPngPtr },
++#endif
+     { "createFromGd",           LgdImageCreateFromGd },
+     { "createFromGdStr",        LgdImageCreateFromGdPtr },
+     { "createFromGd2",          LgdImageCreateFromGd2 },
+-- 
+2.17.1
+

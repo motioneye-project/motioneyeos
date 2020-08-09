@@ -4,102 +4,113 @@
 #
 ################################################################################
 
-POPPLER_VERSION = 0.59.0
+POPPLER_VERSION = 0.84.0
 POPPLER_SOURCE = poppler-$(POPPLER_VERSION).tar.xz
 POPPLER_SITE = http://poppler.freedesktop.org
 POPPLER_DEPENDENCIES = fontconfig host-pkgconf
 POPPLER_LICENSE = GPL-2.0+
 POPPLER_LICENSE_FILES = COPYING
 POPPLER_INSTALL_STAGING = YES
-POPPLER_CONF_OPTS = --with-font-configuration=fontconfig \
-	--enable-xpdf-headers --disable-poppler-qt4
+
+POPPLER_CONF_OPTS = \
+	-DENABLE_UNSTABLE_API_ABI_HEADERS=ON \
+	-DBUILD_GTK_TESTS=OFF \
+	-DBUILD_QT5_TESTS=OFF \
+	-DBUILD_CPP_TESTS=OFF \
+	-DENABLE_GOBJECT_INTROSPECTION=OFF \
+	-DENABLE_GTK_DOC=OFF
+
+# cmake older than 3.10 requires this to avoid try_run() in FindThreads
+POPPLER_CONF_OPTS += -DTHREADS_PTHREAD_ARG=OFF
 
 ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
-POPPLER_CONF_ENV += LDFLAGS="$(TARGET_LDFLAGS) -latomic"
-endif
-
-ifeq ($(BR2_PACKAGE_CAIRO),y)
-POPPLER_CONF_OPTS += --enable-cairo-output
-POPPLER_DEPENDENCIES += cairo
-else
-POPPLER_CONF_OPTS += --disable-cairo-output
-endif
-
-ifeq ($(BR2_PACKAGE_LCMS2),y)
-POPPLER_CONF_OPTS += --enable-cms=lcms2
-POPPLER_DEPENDENCIES += lcms2
-else
-POPPLER_CONF_OPTS += --enable-cms=none
-endif
-
-ifeq ($(BR2_PACKAGE_CAIRO)$(BR2_PACKAGE_LIBGLIB2),yy)
-POPPLER_CONF_OPTS += --enable-poppler-glib
-POPPLER_DEPENDENCIES += libglib2
-else
-POPPLER_CONF_OPTS += --disable-poppler-glib
-endif
-
-ifeq ($(BR2_PACKAGE_TIFF),y)
-POPPLER_CONF_OPTS += --enable-libtiff
-# Help poppler to find libtiff in static linking scenarios
-POPPLER_CONF_ENV += \
-	LIBTIFF_LIBS="`$(PKG_CONFIG_HOST_BINARY) --libs libtiff-4`"
-POPPLER_DEPENDENCIES += tiff
-else
-POPPLER_CONF_OPTS += --disable-libtiff
+POPPLER_CONF_OPTS += -DCMAKE_CXX_FLAGS="$(TARGET_CXXFLAGS) -latomic"
 endif
 
 ifeq ($(BR2_PACKAGE_JPEG),y)
-POPPLER_CONF_OPTS += --enable-dctdecoder=libjpeg
 POPPLER_DEPENDENCIES += jpeg
+POPPLER_CONF_OPTS += -DENABLE_DCTDECODER=libjpeg -DWITH_JPEG=ON
 else
-POPPLER_CONF_OPTS += --enable-dctdecoder=none
+POPPLER_CONF_OPTS += -DENABLE_DCTDECODER=none -DWITH_JPEG=OFF
 endif
 
 ifeq ($(BR2_PACKAGE_LIBPNG),y)
-POPPLER_CONF_OPTS += --enable-libpng
 POPPLER_DEPENDENCIES += libpng
+POPPLER_CONF_OPTS += -DWITH_PNG=ON
 else
-POPPLER_CONF_OPTS += --disable-libpng
+POPPLER_CONF_OPTS += -DWITH_PNG=OFF
 endif
 
-ifeq ($(BR2_PACKAGE_ZLIB),y)
-POPPLER_CONF_OPTS += --enable-zlib
-POPPLER_DEPENDENCIES += zlib
+ifeq ($(BR2_PACKAGE_LCMS2),y)
+POPPLER_DEPENDENCIES += lcms2
+POPPLER_CONF_OPTS += -DENABLE_CMS=lcms2
 else
-POPPLER_CONF_OPTS += --disable-zlib
-endif
-
-ifeq ($(BR2_PACKAGE_LIBCURL),y)
-POPPLER_CONF_OPTS += --enable-libcurl
-POPPLER_DEPENDENCIES += libcurl
-else
-POPPLER_CONF_OPTS += --disable-libcurl
-endif
-
-ifeq ($(BR2_PACKAGE_XORG7),y)
-POPPLER_CONF_OPTS += --with-x
-POPPLER_DEPENDENCIES += xlib_libX11 xlib_libXext
-else
-POPPLER_CONF_OPTS += --without-x
-endif
-
-ifeq ($(BR2_PACKAGE_POPPLER_QT5),y)
-POPPLER_DEPENDENCIES += qt5base
-POPPLER_CONF_OPTS += --enable-poppler-qt5
-# since Qt5.7.x c++11 is needed (LTS Qt5.6.x is the last one without this requirement)
-ifeq ($(BR2_PACKAGE_QT5_VERSION_LATEST),y)
-POPPLER_CONF_ENV += CXXFLAGS="$(TARGET_CXXFLAGS) -std=c++11"
-endif
-else
-POPPLER_CONF_OPTS += --disable-poppler-qt5
+POPPLER_CONF_OPTS += -DENABLE_CMS=none
 endif
 
 ifeq ($(BR2_PACKAGE_OPENJPEG),y)
 POPPLER_DEPENDENCIES += openjpeg
-POPPLER_CONF_OPTS += --enable-libopenjpeg=openjpeg2
+POPPLER_CONF_OPTS += -DENABLE_LIBOPENJPEG=openjpeg2
 else
-POPPLER_CONF_OPTS += --enable-libopenjpeg=none
+POPPLER_CONF_OPTS += -DENABLE_LIBOPENJPEG=none
 endif
 
-$(eval $(autotools-package))
+ifeq ($(BR2_PACKAGE_LIBCURL),y)
+POPPLER_DEPENDENCIES += libcurl
+POPPLER_CONF_OPTS += -DENABLE_LIBCURL=ON
+else
+POPPLER_CONF_OPTS += -DENABLE_LIBCURL=OFF
+endif
+
+ifeq ($(BR2_PACKAGE_POPPLER_QT5),y)
+POPPLER_DEPENDENCIES += qt5base
+POPPLER_CONF_OPTS += -DENABLE_QT5=ON
+else
+POPPLER_CONF_OPTS += -DENABLE_QT5=OFF
+endif
+
+ifeq ($(BR2_PACKAGE_POPPLER_UTILS),y)
+POPPLER_CONF_OPTS += -DENABLE_UTILS=ON
+else
+POPPLER_CONF_OPTS += -DENABLE_UTILS=OFF
+endif
+
+ifeq ($(BR2_PACKAGE_ZLIB),y)
+POPPLER_DEPENDENCIES += zlib
+POPPLER_CONF_OPTS += -DENABLE_ZLIB=ON
+else
+POPPLER_CONF_OPTS += -DENABLE_ZLIB=OFF
+endif
+
+ifeq ($(BR2_PACKAGE_CAIRO),y)
+POPPLER_DEPENDENCIES += cairo
+POPPLER_CONF_OPTS += -DWITH_Cairo=ON
+else
+POPPLER_CONF_OPTS += -DWITH_Cairo=OFF
+endif
+
+ifeq ($(BR2_PACKAGE_TIFF),y)
+POPPLER_DEPENDENCIES += tiff
+POPPLER_CONF_OPTS += -DWITH_TIFF=ON
+else
+POPPLER_CONF_OPTS += -DWITH_TIFF=OFF
+endif
+
+ifeq ($(BR2_PACKAGE_LIBGLIB2),y)
+POPPLER_DEPENDENCIES += libglib2
+endif
+
+ifeq ($(BR2_PACKAGE_LIBNSS),y)
+POPPLER_DEPENDENCIES += libnss
+POPPLER_CONF_OPTS += -DWITH_NSS3=ON
+else
+POPPLER_CONF_OPTS += -DWITH_NSS3=OFF
+endif
+
+ifeq ($(BR2_SOFT_FLOAT),y)
+POPPLER_CONF_OPTS += -DUSE_FLOAT=OFF
+else
+POPPLER_CONF_OPTS += -DUSE_FLOAT=ON
+endif
+
+$(eval $(cmake-package))

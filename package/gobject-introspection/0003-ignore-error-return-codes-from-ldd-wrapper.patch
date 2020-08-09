@@ -1,0 +1,28 @@
+From f742da8b3913f4818d3f419117076afe62f4dbf4 Mon Sep 17 00:00:00 2001
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+Date: Wed, 5 Sep 2018 16:46:52 +0200
+Subject: [PATCH] giscanner: ignore error return codes from ldd-wrapper
+
+prelink-rtld, which we use instead of ldd returns 127 when it can't find a library.
+It is not an error per se, but it breaks subprocess.check_output().
+
+Upstream-Status: Inappropriate [oe-core specific]
+Signed-off-by: Alexander Kanavin <alex.kanavin@gmail.com>
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+---
+ giscanner/shlibs.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/giscanner/shlibs.py b/giscanner/shlibs.py
+index d67df95..80352a6 100644
+--- a/giscanner/shlibs.py
++++ b/giscanner/shlibs.py
+@@ -103,7 +103,7 @@ def _resolve_non_libtool(options, binary, libraries):
+             args.extend(['otool', '-L', binary.args[0]])
+         else:
+             args.extend(['ldd', binary.args[0]])
+-        output = subprocess.check_output(args)
++        output = subprocess.run(args, check=False, stdout=subprocess.PIPE).stdout
+         if isinstance(output, bytes):
+             output = output.decode("utf-8", "replace")
+ 

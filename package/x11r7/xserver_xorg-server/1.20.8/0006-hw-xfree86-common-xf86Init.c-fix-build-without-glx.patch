@@ -1,0 +1,45 @@
+From 49456e0a37fac7bc9d1f01bc1519fb0d699956db Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Fri, 27 Dec 2019 23:33:37 +0100
+Subject: [PATCH] hw/xfree86/common/xf86Init.c: fix build without glx
+
+Since commit d8ec33fe0542141aed1d9016d2ecaf52da944b4b, an include on
+glxvndabi.h has been added to hw/xfree86/common/xf86Init.c
+
+However, if glx is disabled through --disable-glx and GLX headers are
+not installed in the build's environment, build fails on:
+
+In file included from xf86Init.c:81:
+../../../include/glxvndabi.h:64:10: fatal error: GL/glxproto.h: No such file or directory
+   64 | #include <GL/glxproto.h>
+      |          ^~~~~~~~~~~~~~~
+
+Fix this failure by removing this include which does not seem to be
+needed (an other option would have been to keep it under an ifdef GLXEXT
+block)
+
+Fixes:
+ - http://autobuild.buildroot.org/results/de838a843f97673d1381a55fd4e9b07164693913
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://gitlab.freedesktop.org/xorg/xserver/commit/49456e0a37fac7bc9d1f01bc1519fb0d699956db]
+---
+ hw/xfree86/common/xf86Init.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/hw/xfree86/common/xf86Init.c b/hw/xfree86/common/xf86Init.c
+index 0631c7237..e6fb11398 100644
+--- a/hw/xfree86/common/xf86Init.c
++++ b/hw/xfree86/common/xf86Init.c
+@@ -74,7 +74,6 @@
+ #include "xf86Crtc.h"
+ #include "picturestr.h"
+ #include "randrstr.h"
+-#include "glxvndabi.h"
+ #include "xf86Bus.h"
+ #ifdef XSERVER_LIBPCIACCESS
+ #include "xf86VGAarbiter.h"
+-- 
+2.24.1
+

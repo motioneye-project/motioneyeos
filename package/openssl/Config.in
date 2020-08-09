@@ -29,21 +29,7 @@ config BR2_PACKAGE_LIBOPENSSL
 
 	  Note: Some helper scripts need perl.
 
-if BR2_PACKAGE_LIBOPENSSL
-
-config BR2_PACKAGE_LIBOPENSSL_BIN
-	bool "openssl binary"
-	help
-	  Install the openssl binary and the associated helper scripts
-	  to the target file system. This is a command line tool for
-	  doing various cryptographic stuff.
-
-config BR2_PACKAGE_LIBOPENSSL_ENGINES
-	bool "openssl additional engines"
-	help
-	  Install additional encryption engine libraries.
-
-endif
+source "package/libopenssl/Config.in"
 
 config BR2_PACKAGE_LIBRESSL
 	bool "libressl"
@@ -58,15 +44,10 @@ config BR2_PACKAGE_LIBRESSL
 
 	  http://www.libressl.org/
 
-if BR2_PACKAGE_LIBRESSL
+source "package/libressl/Config.in"
 
-config BR2_PACKAGE_LIBRESSL_BIN
-	bool "openssl binary"
-	help
-	  Install the openssl binary to the target file system. This is
-	  a command line tool for doing various cryptographic stuff.
-
-endif
+# openssl from br2-external trees, if any
+source "$BR2_BASE_DIR/.br2-external.in.openssl"
 
 endchoice
 

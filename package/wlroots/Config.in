@@ -1,0 +1,43 @@
+comment "wlroots needs udev, mesa3d w/ EGL and GLES support"
+	depends on !BR2_PACKAGE_MESA3D_OPENGL_EGL || \
+		!BR2_PACKAGE_MESA3D_OPENGL_ES || \
+		!BR2_PACKAGE_HAS_UDEV
+
+comment "wlroots needs a toolchain w/ threads, locale, dynamic library"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || \
+		!BR2_ENABLE_LOCALE || \
+		BR2_STATIC_LIBS
+
+config BR2_PACKAGE_WLROOTS
+	bool "wlroots"
+	depends on !BR2_STATIC_LIBS # wayland
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libdrm, wayland
+	depends on BR2_ENABLE_LOCALE # libinput
+	depends on BR2_PACKAGE_HAS_UDEV # libinput
+	# Technically wlroots should work with any OpenGL implementation
+	# which provides EGL, GLES2, and libgbm; but in practice only
+	# Mesa ships an usable libgbm.
+	depends on BR2_PACKAGE_MESA3D_OPENGL_EGL
+	depends on BR2_PACKAGE_MESA3D_OPENGL_ES
+	select BR2_PACKAGE_LIBDRM
+	select BR2_PACKAGE_LIBINPUT
+	select BR2_PACKAGE_LIBXKBCOMMON
+	select BR2_PACKAGE_PIXMAN
+	select BR2_PACKAGE_WAYLAND
+	select BR2_PACKAGE_WAYLAND_PROTOCOLS
+	help
+	  wlroots is a modular Wayland library for building compositors
+	  which implements many of their common features.
+
+	  https://github.com/swaywm/wlroots
+
+if BR2_PACKAGE_WLROOTS
+
+config BR2_PACKAGE_WLROOTS_X11
+	bool "X11 backend"
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBX11
+	help
+	  Support Wayland sessions nested inside a X11 window
+
+endif

@@ -1,2 +1,4 @@
 # From http://lists.x.org/archives/xorg-announce/2012-July/002007.html
-sha256	c690e046f34a393aac1c8d9616b4790e93cda60a460b00b9597d322175dbe51e	xf86-video-ark-0.7.5.tar.bz2
+sha256  c690e046f34a393aac1c8d9616b4790e93cda60a460b00b9597d322175dbe51e  xf86-video-ark-0.7.5.tar.bz2
+# Locally calculated
+sha256  8ba9850fb0ecd9033bb1d25c1be85625cb53ca56ce76b71f78f4a034f7310bda  COPYING

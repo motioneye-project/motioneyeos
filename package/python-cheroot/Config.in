@@ -1,6 +1,9 @@
 config BR2_PACKAGE_PYTHON_CHEROOT
 	bool "python-cheroot"
+	depends on BR2_PACKAGE_PYTHON3 # python-more-itertools, python-jaraco-functools
 	select BR2_PACKAGE_PYTHON_SIX # runtime
+	select BR2_PACKAGE_PYTHON_MORE_ITERTOOLS # runtime
+	select BR2_PACKAGE_PYTHON_JARACO_FUNCTOOLS # runtime
 	help
 	  Cheroot is the high-performance, pure-Python
 	  HTTP server used by CherryPy.

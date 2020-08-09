@@ -10,7 +10,7 @@ config BR2_PACKAGE_FAIFA
 	  Intellon-specific management and control frames as well as
 	  standard management frames.
 
-	  https://dev.open-plc.org
+	  https://github.com/ffainelli/faifa
 
 comment "faifa needs a toolchain w/ dynamic library, threads"
 	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS

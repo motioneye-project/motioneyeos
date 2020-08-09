@@ -1,4 +1,4 @@
-# sha256 from ftp://roy.marples.name/pub/dhcpcd/dhcpcd-7.0.3.tar.xz.distinfo.asc
-sha256	a255d9aecceb1c77a9862f1c0d31a48ba37aab5ef2ca5ad76fc7a907b6ea292e	dhcpcd-7.0.3.tar.xz
+# sha256 from ftp://roy.marples.name/pub/dhcpcd/dhcpcd-8.0.3.tar.xz.distinfo
+sha256	9674971fcd5acd5a3401a0ad8eba7f0b816fec9abb4a2520332b4d8dae068f1d	dhcpcd-8.0.3.tar.xz
 # Locally calculated
-sha256	b120a64b92cfb2453b61df4457a3c0eb163ef9c1c397822826756a31581f3947	LICENSE
+sha256	213fc1a704cecdb322276fa7c95891fd1c23137d9ab572af1fc5e91b48762303	LICENSE

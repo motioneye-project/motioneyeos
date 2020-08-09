@@ -5,7 +5,7 @@ config BR2_PACKAGE_GMRENDER_RESURRECT
 	depends on BR2_USE_MMU # gstreamer1
 	select BR2_PACKAGE_GSTREAMER1
 	select BR2_PACKAGE_GST1_PLUGINS_BASE # run-time only
-	select BR2_PACKAGE_LIBUPNP
+	select BR2_PACKAGE_LIBUPNP18 if !BR2_PACKAGE_LIBUPNP
 	help
 	  UPnP (DLNA) media renderer based on gstreamer
 

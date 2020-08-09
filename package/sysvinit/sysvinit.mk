@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SYSVINIT_VERSION = 2.90
+SYSVINIT_VERSION = 2.96
 SYSVINIT_SOURCE = sysvinit-$(SYSVINIT_VERSION).tar.xz
 SYSVINIT_SITE = http://download.savannah.nongnu.org/releases/sysvinit
 SYSVINIT_LICENSE = GPL-2.0+
@@ -36,8 +36,13 @@ define SYSVINIT_SET_GETTY
 	$(SED) '/# GENERIC_SERIAL$$/s~^.*#~$(shell echo $(SYSTEM_GETTY_PORT) | tail -c+4)::respawn:/sbin/getty -L $(SYSTEM_GETTY_OPTIONS) $(SYSTEM_GETTY_PORT) $(SYSTEM_GETTY_BAUDRATE) $(SYSTEM_GETTY_TERM) #~' \
 		$(TARGET_DIR)/etc/inittab
 endef
-SYSVINIT_TARGET_FINALIZE_HOOKS += SYSVINIT_SET_GETTY
+else
+define SYSVINIT_SET_GETTY
+	$(SED) '/# GENERIC_SERIAL$$/s~^.*#~# S0:1:respawn:/sbin/getty -L ttyS0 115200 vt100 #~' \
+		$(TARGET_DIR)/etc/inittab
+endef
 endif # BR2_TARGET_GENERIC_GETTY
+SYSVINIT_TARGET_FINALIZE_HOOKS += SYSVINIT_SET_GETTY
 
 SYSVINIT_TARGET_FINALIZE_HOOKS += SYSTEM_REMOUNT_ROOT_INITTAB
 

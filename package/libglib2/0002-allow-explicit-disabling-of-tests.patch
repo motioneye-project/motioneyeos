@@ -1,0 +1,37 @@
+From cdccbc6ec36243463613cb32d7058c26c3c51e16 Mon Sep 17 00:00:00 2001
+From: Adam Duskett <Aduskett@gmail.com>
+Date: Wed, 18 Sep 2019 09:50:00 -0700
+Subject: [PATCH] allow explicit disabling of tests
+
+Upstream won't build tests when cross-compiling. However; this means still
+building the tests during a host build. Building the tests causes build
+failures on older distributions such as CentOS 6 and Debian 7 because the
+command `objcopy --add-symbol` is used when building the test
+"test_resources2," which is not available with the older version of objcopy
+provided by the distributions.
+
+Instead, remove the conditional checks which set build_tests and only check if
+installed_tests_enabled is passed.
+
+Signed-off-by: Adam Duskett <Aduskett@gmail.com>
+Refresh for 2.62.2
+---
+ meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/meson.build b/meson.build
+index 99806d0..3206603 100644
+--- a/meson.build
++++ b/meson.build
+@@ -84,7 +84,7 @@ installed_tests_template = files('template.test.in')
+ installed_tests_template_tap = files('template-tap.test.in')
+ 
+ # Don’t build the tests unless we can run them (either natively, in an exe wrapper, or by installing them for later use)
+-build_tests = not meson.is_cross_build() or (meson.is_cross_build() and meson.has_exe_wrapper()) or installed_tests_enabled
++build_tests = installed_tests_enabled
+ 
+ add_project_arguments('-D_GNU_SOURCE', language: 'c')
+ 
+-- 
+2.23.0
+

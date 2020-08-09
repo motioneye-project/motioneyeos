@@ -1,0 +1,174 @@
+From c3c553db85ff10890209d0fe48fb4856ad68e4e0 Mon Sep 17 00:00:00 2001
+From: Peter Jones <pjones@redhat.com>
+Date: Thu, 21 Feb 2019 15:20:12 -0500
+Subject: [PATCH] Fix all the places -Werror=address-of-packed-member catches.
+
+This gets rid of all the places GCC 9's -Werror=address-of-packed-member
+flags as problematic.
+
+Fixes github issue #123
+
+Signed-off-by: Peter Jones <pjones@redhat.com>
+[james.hilliard1@gmail.com: backport from upstream commit
+c3c553db85ff10890209d0fe48fb4856ad68e4e0]
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+---
+ src/dp-message.c            |  6 ++++--
+ src/dp.h                    | 12 ++++--------
+ src/guid.c                  |  2 +-
+ src/include/efivar/efivar.h |  2 +-
+ src/ucs2.h                  | 27 +++++++++++++++++++--------
+ 5 files changed, 29 insertions(+), 20 deletions(-)
+
+diff --git a/src/dp-message.c b/src/dp-message.c
+index 3724e5f..9f96466 100644
+--- a/src/dp-message.c
++++ b/src/dp-message.c
+@@ -620,11 +620,13 @@ _format_message_dn(char *buf, size_t size, const_efidp dp)
+ 			  ) / sizeof(efi_ip_addr_t);
+ 		format(buf, size, off, "Dns", "Dns(");
+ 		for (int i=0; i < end; i++) {
+-			const efi_ip_addr_t *addr = &dp->dns.addrs[i];
++			efi_ip_addr_t addr;
++
++			memcpy(&addr, &dp->dns.addrs[i], sizeof(addr));
+ 			if (i != 0)
+ 				format(buf, size, off, "Dns", ",");
+ 			format_ip_addr(buf, size, off, "Dns",
+-				       dp->dns.is_ipv6, addr);
++				       dp->dns.is_ipv6, &addr);
+ 		}
+ 		format(buf, size, off, "Dns", ")");
+ 		break;
+diff --git a/src/dp.h b/src/dp.h
+index 20cb608..1f921d5 100644
+--- a/src/dp.h
++++ b/src/dp.h
+@@ -71,13 +71,9 @@
+ 		int _rc;						\
+ 		char *_guidstr = NULL;					\
+ 		efi_guid_t _guid;					\
+-		const efi_guid_t * const _guid_p =			\
+-			likely(__alignof__(guid) == sizeof(guid))	\
+-				? guid					\
+-				: &_guid;				\
+-								        \
+-		if (unlikely(__alignof__(guid) == sizeof(guid)))	\
+-			memmove(&_guid, guid, sizeof(_guid));		\
++		const efi_guid_t * const _guid_p = &_guid;		\
++									\
++		memmove(&_guid, guid, sizeof(_guid));			\
+ 		_rc = efi_guid_to_str(_guid_p, &_guidstr);		\
+ 		if (_rc < 0) {						\
+ 			efi_error("could not build %s GUID DP string",	\
+@@ -86,7 +82,7 @@
+ 			_guidstr = onstack(_guidstr,			\
+ 					   strlen(_guidstr)+1);		\
+ 			_rc = format(buf, size, off, dp_type, "%s",	\
+-				     _guidstr);	\
++				     _guidstr);				\
+ 		}							\
+ 		_rc;							\
+ 	})
+diff --git a/src/guid.c b/src/guid.c
+index 306c9ff..3156b3b 100644
+--- a/src/guid.c
++++ b/src/guid.c
+@@ -31,7 +31,7 @@
+ extern const efi_guid_t efi_guid_zero;
+ 
+ int NONNULL(1, 2) PUBLIC
+-efi_guid_cmp(const efi_guid_t *a, const efi_guid_t *b)
++efi_guid_cmp(const void * const a, const void * const b)
+ {
+ 	return memcmp(a, b, sizeof (efi_guid_t));
+ }
+diff --git a/src/include/efivar/efivar.h b/src/include/efivar/efivar.h
+index 316891c..ad6449d 100644
+--- a/src/include/efivar/efivar.h
++++ b/src/include/efivar/efivar.h
+@@ -128,7 +128,7 @@ extern int efi_symbol_to_guid(const char *symbol, efi_guid_t *guid)
+ 
+ extern int efi_guid_is_zero(const efi_guid_t *guid);
+ extern int efi_guid_is_empty(const efi_guid_t *guid);
+-extern int efi_guid_cmp(const efi_guid_t *a, const efi_guid_t *b);
++extern int efi_guid_cmp(const void * const a, const void * const b);
+ 
+ /* import / export functions */
+ typedef struct efi_variable efi_variable_t;
+diff --git a/src/ucs2.h b/src/ucs2.h
+index dbb5900..edd8367 100644
+--- a/src/ucs2.h
++++ b/src/ucs2.h
+@@ -23,16 +23,21 @@
+ 	(((val) & ((mask) << (shift))) >> (shift))
+ 
+ static inline size_t UNUSED
+-ucs2len(const uint16_t * const s, ssize_t limit)
++ucs2len(const void *vs, ssize_t limit)
+ {
+ 	ssize_t i;
+-	for (i = 0; i < (limit >= 0 ? limit : i+1) && s[i] != (uint16_t)0; i++)
++	const uint16_t *s = vs;
++	const uint8_t *s8 = vs;
++
++	for (i = 0;
++	     i < (limit >= 0 ? limit : i+1) && s8[0] != 0 && s8[1] != 0;
++	     i++, s8 += 2, s++)
+ 		;
+ 	return i;
+ }
+ 
+ static inline size_t UNUSED
+-ucs2size(const uint16_t * const s, ssize_t limit)
++ucs2size(const void *s, ssize_t limit)
+ {
+ 	size_t rc = ucs2len(s, limit);
+ 	rc *= sizeof (uint16_t);
+@@ -69,10 +74,11 @@ utf8size(uint8_t *s, ssize_t limit)
+ }
+ 
+ static inline unsigned char * UNUSED
+-ucs2_to_utf8(const uint16_t * const chars, ssize_t limit)
++ucs2_to_utf8(const void * const voidchars, ssize_t limit)
+ {
+ 	ssize_t i, j;
+ 	unsigned char *ret;
++	const uint16_t * const chars = voidchars;
+ 
+ 	if (limit < 0)
+ 		limit = ucs2len(chars, -1);
+@@ -124,10 +130,12 @@ ucs2_to_utf8(const uint16_t * const chars, ssize_t limit)
+ }
+ 
+ static inline ssize_t UNUSED NONNULL(4)
+-utf8_to_ucs2(uint16_t *ucs2, ssize_t size, int terminate, uint8_t *utf8)
++utf8_to_ucs2(void *ucs2void, ssize_t size, int terminate, uint8_t *utf8)
+ {
+ 	ssize_t req;
+ 	ssize_t i, j;
++	uint16_t *ucs2 = ucs2void;
++	uint16_t val16;
+ 
+ 	if (!ucs2 && size > 0) {
+ 		errno = EINVAL;
+@@ -162,10 +170,13 @@ utf8_to_ucs2(uint16_t *ucs2, ssize_t size, int terminate, uint8_t *utf8)
+ 			val = utf8[i] & 0x7f;
+ 			i += 1;
+ 		}
+-		ucs2[j] = val;
++		val16 = val;
++		ucs2[j] = val16;
++	}
++	if (terminate) {
++		val16 = 0;
++		ucs2[j++] = val16;
+ 	}
+-	if (terminate)
+-		ucs2[j++] = (uint16_t)0;
+ 	return j;
+ };
+ 
+-- 
+2.20.1
+

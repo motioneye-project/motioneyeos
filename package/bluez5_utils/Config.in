@@ -4,7 +4,6 @@ config BR2_PACKAGE_BLUEZ5_UTILS
 	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, libglib2
 	depends on BR2_USE_MMU # dbus
 	depends on !BR2_STATIC_LIBS # uses dlfcn
-	depends on !BR2_PACKAGE_BLUEZ_UTILS # conflicts with 4.x version
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	select BR2_PACKAGE_DBUS
@@ -61,6 +60,14 @@ config BR2_PACKAGE_BLUEZ5_UTILS_PLUGINS_HEALTH
 	help
 	  Build BlueZ 5.x health plugin
 
+config BR2_PACKAGE_BLUEZ5_UTILS_PLUGINS_MESH
+	bool "build mesh profile"
+	select BR2_PACKAGE_ELL
+	select BR2_PACKAGE_JSON_C
+	select BR2_PACKAGE_READLINE
+	help
+	  Build BlueZ 5.x mesh plugin
+
 config BR2_PACKAGE_BLUEZ5_UTILS_PLUGINS_MIDI
 	bool "build midi profile"
 	select BR2_PACKAGE_ALSA_LIB
@@ -100,6 +107,3 @@ comment "bluez5-utils needs a toolchain w/ wchar, threads, headers >= 3.4, dynam
 		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4 || BR2_STATIC_LIBS
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	depends on BR2_USE_MMU
-
-comment "bluez5-utils conflicts with older bluez-utils version"
-	depends on BR2_PACKAGE_BLUEZ_UTILS

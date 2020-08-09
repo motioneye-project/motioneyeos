@@ -1,0 +1,26 @@
+From f8f37357fa7cc403848d2bafe6152a707ca3a074 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Mon, 28 Oct 2019 21:26:05 +0100
+Subject: [PATCH] double-conversion: enable for xtensa
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ source/i18n/double-conversion-utils.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/source/i18n/double-conversion-utils.h b/source/i18n/double-conversion-utils.h
+index a00037e..b3100ac 100644
+--- a/source/i18n/double-conversion-utils.h
++++ b/source/i18n/double-conversion-utils.h
+@@ -104,7 +104,7 @@ int main(int argc, char** argv) {
+     defined(__AARCH64EL__) || defined(__aarch64__) || defined(__AARCH64EB__) || \
+     defined(__riscv) || \
+     defined(__or1k__) || defined(__arc__) || \
+-    defined(__microblaze__) || \
++    defined(__microblaze__) || defined(__XTENSA__) || \
+     defined(__EMSCRIPTEN__)
+ #define DOUBLE_CONVERSION_CORRECT_DOUBLE_OPERATIONS 1
+ #elif defined(__mc68000__) || \
+--
+2.23.0
+

@@ -1,0 +1,73 @@
+From 9d5981eecde2133b9d6099eb99f96b1c29c3e520 Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Mon, 13 Apr 2020 12:03:01 +0200
+Subject: [PATCH] fix mips build
+
+In total three PR were sent upstream to fix mips builds:
+https://github.com/cisco/openh264/pull/3185
+https://github.com/cisco/openh264/pull/3217
+https://github.com/cisco/openh264/pull/3225
+
+Buildroot used the first version
+https://git.buildroot.net/buildroot/commit/package/libopenh264?id=e8d0df569e1844f7ba28918a53ee38027b325b8f
+downloaded from https://github.com/cisco/openh264/pull/3185
+
+During discussion the gcc option '-march=loongson3a' was changed to
+'-Wa,-mloongson-mmi,-mloongson-ext':
+https://github.com/cisco/openh264/pull/3185#discussion_r337818960
+
+This causes build errors with gcc version 8.3.0 (Buildroot 2020.02)
+
+tmp/cctgEQaw.s:662: Error: opcode not supported on this processor: loongson3a (mips64r2) `bc .L22'
+/tmp/cctgEQaw.s:1679: Error: opcode not supported on this processor: loongson3a (mips64r2) `bc .L27'
+/tmp/cctgEQaw.s:2218: Error: opcode not supported on this processor: loongson3a (mips64r2) `jrc $31'
+
+This patch partly reverts the change to fix mips build.
+
+$ /home/bernd/buildroot/br5/output/host/bin/mips64el-linux-gcc -v
+
+Using built-in specs.
+COLLECT_GCC=/home/bernd/buildroot/br5/output/host/opt/ext-toolchain/bin/mips64el-linux-gcc.br_real
+COLLECT_LTO_WRAPPER=/home/bernd/buildroot/br5/output/host/opt/ext-toolchain/bin/../libexec/gcc/mips64el-buildroot-linux-gnu/8.3.0/lto-wrapper
+Target: mips64el-buildroot-linux-gnu
+Configured with: ./configure --prefix=/opt/br-mips64r6-n64-el-hf-2020.02 --sysconfdir=/opt/br-mips64r6-n64-el-hf-2020.02/etc --enable-static --target=mips64el-buildroot-linux-gnu --with-sysroot=/opt/br-mips64r6-n64-el-hf-2020.02/mips64el-buildroot-linux-gnu/sysroot --enable-__cxa_atexit --with-gnu-ld --disable-libssp --disable-multilib --disable-decimal-float --with-gmp=/opt/br-mips64r6-n64-el-hf-2020.02 --with-mpc=/opt/br-mips64r6-n64-el-hf-2020.02 --with-mpfr=/opt/br-mips64r6-n64-el-hf-2020.02 --with-pkgversion='Buildroot 2020.02' --with-bugurl=http://bugs.buildroot.net/ --disable-libquadmath --enable-tls --enable-threads --without-isl --without-cloog --with-arch=mips64r6 --with-abi=64 --with-nan=2008 --enable-languages=c,c++ --with-build-time-tools=/opt/br-mips64r6-n64-el-hf-2020.02/mips64el-buildroot-linux-gnu/bin --enable-shared --disable-libgomp
+Thread model: posix
+gcc version 8.3.0 (Buildroot 2020.02)
+
+Patch sent upstream: https://github.com/cisco/openh264/pull/3267
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ build/arch.mk            | 2 +-
+ build/mips-simd-check.sh | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/build/arch.mk b/build/arch.mk
+index 1bf318ab..c6570ed4 100644
+--- a/build/arch.mk
++++ b/build/arch.mk
+@@ -41,7 +41,7 @@ ASMFLAGS += -I$(SRC_PATH)codec/common/mips/
+ ifeq ($(ENABLE_MMI), Yes)
+ ENABLE_MMI = $(shell $(SRC_PATH)build/mips-simd-check.sh $(CC) mmi)
+ ifeq ($(ENABLE_MMI), Yes)
+-CFLAGS += -DHAVE_MMI -Wa,-mloongson-mmi,-mloongson-ext
++CFLAGS += -DHAVE_MMI -march=loongson3a
+ endif
+ endif
+ #msa
+diff --git a/build/mips-simd-check.sh b/build/mips-simd-check.sh
+index 5efffbef..d0d72f9e 100755
+--- a/build/mips-simd-check.sh
++++ b/build/mips-simd-check.sh
+@@ -15,7 +15,7 @@ TMPO=$(mktemp tmp.XXXXXX.o)
+ if [ $2 == "mmi" ]
+ then
+    echo "void main(void){ __asm__ volatile(\"punpcklhw \$f0, \$f0, \$f0\"); }" > $TMPC
+-   $1 -Wa,-mloongson-mmi $TMPC -o $TMPO &> /dev/null
++   $1 -march=loongson3a $TMPC -o $TMPO &> /dev/null
+    if test -s $TMPO
+    then
+       echo "Yes"
+-- 
+2.25.0
+

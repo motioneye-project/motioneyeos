@@ -1,0 +1,165 @@
+config BR2_PACKAGE_HOST_OPENJDK_BIN_ARCH_SUPPORTS
+	bool
+	default y if BR2_HOSTARCH = "x86_64"
+
+# Taken from make/autoconf/platform.m4
+config BR2_PACKAGE_OPENJDK_ARCH_SUPPORTS
+	bool
+	default y if BR2_aarch64
+	default y if BR2_arm
+	default y if BR2_i386 || BR2_x86_64
+	default y if BR2_m68k
+	default y if BR2_powerpc || BR2_powerpc64 || BR2_powerpc64le
+	default y if BR2_sh
+
+config BR2_PACKAGE_OPENJDK
+	bool "openjdk"
+	depends on BR2_PACKAGE_HOST_OPENJDK_BIN_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_OPENJDK_ARCH_SUPPORTS
+	depends on !BR2_SOFT_FLOAT
+	depends on !BR2_STATIC_LIBS # glibc
+	depends on BR2_INSTALL_LIBSTDCPP # cups
+	depends on BR2_TOOLCHAIN_HAS_THREADS # alsa-lib, cups, libusb
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_USE_MMU # cups
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_ALSA_LIB
+	select BR2_PACKAGE_ALSA_LIB_MIXER
+	select BR2_PACKAGE_ALSA_LIB_PCM
+	select BR2_PACKAGE_ALSA_LIB_RAWMIDI
+	select BR2_PACKAGE_ALSA_LIB_SEQ
+	select BR2_PACKAGE_CUPS
+	select BR2_PACKAGE_FONTCONFIG
+	select BR2_PACKAGE_GIFLIB
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_LCMS2
+	select BR2_PACKAGE_LIBPNG
+	select BR2_PACKAGE_LIBUSB
+	select BR2_PACKAGE_XLIB_LIBXRANDR
+	select BR2_PACKAGE_XLIB_LIBXRENDER
+	select BR2_PACKAGE_XLIB_LIBXT
+	select BR2_PACKAGE_XLIB_LIBXTST
+	select BR2_PACKAGE_ZLIB
+	help
+	  OpenJDK is a free and open-source implementation of the
+	  Java Platform.
+
+	  http://openjdk.java.net/
+
+if BR2_PACKAGE_OPENJDK
+
+choice
+	prompt "openjdk version"
+	default BR2_OPENJDK_VERSION_LATEST
+	help
+	  Select the version of OpenJDK you wish to use.
+
+config BR2_OPENJDK_VERSION_LTS
+	bool "LTS (OpenJDK 11)"
+
+config BR2_OPENJDK_VERSION_LATEST
+	bool "latest (OpenJDK 14)"
+
+endchoice
+
+config BR2_PACKAGE_OPENJDK_FULL_JDK
+	bool "Build the full JDK"
+	help
+	  Install the full JDK instead of just the run time.
+	  The full JDK includes several packages used for debugging and
+	  development. Some useful tools included with the JDK are:
+	    - javaws
+	      Command line tool for launching Java Web Start and setting
+	      various options.
+
+	    - jcmd:
+	      JVM Diagnostic Commands tool: Sends diagnostic command
+	      requests to a running Java Virtual Machine.
+
+	    - jinfo
+	      Configuration Info for Java: Prints configuration
+	      information for a given process or core file or a remote
+	      debug server.
+
+	    - jmap
+	      Memory Map for Java: Prints shared object memory maps or
+	      heap memory details of a given process or core file or a
+	      remote debug server.
+
+	    - jsadebugd
+	      Serviceability Agent Debug Daemon for Java: Attaches to a
+	      process or core file and acts as a debug server.
+
+	    - jstack
+	      Stack Trace for Java - Prints a stack trace of threads for
+	      a given process or core file or remote debug server.
+
+	    - jstat
+	      JVM Statistics Monitoring Tool: Attaches to an
+	      instrumented HotSpot Java virtual machine and collects and
+	      logs performance statistics as specified by the command
+	      line options.
+
+	    - jstatd
+	      JVM jstat Daemon - Launches an RMI server application that
+	      monitors for the creation and termination of instrumented
+	      HotSpot Java virtual machines and provides an interface to
+	      allow remote monitoring tools to attach to Java virtual
+	      machines running on the local system.
+
+	  Note:
+	  While the JDK also comes with several tools which can be used
+	  for developing java applications on a target, Buildroot does
+	  not support development on a target. Building the full JDK is
+	  supported for debugging purposes only.
+
+	  Selecting this option increases the file system by
+	  approximately 110M.
+
+choice
+	prompt "openjdk variant"
+	default BR2_PACKAGE_OPENJDK_JVM_VARIANT_SERVER if !BR2_powerpc
+	default BR2_PACKAGE_OPENJDK_JVM_VARIANT_ZERO if BR2_powerpc
+
+config BR2_PACKAGE_OPENJDK_JVM_VARIANT_CLIENT
+	bool "client"
+	depends on !BR2_powerpc
+	help
+	  Quick loading, but slower run-time performance.
+
+config BR2_PACKAGE_OPENJDK_JVM_VARIANT_SERVER
+	bool "server"
+	depends on !BR2_powerpc
+	help
+	  Slower loading, but faster run-time performance.
+
+config BR2_PACKAGE_OPENJDK_JVM_VARIANT_ZERO
+	bool "zero"
+	select BR2_PACKAGE_LIBFFI
+	help
+	  A non-assembler variant with wide arch support, however
+	  performance is less then client/server.
+
+	  http://openjdk.java.net/projects/zero
+
+endchoice
+endif
+
+comment "openjdk needs X.Org"
+	depends on BR2_PACKAGE_OPENJDK_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_HOST_OPENJDK_BIN_ARCH_SUPPORTS
+	depends on BR2_USE_MMU
+	depends on !BR2_PACKAGE_XORG7
+
+comment "openjdk needs glibc, and a toolchain w/ wchar, dynamic library, threads, C++"
+	depends on BR2_USE_MMU
+	depends on BR2_PACKAGE_OPENJDK_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_HOST_OPENJDK_BIN_ARCH_SUPPORTS
+	depends on BR2_STATIC_LIBS || !BR2_INSTALL_LIBSTDCPP || \
+		!BR2_TOOLCHAIN_HAS_THREADS || !BR2_TOOLCHAIN_USES_GLIBC
+
+comment "openjdk does not support soft float configurations"
+	depends on BR2_PACKAGE_OPENJDK_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_HOST_OPENJDK_BIN_ARCH_SUPPORTS
+	depends on BR2_USE_MMU
+	depends on BR2_SOFT_FLOAT

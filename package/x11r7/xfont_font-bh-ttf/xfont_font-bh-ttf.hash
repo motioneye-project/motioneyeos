@@ -1,2 +1,4 @@
 # From http://lists.x.org/archives/xorg-announce/2010-November/001537.html
 sha1	f42ebd527096011040a312e0f9cdf78d64177419	font-bh-ttf-1.0.3.tar.bz2
+# Locally computed
+sha256  27d47d50006773f1c0bd97661252ae27bb8cfd6951f253bd9d3ef81ed1243934  COPYING

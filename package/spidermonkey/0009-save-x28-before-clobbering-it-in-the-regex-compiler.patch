@@ -1,0 +1,100 @@
+From 903a79a1efff18fc7cc50db09a3fe5d768adc9a8 Mon 19 Mar 2018 09:58:06 +0100
+From: Lars T Hansen <lhansen@mozilla.com>
+Date: Fri, 23 Mar 2018 22:01:33 +0000
+Subject: [PATCH] save x28 before clobbering it in the regex compiler
+
+Fixes: https://bugzilla.mozilla.org/show_bug.cgi?id=1445907
+
+Upsream-status: Applied
+See: https://hg.mozilla.org/mozilla-central/rev/903a79a1efff
+
+Signed-off-by: Lars T Hansen <lhansen@mozilla.com>
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+---
+diff --git a/js/src/irregexp/NativeRegExpMacroAssembler.cpp b/js/src/irregexp/NativeRegExpMacroAssembler.cpp
+--- a/js/src/irregexp/NativeRegExpMacroAssembler.cpp
++++ b/js/src/irregexp/NativeRegExpMacroAssembler.cpp
+@@ -118,17 +118,25 @@ NativeRegExpMacroAssembler::GenerateCode
+
+     Label return_temp0;
+
+     // Finalize code - write the entry point code now we know how many
+     // registers we need.
+     masm.bind(&entry_label_);
+
+ #ifdef JS_CODEGEN_ARM64
+-    // ARM64 communicates stack address via sp, but uses a pseudo-sp for addressing.
++    // ARM64 communicates stack address via SP, but uses a pseudo-sp (PSP) for
++    // addressing.  The register we use for PSP may however also be used by
++    // calling code, and it is nonvolatile, so save it.  Do this as a special
++    // case first because the generic save/restore code needs the PSP to be
++    // initialized already.
++    MOZ_ASSERT(PseudoStackPointer64.Is(masm.GetStackPointer64()));
++    masm.Str(PseudoStackPointer64, vixl::MemOperand(sp, -16, vixl::PreIndex));
++
++    // Initialize the PSP from the SP.
+     masm.initStackPtr();
+ #endif
+
+     // Push non-volatile registers which might be modified by jitcode.
+     size_t pushedNonVolatileRegisters = 0;
+     for (GeneralRegisterForwardIterator iter(savedNonVolatileRegisters); iter.more(); ++iter) {
+         masm.Push(*iter);
+         pushedNonVolatileRegisters++;
+@@ -416,17 +424,32 @@ NativeRegExpMacroAssembler::GenerateCode
+     masm.pop(temp0);
+     masm.movePtr(temp0, StackPointer);
+ #endif
+
+     // Restore non-volatile registers which were saved on entry.
+     for (GeneralRegisterBackwardIterator iter(savedNonVolatileRegisters); iter.more(); ++iter)
+         masm.Pop(*iter);
+
++#ifdef JS_CODEGEN_ARM64
++    // Now restore the value that was in the PSP register on entry, and return.
++
++    // Obtain the correct SP from the PSP.
++    masm.Mov(sp, PseudoStackPointer64);
++
++    // Restore the saved value of the PSP register, this value is whatever the
++    // caller had saved in it, not any actual SP value, and it must not be
++    // overwritten subsequently.
++    masm.Ldr(PseudoStackPointer64, vixl::MemOperand(sp, 16, vixl::PostIndex));
++
++    // Perform a plain Ret(), as abiret() will move SP <- PSP and that is wrong.
++    masm.Ret(vixl::lr);
++#else
+     masm.abiret();
++#endif
+
+     // Backtrack code (branch target for conditional backtracks).
+     if (backtrack_label_.used()) {
+         masm.bind(&backtrack_label_);
+         Backtrack();
+     }
+
+     // Backtrack stack overflow code.
+diff --git a/js/src/jit-test/tests/regexp/bug1445907.js b/js/src/jit-test/tests/regexp/bug1445907.js
+new file mode 100644
+--- /dev/null
++++ b/js/src/jit-test/tests/regexp/bug1445907.js
+@@ -0,0 +1,15 @@
++// On ARM64, we failed to save x28 properly when generating code for the regexp
++// matcher.
++//
++// There's wasm and Debugger code here because the combination forces the use of
++// x28 and exposes the bug when running on the simulator.
++
++if (!wasmIsSupported())
++    quit();
++
++var g = newGlobal('');
++var dbg = new Debugger(g);
++g.eval(`var m = new WebAssembly.Instance(new WebAssembly.Module(wasmTextToBinary('(module (func (export "test")))')))`);
++var re = /./;
++dbg.onEnterFrame = function(frame) { re.exec("x") };
++result = g.eval("m.exports.test()");
+
+--
+2.23.0
+

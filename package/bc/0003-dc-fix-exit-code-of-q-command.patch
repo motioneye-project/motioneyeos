@@ -1,0 +1,46 @@
+From 7243037e63bff34b08bb1c993787b98dee585b2f Mon Sep 17 00:00:00 2001
+From: Li Zhou <li.zhou@windriver.com>
+Date: Thu, 27 Jun 2019 13:10:47 +0800
+Subject: [PATCH] dc: fix exit code of q command
+
+The exit code for "echo q | dc" is 1 for dc-1.4.1;
+while the exit code for "echo q | dc" is 0 for dc-1.4.
+
+Here is the answer from ken@gnu.org:
+dc-1.4 was right.  There was a rewrite of a chunk of code for 1.4.1 to
+fix a corner case in the Q command, and somehow the placement of the
+clean-up label for the 'q' command got misplaced on the error-handling
+branch instead of the clean-exit branch.  The patch below fixes this
+(it is committed for whenever the next bc/dc release gets made).
+
+Thanks for the report,
+        --Ken Pizzini
+
+Upstream:
+https://git.yoctoproject.org/cgit.cgi/poky/plain/meta/recipes-extended/bc/bc/0001-dc-fix-exit-code-of-q-command.patch
+
+Signed-off-by: Li Zhou <li.zhou@windriver.com>
+Signed-off-by: Matthew Weber <matthew.weber@rockwellcollins.com>
+---
+ dc/eval.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/dc/eval.c b/dc/eval.c
+index 6c54e61..9c28f18 100644
+--- a/dc/eval.c
++++ b/dc/eval.c
+@@ -841,10 +841,10 @@ error_fail:
+ 	fprintf(stderr, "%s: ", progname);
+ 	perror("error reading input");
+ 	return DC_FAIL;
+-reset_and_exit_quit:
+ reset_and_exit_fail:
+ 	signal(SIGINT, sigint_default);
+ 	return DC_FAIL;
++reset_and_exit_quit:
+ reset_and_exit_success:
+ 	signal(SIGINT, sigint_default);
+ 	return DC_SUCCESS;
+-- 
+2.17.1
+

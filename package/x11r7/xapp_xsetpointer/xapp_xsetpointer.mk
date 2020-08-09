@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XAPP_XSETPOINTER_VERSION = 1.0.0
+XAPP_XSETPOINTER_VERSION = 1.0.1
 XAPP_XSETPOINTER_SOURCE = xsetpointer-$(XAPP_XSETPOINTER_VERSION).tar.bz2
 XAPP_XSETPOINTER_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XSETPOINTER_LICENSE = MIT

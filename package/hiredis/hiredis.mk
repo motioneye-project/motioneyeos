@@ -5,8 +5,8 @@
 ################################################################################
 
 HIREDIS_VERSION_MAJOR = 0.14
-HIREDIS_VERSION = v$(HIREDIS_VERSION_MAJOR).0
-HIREDIS_SITE = $(call github,redis,hiredis,$(HIREDIS_VERSION))
+HIREDIS_VERSION = $(HIREDIS_VERSION_MAJOR).1
+HIREDIS_SITE = $(call github,redis,hiredis,v$(HIREDIS_VERSION))
 HIREDIS_LICENSE = BSD-3-Clause
 HIREDIS_LICENSE_FILES = COPYING
 HIREDIS_INSTALL_STAGING = YES
@@ -55,7 +55,7 @@ endif
 define HIREDIS_INSTALL_STAGING_CMDS
 	mkdir -p $(HIREDIS_INCLUDE_DIR)
 	cp -dpfr $(@D)/hiredis.h $(@D)/async.h $(@D)/read.h $(@D)/sds.h \
-		$(@D)/adapters $(HIREDIS_INCLUDE_DIR)
+		$(@D)/alloc.h $(@D)/adapters $(HIREDIS_INCLUDE_DIR)
 	$(INSTALL) -D -m 0644 $(@D)/hiredis.pc \
 		$(STAGING_DIR)/usr/lib/pkgconfig/hiredis.pc
 	$(HIREDIS_INSTALL_STAGING_STATIC_LIB)

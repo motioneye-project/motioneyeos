@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBINPUT
 	bool "libinput"
-	depends on BR2_ENABLE_LOCALE
 	depends on BR2_PACKAGE_HAS_UDEV
 	select BR2_PACKAGE_LIBEVDEV
 	select BR2_PACKAGE_MTDEV
@@ -14,5 +13,5 @@ config BR2_PACKAGE_LIBINPUT
 
 	  http://freedesktop.org/wiki/Software/libinput/
 
-comment "libinput needs udev /dev management and a toolchain w/ locale"
-	depends on !BR2_PACKAGE_HAS_UDEV || !BR2_ENABLE_LOCALE
+comment "libinput needs udev /dev management"
+	depends on !BR2_PACKAGE_HAS_UDEV

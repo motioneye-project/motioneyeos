@@ -2,15 +2,12 @@ menu "Kernel"
 
 config BR2_LINUX_KERNEL
 	bool "Linux Kernel"
+	select BR2_PACKAGE_HOST_IMAGEMAGICK if BR2_LINUX_KERNEL_CUSTOM_LOGO_PATH != ""
 	help
 	  Enable this option if you want to build a Linux kernel for
 	  your embedded device
 
 if BR2_LINUX_KERNEL
-
-comment "Linux kernel in thumb mode may be broken with binutils >= 2.29"
-	depends on BR2_arm || BR2_armeb
-	depends on !BR2_BINUTILS_VERSION_2_28_X
 
 # Packages that need to have a kernel with support for loadable modules,
 # but do not use the kernel-modules infrastructure, should select that
@@ -29,13 +26,11 @@ config BR2_LINUX_NEEDS_MODULES
 choice
 	prompt "Kernel version"
 
-# We are intentionally staying at 4.19 for the next Buildroot LTS
-# release (2019.02)
 config BR2_LINUX_KERNEL_LATEST_VERSION
-	bool "Latest version (4.19)"
+	bool "Latest version (5.6)"
 
 config BR2_LINUX_KERNEL_LATEST_CIP_VERSION
-	bool "Latest CIP SLTS version (v4.4.176-cip31)"
+	bool "Latest CIP SLTS version (4.19.118-cip25)"
 	help
 	  CIP launched in the spring of 2016 to address the needs of
 	  organizations in industries such as power generation and
@@ -49,6 +44,17 @@ config BR2_LINUX_KERNEL_LATEST_CIP_VERSION
 	  these requirements.
 
 	  The CIP community plans to maintain 4.4 for security and
+	  bug fixes for more than 10 years.
+
+	  https://www.cip-project.org
+
+config BR2_LINUX_KERNEL_LATEST_CIP_RT_VERSION
+	bool "Latest CIP RT SLTS version (4.19.115-cip24-rt9)"
+	help
+	  Same as the CIP version, but this is the PREEMPT_RT realtime
+	  variant.
+
+	  The CIP community plans to maintain 4.19 for security and
 	  bug fixes for more than 10 years.
 
 	  https://www.cip-project.org
@@ -122,8 +128,9 @@ endif
 
 config BR2_LINUX_KERNEL_VERSION
 	string
-	default "4.19.36" if BR2_LINUX_KERNEL_LATEST_VERSION
-	default "v4.4.176-cip31" if BR2_LINUX_KERNEL_LATEST_CIP_VERSION
+	default "5.6.16" if BR2_LINUX_KERNEL_LATEST_VERSION
+	default "4.19.118-cip25" if BR2_LINUX_KERNEL_LATEST_CIP_VERSION
+	default "4.19.115-cip24-rt9" if BR2_LINUX_KERNEL_LATEST_CIP_RT_VERSION
 	default BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE \
 		if BR2_LINUX_KERNEL_CUSTOM_VERSION
 	default "custom" if BR2_LINUX_KERNEL_CUSTOM_TARBALL
@@ -331,10 +338,10 @@ config BR2_LINUX_KERNEL_IMAGE_NAME
 	string "Kernel image name"
 	depends on BR2_LINUX_KERNEL_IMAGE_TARGET_CUSTOM
 	help
-	  The filename of the kernel image, if it is different from the
-	  make target (above). Only Xtensa uses a filename different
-	  from the make target. Defaults to
-	  BR2_LINUX_KERNEL_IMAGE_TARGET_NAME.
+	  The filename of the kernel image, if it is different from
+	  the make target (above). Defaults to
+	  BR2_LINUX_KERNEL_IMAGE_TARGET_NAME. If specified, the
+	  filename is relative to arch/ARCH/boot/.
 
 	  If unsure, leave it empty.
 
@@ -375,7 +382,13 @@ if BR2_LINUX_KERNEL_DTS_SUPPORT
 # The variable below address the second case, were you only want
 # limited actions from buildroot.
 config BR2_LINUX_KERNEL_DTB_IS_SELF_BUILT
-	bool
+	bool "DTB is built by kernel itself"
+	help
+	  Normally, the device tree(s) to be built have to be passed
+	  explicitly to the kernel build system. For some binary
+	  formats, however, the kernel build system links in the
+	  device tree directly in the kernel binary. Select this option
+	  if you have such a kernel binary format.
 
 config BR2_LINUX_KERNEL_APPENDED_DTB
 	bool

@@ -1,4 +1,7 @@
 # From https://www.musepack.net/index.php?pg=src
 md5	754d67be67f713e54baf70fcfdb2817e	musepack_src_r475.tar.gz
 # Calculated based on the hash above
-sha256	a4b1742f997f83e1056142d556a8c20845ba764b70365ff9ccf2e3f81c427b2b	musepack_src_r475.tar.gz
+sha256  a4b1742f997f83e1056142d556a8c20845ba764b70365ff9ccf2e3f81c427b2b  musepack_src_r475.tar.gz
+# Locally computed
+sha256  141f551d8e4f037b7f6bc9136b7d3116c7ae9ec8da10c4f14c07c6dc34bc9aa5  libmpcdec/COPYING
+sha256  0da88639aebbd614151ee52294fa13789f8cd28d9f2e0a56998b89b5c21ddc2b  libmpcenc/quant.c

@@ -1,0 +1,34 @@
+From 5f8134cfe5e7b90a8ce07d27ae737dcc54b523b3 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Wed, 16 Oct 2019 20:09:13 +0200
+Subject: [PATCH] CMakeLists.txt: fix static build with openssl
+
+openssl can depends on -latomic so use pkg-config (if available) to
+retrieve these static dependencies otherwise build will fail because
+HMAC_CTX_new test will return a wrong result
+
+Fixes:
+ - http://autobuild.buildroot.org/results/65d0528b208c0a470264f7e2433be89425971dd7
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved (and backported) from:
+https://github.com/warmcat/libwebsockets/commit/5f8134cfe5e7b90a8ce07d27ae737dcc54b523b3]
+---
+ CMakeLists.txt | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 2693ac56a..888f65e83 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1803,7 +1803,10 @@ if (LWS_WITH_SSL)
+ 		if (NOT OPENSSL_FOUND AND NOT LWS_WITH_BORINGSSL)
+ 			# TODO: Add support for STATIC also.
+ 		if (NOT LWS_WITH_ESP32)
++			find_package(PkgConfig QUIET)
++			pkg_check_modules(PC_OPENSSL openssl QUIET)
+ 			find_package(OpenSSL REQUIRED)
++			list(APPEND OPENSSL_LIBRARIES ${PC_OPENSSL_LIBRARIES})
+ 		endif()
+ 			set(OPENSSL_INCLUDE_DIRS "${OPENSSL_INCLUDE_DIR}")
+ 		endif()

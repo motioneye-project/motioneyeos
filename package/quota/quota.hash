@@ -1,3 +1,7 @@
-# From http://sourceforge.net/projects/linuxquota/files/quota-tools/4.01/ (click on info button)
-md5	5c2c31e321d2e1322ce12d69ae5c66d6	quota-4.01.tar.gz
-sha1	64d2ab8b039cfea1aa4bd9e77e8c373488a7f0bf	quota-4.01.tar.gz
+# From http://sourceforge.net/projects/linuxquota/files/quota-tools/4.05/ (click on info button)
+md5	1c1dbd2cd3d680ccac661239b067e147	quota-4.05.tar.gz
+sha1	d23711f3b204e0a86b8378c32545c95fb149168d	quota-4.05.tar.gz
+
+# Locally calculated
+sha256	ef3b5b5d1014ed1344b46c1826145e20cbef8db967b522403c9a060761cf7ab9	quota-4.05.tar.gz
+sha256	35b2d9797b83bce16076da9c3273f264f50b8d02f492ee32cd4c51ba6897bceb	COPYING

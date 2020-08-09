@@ -45,13 +45,18 @@ built.
 ==== +golang-package+ reference
 
 In their +Config.in+ file, packages using the +golang-package+
-infrastructure should depend on +BR2_PACKAGE_HOST_GO_ARCH_SUPPORTS+
-and +BR2_PACKAGE_HOST_GO_CGO_LINKING_SUPPORTS+ because Buildroot will
-automatically add a dependency on +host-go+ to such packages.
+infrastructure should depend on +BR2_PACKAGE_HOST_GO_TARGET_ARCH_SUPPORTS+
+because Buildroot will automatically add a dependency on +host-go+
+to such packages.
+If you need CGO support in your package, you must add a dependency on
++BR2_PACKAGE_HOST_GO_TARGET_CGO_LINKING_SUPPORTS+.
 
 The main macro of the Go package infrastructure is
-+golang-package+. It is similar to the +generic-package+ macro. Only
-target packages are supported with +golang-package+.
++golang-package+. It is similar to the +generic-package+ macro. The
+ability to build host packages is also available, with the
++host-golang-package+ macro.
+Host packages built by +host-golang-package+ macro should depend on
+BR2_PACKAGE_HOST_GO_HOST_ARCH_SUPPORTS.
 
 Just like the generic infrastructure, the Go infrastructure works
 by defining a number of variables before calling the +golang-package+.

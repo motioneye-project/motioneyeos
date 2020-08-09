@@ -239,3 +239,6 @@ help reduce the build time:
 
  * Buy new hardware. SSDs and lots of RAM are key to speeding up the
    builds.
+
+ * Experiment with top-level parallel build, see
+   xref:top-level-parallel-build[].

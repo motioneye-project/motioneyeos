@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/humanize/json, sha256 locally computed
+# md5 from https://pypi.python.org/pypi/humanize/json
 md5	e8473d9dc1b220911cac2edd53b1d973  humanize-0.5.1.tar.gz
+# Locally computed
 sha256	a43f57115831ac7c70de098e6ac46ac13be00d69abbf60bdcac251344785bb19  humanize-0.5.1.tar.gz
+sha256  2ee89d331213b5886ae5416ead178694ac0eb13bb79c83bf92287f95d3597377  LICENCE

@@ -7,3 +7,5 @@ config BR2_PACKAGE_DOOM_WAD
 
 	  The wad file will be placed in the /usr/share/games/doom
 	  directory.
+
+	  https://doomwiki.org/wiki/DOOM1.WAD

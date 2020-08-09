@@ -1,0 +1,37 @@
+From 12764faa0a01bcc4e0ffc92ce308985dbad0d954 Mon Sep 17 00:00:00 2001
+From: Adam Duskett <Aduskett@gmail.com>
+Date: Thu, 7 May 2020 18:25:29 -0700
+Subject: [PATCH] fix regex in rc.apparmor.functions to work with busybox
+
+The following regex string in rc.apparmor.functions
+"^/.*[ \t]+flags[ \t]*=[ \t]*\([ \t]*complain[ \t]*\)[ \t]+{" is broken due to
+the unescaped {. GNU grep ignores the error. However, the Busybox grep does
+not and throws the error "unescaped character {"
+
+Escape the "{" character to fix this issue.
+
+Note: Upstream has rewritten large sections of the rc.apparmor.functions file
+and the function this patch fixes will no longer be necessary after the next
+version is released.
+
+Signed-off-by: Adam Duskett <Aduskett@gmail.com>
+---
+ parser/rc.apparmor.functions | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/parser/rc.apparmor.functions b/parser/rc.apparmor.functions
+index f3108f8..db0697c 100644
+--- a/parser/rc.apparmor.functions
++++ b/parser/rc.apparmor.functions
+@@ -140,7 +140,7 @@ force_complain() {
+ 	local profile=$1
+ 
+ 	# if profile not in complain mode
+-	if ! egrep -q "^/.*[ \t]+flags[ \t]*=[ \t]*\([ \t]*complain[ \t]*\)[ \t]+{" $profile ; then
++	if ! grep -E -q "^/.*[ \t]+flags[ \t]*=[ \t]*\([ \t]*complain[ \t]*\)[ \t]+\{" $profile ; then
+ 		local link="${PROFILE_DIR}/force-complain/`basename ${profile}`"
+ 		if [ -e "$link" ] ; then
+ 			aa_log_warning_msg "found $link, forcing complain mode"
+-- 
+2.26.2
+

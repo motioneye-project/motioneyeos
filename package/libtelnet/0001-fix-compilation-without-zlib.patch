@@ -1,0 +1,42 @@
+From 1670ca128118be1d914fc89223e94c4cff1bbf03 Mon Sep 17 00:00:00 2001
+From: Jan Heylen <jan.heylen@nokia.com>
+Date: Wed, 25 Oct 2017 06:45:49 +0200
+Subject: [PATCH] Fix compilation without zlib
+
+libtelnet source code uses '#if defived(HAVE_ZLIB)' as conditional flag for
+optional compression support. But the configure(.ac) script does not play well
+with this: it will define 'HAVE_ZLIB' to either 1 (zlib present) or 0
+(zlib not present). For the C preprocessor, both cases mean 'defined'.
+
+As a result, compilation will fail when trying to include zlib.h, which is
+missing.
+
+Signed-off-by: Jan Heylen <jan.heylen@nokia.com>
+Signed-off-by: Thomas De Schampheleire <thomas.de_schampheleire@nokia.com>
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Upstream-status: upstream has changed to cmake iso autotools (but not yet
+released) [1] and a pull request exists to fix several issues with that,
+including correct handling of zlib detection [2].
+
+[1] https://github.com/seanmiddleditch/libtelnet/commit/4860d10da44929554895c0ef83274f38de68e958
+[2] https://github.com/seanmiddleditch/libtelnet/pull/54
+
+diff --git a/configure.ac b/configure.ac
+index 021b48f..c4dac8b 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -33,7 +33,7 @@ AC_HEADER_STDC
+ PKG_CHECK_MODULES([zlib],
+   [zlib],
+   [AC_DEFINE([HAVE_ZLIB], [1], [Define to 1 if you have zlib.])],
+-  [AC_DEFINE([HAVE_ZLIB], [0], [Define to 1 if you have zlib.])])
++  [AC_MSG_NOTICE([not enabling zlib support])])
+ 
+ # Checks for header files.
+ 
+-- 
+2.7.4
+

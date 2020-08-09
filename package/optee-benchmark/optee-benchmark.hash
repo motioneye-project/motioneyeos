@@ -1,0 +1,4 @@
+# From https://github.com/linaro-swg/optee_benchmark/archive/3.7.0.tar.gz
+sha256 c2bbeb188e3ebe06c62b1a7d6483d023737695c36d4752402fae33bd8f487c40 optee-benchmark-3.7.0.tar.gz
+# Locally computed
+sha256 0571be5b739142dc3e40e0a4e7e30d4ab8bff0d4d606a3f2db2010745587d383  LICENSE

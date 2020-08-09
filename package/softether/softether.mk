@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-SOFTETHER_VERSION = v4.28-9669-beta
-SOFTETHER_SITE = $(call github,SoftEtherVPN,SoftEtherVPN_stable,$(SOFTETHER_VERSION))
-SOFTETHER_LICENSE = GPL-2.0
+SOFTETHER_VERSION = 4.30-9700-beta
+SOFTETHER_SITE = $(call github,SoftEtherVPN,SoftEtherVPN_stable,v$(SOFTETHER_VERSION))
+SOFTETHER_LICENSE = Apache-2.0
 SOFTETHER_LICENSE_FILES = LICENSE
 SOFTETHER_DEPENDENCIES = host-pkgconf host-softether libopenssl readline
 SOFTETHER_AUTORECONF = YES

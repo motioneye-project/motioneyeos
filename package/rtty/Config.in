@@ -1,0 +1,8 @@
+config BR2_PACKAGE_RTTY
+	bool "rtty"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_LIBEV
+	help
+	  Access your device's terminal from anywhere via the web.
+
+	  https://github.com/zhaojh329/rtty

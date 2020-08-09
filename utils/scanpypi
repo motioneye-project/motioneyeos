@@ -461,6 +461,7 @@ class BuildrootPackage():
                       ' likely wrong, please change it if need be'.format(
                           license=', '.join(licenses)))
                 licenses = [self.metadata['info']['license']]
+            licenses = set(licenses)
             license_line = '{name}_LICENSE = {license}\n'.format(
                 name=self.mk_name,
                 license=', '.join(licenses))
@@ -473,6 +474,7 @@ class BuildrootPackage():
                     license_names.append(match.license.id)
                 else:
                     license_names.append("FIXME: license id couldn't be detected")
+            license_names = set(license_names)
 
             if len(license_names) > 0:
                 license_line = ('{name}_LICENSE ='
@@ -566,12 +568,12 @@ class BuildrootPackage():
             hash_header = '# md5, sha256 from {url}\n'.format(
                 url=self.metadata_url)
             lines.append(hash_header)
-            hash_line = '{method}\t{digest}  {filename}\n'.format(
+            hash_line = '{method}  {digest}  {filename}\n'.format(
                 method='md5',
                 digest=self.used_url['digests']['md5'],
                 filename=self.filename)
             lines.append(hash_line)
-            hash_line = '{method}\t{digest}  {filename}\n'.format(
+            hash_line = '{method}  {digest}  {filename}\n'.format(
                 method='sha256',
                 digest=self.used_url['digests']['sha256'],
                 filename=self.filename)
@@ -587,7 +589,7 @@ class BuildrootPackage():
                     if not data:
                         break
                     sha256.update(data)
-            hash_line = '{method}\t{digest}  {filename}\n'.format(
+            hash_line = '{method}  {digest}  {filename}\n'.format(
                 method='sha256',
                 digest=sha256.hexdigest(),
                 filename=license_file.replace(self.tmp_extract, '')[1:])
@@ -610,6 +612,7 @@ class BuildrootPackage():
         bool_line = '\tbool "{name}"\n'.format(name=self.buildroot_name)
         lines.append(bool_line)
         if self.pkg_req:
+            self.pkg_req.sort()
             for dep in self.pkg_req:
                 dep_line = '\tselect BR2_PACKAGE_{req} # runtime\n'.format(
                     req=dep.upper().replace('-', '_'))
@@ -739,6 +742,8 @@ def main():
             package.create_hash_file()
 
             package.create_config_in()
+            print("NOTE: Remember to also make an update to the DEVELOPERS file")
+            print("      and include an entry for the pkg in packages/Config.in")
             print()
             # printing an empty line for visual confort
     finally:

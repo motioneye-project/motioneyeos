@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/netaddr/json, sha256 locally computed
+# md5 from https://pypi.python.org/pypi/netaddr/json
 md5 51019ef59c93f3979bcb37d3b8527e07 netaddr-0.7.19.tar.gz
+# Locally computed
 sha256 38aeec7cdd035081d3a4c306394b19d677623bf76fa0913f6695127c7753aefd netaddr-0.7.19.tar.gz
+sha256  0e53de62547787462f41eefb5cee31a14f7ea767ba0362c6f9304f1742486d47  LICENSE

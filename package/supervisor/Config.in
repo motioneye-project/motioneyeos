@@ -1,6 +1,6 @@
 config BR2_PACKAGE_SUPERVISOR
 	bool "supervisor"
-	depends on BR2_PACKAGE_PYTHON
+	depends on BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3
 	select BR2_PACKAGE_PYTHON_MELD3
 	select BR2_PACKAGE_PYTHON_SETUPTOOLS # runtime dependency
 	help
@@ -9,5 +9,6 @@ config BR2_PACKAGE_SUPERVISOR
 
 	  http://supervisord.org/
 
-comment "supervisor needs the python interpreter"
+comment "supervisor needs a python interpreter"
 	depends on !BR2_PACKAGE_PYTHON
+	depends on !BR2_PACKAGE_PYTHON3

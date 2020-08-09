@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PYTHON_JARACO_FUNCTOOLS
+	bool "python-jaraco-functools"
+	depends on BR2_PACKAGE_PYTHON3 # python-more-itertools
+	select BR2_PACKAGE_PYTHON_MORE_ITERTOOLS # runtime
+	help
+	  Additional functools in the spirit of stdlib’s
+	  functools.
+
+	  https://github.com/jaraco/jaraco.functools

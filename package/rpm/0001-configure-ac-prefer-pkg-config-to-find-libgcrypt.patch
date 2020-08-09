@@ -1,0 +1,52 @@
+From 22ed98efe3d5198e4141948af7569cfa10d9d25f Mon Sep 17 00:00:00 2001
+From: Ross Burton <ross.burton@intel.com>
+Date: Wed, 20 Nov 2019 13:06:51 +0000
+Subject: [PATCH] configure.ac: prefer pkg-config to find libgcrypt
+
+libgcrypt from 1.8.5 provides a pkg-config file as well as the traditional
+libgcrypt-config script.  As pkg-config is more resiliant in the face of
+complicated build environments (for example cross-compilation and sysroots)
+prefer the pkg-config file, falling back to libgcrypt-config if that doesn't
+exist.
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/rpm-software-management/rpm/commit/22ed98efe3d5198e4141948af7569cfa10d9d25f]
+---
+ configure.ac | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 0a3a9bbf4..6a3ea3615 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -395,14 +395,21 @@ AC_SUBST(WITH_OPENSSL_LIB)
+ WITH_LIBGCRYPT_INCLUDE=
+ WITH_LIBGCRYPT_LIB=
+ if test "$with_crypto" = libgcrypt ; then
+-AC_PATH_TOOL(LIBGCRYPT_CONFIG, libgcrypt-config, notfound)
+-if test notfound != "$LIBGCRYPT_CONFIG" ; then
+-WITH_LIBGCRYPT_INCLUDE=`$LIBGCRYPT_CONFIG --cflags`
+-WITH_LIBGCRYPT_LIB=`$LIBGCRYPT_CONFIG --libs`
+-fi
+-if test -z "$WITH_LIBGCRYPT_LIB" ; then
+-AC_MSG_ERROR([libgcrypt not found])
+-fi
++  # libgcrypt 1.8.5 onwards ships a pkg-config file so prefer that
++  PKG_CHECK_MODULES([LIBGCRYPT], [libgcrypt], [have_libgcrypt=yes], [have_libgcrypt=no])
++  if test "$have_libgcrypt" = "yes"; then
++    WITH_LIBGCRYPT_INCLUDE="$LIBGCRYPT_CFLAGS"
++    WITH_LIBGCRYPT_LIB="$LIBGCRYPT_LIBS"
++  else
++    AC_PATH_TOOL(LIBGCRYPT_CONFIG, libgcrypt-config, notfound)
++      if test notfound != "$LIBGCRYPT_CONFIG" ; then
++        WITH_LIBGCRYPT_INCLUDE=`$LIBGCRYPT_CONFIG --cflags`
++        WITH_LIBGCRYPT_LIB=`$LIBGCRYPT_CONFIG --libs`
++     fi
++     if test -z "$WITH_LIBGCRYPT_LIB" ; then
++       AC_MSG_ERROR([libgcrypt not found])
++    fi
++  fi
+ fi
+ 
+ AM_CONDITIONAL([WITH_LIBGCRYPT],[test "$with_crypto" = libgcrypt])

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBDVBPSI_VERSION = 1.3.2
+LIBDVBPSI_VERSION = 1.3.3
 LIBDVBPSI_SITE = http://download.videolan.org/pub/libdvbpsi/$(LIBDVBPSI_VERSION)
 LIBDVBPSI_SOURCE = libdvbpsi-$(LIBDVBPSI_VERSION).tar.bz2
 LIBDVBPSI_LICENSE = LGPL-2.1+

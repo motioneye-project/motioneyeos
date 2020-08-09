@@ -1,3 +1,6 @@
-# md5 from https://pypi.python.org/pypi/Flask-Babel/json, sha256 locally computed
-md5	658e84a20ddc545a7612144fe2c758d3  Flask-Babel-0.11.1.tar.gz
-sha256	d29b36c399e42e98bc9401c8c1c159f2befcb8c12a2a2a87ec49ad7623036899  Flask-Babel-0.11.1.tar.gz
+# From: https://pypi.org/project/Flask-Babel/#copy-hash-modal-91caaca6-a716-4751-9ec0-08baadced4b1
+md5  162ccb275958f9a463211ece841a2b9a  Flask-Babel-1.0.0.tar.gz
+sha256	d6a70468f9a8919d59fba2a291a003da3a05ff884275dddbd965f3b98b09ab3e  Flask-Babel-1.0.0.tar.gz
+
+# License files
+sha256	a526100a7047237360a394ba4f70ae801b50ff9b8c9b9e73e7795480a59f6b7e  LICENSE

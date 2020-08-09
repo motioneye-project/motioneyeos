@@ -1,0 +1,48 @@
+From 00281390e82db18fe0de4033be4045f9391a8ee5 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Thu, 15 Nov 2018 14:04:29 +0100
+Subject: [PATCH] server/Makefile.in: handle separate
+ APR_INCLUDE_DIR/APU_INCLUDE_DIR
+
+If APR_INCLUDEDIR and APU_INCLUDEDIR point to different directories,
+but for example APU_INCLUDEDIR contains both the apr headers and apu
+headers, the "export_files" file will contain duplicate header files,
+causing the exports.c file to contain duplicate definitions, making
+the build fail.
+
+This commit fixes that by making sure we only use the apr headers from
+APR_INCLUDEDIR and the apu headers from the APU_INCLUDEDIR.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Upstream: https://bz.apache.org/bugzilla/show_bug.cgi?id=62930
+---
+ server/Makefile.in | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/server/Makefile.in b/server/Makefile.in
+index 1fa334467d..2258f0bdf2 100644
+--- a/server/Makefile.in
++++ b/server/Makefile.in
+@@ -34,7 +34,6 @@ test_char.h: gen_test_char
+ util.lo: test_char.h
+ 
+ EXPORT_DIRS = $(top_srcdir)/include $(top_srcdir)/os/$(OS_DIR)
+-EXPORT_DIRS_APR = $(APR_INCLUDEDIR) $(APU_INCLUDEDIR)
+ 
+ # If export_files is a dependency here, but we remove it during this stage,
+ # when exports.c is generated, make will not detect that export_files is no
+@@ -60,9 +59,8 @@ export_files:
+ 	      ls $$dir/*.h ; \
+ 	  done; \
+ 	  echo "$(top_srcdir)/server/mpm_fdqueue.h"; \
+-	  for dir in $(EXPORT_DIRS_APR); do \
+-	      ls $$dir/ap[ru].h $$dir/ap[ru]_*.h 2>/dev/null; \
+-	  done; \
++	  ls $(APR_INCLUDE_DIR)/{apr.h,apr_*.h} 2>/dev/null; \
++	  ls $(APU_INCLUDE_DIR)/{apu.h,apu_*.h} 2>/dev/null; \
+ 	) | sed -e s,//,/,g | sort -u > $@
+ 
+ exports.c: export_files
+-- 
+2.19.1
+

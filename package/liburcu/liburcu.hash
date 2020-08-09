@@ -1,4 +1,8 @@
-# http://www.lttng.org/files/urcu/userspace-rcu-0.9.2.tar.bz2.sha1
-sha1  61d1d0d1b955c7a67a7253317647304d04b400a0  userspace-rcu-0.9.2.tar.bz2
-# Locally generated
-sha256 8f7fa313b1e0a3f742cea24ce63a39c0efe63e615a769e2961e55bd2663ecaa3 userspace-rcu-0.9.2.tar.bz2
+# http://www.lttng.org/files/urcu/userspace-rcu-0.11.1.tar.bz2.sha256
+sha256 92b9971bf3f1c443edd6c09e7bf5ff3b43531e778841f16377a812c8feeb3350  userspace-rcu-0.11.1.tar.bz2
+
+# Hash for license files
+sha256 36b6d3fa47916943fd5fec313c584784946047ec1337a78b440e5992cb595f89  lgpl-2.1.txt
+sha256 8ef8121eddd2fc0779d94331a1d0f1ead9c796343d845e564cd8c8c4ae3d6f6e  lgpl-relicensing.txt
+sha256 ab15fd526bd8dd18a9e77ebc139656bf4d33e97fc7238cd11bf60e2b9b8666c6  gpl-2.0.txt
+sha256 e8c070cb093be4b2eaf938a5f1c11621163b2d9cfa2790460cf925d81e442fa7  LICENSE

@@ -6,9 +6,7 @@ config BR2_PACKAGE_HOST_LINUX_HEADERS
 choice
 	prompt "Kernel Headers"
 	default BR2_KERNEL_HEADERS_AS_KERNEL if BR2_LINUX_KERNEL
-	# We are intentionally staying at 4.19 for the next Buildroot
-	# LTS release (2019.02)
-	default BR2_KERNEL_HEADERS_4_19
+	default BR2_KERNEL_HEADERS_5_6
 	help
 	  Select the kernel version to get headers from.
 
@@ -27,29 +25,43 @@ choice
 config BR2_KERNEL_HEADERS_AS_KERNEL
 	bool "Same as kernel being built"
 	depends on BR2_LINUX_KERNEL
+	select BR2_KERNEL_HEADERS_LATEST if BR2_LINUX_KERNEL_LATEST_VERSION
 
 config BR2_KERNEL_HEADERS_4_4
 	bool "Linux 4.4.x kernel headers"
 	depends on !BR2_riscv
+	depends on !BR2_csky
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_4
 
 config BR2_KERNEL_HEADERS_4_9
 	bool "Linux 4.9.x kernel headers"
 	depends on !BR2_riscv
+	depends on !BR2_csky
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_9
 
 config BR2_KERNEL_HEADERS_4_14
 	bool "Linux 4.14.x kernel headers"
 	depends on !BR2_riscv
+	depends on !BR2_csky
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_14
 
 config BR2_KERNEL_HEADERS_4_19
 	bool "Linux 4.19.x kernel headers"
+	depends on !BR2_csky
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_19
 
-config BR2_KERNEL_HEADERS_4_20
-	bool "Linux 4.20.x kernel headers"
-	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_20
+config BR2_KERNEL_HEADERS_5_4
+	bool "Linux 5.4.x kernel headers"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_4
+	select BR2_KERNEL_HEADERS_LATEST
+
+config BR2_KERNEL_HEADERS_5_5
+	bool "Linux 5.5.x kernel headers"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_5
+
+config BR2_KERNEL_HEADERS_5_6
+	bool "Linux 5.6.x kernel headers"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_6
 
 config BR2_KERNEL_HEADERS_VERSION
 	bool "Manually specified Linux version"
@@ -80,6 +92,10 @@ config BR2_KERNEL_HEADERS_CUSTOM_GIT
 	  code from a Git repository.
 
 endchoice
+
+# Select this for the latest kernel headers version (for license hashes)
+config BR2_KERNEL_HEADERS_LATEST
+	bool
 
 config BR2_DEFAULT_KERNEL_VERSION
 	string "linux version"
@@ -115,6 +131,37 @@ choice
 
 	  This is used to hide/show some packages that have strict
 	  requirements on the version of kernel headers.
+
+	  If your kernel headers are more recent than the latest version
+	  in the choice, then select the latest version.
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_5_6
+	bool "5.6.x or later"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_6
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_5_5
+	bool "5.5.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_5
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_5_4
+	bool "5.4.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_4
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_5_3
+	bool "5.3.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_3
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_5_2
+	bool "5.2.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_2
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_5_1
+	bool "5.1.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_1
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_5_0
+	bool "5.0.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_0
 
 config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_20
 	bool "4.20.x"
@@ -287,11 +334,13 @@ endchoice
 
 config BR2_DEFAULT_KERNEL_HEADERS
 	string
-	default "4.4.178"	if BR2_KERNEL_HEADERS_4_4
-	default "4.9.170"	if BR2_KERNEL_HEADERS_4_9
-	default "4.14.113"	if BR2_KERNEL_HEADERS_4_14
-	default "4.19.36"	if BR2_KERNEL_HEADERS_4_19
-	default "4.20.17"	if BR2_KERNEL_HEADERS_4_20
+	default "4.4.226"	if BR2_KERNEL_HEADERS_4_4
+	default "4.9.226"	if BR2_KERNEL_HEADERS_4_9
+	default "4.14.183"	if BR2_KERNEL_HEADERS_4_14
+	default "4.19.127"	if BR2_KERNEL_HEADERS_4_19
+	default "5.4.45"	if BR2_KERNEL_HEADERS_5_4
+	default "5.5.19"	if BR2_KERNEL_HEADERS_5_5
+	default "5.6.16"	if BR2_KERNEL_HEADERS_5_6
 	default BR2_DEFAULT_KERNEL_VERSION if BR2_KERNEL_HEADERS_VERSION
 	default "custom"	if BR2_KERNEL_HEADERS_CUSTOM_TARBALL
 	default BR2_KERNEL_HEADERS_CUSTOM_REPO_VERSION \

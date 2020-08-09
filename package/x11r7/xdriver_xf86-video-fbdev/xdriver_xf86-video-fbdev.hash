@@ -1,2 +1,4 @@
 # From http://lists.x.org/archives/xorg-announce/2013-September/002324.html
 sha256	dcc3d85f378022180e437a9ec00a59b6cb7680ff79c40394d695060af2374699	xf86-video-fbdev-0.5.0.tar.bz2
+# Locally calculated
+sha256  e437aed89c3440a9fe7e19968a3f2eeb97041ef6c9616837a3fd42d0874fc0e6  COPYING

@@ -1,3 +1,3 @@
 # computed by luarocks/buildroot
-sha256 e4029f42d61cbdde1540e0a098a24b1fed0bc8a2803efe2a0d0d3e7f2f2f2c82  argparse-0.6.0-1.src.rock
-sha256 c9b9a9667934d50f028a99b2617469db66663dc3b09d289b82e73e950b2b85eb  argparse/LICENSE
+sha256 47b3ca9e734971ba24ef26b0beff692ce6008f53aaf78c303f3d883648c96acb  argparse-0.7.0-1.src.rock
+sha256 9a918f21485b2a4529c901491d9101392f03586d65ad5b024a4445ebc1dc37b4  argparse-0.7.0/LICENSE

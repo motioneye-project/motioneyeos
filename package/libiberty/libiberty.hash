@@ -1,0 +1,5 @@
+# From ftp://gcc.gnu.org/pub/binutils/releases/sha512.sum
+sha512  d326408f12a03d9a61a9de56584c2af12f81c2e50d2d7e835d51565df8314df01575724afa1e43bd0db45cfc9916b41519b67dfce03232aa4978704492a6994a  binutils-2.32.tar.xz
+
+# Locally computed, same as binutils.hash
+sha256  56bdea73b6145ef6ac5259b3da390b981d840c24cb03b8e1cbc678de7ecfa18d  COPYING.LIB

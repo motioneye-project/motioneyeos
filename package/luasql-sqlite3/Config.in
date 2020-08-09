@@ -4,4 +4,4 @@ config BR2_PACKAGE_LUASQL_SQLITE3
 	help
 	  LuaSQL is a simple interface from Lua to a DBMS.
 
-	  http://www.keplerproject.org/luasql
+	  http://keplerproject.github.io/luasql/

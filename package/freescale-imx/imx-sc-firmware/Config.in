@@ -1,0 +1,10 @@
+config BR2_PACKAGE_IMX_SC_FIRMWARE
+	bool "imx-sc-firmware"
+	depends on BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX8 || \
+		BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX8X
+	help
+	  System Control Unit Firmware blobs for the Freescale i.MX8
+	  SoCs.
+
+	  This library is provided by Freescale as-is and doesn't have
+	  an upstream.

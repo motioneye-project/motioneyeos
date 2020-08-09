@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GZIP_VERSION = 1.9
+GZIP_VERSION = 1.10
 GZIP_SOURCE = gzip-$(GZIP_VERSION).tar.xz
 GZIP_SITE = $(BR2_GNU_MIRROR)/gzip
 # Some other tools expect it to be in /bin

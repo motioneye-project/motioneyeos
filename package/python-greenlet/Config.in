@@ -1,0 +1,19 @@
+config BR2_PACKAGE_PYTHON_GREENLET_ARCH_SUPPORTS
+	bool
+	default y if BR2_arm || BR2_armeb
+	default y if BR2_aarch64
+	default y if BR2_csky
+	default y if BR2_m68k
+	default y if BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el
+	default y if BR2_powerpc || BR2_powerpc64 || BR2_powerpc64le
+	default y if BR2_riscv
+	default y if BR2_sparc || BR2_sparc64
+	default y if BR2_i386 || BR2_x86_64
+
+config BR2_PACKAGE_PYTHON_GREENLET
+	bool "python-greenlet"
+	depends on BR2_PACKAGE_PYTHON_GREENLET_ARCH_SUPPORTS
+	help
+	  Lightweight in-process concurrent programming.
+
+	  https://github.com/python-greenlet/greenlet

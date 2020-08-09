@@ -1,0 +1,62 @@
+From https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-016
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	5.0
+Patch-ID:	bash50-016
+
+Bug-Reported-by:	sunnycemetery@gmail.com
+Bug-Reference-ID:	<20190316041534.GB22884@midnight>
+Bug-Reference-URL:	https://lists.gnu.org/archive/html/bug-bash/2019-03/msg00070.html
+
+Bug-Description:
+
+Bash waits too long to reap /dev/fd process substitutions used as redirections
+with loops and group commands, which can lead to file descriptor exhaustion.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-5.0-patched/execute_cmd.c	2019-04-19 15:46:36.000000000 -0400
+--- b/execute_cmd.c	2019-07-01 16:45:49.000000000 -0400
+***************
+*** 1104,1107 ****
+--- 1085,1104 ----
+        discard_unwind_frame ("internal_fifos");
+      }
++ # if defined (HAVE_DEV_FD)
++   /* Reap process substitutions at the end of loops */
++   switch (command->type)
++     {
++     case cm_while:
++     case cm_until:
++     case cm_for:
++     case cm_group:
++ #    if defined (ARITH_FOR_COMMAND)
++     case cm_arith_for:
++ #    endif
++       reap_procsubs ();
++     default:
++       break;
++     }
++ #  endif /* HAVE_DEV_FD */
+  #endif
+  
+
+*** ../bash-5.0/patchlevel.h	2016-06-22 14:51:03.000000000 -0400
+--- b/patchlevel.h	2016-10-01 11:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 15
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 16
+  
+  #endif /* _PATCHLEVEL_H_ */

@@ -1,0 +1,7 @@
+config BR2_PACKAGE_MFOC
+	bool "mfoc"
+	select BR2_PACKAGE_LIBNFC
+	help
+	  Mifare Classic Offline Cracker
+
+	  https://github.com/nfc-tools/mfoc

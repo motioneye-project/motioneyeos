@@ -1,0 +1,6 @@
+# From https://sourceforge.net/projects/apcupsd/files/apcupsd%20-%20Stable/3.14.14/
+md5  cc8f5ced77f38906a274787acb9bc980  apcupsd-3.14.14.tar.gz
+sha1  f027fa141c929371fe860443b6d911ef3a3606fb  apcupsd-3.14.14.tar.gz
+# Locally computed:
+sha256  db7748559b6b4c3784f9856561ef6ac6199ef7bd019b3edcd7e0a647bf8f9867  apcupsd-3.14.14.tar.gz
+sha256  8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643  COPYING

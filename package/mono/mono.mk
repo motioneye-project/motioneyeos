@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-MONO_VERSION = 5.14.0.177
+MONO_VERSION = 6.8.0.96
 MONO_SITE = http://download.mono-project.com/sources/mono
-MONO_SOURCE = mono-$(MONO_VERSION).tar.bz2
+MONO_SOURCE = mono-$(MONO_VERSION).tar.xz
 MONO_LICENSE = GPL-2.0 or MIT (compiler, tools), MIT (libs) or commercial
 MONO_LICENSE_FILES = LICENSE mcs/COPYING \
 	external/Newtonsoft.Json/Tools/7-zip/copying.txt
@@ -40,7 +40,9 @@ ifeq ($(BR2_PACKAGE_LIBICONV),y)
 MONO_DEPENDENCIES += libiconv
 endif
 
-MONO_DEPENDENCIES += host-mono
+MONO_DEPENDENCIES += \
+	host-mono \
+	$(if $(BR2_PACKAGE_LIBUNWIND),libunwind)
 
 ## Mono managed
 

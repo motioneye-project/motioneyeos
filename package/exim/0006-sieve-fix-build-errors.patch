@@ -1,0 +1,42 @@
+From e9d0b5b022df172d3615e9e2875506c74e6d7cd1 Mon Sep 17 00:00:00 2001
+From: Luca Ceresoli <luca@lucaceresoli.net>
+Date: Wed, 5 Feb 2020 17:13:57 +0100
+Subject: [PATCH] sieve: fix build errors
+
+sieve fails to cross-compile with the Sourcery CodeBench ARM 2014.05
+toolchain with a huge number of errors, including:
+
+  .../sysroot/usr/include/arpa/nameser.h:115:2: error: unknown type name 'u_char'
+    const u_char *_msg, *_eom;
+    ^
+  .../sysroot/usr/include/arpa/nameser.h:474:1: error: unknown type name 'u_long'
+   u_long  ns_get32 (const u_char *) __THROW;
+   ^
+  .../sysroot/usr/include/arpa/nameser.h:475:31: error: expected ')' before '*' token
+   void  ns_put16 (u_int, u_char *) __THROW;
+                                 ^
+
+Discovered when cross-compiling with the Buildroot embedded Linux
+buildsystem.
+
+Signed-off-by: Luca Ceresoli <luca@lucaceresoli.net>
+Upstream-status: https://bugs.exim.org/show_bug.cgi?id=2523
+---
+ src/sieve.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/sieve.c b/src/sieve.c
+index 5e8d1e6f4776..9632f2d43810 100644
+--- a/src/sieve.c
++++ b/src/sieve.c
+@@ -12,6 +12,8 @@
+
+ /* Sieve mail filter. */
+
++#define _BSD_SOURCE
++
+ #include <ctype.h>
+ #include <errno.h>
+ #include <limits.h>
+--
+2.25.0

@@ -1,2 +1,5 @@
-# Locally calculated
-sha256	277985e29ecd93bd759a58242cad0e02ba9d4a6e1b7795235e3b507661bc0049	arptables-v0.0.4.tar.gz
+# From http://ftp.netfilter.org/pub/arptables/arptables-0.0.5.tar.gz.sha256sum
+sha256	4f9a0656ce5c90868f551cd4deeb2d04f33899667e1fb2818b64e432fe8f629c	arptables-0.0.5.tar.gz
+
+# Hash for license file
+sha256	ebdb8ae564c952792017ec680e2edd30443642216eb9f8a3d8fa166c0cb628c1	COPYING

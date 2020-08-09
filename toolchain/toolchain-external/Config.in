@@ -23,6 +23,9 @@ source "toolchain/toolchain-external/toolchain-external-linaro-aarch64-be/Config
 # ARC
 source "toolchain/toolchain-external/toolchain-external-synopsys-arc/Config.in"
 
+# Andes
+source "toolchain/toolchain-external/toolchain-external-andes-nds32/Config.in"
+
 # ARM (use ARM toolchain by default)
 source "toolchain/toolchain-external/toolchain-external-arm-arm/Config.in"
 source "toolchain/toolchain-external/toolchain-external-linaro-arm/Config.in"
@@ -44,8 +47,11 @@ source "toolchain/toolchain-external/toolchain-external-codesourcery-amd64/Confi
 
 # Kept last, so it remains the non-default choice, unless there isn't
 # any available toolchain profile for the currently selected
-# architecture.
+# architecture, but before toolchains from br2-external trees.
 source "toolchain/toolchain-external/toolchain-external-custom/Config.in"
+
+# Toolchains from br2-external trees, if any
+source "$BR2_BASE_DIR/.br2-external.in.toolchains"
 
 endchoice
 
@@ -123,6 +129,9 @@ source "toolchain/toolchain-external/toolchain-external-linaro-aarch64-be/Config
 
 # ARC
 source "toolchain/toolchain-external/toolchain-external-synopsys-arc/Config.in.options"
+
+# Andes
+source "toolchain/toolchain-external/toolchain-external-andes-nds32/Config.in.options"
 
 # ARM
 source "toolchain/toolchain-external/toolchain-external-arm-arm/Config.in.options"

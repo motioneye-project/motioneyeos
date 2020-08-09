@@ -1,5 +1,5 @@
-# From http://php.net/downloads.php
-sha256 6fe79fa1f8655f98ef6708cde8751299796d6c1e225081011f4104625b923b83  php-7.3.4.tar.xz
+# From https://www.php.net/downloads.php
+sha256  642843890b732e8af01cb661e823ae01472af1402f211c83009c9b3abd073245  php-7.4.8.tar.xz
 
 # License file
-sha256 f689b8fa63bea7950ce6a21bf52ed88ea0d77673ee76e6de12f51191174d91b8  LICENSE
+sha256  0967ad6cf4b7fe81d38709d7aaef3fecb3bd685be7eebb37b864aa34c991baa7  LICENSE

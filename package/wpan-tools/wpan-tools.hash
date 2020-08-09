@@ -1,4 +1,3 @@
-# From http://wpan.cakelab.org/releases/md5sum
-md5	91f0b640ff66910e977fab6525625624	wpan-tools-0.7.tar.xz
-# Calculated based on the hash above
-sha256	c16de9d7861c2d9b6a4436a0fac730f9f545ee290b92bc770c538ec6a3f22309	wpan-tools-0.7.tar.xz
+# Locally calculated
+sha256	3e509d9ed838df1247cc9a0c6ca483cb356ae778851817bd7410044687b655e2	wpan-tools-0.9.tar.gz
+sha256	fe8e595c24d821a60885eb259619df5e5e3976c48465fde0be29fcd78530798f	COPYING

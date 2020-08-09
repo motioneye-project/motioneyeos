@@ -1,0 +1,29 @@
+config BR2_PACKAGE_OPTEE_CLIENT
+	bool "optee-client"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  Enable the OP-TEE client package that brings non-secure
+	  client application resources for OP-TEE support. OP-TEE
+	  client is a component delivered by the OP-TEE project.
+
+	  The client API library allows application to invoke trusted
+	  applications hosted in the OP-TEE OS secure world.  The
+	  supplicant provides services hosted by the non-secure world
+	  and invoked by the secure world.
+
+	  https://github.com/OP-TEE/optee_client
+
+if BR2_PACKAGE_OPTEE_CLIENT
+
+config BR2_PACKAGE_OPTEE_CLIENT_TEE_FS_PATH
+	string "Path for normal world OS secure storage"
+	default "/data/tee"
+	help
+	  Path to storage area for secure storage based on the
+	  normal world OS providing the actual storage via
+	  tee-supplicant.
+
+endif
+
+comment "optee-client needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

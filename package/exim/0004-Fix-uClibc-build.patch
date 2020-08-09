@@ -1,0 +1,35 @@
+From 68ea4fc7ca53bf010e5ec738ad078452f0eaa639 Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Tue, 23 Jul 2019 18:48:06 +0200
+Subject: [PATCH] Fix uClibc build
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+structs.h:757:18: error: ‘NS_MAXMSG’ undeclared here (not in a function); did you mean ‘N_MASC’?
+   uschar  answer[NS_MAXMSG];      /* the answer itself */
+
+Patch sent upstream: https://github.com/Exim/exim/pull/70
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ OS/os.h-Linux | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/OS/os.h-Linux b/OS/os.h-Linux
+index 63cf9babd..1d82e9bad 100644
+--- a/OS/os.h-Linux
++++ b/OS/os.h-Linux
+@@ -87,5 +87,9 @@ then change the 0 to 1 in the next block. */
+ # define TCPI_OPT_SYN_DATA 32
+ #endif
+ 
++/* Needed for uClibc */
++#ifndef NS_MAXMSG
++# define NS_MAXMSG 65535
++#endif
+ 
+ /* End */
+-- 
+2.20.1
+

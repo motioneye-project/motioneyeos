@@ -1,0 +1,55 @@
+From dfe6f65b7078315c32cebb727e9c47ead7603475 Mon Sep 17 00:00:00 2001
+From: Asaf Kahlon <asafka7@gmail.com>
+Date: Sun, 13 Oct 2019 16:44:44 +0300
+Subject: [PATCH 1/1] Adjust ws4py for Python 3.7 syntax
+
+Since Python 3.7, "async" has become a keyword and cannot be used.
+Thus, instead of asyncio.async we will use asyncio.ensure_future.
+
+There's also a pull request with this change:
+https://github.com/Lawouach/WebSocket-for-Python/pull/245
+
+Signed-off-by: Asaf Kahlon <asafka7@gmail.com>
+---
+ ws4py/async_websocket.py    | 4 ++--
+ ws4py/server/tulipserver.py | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/ws4py/async_websocket.py b/ws4py/async_websocket.py
+index 9e2a4c7..ea296b4 100644
+--- a/ws4py/async_websocket.py
++++ b/ws4py/async_websocket.py
+@@ -84,7 +84,7 @@ class WebSocket(_WebSocket):
+         def closeit():
+             yield from self.proto.writer.drain()
+             self.proto.writer.close()
+-        asyncio.async(closeit())
++        asyncio.ensure_future(closeit())
+ 
+     def _write(self, data):
+         """
+@@ -94,7 +94,7 @@ class WebSocket(_WebSocket):
+         def sendit(data):
+             self.proto.writer.write(data)
+             yield from self.proto.writer.drain()
+-        asyncio.async(sendit(data))
++        asyncio.ensure_future(sendit(data))
+ 
+     @asyncio.coroutine
+     def run(self):
+diff --git a/ws4py/server/tulipserver.py b/ws4py/server/tulipserver.py
+index 2786c16..85312a2 100644
+--- a/ws4py/server/tulipserver.py
++++ b/ws4py/server/tulipserver.py
+@@ -40,7 +40,7 @@ class WebSocketProtocol(asyncio.StreamReaderProtocol):
+         #self.stream.set_transport(transport)
+         asyncio.StreamReaderProtocol.connection_made(self, transport)
+         # Let make it concurrent for others to tag along
+-        f = asyncio.async(self.handle_initial_handshake())
++        f = asyncio.ensure_future(self.handle_initial_handshake())
+         f.add_done_callback(self.terminated)
+ 
+     @property
+-- 
+2.20.1
+

@@ -1,0 +1,61 @@
+################################################################################
+#
+# hv_fcopy_daemon
+#
+################################################################################
+
+LINUX_TOOLS += hv
+
+# The programs to build, as known by the kernel:
+HV_PROGS_$(BR2_PACKAGE_LINUX_TOOLS_HV_KVP_DAEMON) += hv_kvp_daemon
+HV_PROGS_$(BR2_PACKAGE_LINUX_TOOLS_HV_FCOPY_DAEMON) += hv_fcopy_daemon
+HV_PROGS_$(BR2_PACKAGE_LINUX_TOOLS_HV_VSS_DAEMON) += hv_vss_daemon
+
+# Give each tools the name most distros install them as:
+HV_hv_kvp_daemon = hypervkvpd
+HV_hv_fcopy_daemon = hypervfcopyd
+HV_hv_vss_daemon = hypervvssd
+
+HV_MAKE_OPTS = CC="$(TARGET_CC)" CFLAGS="$(filter-out -g%,$(TARGET_CFLAGS))"
+
+define HV_BUILD_CMDS
+	$(Q)for prog in $(HV_PROGS_y); do \
+		if test ! -f $(LINUX_DIR)/tools/hv/$${prog}.c ; then \
+			printf "Your kernel version is too old and does not have the HyperV %s tool." "$${prog}" ; \
+			exit 1 ; \
+		fi; \
+	done
+
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(LINUX_DIR)/tools/hv \
+		$(HV_MAKE_OPTS) \
+		$(HV_PROGS_y)
+endef
+
+ifeq ($(BR2_PACKAGE_LINUX_TOOLS_HV_KVP_DAEMON),y)
+define HV_KVP_HELPER
+	@mkdir -p $(TARGET_DIR)/usr/libexec/hypervkvpd
+	$(Q)ln -sf /bin/true $(TARGET_DIR)/usr/libexec/hypervkvpd/hv_set_ifconfig
+endef
+endif
+
+define HV_INSTALL_TARGET_CMDS
+	$(foreach prog,$(HV_PROGS_y), \
+		$(INSTALL) -m 0755 -D $(LINUX_DIR)/tools/hv/$(prog) \
+			$(TARGET_DIR)/usr/sbin/$(HV_$(prog))
+	)
+	$(HV_KVP_HELPER)
+endef
+
+define HV_INSTALL_INIT_SYSTEMD
+	$(foreach prog,$(HV_PROGS_y), \
+		$(INSTALL) -m 0644 -D package/linux-tools/$(HV_$(prog)).service \
+			$(TARGET_DIR)/usr/lib/systemd/system/$(HV_$(prog)).service
+	)
+endef
+
+define HV_INSTALL_INIT_SYSV
+	$(INSTALL) -m 0755 -D package/linux-tools/S10hyperv \
+		$(TARGET_DIR)/etc/init.d/S10hyperv
+	$(SED) 's/@PROGS@/$(foreach prog,$(HV_PROGS_y),$(HV_$(prog)))/' \
+		$(TARGET_DIR)/etc/init.d/S10hyperv
+endef

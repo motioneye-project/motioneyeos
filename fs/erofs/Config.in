@@ -1,0 +1,14 @@
+config BR2_TARGET_ROOTFS_EROFS
+	bool "erofs root filesystem"
+	select BR2_PACKAGE_HOST_EROFS_UTILS
+	help
+	  Build a EROFS root filesystem.
+
+if BR2_TARGET_ROOTFS_EROFS
+
+config BR2_TARGET_ROOTFS_EROFS_LZ4HC
+	bool "lz4hc compression"
+	help
+	  Use lz4 high-compression to compress data in the filesystem.
+
+endif # BR2_TARGET_ROOTFS_EROFS

@@ -10,7 +10,7 @@ config BR2_PACKAGE_FBTERM
 	  fbterm is a fast terminal emulator for Linux with frame buffer
 	  device or VESA video card.
 
-	  http://code.google.com/p/fbterm/
+	  https://code.google.com/archive/p/fbterm/
 
 comment "fbterm needs a toolchain w/ C++, wchar, locale"
 	depends on BR2_USE_MMU

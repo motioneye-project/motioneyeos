@@ -1,0 +1,87 @@
+From 3004f23d38400cd4a8619bcacd55a625d3bd7e1f Mon Sep 17 00:00:00 2001
+From: Alexander Dahl <post@lespocky.de>
+Date: Fri, 13 Mar 2020 13:20:27 +0100
+Subject: [PATCH] Fix build on 32-bit systems
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Because -Werror is set, some printf statements caused build errors on
+32-bit systems when printing uint64_t. This can be handled in a portable
+way by using the macros from inttypes.h …
+
+Fixes: #12
+Signed-off-by: Alexander Dahl <post@lespocky.de>
+---
+PR upstream: https://github.com/nhorman/dropwatch/pull/24
+---
+ src/dwdump.c | 3 ++-
+ src/main.c   | 9 +++++----
+ 2 files changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/src/dwdump.c b/src/dwdump.c
+index 0c3ba6f..0ea9fd0 100644
+--- a/src/dwdump.c
++++ b/src/dwdump.c
+@@ -3,6 +3,7 @@
+  */
+ 
+ #include <errno.h>
++#include <inttypes.h>
+ #include <getopt.h>
+ #include <pcap.h>
+ #include <signal.h>
+@@ -246,7 +247,7 @@ static void dwdump_nested_stats_print(struct nlattr *attr)
+ 		return;
+ 
+ 	if (attrs[NET_DM_ATTR_STATS_DROPPED])
+-		printf("Tail dropped: %lu\n",
++		printf("Tail dropped: %" PRIu64 "\n",
+ 		       nla_get_u64(attrs[NET_DM_ATTR_STATS_DROPPED]));
+ }
+ 
+diff --git a/src/main.c b/src/main.c
+index 1a1515c..bd87085 100644
+--- a/src/main.c
++++ b/src/main.c
+@@ -10,6 +10,7 @@
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <errno.h>
++#include <inttypes.h>
+ #include <signal.h>
+ #include <stdint.h>
+ #include <stdbool.h>
+@@ -486,9 +487,9 @@ void handle_dm_packet_alert_msg(struct netlink_message *msg, int err)
+ 		goto out_free;
+ 
+ 	if (attrs[NET_DM_ATTR_PC] && attrs[NET_DM_ATTR_SYMBOL])
+-		printf("drop at: %s (%p)\n",
++		printf("drop at: %s (0x%" PRIx64 ")\n",
+ 		       nla_get_string(attrs[NET_DM_ATTR_SYMBOL]),
+-		       (void *) nla_get_u64(attrs[NET_DM_ATTR_PC]));
++		       nla_get_u64(attrs[NET_DM_ATTR_PC]));
+ 	else if (attrs[NET_DM_ATTR_HW_TRAP_GROUP_NAME] &&
+ 		 attrs[NET_DM_ATTR_HW_TRAP_NAME])
+ 		printf("drop at: %s (%s)\n",
+@@ -524,7 +525,7 @@ void handle_dm_packet_alert_msg(struct netlink_message *msg, int err)
+ 
+ 		tstr = asctime(tm);
+ 		tstr[strlen(tstr) - 1] = 0;
+-		printf("timestamp: %s %09ld nsec\n", tstr, ts % 1000000000);
++		printf("timestamp: %s %09" PRId64 " nsec\n", tstr, ts % 1000000000);
+ 	}
+ 
+ 	if (attrs[NET_DM_ATTR_PROTO])
+@@ -599,7 +600,7 @@ void print_nested_stats(struct nlattr *attr)
+ 		return;
+ 
+ 	if (attrs[NET_DM_ATTR_STATS_DROPPED])
+-		printf("Tail dropped: %lu\n",
++		printf("Tail dropped: %" PRIu64 "\n",
+ 		       nla_get_u64(attrs[NET_DM_ATTR_STATS_DROPPED]));
+ }
+ 
+-- 
+2.20.1
+

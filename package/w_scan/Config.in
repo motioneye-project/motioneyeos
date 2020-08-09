@@ -11,4 +11,4 @@ config BR2_PACKAGE_W_SCAN
 	  capable of creating channels.conf files (in different output
 	  formats !) as well as initial tuning data for scan.
 
-	  http://wirbel.htpc-forum.de/w_scan/index_en.html
+	  https://www.gen2vdr.de/wirbel/w_scan/index2.html

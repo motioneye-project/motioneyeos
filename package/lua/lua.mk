@@ -54,7 +54,15 @@ endef
 LUA_POST_PATCH_HOOKS += LUA_32BITS_LUACONF
 endif
 
+define HOST_LUA_LUACONF
+	$(SED) 's|#define LUA_ROOT.*|#define LUA_ROOT "$(HOST_DIR)/usr/"|' $(@D)/src/luaconf.h
+endef
+HOST_LUA_POST_PATCH_HOOKS += HOST_LUA_LUACONF
+
 HOST_LUA_CFLAGS = -Wall -fPIC -DLUA_USE_DLOPEN -DLUA_USE_POSIX
+ifeq ($(BR2_PACKAGE_LUA_5_3),y)
+HOST_LUA_CFLAGS += -DLUA_COMPAT_5_2
+endif
 HOST_LUA_MYLIBS = -ldl
 
 define LUA_BUILD_CMDS
@@ -74,7 +82,7 @@ define HOST_LUA_BUILD_CMDS
 	CFLAGS="$(HOST_LUA_CFLAGS)" \
 	MYLDFLAGS="$(HOST_LDFLAGS)" \
 	MYLIBS="$(HOST_LUA_MYLIBS)" \
-	BUILDMODE=static \
+	BUILDMODE=dynamic \
 	PKG_VERSION=$(LUA_VERSION) -C $(@D)/src all
 	sed -e "s/@VERSION@/$(LUA_VERSION)/;s/@ABI@/$(LUAINTERPRETER_ABIVER)/;s/@MYLIBS@/$(HOST_LUA_MYLIBS)/" \
 		package/lua/lua.pc.in > $(@D)/lua.pc

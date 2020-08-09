@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-MICROPYTHON_LIB_VERSION = v1.9.3
-MICROPYTHON_LIB_SITE = $(call github,micropython,micropython-lib,$(MICROPYTHON_LIB_VERSION))
+MICROPYTHON_LIB_VERSION = 1.9.3
+MICROPYTHON_LIB_SITE = $(call github,micropython,micropython-lib,v$(MICROPYTHON_LIB_VERSION))
 MICROPYTHON_LIB_LICENSE = Python-2.0 (some modules), MIT (everything else)
 MICROPYTHON_LIB_LICENSE_FILES = LICENSE
 

@@ -1,2 +1,7 @@
-# From http://lists.freedesktop.org/pipermail/xorg/2014-June/056668.html
-sha256	f5a3c824761df351ca91827ac221090943ef28b248573486050de89f4bfcdc4c	libXft-2.3.2.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2019-March/002976.html
+md5 4a433c24627b4ff60a4dd403a0990796  libXft-2.3.3.tar.bz2
+sha1 48f543fe495f545df1794fa36a0a708558ae298c  libXft-2.3.3.tar.bz2
+sha256 225c68e616dd29dbb27809e45e9eadf18e4d74c50be43020ef20015274529216  libXft-2.3.3.tar.bz2
+sha512 28fdaf3baa3b156a4a7fdd6e39c4d8026d7d21eaa9be27c9797c8d329dab691a1bc82ea6042f9d4729a9343d93787536fb7e4b606f722f33cbe608b2e79910e8  libXft-2.3.3.tar.bz2
+# Locally computed
+sha256 7cda22286b1379b9b73df695f72cbad36595e65b039a5fbc5c89b69ecc44438c  COPYING

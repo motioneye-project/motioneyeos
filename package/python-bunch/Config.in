@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_BUNCH
+	bool "python-bunch"
+	help
+	  A dot-accessible dictionary (a la JavaScript objects).
+
+	  http://github.com/dsc/bunch

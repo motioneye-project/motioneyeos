@@ -1,0 +1,120 @@
+config BR2_PACKAGE_FLUIDSYNTH
+	bool "fluidsynth"
+	depends on BR2_USE_WCHAR # libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
+	depends on BR2_USE_MMU # libglib2
+	select BR2_PACKAGE_LIBGLIB2
+	help
+	  FluidSynth is a real-time software synthesizer based on the
+	  SoundFont 2 specifications and has reached widespread
+	  distribution. FluidSynth itself does not have a graphical
+	  user interface, but due to its powerful API several
+	  applications utilize it and it has even found its way onto
+	  embedded systems and is used in some mobile apps.
+
+	  http://www.fluidsynth.org/
+
+if BR2_PACKAGE_FLUIDSYNTH
+
+comment "Output support"
+
+config BR2_PACKAGE_FLUIDSYNTH_ALSA_LIB
+	bool "alsa"
+	default y
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_ALSA_LIB
+	select BR2_PACKAGE_ALSA_LIB_RAWMIDI
+	select BR2_PACKAGE_ALSA_LIB_SEQ
+	help
+	  Enable alsa support.
+
+comment "alsa support needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_FLUIDSYNTH_JACK2
+	bool "jack2"
+	# See: https://sourceware.org/bugzilla/show_bug.cgi?id=19908
+	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS
+	depends on BR2_TOOLCHAIN_HAS_THREADS # jack2
+	depends on BR2_USE_MMU # jack2
+	depends on BR2_INSTALL_LIBSTDCPP # jack2
+	depends on !BR2_STATIC_LIBS # jack2
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # jack2
+	select BR2_PACKAGE_JACK2
+	help
+	  Enable jack support.
+
+comment "jack support needs a toolchain w/ dynamic library, threads, C++"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS
+	depends on BR2_STATIC_LIBS || !BR2_INSTALL_LIBSTDCPP || \
+		!BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_FLUIDSYNTH_LIBSNDFILE
+	bool "libsndfile"
+	select BR2_PACKAGE_LIBSNDFILE
+	help
+	  Enable libsndfile support, for writing output to WAV files.
+
+config BR2_PACKAGE_FLUIDSYNTH_PORTAUDIO
+	bool "portaudio"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_PORTAUDIO
+	help
+	  Enable portaudio support.
+
+comment "portaudio support needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_FLUIDSYNTH_PULSEAUDIO
+	bool "pulseaudio"
+	# See: https://sourceware.org/bugzilla/show_bug.cgi?id=19908
+	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS
+	depends on BR2_PACKAGE_PULSEAUDIO_HAS_ATOMIC # pulseaudio
+	depends on BR2_USE_WCHAR # pulseaudio
+	depends on BR2_TOOLCHAIN_HAS_THREADS # pulseaudio
+	depends on !BR2_STATIC_LIBS # pulseaudio
+	depends on BR2_USE_MMU # pulseaudio
+	select BR2_PACKAGE_PULSEAUDIO
+	help
+	  Enable PulseAudio support.
+
+comment "pulseaudio support needs a toolchain w/ dynamic library, wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS
+	depends on BR2_PACKAGE_PULSEAUDIO_HAS_ATOMIC
+	depends on BR2_STATIC_LIBS || !BR2_USE_MMU || !BR2_TOOLCHAIN_HAS_THREADS
+
+comment "Misc options"
+
+config BR2_PACKAGE_FLUIDSYNTH_DBUS
+	bool "dbus"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU
+	select BR2_PACKAGE_DBUS
+	help
+	  Enable dbus support.
+
+comment "dbus support needs a toolchain w/ threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_FLUIDSYNTH_FLOATS
+	bool "32-bit single precision float"
+	help
+	  Enable 32-bit single precision float support, instead of
+	  64-bit double precision floats for DSP samples.
+
+config BR2_PACKAGE_FLUIDSYNTH_READLINE
+	bool "readline"
+	select BR2_PACKAGE_READLINE
+	help
+	  Enable readline support, for better line editing in FluidSynth
+	  shell.
+
+endif # BR2_PACKAGE_FLUIDSYNTH
+
+comment "fluidsynth needs a toolchain w/ threads, wchar"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

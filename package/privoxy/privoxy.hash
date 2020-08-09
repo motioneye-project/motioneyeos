@@ -1,3 +1,6 @@
-# From http://sourceforge.net/projects/ijbswa/files/Sources/3.0.26%20%28stable%29/
-md5 8a1c842112ccea68c19b7ceb4a0e999f  privoxy-3.0.26-stable-src.tar.gz
-sha1 b646624006225979f83453ba542e448667f45998  privoxy-3.0.26-stable-src.tar.gz
+# From http://sourceforge.net/projects/ijbswa/files/Sources/3.0.28%20%28stable%29/
+md5  c7e8900d5aff33d9a5fc37ac28154f21  privoxy-3.0.28-stable-src.tar.gz
+sha1  fa8f9f355a48afe94afcaef31c5404b2294c1043  privoxy-3.0.28-stable-src.tar.gz
+# Locally computed
+sha256  b5d78cc036aaadb3b7cf860e9d598d7332af468926a26e2d56167f1cb6f2824a  privoxy-3.0.28-stable-src.tar.gz
+sha256  8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643  LICENSE

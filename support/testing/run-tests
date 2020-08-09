@@ -1,9 +1,10 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 import argparse
-import sys
-import os
-import nose2
 import multiprocessing
+import os
+import sys
+
+import nose2
 
 from infra.basetest import BRConfigTest
 
@@ -70,7 +71,7 @@ def main():
 
     BRConfigTest.outputdir = os.path.abspath(args.output)
 
-    if args.all is False and len(args.testname) == 0:
+    if args.all is False and not args.testname:
         print("No test selected")
         print("")
         parser.print_help()
@@ -112,7 +113,7 @@ def main():
                   "-s", test_dir,
                   "-c", os.path.join(test_dir, "conf/unittest.cfg")]
 
-    if len(args.testname) != 0:
+    if args.testname:
         nose2_args += args.testname
 
     nose2.discover(argv=nose2_args)

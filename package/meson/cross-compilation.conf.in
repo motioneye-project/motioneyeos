@@ -8,7 +8,9 @@ c = '@TARGET_CROSS@gcc'
 cpp = '@TARGET_CROSS@g++'
 ar = '@TARGET_CROSS@ar'
 strip = '@TARGET_CROSS@strip'
-pkgconfig = '@HOST_DIR@/usr/bin/pkg-config'
+pkgconfig = '@HOST_DIR@/bin/pkgconf'
+g-ir-compiler = '@STAGING_DIR@/usr/bin/g-ir-compiler'
+g-ir-scanner = '@STAGING_DIR@/usr/bin/g-ir-scanner'
 
 [properties]
 needs_exe_wrapper = true
@@ -16,6 +18,9 @@ c_args = [@TARGET_CFLAGS@]
 c_link_args = [@TARGET_LDFLAGS@]
 cpp_args = [@TARGET_CXXFLAGS@]
 cpp_link_args = [@TARGET_LDFLAGS@]
+sys_root = '@STAGING_DIR@'
+pkg_config_libdir = '@STAGING_DIR@/usr/lib/pkgconfig:@STAGING_DIR@/usr/share/pkgconfig'
+pkg_config_static = '@STATIC@'
 
 [host_machine]
 system = 'linux'

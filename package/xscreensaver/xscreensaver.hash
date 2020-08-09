@@ -1,2 +1,4 @@
 # Locally calculated
-sha256 6b8b5238047f1613d99149bb02d5ed3384675f3ce74a0a8ba25290bd61abc06c  xscreensaver-5.36.tar.gz
+sha256 158f381d687e8360a6debb0d3af0148d279e853666244f02d628a5a482bce194  xscreensaver-5.43.tar.gz
+sha256 8a03451ba5c4c9af669b53e47e50c38c149b9e152d3d627809b962da7b760bbd  hacks/screenhack.h
+sha256 56db580415bb313a4a82c5e08f106304904d15d42faf8e6ab14b34e14e2087a5  hacks/glx/chessmodels.h

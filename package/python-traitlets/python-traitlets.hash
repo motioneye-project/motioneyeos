@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/traitlets/json, sha256 locally computed
-md5 3068663f2f38fd939a9eb3a500ccc154 traitlets-4.3.2.tar.gz
-sha256 9c4bd2d267b7153df9152698efb1050a5d84982d3384a37b2c1f7723ba3e7835 traitlets-4.3.2.tar.gz
+# md5, sha256 from https://pypi.org/pypi/traitlets/json
+md5	3a4f263af65d3d79f1c279f0247077ef  traitlets-4.3.3.tar.gz
+sha256	d023ee369ddd2763310e4c3eae1ff649689440d4ae59d7485eb4cfbbe3e359f7  traitlets-4.3.3.tar.gz
+# Locally computed sha256 checksums
+sha256	71c89129039b870cc92309466c4fbe8f285a82fa0ea36f0e840fa83979cbe31f  COPYING.md

@@ -1,0 +1,7 @@
+# md5, sha256 from https://pypi.org/pypi/pycairo/json
+md5  59bc5c5d1debc3af0f6791af9d612551  pycairo-1.19.1.tar.gz
+sha256  2c143183280feb67f5beb4e543fd49990c28e7df427301ede04fc550d3562e84  pycairo-1.19.1.tar.gz
+# Locally computed sha256 checksums
+sha256  360b9a526d47c51a7cab7f1ec49ca5893050562d639b742d588934ff84823a72  COPYING
+sha256  d80c9d084ebfb50ea1ed91bfbc2410d6ce542097a32c43b00781b83adcb8c77f  COPYING-LGPL-2.1
+sha256  53692a2ed6c6a2c6ec9b32dd0b820dfae91e0a1fcdf625ca9ed0bdf8705fcc4f  COPYING-MPL-1.1

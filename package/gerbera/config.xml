@@ -79,6 +79,9 @@
         <map from="flv" to="video/x-flv"/>
         <map from="mkv" to="video/x-matroska"/>
         <map from="mka" to="audio/x-matroska"/>
+        <map from="dsf" to="audio/x-dsd"/>
+        <map from="dff" to="audio/x-dsd"/>
+        <map from="wv" to="audio/x-wavpack"/>
         <!-- Uncomment the line below for PS3 divx support -->
         <!-- <map from="avi" to="video/divx"/> -->
         <!-- Uncomment the line below for D-Link DSM / ZyXEL DMA-1000 -->
@@ -107,6 +110,7 @@
         <treat mimetype="audio/mp4" as="mp4"/>
         <treat mimetype="video/x-matroska" as="mkv"/>
         <treat mimetype="audio/x-matroska" as="mka"/>
+        <treat mimetype="audio/x-dsd" as="dsd"/>
       </mimetype-contenttype>
     </mappings>
   </import>

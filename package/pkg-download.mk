@@ -18,7 +18,6 @@ export SCP := $(call qstrip,$(BR2_SCP))
 export LOCALFILES := $(call qstrip,$(BR2_LOCALFILES))
 
 DL_WRAPPER = support/download/dl-wrapper
-FLOCK = flock $($(PKG)_DL_DIR)/
 
 # DL_DIR may have been set already from the environment
 ifeq ($(origin DL_DIR),undefined)
@@ -63,46 +62,55 @@ github = https://github.com/$(1)/$(2)/archive/$(3)
 export BR_NO_CHECK_HASH_FOR =
 
 ################################################################################
-# DOWNLOAD -- Download helper. Will call DL_WRAPPER which will try to download
-# source from:
+# DOWNLOAD_URIS - List the candidates URIs where to get the package from:
 # 1) BR2_PRIMARY_SITE if enabled
 # 2) Download site, unless BR2_PRIMARY_SITE_ONLY is set
 # 3) BR2_BACKUP_SITE if enabled, unless BR2_PRIMARY_SITE_ONLY is set
 #
 # Argument 1 is the source location
+# Argument 2 is the upper-case package name
 #
 ################################################################################
 
 ifneq ($(call qstrip,$(BR2_PRIMARY_SITE)),)
 DOWNLOAD_URIS += \
-	-u $(call getschemeplusuri,$(call qstrip,$(BR2_PRIMARY_SITE)/$($(PKG)_DL_SUBDIR)),urlencode) \
-	-u $(call getschemeplusuri,$(call qstrip,$(BR2_PRIMARY_SITE)),urlencode)
+	$(call getschemeplusuri,$(call qstrip,$(BR2_PRIMARY_SITE)/$($(2)_DL_SUBDIR)),urlencode) \
+	$(call getschemeplusuri,$(call qstrip,$(BR2_PRIMARY_SITE)),urlencode)
 endif
 
 ifeq ($(BR2_PRIMARY_SITE_ONLY),)
 DOWNLOAD_URIS += \
-	-u $(patsubst %/,%,$(dir $(call qstrip,$(1))))
+	$(patsubst %/,%,$(dir $(call qstrip,$(1))))
 ifneq ($(call qstrip,$(BR2_BACKUP_SITE)),)
 DOWNLOAD_URIS += \
-	-u $(call getschemeplusuri,$(call qstrip,$(BR2_BACKUP_SITE)/$($(PKG)_DL_SUBDIR)),urlencode) \
-	-u $(call getschemeplusuri,$(call qstrip,$(BR2_BACKUP_SITE)),urlencode)
+	$(call getschemeplusuri,$(call qstrip,$(BR2_BACKUP_SITE)/$($(2)_DL_SUBDIR)),urlencode) \
+	$(call getschemeplusuri,$(call qstrip,$(BR2_BACKUP_SITE)),urlencode)
 endif
 endif
 
+################################################################################
+# DOWNLOAD -- Download helper. Will call DL_WRAPPER which will try to download
+# source from the list returned by DOWNLOAD_URIS.
+#
+# Argument 1 is the source location
+# Argument 2 is the upper-case package name
+#
+################################################################################
+
 define DOWNLOAD
-	$(Q)mkdir -p $($(PKG)_DL_DIR)
-	$(Q)$(EXTRA_ENV) $(FLOCK) $(DL_WRAPPER) \
-		-c '$($(PKG)_DL_VERSION)' \
-		-d '$($(PKG)_DL_DIR)' \
+	$(Q)mkdir -p $($(2)_DL_DIR)
+	$(Q)$(EXTRA_ENV) flock $($(2)_DL_DIR)/.lock $(DL_WRAPPER) \
+		-c '$($(2)_DL_VERSION)' \
+		-d '$($(2)_DL_DIR)' \
 		-D '$(DL_DIR)' \
 		-f '$(notdir $(1))' \
-		-H '$($(PKG)_HASH_FILE)' \
-		-n '$($(PKG)_BASENAME_RAW)' \
-		-N '$($(PKG)_RAWNAME)' \
-		-o '$($(PKG)_DL_DIR)/$(notdir $(1))' \
-		$(if $($(PKG)_GIT_SUBMODULES),-r) \
-		$(DOWNLOAD_URIS) \
+		-H '$($(2)_HASH_FILE)' \
+		-n '$($(2)_BASENAME_RAW)' \
+		-N '$($(2)_RAWNAME)' \
+		-o '$($(2)_DL_DIR)/$(notdir $(1))' \
+		$(if $($(2)_GIT_SUBMODULES),-r) \
+		$(foreach uri,$(call DOWNLOAD_URIS,$(1),$(2)),-u $(uri)) \
 		$(QUIET) \
 		-- \
-		$($(PKG)_DL_OPTS)
+		$($(2)_DL_OPTS)
 endef

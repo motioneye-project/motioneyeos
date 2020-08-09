@@ -1,2 +1,3 @@
-# From https://code.google.com/p/mp4v2/downloads/detail?name=mp4v2-2.0.0.tar.bz2
-sha1 193260cfb7201e6ec250137bcca1468d4d20e2f0 mp4v2-2.0.0.tar.bz2
+# Locally computed
+sha256  e3ad6c2dc451b0875dbe34bfe7f51f4fe278b391434c886083e6d3ecd5fa08c2  mp4v2-4.1.3.tar.gz
+sha256  15e38684c940176e2fc76331a2299d2ab5115ac997078f768ef31b896af69fc5  COPYING

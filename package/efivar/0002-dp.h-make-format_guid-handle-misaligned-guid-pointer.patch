@@ -1,0 +1,62 @@
+From b98ba8921010d03f46704a476c69861515deb1ca Mon Sep 17 00:00:00 2001
+From: Peter Jones <pjones@redhat.com>
+Date: Mon, 7 Jan 2019 10:30:59 -0500
+Subject: [PATCH] dp.h: make format_guid() handle misaligned guid pointers
+ safely.
+
+GCC 9 adds -Werror=address-of-packed-member, which causes us to see the
+build error reported at
+ https://bugzilla.opensuse.org/show_bug.cgi?id=1120862 .
+
+That bug report shows us the following:
+
+In file included from dp.c:26:
+dp.h: In function 'format_vendor_helper':
+dp.h:120:37: error: taking address of packed member of 'struct <anonymous>' may result in an unaligned pointer value [-Werror=address-of-packed-member]
+  120 |  format_guid(buf, size, off, label, &dp->hw_vendor.vendor_guid);
+      |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~
+dp.h:74:25: note: in definition of macro 'format_guid'
+   74 |   _rc = efi_guid_to_str(guid, &_guidstr);   \
+      |                         ^~~~
+cc1: all warnings being treated as errors
+
+This patch makes format_guid() use a local variable as a bounce buffer
+in the case that the guid we're passed is aligned as chaotic neutral.
+
+Note that this only fixes this instance and there may be others that bz
+didn't show because it exited too soon, and I don't have a gcc 9 build
+in front of me right now.
+
+Signed-off-by: Peter Jones <pjones@redhat.com>
+[james.hilliard1@gmail.com: backport from upstream commit
+b98ba8921010d03f46704a476c69861515deb1ca]
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+---
+ src/dp.h | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/src/dp.h b/src/dp.h
+index aa4e390..20cb608 100644
+--- a/src/dp.h
++++ b/src/dp.h
+@@ -70,8 +70,15 @@
+ #define format_guid(buf, size, off, dp_type, guid) ({			\
+ 		int _rc;						\
+ 		char *_guidstr = NULL;					\
+-									\
+-		_rc = efi_guid_to_str(guid, &_guidstr);			\
++		efi_guid_t _guid;					\
++		const efi_guid_t * const _guid_p =			\
++			likely(__alignof__(guid) == sizeof(guid))	\
++				? guid					\
++				: &_guid;				\
++								        \
++		if (unlikely(__alignof__(guid) == sizeof(guid)))	\
++			memmove(&_guid, guid, sizeof(_guid));		\
++		_rc = efi_guid_to_str(_guid_p, &_guidstr);		\
+ 		if (_rc < 0) {						\
+ 			efi_error("could not build %s GUID DP string",	\
+ 				  dp_type);				\
+-- 
+2.20.1
+

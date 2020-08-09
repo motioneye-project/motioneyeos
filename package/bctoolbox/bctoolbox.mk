@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-BCTOOLBOX_VERSION = 0.4.0
+BCTOOLBOX_VERSION = 4.3.1
 BCTOOLBOX_SITE = $(call github,BelledonneCommunications,bctoolbox,$(BCTOOLBOX_VERSION))
 BCTOOLBOX_LICENSE = GPL-2.0+
 BCTOOLBOX_LICENSE_FILES = COPYING
@@ -19,6 +19,11 @@ BCTOOLBOX_CONF_OPTS = \
 	-DENABLE_TESTS=OFF \
 	-DGIT_EXECUTABLE=OFF \
 	-DCMAKE_SKIP_RPATH=ON
+
+ifeq ($(BR2_PACKAGE_LIBICONV),y)
+BCTOOLBOX_DEPENDENCIES += libiconv
+BCTOOLBOX_CONF_OPTS += -DCMAKE_CXX_FLAGS="$(TARGET_CXXFLAGS) -liconv"
+endif
 
 ifeq ($(BR2_PACKAGE_MBEDTLS),y)
 BCTOOLBOX_DEPENDENCIES += mbedtls

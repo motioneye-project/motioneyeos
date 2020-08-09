@@ -17,9 +17,9 @@ Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 
 diff --git a/project/cmake/KodiConfig.cmake.in b/project/cmake/KodiConfig.cmake.in
 index 76626ec..ffb8e1d 100644
---- a/project/cmake/KodiConfig.cmake.in
-+++ b/project/cmake/KodiConfig.cmake.in
-@@ -7,7 +7,7 @@ if(NOT @APP_NAME_UC@_PREFIX)
+--- a/cmake/KodiConfig.cmake.in
++++ b/cmake/KodiConfig.cmake.in
+@@ -8,7 +8,7 @@ if(NOT @APP_NAME_UC@_PREFIX)
    set(@APP_NAME_UC@_PREFIX @APP_PREFIX@)
  endif()
  if(NOT @APP_NAME_UC@_INCLUDE_DIR)
@@ -28,7 +28,7 @@ index 76626ec..ffb8e1d 100644
  endif()
  if(NOT @APP_NAME_UC@_LIB_DIR)
    set(@APP_NAME_UC@_LIB_DIR @APP_LIB_DIR@)
-@@ -18,7 +18,7 @@ endif()
+@@ -20,7 +20,7 @@ endif()
  if(NOT WIN32)
    set(CMAKE_CXX_FLAGS "$ENV{CXXFLAGS} @CXX11_SWITCH@")
  endif()
