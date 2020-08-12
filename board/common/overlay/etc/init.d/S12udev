@@ -15,7 +15,6 @@ source ${CONF}
 
 start() {
     msg_begin "Starting eudev"
-    echo '\000\000\000\000' > /proc/sys/kernel/hotplug
     ${PROG} --daemon --resolve-names=never
     test $? == 0 && msg_done || msg_fail
 
