@@ -203,6 +203,7 @@ rm -rf ${TARGET}/usr/lib/python2.7/unittest/
 
 # buildroot default startup scripts
 rm -f ${TARGET}/etc/init.d/S01syslogd
+rm -f ${TARGET}/etc/init.d/S02sysctl
 rm -f ${TARGET}/etc/init.d/S10udev
 rm -f ${TARGET}/etc/init.d/S15watchdog
 rm -f ${TARGET}/etc/init.d/S20urandom
