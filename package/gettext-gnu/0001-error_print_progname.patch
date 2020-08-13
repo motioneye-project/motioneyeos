@@ -1,0 +1,20 @@
+[Updated to apply cleanly with 0.20.1]
+Signed-off-by: Adam Duskett <Aduskett@gmail.com>
+---
+diff --git a/gettext-tools/gnulib-lib/error.h b/gettext-tools/gnulib-lib/error.h
+index 61771cc..4221684 100644
+--- a/gettext-tools/gnulib-lib/error.h
++++ b/gettext-tools/gnulib-lib/error.h
+@@ -68,7 +68,10 @@ extern void error_at_line (int __status, int __errnum, const char *__fname,
+ /* If NULL, error will flush stdout, then print on stderr the program
+    name, a colon and a space.  Otherwise, error will call this
+    function without parameters instead.  */
+-extern DLL_VARIABLE void (*error_print_progname) (void);
++#ifndef __UCLIBC__
++extern DLL_VARIABLE
++#endif
++void (*error_print_progname) (void);
+ 
+ /* This variable is incremented each time 'error' is called.  */
+ extern DLL_VARIABLE unsigned int error_message_count;
+--

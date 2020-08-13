@@ -4,14 +4,13 @@
 #
 ################################################################################
 
-OPENVPN_VERSION = 2.4.6
+OPENVPN_VERSION = 2.4.9
 OPENVPN_SOURCE = openvpn-$(OPENVPN_VERSION).tar.xz
 OPENVPN_SITE = http://swupdate.openvpn.net/community/releases
 OPENVPN_DEPENDENCIES = host-pkgconf openssl
 OPENVPN_LICENSE = GPL-2.0
 OPENVPN_LICENSE_FILES = COPYRIGHT.GPL
 OPENVPN_CONF_OPTS = \
-	--disable-plugin-auth-pam \
 	--enable-iproute2 \
 	--with-crypto-library=openssl \
 	$(if $(BR2_STATIC_LIBS),--disable-plugins)
@@ -36,6 +35,34 @@ ifeq ($(BR2_PACKAGE_OPENVPN_LZO),y)
 OPENVPN_DEPENDENCIES += lzo
 else
 OPENVPN_CONF_OPTS += --disable-lzo
+endif
+
+ifeq ($(BR2_PACKAGE_LIBSELINUX),y)
+OPENVPN_DEPENDENCIES += libselinux
+OPENVPN_CONF_OPTS += --enable-selinux
+else
+OPENVPN_CONF_OPTS += --disable-selinux
+endif
+
+ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
+OPENVPN_DEPENDENCIES += linux-pam
+OPENVPN_CONF_OPTS += --enable-plugin-auth-pam
+else
+OPENVPN_CONF_OPTS += --disable-plugin-auth-pam
+endif
+
+ifeq ($(BR2_PACKAGE_PKCS11_HELPER),y)
+OPENVPN_DEPENDENCIES += pkcs11-helper
+OPENVPN_CONF_OPTS += --enable-pkcs11
+else
+OPENVPN_CONF_OPTS += --disable-pkcs11
+endif
+
+ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+OPENVPN_DEPENDENCIES += systemd
+OPENVPN_CONF_OPTS += --enable-systemd
+else
+OPENVPN_CONF_OPTS += --disable-systemd
 endif
 
 define OPENVPN_INSTALL_TARGET_CMDS

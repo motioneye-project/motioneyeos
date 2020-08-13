@@ -1,17 +1,17 @@
+config BR2_PACKAGE_NE10_ARCH_SUPPORTS
+	bool
+	default y if BR2_aarch64
+	default y if BR2_arm && (BR2_ARM_FPU_NEON || BR2_ARM_FPU_NEON_VFPV4)
+
 config BR2_PACKAGE_NE10
 	bool "ne10"
-	depends on BR2_arm
-	depends on BR2_ARM_FPU_NEON || BR2_ARM_FPU_NEON_VFPV4
+	depends on BR2_PACKAGE_NE10_ARCH_SUPPORTS
 	help
 	  The Ne10 project has been set up to provide a set of common,
 	  useful functions which have been heavily optimized for the
-	  ARM Architecture and provide consistent well tested behavior
-	  that can be easily incorporated into applications. C
-	  interfaces to the functions are provided for both assembler
-	  and NEON implementations.
+	  ARM and AArch64 Architecture and provide consistent well
+	  tested behavior that can be easily incorporated into
+	  applications. C interfaces to the functions are provided for
+	  both assembler and NEON implementations.
 
 	  http://projectne10.github.io/Ne10/
-
-comment "ne10 needs a toolchain w/ neon"
-	depends on BR2_arm
-	depends on !(BR2_ARM_FPU_NEON || BR2_ARM_FPU_NEON_VFPV4)

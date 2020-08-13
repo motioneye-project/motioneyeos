@@ -1,6 +1,7 @@
 config BR2_TARGET_ARM_TRUSTED_FIRMWARE
 	bool "ARM Trusted Firmware (ATF)"
-	depends on BR2_aarch64 && BR2_TARGET_UBOOT
+	depends on (BR2_ARM_CPU_ARMV8A || BR2_ARM_CPU_ARMV7A) && \
+		   BR2_TARGET_UBOOT
 	help
 	  Enable this option if you want to build the ATF for your ARM
 	  based embedded device.
@@ -90,6 +91,30 @@ config BR2_TARGET_ARM_TRUSTED_FIRMWARE_BL31_UBOOT
 	  bl31.bin.  This is used for example by the Xilinx version of
 	  U-Boot SPL to load ATF on the ZynqMP SoC.
 
+choice
+	prompt "BL32"
+	default BR2_TARGET_ARM_TRUSTED_FIRMWARE_BL32_DEFAULT
+	help
+	  Select BL32 stage for the trusted firmware
+
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE_BL32_DEFAULT
+	bool "Default"
+	help
+	  With this option selected, ATF will not use any BL32 stage,
+	  unless if one is explicitly chosen using the SPD (for
+	  AArch64) or AARCH32_SP (for AArch32) variables, which can be
+	  passed through
+	  BR2_TARGET_ARM_TRUSTED_FIRMWARE_ADDITIONAL_VARIABLES.
+
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE_BL32_OPTEE
+	bool "OP-TEE OS"
+	depends on BR2_TARGET_OPTEE_OS
+	help
+	  This option allows to embed OP-TEE OS as the BL32 part of
+	  the ARM Trusted Firmware boot sequence.
+
+endchoice
+
 config BR2_TARGET_ARM_TRUSTED_FIRMWARE_UBOOT_AS_BL33
 	bool "Use U-Boot as BL33"
 	depends on BR2_TARGET_UBOOT
@@ -99,10 +124,55 @@ config BR2_TARGET_ARM_TRUSTED_FIRMWARE_UBOOT_AS_BL33
 	  gets built before ATF, and that the appropriate BL33
 	  variable pointing to u-boot.bin is passed when building ATF.
 
+if BR2_TARGET_ARM_TRUSTED_FIRMWARE_UBOOT_AS_BL33
+
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE_UBOOT_BL33_IMAGE
+	string "U-Boot BL33 image name"
+	default "u-boot.bin"
+	help
+	  Name of the U-Boot BL33 image to include in ATF, it must
+	  have been installed to BINARIES_DIR by the U-Boot package.
+
+endif
+
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE_ADDITIONAL_TARGETS
+	string "Additional ATF make targets"
+	help
+	  Additional targets for the ATF build
+	  E.G. When using the QorIQ custom ATF repository from NXP,
+	  the target 'pbl' can be used to build the pbl binary.
+
 config BR2_TARGET_ARM_TRUSTED_FIRMWARE_ADDITIONAL_VARIABLES
 	string "Additional ATF build variables"
 	help
 	  Additional parameters for the ATF build
 	  E.G. 'DEBUG=1 LOG_LEVEL=20'
+
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE_DEBUG
+	bool "Build in debug mode"
+	help
+	  Enable this option to build ATF with DEBUG=1.
+
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE_IMAGES
+	string "Binary boot images"
+	default "*.bin"
+	help
+	  Names of generated image files that are installed in the
+	  output images/ directory.
+
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE_NEEDS_DTC
+	bool "Needs dtc"
+	select BR2_PACKAGE_HOST_DTC
+	help
+	  Select this option if your ATF board configuration
+	  requires the Device Tree compiler to be available.
+
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE_NEEDS_ARM32_TOOLCHAIN
+	bool "Needs arm-none-eabi toolchain"
+	depends on BR2_aarch64
+	depends on BR2_HOSTARCH = "x86_64"
+	help
+	  Select this option if your ATF board configuration requires
+	  an ARM32 bare metal toolchain to be available.
 
 endif

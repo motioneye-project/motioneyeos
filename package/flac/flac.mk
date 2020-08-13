@@ -4,15 +4,17 @@
 #
 ################################################################################
 
-FLAC_VERSION = 1.3.2
+FLAC_VERSION = 1.3.3
 FLAC_SITE = http://downloads.xiph.org/releases/flac
 FLAC_SOURCE = flac-$(FLAC_VERSION).tar.xz
 FLAC_INSTALL_STAGING = YES
 FLAC_DEPENDENCIES = $(if $(BR2_PACKAGE_LIBICONV),libiconv)
 FLAC_LICENSE = Xiph BSD-like (libFLAC), GPL-2.0+ (tools), LGPL-2.1+ (other libraries)
 FLAC_LICENSE_FILES = COPYING.Xiph COPYING.GPL COPYING.LGPL
-# 0001-configure.ac-relax-linux-OS-detection.patch patches configure.ac
+
+# patch touching configure.ac
 FLAC_AUTORECONF = YES
+
 FLAC_CONF_OPTS = \
 	--disable-cpplibs \
 	--disable-xmms-plugin \

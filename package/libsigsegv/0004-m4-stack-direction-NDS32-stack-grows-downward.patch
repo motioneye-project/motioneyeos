@@ -1,0 +1,25 @@
+From 55600de29790051671a411d8f2d99ecc3c65ae13 Mon Sep 17 00:00:00 2001
+From: Nylon Chen <nylon7@andestech.com>
+Date: Fri, 26 Apr 2019 15:56:39 +0800
+Subject: [PATCH] m4/stack-direction: NDS32 stack grows downward
+
+Signed-off-by: Nylon Chen <nylon7@andestech.com>
+---
+ m4/stack-direction.m4 | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/m4/stack-direction.m4 b/m4/stack-direction.m4
+index ffd4bce..a7df7ea 100644
+--- a/m4/stack-direction.m4
++++ b/m4/stack-direction.m4
+@@ -39,6 +39,7 @@ AC_DEFUN([SV_STACK_DIRECTION],
+       mn10200 | \
+       mn10300 | \
+       nios2 | \
++      nds32* | \
+       ns32k | \
+       pdp11 | \
+       pj* | \
+-- 
+2.18.0
+

@@ -1,3 +1,6 @@
-# md5 from https://pypi.python.org/pypi?:action=show_md5&digest=72e2acf2c3d69c7fa75a6625d06adfd0, sha256 locally computed
-md5  72e2acf2c3d69c7fa75a6625d06adfd0  python-daemon-2.1.1.tar.gz
-sha256  58a8c187ee37c3a28913bef00f83240c9ecd4a59dce09a24d92f5c941606689f  python-daemon-2.1.1.tar.gz
+# md5, sha256 https://pypi.org/pypi/python-daemon/json
+md5  3ab10a93472201214cd95c05f1923af6  python-daemon-2.2.3.tar.gz
+sha256  affeca9e5adfce2666a63890af9d6aff79f670f7511899edaddca7f96593cc25  python-daemon-2.2.3.tar.gz
+# Locally computed sha256
+sha256  cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30  LICENSE.ASF-2
+sha256  8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903  LICENSE.GPL-3

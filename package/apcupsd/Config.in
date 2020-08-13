@@ -1,0 +1,70 @@
+config BR2_PACKAGE_APCUPSD
+	bool "apcupsd"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # fork()
+	help
+	  A daemon for controlling APC UPSes.
+
+	  http://www.apcupsd.org/
+
+if BR2_PACKAGE_APCUPSD
+
+config BR2_PACKAGE_APCUPSD_APCSMART
+	bool "apcsmart"
+	help
+	  Compile APC SmartUPS serial driver
+
+config BR2_PACKAGE_APCUPSD_DUMB
+	bool "dumb"
+	help
+	  Compile dumb UPS driver
+
+config BR2_PACKAGE_APCUPSD_MODBUS
+	bool "modbus"
+	help
+	  Compile MODBUS driver code
+
+config BR2_PACKAGE_APCUPSD_MODBUS_USB
+	bool "modbus usb"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	select BR2_PACKAGE_LIBUSB
+	select BR2_PACKAGE_LIBUSB_COMPAT
+	select BR2_PACKAGE_APCUPSD_MODBUS
+	help
+	  Compile MODBUS/USB driver code
+
+comment "modbus usb support needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_APCUPSD_NET
+	bool "net"
+	help
+	  Compile networking driver for slaves
+
+config BR2_PACKAGE_APCUPSD_PCNET
+	bool "pcnet"
+	help
+	  Compile PCNET driver code
+
+config BR2_PACKAGE_APCUPSD_SNMP
+	bool "snmp"
+	help
+	  Compile SNMP driver
+
+config BR2_PACKAGE_APCUPSD_USB
+	bool "usb"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	select BR2_PACKAGE_LIBUSB
+	select BR2_PACKAGE_LIBUSB_COMPAT
+	help
+	  Compile USB UPS code
+
+comment "usb support needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
+endif
+
+comment "apcupsd needs a toolchain w/ C++, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS

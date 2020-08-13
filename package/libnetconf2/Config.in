@@ -1,0 +1,15 @@
+config BR2_PACKAGE_LIBNETCONF2
+	bool "libnetconf2"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_USE_MMU
+	select BR2_PACKAGE_LIBYANG
+	help
+	  libnetconf2 is a NETCONF library in C intended for building
+	  NETCONF clients and servers.
+
+	  https://github.com/CESNET/libnetconf2
+
+comment "libnetconf2 needs a toolchain w/ threads, dynamic libraray"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS

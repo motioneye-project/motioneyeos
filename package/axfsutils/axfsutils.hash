@@ -1,2 +1,3 @@
 # Locally calculated
-sha256 7d8c0febaf6f104c2b179475ea1ee6d361688ad7fa4c98dfdf7395fcff2be685 axfsutils-384a1ea214c8cf8359faba00a12513ee7ae1a9f5.tar.gz
+sha256  7d8c0febaf6f104c2b179475ea1ee6d361688ad7fa4c98dfdf7395fcff2be685  axfsutils-384a1ea214c8cf8359faba00a12513ee7ae1a9f5.tar.gz
+sha256  1929a1e67d189aa3a24de76255841b33818f7f65944b6e73a1568ba575ab54d5  mkfs.axfs-legacy/COPYING

@@ -5,4 +5,4 @@ config BR2_PACKAGE_ODHCP6C
 	  odhcp6c is a minimal DHCPv6 and RA-client for use in
 	  embedded Linux systems, especially routers.
 
-	  https://github.com/sbyx/odhcp6c
+	  https://git.openwrt.org/project/odhcp6c.git

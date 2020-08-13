@@ -1,2 +1,4 @@
-# From http://www.olsr.org/releases/0.9/SHA256SUM-0.9.6.1
-sha256 9cac290e9bff5fc7422110b9ccd972853f10962c962d2f31a63de9c6d1520612  olsrd-0.9.6.1.tar.bz2
+# Locally computed
+sha256 ee9e524224e5d5304dcf61f1dc5485c569da09d382934ff85b233be3e24821a3  olsr-0.9.8.tar.gz
+sha256 7dcf1fb93ef105e2708b02603bb6ee443115d4819fbf2c5a3a001b46887acb9a  license.txt
+sha256 dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551  lib/pud/nmealib/LICENSE

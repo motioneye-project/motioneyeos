@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/pudb/json, sha256 locally computed
-md5 97597d9fec79494a83ec8d55987a8a82 pudb-2017.1.2.tar.gz
-sha256 29d82ed05030146e5f2f9431926cc24f6c6c284cb451a4a850625fc0303e46e7 pudb-2017.1.2.tar.gz
+# md5, sha256 from https://pypi.org/pypi/pudb/json
+md5	4c024311d3f53bc189084821e7ef7d5e  pudb-2019.1.tar.gz
+sha256	ac30cfc64580958ab7265decb4cabb9141f08781ff072e9a336d5a7942ce35a6  pudb-2019.1.tar.gz
+# Locally computed sha256 checksums
+sha256	a95343fffff49cde3d9bf33cf6bb71cb3bf0ed83f47d98a7ba04b175d29c79ab  LICENSE

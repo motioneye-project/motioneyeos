@@ -1,12 +1,12 @@
 From b2fe84bfd00117d4897f1f2e8f83d3410eb188b8 Mon Sep 17 00:00:00 2001
-From: Adam Duskett <Adamduskett@outlook.com>
+From: Adam Duskett <aduskett@gmail.com>
 Date: Thu, 12 Oct 2017 22:04:58 -0400
 Subject: [PATCH] remove werror flag from setup
 
 Compilers older than gcc6 will generate uninitialized variable warnings which
 will cause compiling to fail.
 
-Signed-off-by: Adam Duskett <Adamduskett@outlook.com>
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
 ---
  setup.py | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)

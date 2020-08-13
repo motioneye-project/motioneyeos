@@ -15,12 +15,9 @@ GUPNP_DLNA_LICENSE_FILES = COPYING
 GUPNP_DLNA_INSTALL_STAGING = YES
 GUPNP_DLNA_DEPENDENCIES = host-pkgconf libglib2 libxml2
 
-ifeq ($(BR2_PACKAGE_GST_PLUGINS_BASE),y)
-GUPNP_DLNA_CONF_OPTS += --enable-legacy-gstreamer-metadata-backend
-GUPNP_DLNA_DEPENDENCIES += gstreamer gst-plugins-base
-else
-GUPNP_DLNA_CONF_OPTS += --disable-legacy-gstreamer-metadata-backend
-endif
+GUPNP_DLNA_CONF_OPTS = \
+	--disable-introspection \
+	--disable-legacy-gstreamer-metadata-backend
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BASE),y)
 GUPNP_DLNA_CONF_OPTS += --enable-gstreamer-metadata-backend

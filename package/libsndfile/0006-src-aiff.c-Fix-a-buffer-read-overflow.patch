@@ -1,0 +1,29 @@
+From f833c53cb596e9e1792949f762e0b33661822748 Mon Sep 17 00:00:00 2001
+From: Erik de Castro Lopo <erikd@mega-nerd.com>
+Date: Tue, 23 May 2017 20:15:24 +1000
+Subject: [PATCH] src/aiff.c: Fix a buffer read overflow
+
+Secunia Advisory SA76717.
+
+Found by: Laurent Delosieres, Secunia Research at Flexera Software
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/erikd/libsndfile/commit/f833c53cb596e9e1792949f762e0b33661822748]
+---
+ src/aiff.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/aiff.c b/src/aiff.c
+index 5b5f9f53..45864b76 100644
+--- a/src/aiff.c
++++ b/src/aiff.c
+@@ -1759,7 +1759,7 @@ aiff_read_chanmap (SF_PRIVATE * psf, unsigned dword)
+ 		psf_binheader_readf (psf, "j", dword - bytesread) ;
+ 
+ 	if (map_info->channel_map != NULL)
+-	{	size_t chanmap_size = psf->sf.channels * sizeof (psf->channel_map [0]) ;
++	{	size_t chanmap_size = SF_MIN (psf->sf.channels, layout_tag & 0xffff) * sizeof (psf->channel_map [0]) ;
+ 
+ 		free (psf->channel_map) ;
+ 

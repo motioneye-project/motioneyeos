@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBCURL_VERSION = 7.64.1
+LIBCURL_VERSION = 7.71.1
 LIBCURL_SOURCE = curl-$(LIBCURL_VERSION).tar.xz
 LIBCURL_SITE = https://curl.haxx.se/download
 LIBCURL_DEPENDENCIES = host-pkgconf \
@@ -18,9 +18,11 @@ LIBCURL_INSTALL_STAGING = YES
 # on non-MMU platforms. Moreover, this authentication method is
 # probably almost never used. See
 # http://curl.haxx.se/docs/manpage.html#--ntlm.
+# Likewise, there is no compiler on the target, so libcurl-option (to
+# generate C code) isn't very useful
 LIBCURL_CONF_OPTS = --disable-manual --disable-ntlm-wb \
 	--enable-hidden-symbols --with-random=/dev/urandom --disable-curldebug \
-	--without-polarssl
+	--disable-libcurl-option
 
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
 LIBCURL_CONF_OPTS += --enable-threaded-resolver
@@ -49,6 +51,13 @@ else
 LIBCURL_CONF_OPTS += --without-ssl
 endif
 
+ifeq ($(BR2_PACKAGE_LIBCURL_BEARSSL),y)
+LIBCURL_CONF_OPTS += --with-bearssl=$(STAGING_DIR)/usr
+LIBCURL_DEPENDENCIES += bearssl
+else
+LIBCURL_CONF_OPTS += --without-bearssl
+endif
+
 ifeq ($(BR2_PACKAGE_LIBCURL_GNUTLS),y)
 LIBCURL_CONF_OPTS += --with-gnutls=$(STAGING_DIR)/usr \
 	--with-ca-fallback
@@ -70,6 +79,13 @@ LIBCURL_CONF_OPTS += --with-mbedtls=$(STAGING_DIR)/usr
 LIBCURL_DEPENDENCIES += mbedtls
 else
 LIBCURL_CONF_OPTS += --without-mbedtls
+endif
+
+ifeq ($(BR2_PACKAGE_LIBCURL_WOLFSSL),y)
+LIBCURL_CONF_OPTS += --with-wolfssl=$(STAGING_DIR)/usr
+LIBCURL_DEPENDENCIES += wolfssl
+else
+LIBCURL_CONF_OPTS += --without-wolfssl
 endif
 
 ifeq ($(BR2_PACKAGE_C_ARES),y)
@@ -108,12 +124,52 @@ else
 LIBCURL_CONF_OPTS += --without-nghttp2
 endif
 
+ifeq ($(BR2_PACKAGE_LIBCURL_COOKIES_SUPPORT),y)
+LIBCURL_CONF_OPTS += --enable-cookies
+else
+LIBCURL_CONF_OPTS += --disable-cookies
+endif
+
+ifeq ($(BR2_PACKAGE_LIBCURL_PROXY_SUPPORT),y)
+LIBCURL_CONF_OPTS += --enable-proxy
+else
+LIBCURL_CONF_OPTS += --disable-proxy
+endif
+
+ifeq ($(BR2_PACKAGE_LIBCURL_EXTRA_PROTOCOLS_FEATURES),y)
+LIBCURL_CONF_OPTS += \
+	--enable-dict \
+	--enable-gopher \
+	--enable-imap \
+	--enable-ldap \
+	--enable-ldaps \
+	--enable-pop3 \
+	--enable-rtsp \
+	--enable-smb \
+	--enable-smtp \
+	--enable-telnet \
+	--enable-tftp
+else
+LIBCURL_CONF_OPTS += \
+	--disable-dict \
+	--disable-gopher \
+	--disable-imap \
+	--disable-ldap \
+	--disable-ldaps \
+	--disable-pop3 \
+	--disable-rtsp \
+	--disable-smb \
+	--disable-smtp \
+	--disable-telnet \
+	--disable-tftp
+endif
+
 define LIBCURL_FIX_DOT_PC
 	printf 'Requires: openssl\n' >>$(@D)/libcurl.pc.in
 endef
 LIBCURL_POST_PATCH_HOOKS += $(if $(BR2_PACKAGE_LIBCURL_OPENSSL),LIBCURL_FIX_DOT_PC)
 
-ifeq ($(BR2_PACKAGE_CURL),)
+ifeq ($(BR2_PACKAGE_LIBCURL_CURL),)
 define LIBCURL_TARGET_CLEANUP
 	rm -rf $(TARGET_DIR)/usr/bin/curl
 endef
@@ -128,7 +184,6 @@ HOST_LIBCURL_CONF_OPTS = \
 	--with-ssl \
 	--without-gnutls \
 	--without-mbedtls \
-	--without-polarssl \
 	--without-nss
 
 HOST_LIBCURL_POST_PATCH_HOOKS += LIBCURL_FIX_DOT_PC

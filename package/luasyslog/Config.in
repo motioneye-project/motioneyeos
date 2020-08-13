@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LUASYSLOG
+	bool "luasyslog"
+	select BR2_PACKAGE_LUALOGGING # runtime
+	help
+	  Syslog logging for Lua.
+
+	  https://luarocks.org/modules/luarocks/luasyslog

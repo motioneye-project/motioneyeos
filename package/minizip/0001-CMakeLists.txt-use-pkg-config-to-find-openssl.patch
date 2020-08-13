@@ -1,0 +1,44 @@
+From 1fdf5da78369305164313610dbb1ec868233ba08 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sun, 14 Jun 2020 14:04:03 +0200
+Subject: [PATCH] CMakeLists.txt: use pkg-config to find openssl
+
+Use pkg-config to find openssl libraries otherwise minizip will fail to
+retrieve openssl static dependencies such as -latomic and build of
+test_cmd will fail on:
+
+[100%] Linking C executable test_cmd
+/home/test/autobuild/run/instance-3/output-1/host/opt/ext-toolchain/bin/../lib/gcc/sparc-buildroot-linux-uclibc/8.3.0/../../../../sparc-buildroot-linux-uclibc/bin/ld: /home/test/autobuild/run/instance-3/output-1/host/sparc-buildroot-linux-uclibc/sysroot/usr/lib/libcrypto.a(bio_lib.o): in function `BIO_free':
+bio_lib.c:(.text+0x510): undefined reference to `__atomic_fetch_sub_4'
+
+Fixes:
+ - http://autobuild.buildroot.org/results/b54b625751a45d3b449fffcdfaa06fb9209b4652
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/nmoinvaz/minizip/pull/499]
+---
+ CMakeLists.txt | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index b789f62..7a81e32 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -140,7 +140,13 @@ endif()
+ 
+ # Check to see if openssl installation is present
+ if(MZ_OPENSSL)
+-    find_package(OpenSSL)
++    find_package(PkgConfig)
++    if(PKGCONFIG_FOUND)
++        pkg_check_modules(OPENSSL openssl)
++    endif()
++    if(NOT OPENSSL_FOUND)
++        find_package(OpenSSL)
++    endif()
+     if (OPENSSL_FOUND)
+         message(STATUS "Using OpenSSL ${OPENSSL_VERSION}")
+ 
+-- 
+2.26.2
+

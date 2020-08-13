@@ -1,0 +1,32 @@
+From 0c0543846fa54281e2269b0bff841a0b9ffe23fe Mon Sep 17 00:00:00 2001
+From: Gareth Simpson <gareth.simpson@zoodigital.com>
+Date: Sat, 2 May 2020 21:22:36 +0100
+Subject: [PATCH] Better fix for issue 348
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/trentm/python-markdown2/commit/0c0543846fa54281e2269b0bff841a0b9ffe23fe]
+---
+ lib/markdown2.py | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/lib/markdown2.py b/lib/markdown2.py
+index 636bf07..be86502 100755
+--- a/lib/markdown2.py
++++ b/lib/markdown2.py
+@@ -2164,11 +2164,14 @@ def _encode_amps_and_angles(self, text):
+         text = self._naked_gt_re.sub('&gt;', text)
+         return text
+ 
+-    _incomplete_tags_re = re.compile("<(/?\w+?(?!://).?[\s/]+?)")
++    _incomplete_tags_re = re.compile("<(/?\w+?(?!\w).+?[\s/]+?)")
+ 
+     def _encode_incomplete_tags(self, text):
+         if self.safe_mode not in ("replace", "escape"):
+             return text
++            
++        if text.endswith(">"):
++            return text  # this is not an incomplete tag, this is a link in the form <http://x.y.z>
+ 
+         return self._incomplete_tags_re.sub("&lt;\\1", text)
+ 

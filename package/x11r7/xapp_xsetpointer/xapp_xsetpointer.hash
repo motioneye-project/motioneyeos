@@ -1,2 +1,6 @@
+# From https://lists.freedesktop.org/archives/xorg-announce/2006-November/000150.html
+md5 9e5bcbeda4aaf02bfa095e41d30baee4  xsetpointer-1.0.1.tar.bz2
+sha1 a8b01c6f27625a6f6943f9be17b1e5511f69d710  xsetpointer-1.0.1.tar.bz2
 # locally computed
-sha256  7d65f450420b4f764dcf38e4ccee9d608b5a5874706e716cb861bfe2586b7d4a  xsetpointer-1.0.0.tar.bz2
+sha256 495d88871eb5081e98bbae55f813f73cb3ce4145d6ca3e8f2826800166c04571  xsetpointer-1.0.1.tar.bz2
+sha256 8f22998f14924220f0f530660811d24e5371a8d7672287c9d22f1eafb7256863  COPYING

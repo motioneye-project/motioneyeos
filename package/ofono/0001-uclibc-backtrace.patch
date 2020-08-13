@@ -29,7 +29,7 @@ Signed-off-by: Petr Vorel <petr.vorel@gmail.com>
  static void print_backtrace(unsigned int offset)
  {
  	void *frames[99];
-@@ -309,7 +310,7 @@
+@@ -312,7 +313,7 @@
 	if (detach == FALSE)
 		option |= LOG_PERROR;
  
@@ -38,7 +38,7 @@ Signed-off-by: Petr Vorel <petr.vorel@gmail.com>
 	signal_setup(signal_handler);
  #endif
 
-@@ -326,7 +327,7 @@
+@@ -329,7 +330,7 @@
 
 	closelog();
 

@@ -4,8 +4,9 @@
 #
 ################################################################################
 
-ODHCP6C_VERSION = 7533a6243dc3ac5a747cf6ccbc4d0539dafd3e07
-ODHCP6C_SITE = $(call github,sbyx,odhcp6c,$(ODHCP6C_VERSION))
+ODHCP6C_VERSION = f575351cbb3defc0bf52680c9082912a6c264374
+ODHCP6C_SITE = https://git.openwrt.org/project/odhcp6c.git
+ODHCP6C_SITE_METHOD = git
 ODHCP6C_LICENSE = GPL-2.0
 ODHCP6C_LICENSE_FILES = COPYING
 
@@ -15,5 +16,12 @@ define ODHCP6C_INSTALL_SCRIPT
 endef
 
 ODHCP6C_POST_INSTALL_TARGET_HOOKS += ODHCP6C_INSTALL_SCRIPT
+
+ifeq ($(BR2_PACKAGE_LIBUBOX),y)
+ODHCP6C_CONF_OPTS += -DUSE_LIBUBOX=1
+ODHCP6C_DEPENDENCIES += libubox
+else
+ODHCP6C_CONF_OPTS += -DUSE_LIBUBOX=0
+endif
 
 $(eval $(cmake-package))

@@ -1,0 +1,32 @@
+From cd7da8dbf6ee4310d21d9e44b385d6797160d9e8 Mon Sep 17 00:00:00 2001
+From: Erik de Castro Lopo <erikd@mega-nerd.com>
+Date: Wed, 12 Apr 2017 20:19:34 +1000
+Subject: [PATCH] src/flac.c: Fix another memory leak
+
+When the FLAC decoder was passed a malformed file, the associated
+`FLAC__StreamDecoder` object was not getting released.
+
+Closes: https://github.com/erikd/libsndfile/issues/233
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/erikd/libsndfile/commit/cd7da8dbf6ee4310d21d9e44b385d6797160d9e8]
+---
+ src/flac.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/src/flac.c b/src/flac.c
+index 986a7b8f..5a4f8c21 100644
+--- a/src/flac.c
++++ b/src/flac.c
+@@ -841,7 +841,9 @@ flac_read_header (SF_PRIVATE *psf)
+ 
+ 	psf_log_printf (psf, "End\n") ;
+ 
+-	if (psf->error == 0)
++	if (psf->error != 0)
++		FLAC__stream_decoder_delete (pflac->fsd) ;
++	else
+ 	{	FLAC__uint64 position ;
+ 
+ 		FLAC__stream_decoder_get_decode_position (pflac->fsd, &position) ;

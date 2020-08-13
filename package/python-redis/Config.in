@@ -1,6 +1,5 @@
 config BR2_PACKAGE_PYTHON_REDIS
 	bool "python-redis"
-	depends on BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3
 	help
 	  Python client for Redis key-value store.
 

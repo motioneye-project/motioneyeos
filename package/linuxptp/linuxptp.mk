@@ -33,18 +33,17 @@ define LINUXPTP_INSTALL_TARGET_CMDS
 endef
 
 define LINUXPTP_INSTALL_INIT_SYSV
-	$(INSTALL) -m 755 -D $(LINUXPTP_PKGDIR)/S65linuxptp \
-		$(TARGET_DIR)/etc/init.d/S65linuxptp
+	$(INSTALL) -m 755 -D $(LINUXPTP_PKGDIR)/S65ptp4l \
+		$(TARGET_DIR)/etc/init.d/S65ptp4l
+	$(INSTALL) -m 755 -D $(LINUXPTP_PKGDIR)/S66phc2sys \
+		$(TARGET_DIR)/etc/init.d/S66phc2sys
 endef
 
 define LINUXPTP_INSTALL_INIT_SYSTEMD
-	$(INSTALL) -D -m 644 $(LINUXPTP_PKGDIR)/linuxptp.service \
-		$(TARGET_DIR)/usr/lib/systemd/system/linuxptp.service
-	$(INSTALL) -D -m 644 $(LINUXPTP_PKGDIR)/linuxptp-system-clock.service \
-		$(TARGET_DIR)/usr/lib/systemd/system/linuxptp-system-clock.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/linuxptp.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/linuxptp.service
+	$(INSTALL) -D -m 644 $(LINUXPTP_PKGDIR)/ptp4l.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/ptp4l.service
+	$(INSTALL) -D -m 644 $(LINUXPTP_PKGDIR)/phc2sys.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/phc2sys.service
 endef
 
 $(eval $(generic-package))

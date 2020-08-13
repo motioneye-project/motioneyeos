@@ -1,5 +1,5 @@
 From aad28d30af6c3a74c522dd61943788e908860c84 Mon Sep 17 00:00:00 2001
-From: Adam Duskett <Adamduskett@outlook.com>
+From: Adam Duskett <aduskett@gmail.com>
 Date: Fri, 4 Aug 2017 07:22:47 -0400
 Subject: [PATCH] fix libressl support
 
@@ -10,7 +10,7 @@ heirloom-mailx has two small issues when compiling against LibreSSL:
   - SSLv3_client_method function is used (LibreSSL does not support SSLv3)
     Solution: "Guard" the code with #ifndef OPENSSL_NO_SSL3
 
-Signed-off-by: Adam Duskett <Adamduskett@outlook.com>
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
 ---
  openssl.c | 7 +++++++
  1 file changed, 7 insertions(+)

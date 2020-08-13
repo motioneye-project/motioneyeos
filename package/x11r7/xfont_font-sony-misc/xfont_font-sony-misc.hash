@@ -1,2 +1,4 @@
 # From http://www.x.org/archive/current/src/everything/CHECKSUMS
-sha256 2043a326ba347c9da5ca1e9bc363e2521c3ea40b43b1f9662d333efd4867cff5 font-sony-misc-1.0.3.tar.bz2
+sha256  2043a326ba347c9da5ca1e9bc363e2521c3ea40b43b1f9662d333efd4867cff5  font-sony-misc-1.0.3.tar.bz2
+# Locally computed
+sha256  8233ff7d7bc8b5b46cbba3f6cd0069d2ef875bd1b1e0090ca4145282aa096739  COPYING

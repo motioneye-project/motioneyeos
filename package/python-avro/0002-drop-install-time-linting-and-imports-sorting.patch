@@ -1,0 +1,46 @@
+From 3446a4af8474cd863efddeae7f3e5dd3f9b8e25e Mon Sep 17 00:00:00 2001
+From: Titouan Christophe <titouan.christophe@railnova.eu>
+Date: Mon, 17 Feb 2020 15:12:13 +0100
+Subject: [PATCH] drop install time linting and imports sorting
+
+Since the 1.9.2 release, the setup script is also performing code linting
+tasks, which require additional python libraries.
+
+These linting tasks are not needed anyway, since they are intended to prepare
+the code for distribution, but the Buildroot package is already using a
+distributed version. We therefore simply remove them.
+
+Signed-off-by: Titouan Christophe <titouan.christophe@railnova.eu>
+---
+ setup.cfg | 2 --
+ setup.py  | 1 -
+ 2 files changed, 3 deletions(-)
+
+diff --git a/setup.cfg b/setup.cfg
+index 7b5de18..d46a36e 100644
+--- a/setup.cfg
++++ b/setup.cfg
+@@ -25,8 +25,6 @@ package_dir =
+ include_package_data = true
+ packages = avro
+ setup_requires = 
+-	isort
+-	pycodestyle
+ install_requires = 
+ zip_safe = true
+ scripts = 
+diff --git a/setup.py b/setup.py
+index f6297bb..91d3287 100755
+--- a/setup.py
++++ b/setup.py
+@@ -164,7 +164,6 @@ def main():
+     setuptools.setup(cmdclass={
+         "clean": CleanCommand,
+         "generate_interop_data": GenerateInteropDataCommand,
+-        "lint": LintCommand,
+     })
+ 
+ 
+-- 
+2.24.1
+

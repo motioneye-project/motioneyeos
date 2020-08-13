@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LUA_GD
+	bool "lua-gd"
+	select BR2_PACKAGE_GD
+	help
+	  GD (graphics library) bindings for Lua.
+
+	  https://ittner.github.io/lua-gd/

@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/pysocks/json, sha256 locally computed
-md5  07007ec7ed46292dab06013f2e3af365  PySocks-1.6.7.tar.gz
-sha256  d00329f27efa157db7efe3ca26fcd69033cd61f83822461ee3f8a353b48e33cf  PySocks-1.6.7.tar.gz
+# md5, sha256 from https://pypi.org/pypi/pysocks/json
+md5	89b1a6865c61bae67a32417517612ee6  PySocks-1.7.1.tar.gz
+sha256	3f8804571ebe159c380ac6de37643bb4685970655d3bba243530d6558b799aa0  PySocks-1.7.1.tar.gz
+# Locally computed sha256 checksums
+sha256	7027e214e014eb78b7adcc1ceda5aca713a79fc4f6a0c52c9da5b3e707e6ffe9  LICENSE

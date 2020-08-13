@@ -1,0 +1,36 @@
+Add RISC-V endian detection
+
+boost/predef/other/endian.h has two ways of detecting the endianess:
+
+ (1) It includes <endian.h> if BOOST_LIB_C_GNU is defined, and then
+     use __BYTE_ORDER to decide the endianness.
+
+ (2) Otherwise, if (1) was not possible for some reason, it uses
+     architecture defines to decide the endianness.
+
+(1) works perfectly fine with glibc toolchains, because
+BOOST_LIB_C_GNU is defined, but it doesn't work with musl. Due to
+this, <endian.h> is not included, __BYTE_ORDER is not defined, and
+method (1) does not work, causing build failures on musl toolchains
+that don't have explicit handling by architecture name (method 2).
+
+So this commit fixes RISC-V musl build by adding support for the
+__riscv architecture define, to determine that the endianness is
+little endian.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+
+Index: b/boost/predef/other/endian.h
+===================================================================
+--- a/boost/predef/other/endian.h
++++ b/boost/predef/other/endian.h
+@@ -127,7 +127,8 @@
+         defined(__AARCH64EL__) || \
+         defined(_MIPSEL) || \
+         defined(__MIPSEL) || \
+-        defined(__MIPSEL__)
++        defined(__MIPSEL__) || \
++        defined(__riscv)
+ #       undef BOOST_ENDIAN_LITTLE_BYTE
+ #       define BOOST_ENDIAN_LITTLE_BYTE BOOST_VERSION_NUMBER_AVAILABLE
+ #   endif

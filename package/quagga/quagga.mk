@@ -4,8 +4,9 @@
 #
 ################################################################################
 
-QUAGGA_VERSION = 1.2.3
+QUAGGA_VERSION = 1.2.4
 QUAGGA_SITE = http://download.savannah.gnu.org/releases/quagga
+QUAGGA_INSTALL_STAGING = YES
 QUAGGA_DEPENDENCIES = host-gawk host-pkgconf
 QUAGGA_LICENSE = GPL-2.0+
 QUAGGA_LICENSE_FILES = COPYING
@@ -17,6 +18,11 @@ QUAGGA_CONF_OPTS = \
 	--program-transform-name='' \
 	--sysconfdir=/etc/quagga \
 	--localstatedir=/var/run/quagga
+
+# quagga has its own internal copy of getopt_long. To avoid conflicts with libc's
+# getopt, we need to make sure that the getopt function itself is also built.
+QUAGGA_CONF_ENV = \
+	CFLAGS="$(TARGET_CFLAGS) -DREALLY_NEED_PLAIN_GETOPT"
 
 ifeq ($(BR2_PACKAGE_LIBCAP),y)
 QUAGGA_CONF_OPTS += --enable-capabilities
@@ -57,6 +63,16 @@ define QUAGGA_PERMISSIONS
 	/etc/quagga r 600 quagga quagga - - - - -
 	/etc/quagga d 755 quagga quagga - - - - -
 endef
+
+# In order for the QUAGGA_PERMISSIONS variable above to work,
+# /etc/quagga has to exist. However, this package without any
+# sub-option enabled will not create /etc/quagga, so let's create it
+# unconditionally in a post-install hook, in case it hasn't been
+# already created by the quagga installation.
+define QUAGGA_CREATE_ETC_QUAGGA
+	mkdir -p $(TARGET_DIR)/etc/quagga
+endef
+QUAGGA_POST_INSTALL_TARGET_HOOKS += QUAGGA_CREATE_ETC_QUAGGA
 
 ifeq ($(BR2_PACKAGE_QUAGGA_NHRPD),y)
 QUAGGA_CONF_OPTS += --enable-nhrpd

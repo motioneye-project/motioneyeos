@@ -11,7 +11,7 @@ config BR2_PACKAGE_POSTGRESQL
 	  database system.
 
 	  Enable the readline package to gain readline support in
-	  pgsql (the command line interpreter), which offers
+	  psql (the command line interpreter), which offers
 	  command history and edit functions.
 
 	  Enable the zlib package to gain builtin compression for

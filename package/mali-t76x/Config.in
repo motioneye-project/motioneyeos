@@ -11,7 +11,7 @@ config BR2_PACKAGE_MALI_T76X
 	  Midgard T76X GPU. This package requires a kernel with the
 	  ARM Mali Midgard GPU Kernel Drivers enabled.
 
-	  Source: http://malideveloper.arm.com/resources/drivers/
+	  http://malideveloper.arm.com/resources/drivers/
 
 if BR2_PACKAGE_MALI_T76X
 

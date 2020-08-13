@@ -17,7 +17,7 @@ config BR2_PACKAGE_WF111
 	    configuration entry that selects them, for example.
 	  - By enabling another random WiFi driver that select them.
 
-	  https://www.silabs.com/products/wireless/wi-fi/wf111-bluegiga-module
+	  https://www.silabs.com/wireless/wi-fi/bluegiga-legacy-modules/device.wf111
 
 comment "wf111 needs a glibc toolchain"
 	depends on BR2_LINUX_KERNEL

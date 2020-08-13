@@ -1,0 +1,33 @@
+From e18e48624cd45910917e5e4fb0aa16cef490bb6d Mon Sep 17 00:00:00 2001
+From: Bartosz Bilas <b.bilas@grinn-global.com>
+Date: Sun, 22 Mar 2020 14:25:53 +0100
+Subject: [PATCH] src/Exceptions.cpp: check if execinfo header is available
+
+Fixes:
+  fatal error: execinfo.h: No such file or directory
+  compilation terminated.
+
+Signed-off-by: Bartosz Bilas <bartosz.bilas@hotmail.com>
+---
+ Upstream status: https://github.com/cegui/cegui/pull/1189
+
+cegui/src/Exceptions.cpp | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/cegui/src/Exceptions.cpp b/cegui/src/Exceptions.cpp
+index 8e4890378..6a8420491 100644
+--- a/cegui/src/Exceptions.cpp
++++ b/cegui/src/Exceptions.cpp
+@@ -46,7 +46,9 @@
+ #elif     (defined(__linux__) && !defined(__ANDROID__)) \
+       ||  defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__) \
+       ||  defined(__HAIKU__)
++#ifdef HAVE_EXECINFO_H
+ #   include <execinfo.h>
++#endif
+ #   include <dlfcn.h>
+ #   include <cxxabi.h>
+ #   include <cstddef>
+-- 
+2.25.2
+

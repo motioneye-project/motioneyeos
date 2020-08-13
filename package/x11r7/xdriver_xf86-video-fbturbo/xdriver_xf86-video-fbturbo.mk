@@ -21,10 +21,6 @@ else
 XDRIVER_XF86_VIDEO_FBTURBO_CONF_OPTS += --disable-pciaccess
 endif
 
-ifeq ($(BR2_PACKAGE_LIBUMP),y)
-XDRIVER_XF86_VIDEO_FBTURBO_DEPENDENCIES += libump
-endif
-
 define XDRIVER_XF86_VIDEO_FBTURBO_INSTALL_CONF_FILE
 	$(INSTALL) -m 0644 -D $(@D)/xorg.conf $(TARGET_DIR)/etc/X11/xorg.conf
 endef

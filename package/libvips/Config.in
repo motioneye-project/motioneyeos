@@ -6,8 +6,8 @@ config BR2_PACKAGE_LIBVIPS
 	# C++ support is required to build libvips
 	# https://github.com/jcupitt/libvips/issues/231
 	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_EXPAT
 	select BR2_PACKAGE_LIBGLIB2
-	select BR2_PACKAGE_LIBXML2
 	help
 	  libvips is a 2D image processing library. Compared to
 	  similar libraries, libvips runs quickly and uses little

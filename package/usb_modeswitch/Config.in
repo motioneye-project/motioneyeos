@@ -1,6 +1,7 @@
 config BR2_PACKAGE_USB_MODESWITCH
 	bool "usb_modeswitch"
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	select BR2_PACKAGE_JIMTCL if !BR2_PACKAGE_TCL || BR2_PACKAGE_TCL_SHLIB_ONLY
 	select BR2_PACKAGE_LIBUSB
 	help
 	  Some USB devices such as 3G/4G broadband modems power-up

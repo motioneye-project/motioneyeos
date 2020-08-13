@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-MP4V2_VERSION = 2.0.0
-MP4V2_SOURCE = mp4v2-$(MP4V2_VERSION).tar.bz2
-MP4V2_SITE = https://mp4v2.googlecode.com/files
+MP4V2_VERSION = 4.1.3
+MP4V2_SITE = \
+	$(call github,TechSmith,mp4v2,Release-ThirdParty-MP4v2-$(MP4V2_VERSION))
 MP4V2_INSTALL_STAGING = YES
 MP4V2_LICENSE = MPL-1.1
 MP4V2_LICENSE_FILES = COPYING

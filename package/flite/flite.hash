@@ -1,4 +1,4 @@
 # locally computed hash
-sha256 45c662160aeca6560589f78daf42ab62c6111dd4d244afc28118c4e6f553cd0c flite-1.4-release.tar.bz2
+sha256  c73c3f6a2ea764977d6eaf0a287722d1e2066b4697088c552e342c790f3d2b85  flite-2.1-release.tar.bz2
 # License files, locally calculated
-sha256 4cbeaee8c9a8f23f251f0ce56e9212d244d9ea6b0dbe48601623d920054249a1 flite-1.4-release/COPYING
+sha256  d31bceaf2823d56a8c9400f7bde3b17140e739e991eb4f203bdcf9827754ab59  COPYING

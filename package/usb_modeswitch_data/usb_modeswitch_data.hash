@@ -1,3 +1,5 @@
+# From http://www.draisberghof.de/usb_modeswitch/
+md5	e8fce7eb949cbe16c61fb71bade4cc17  usb-modeswitch-data-20191128.tar.bz2
 # Locally calculated
-sha256	ce413ef2a50e648e9c81bc3ea6110e7324a8bf981034fc9ec4467d3562563c2c  usb-modeswitch-data-20170806.tar.bz2
+sha256	3f039b60791c21c7cb15c7986cac89650f076dc274798fa242231b910785eaf9  usb-modeswitch-data-20191128.tar.bz2
 sha256	32b1062f7da84967e7019d01ab805935caa7ab7321a7ced0e30ebe75e5df1670  COPYING

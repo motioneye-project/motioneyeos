@@ -7,5 +7,31 @@ config BR2_PACKAGE_LIBSEPOL
 
 	  http://selinuxproject.org/page/Main_Page
 
+if BR2_PACKAGE_LIBSEPOL
+
+config BR2_PACKAGE_LIBSEPOL_POLICY_VERSION
+	int "Policy version"
+	default 32 if BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_5
+	default 31 if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_13
+	default 30 if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_3
+	default 29 if BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_14
+	default 28 if BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_5
+	default 26 if BR2_TOOLCHAIN_HEADERS_AT_LEAST_2_6
+	default 25
+	help
+	  The maximum SELinux policy version your kernel supports.
+
+	  Here's a handy table to help you choose:
+	  kernel version   SElinux policy max version
+	  < 2.6.x          25
+	  >= 2.6 < 3.5     26
+	  >= 3.5 < 3.14    28 (27 and 28 were added at the same time)
+	  >= 3.14 < 4.3    29
+	  >= 4.3 < 4.13    30
+	  >= 4.13 < 5.5    31
+	  >= 5.5           32
+
+endif
+
 comment "libsepol needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS

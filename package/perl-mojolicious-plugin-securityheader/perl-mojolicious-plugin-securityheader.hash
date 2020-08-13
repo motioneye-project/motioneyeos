@@ -1,0 +1,6 @@
+# retrieved by scancpan from http://cpan.metacpan.org/
+md5    38cf59258547ac866577db2d43632f30 Mojolicious-Plugin-SecurityHeader-0.07.tar.gz
+sha256 940474eaf7a415e5117b004387862473612e079a413590db1eb9c85d17a6648f Mojolicious-Plugin-SecurityHeader-0.07.tar.gz
+
+# computed by scancpan
+sha256 0c38e4629cc9eee869217d62ad765e581e54958596672046a62dfa4cfd87bb09 LICENSE

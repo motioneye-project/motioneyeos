@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# These environment variables are empty by default, and as such ccompiler.py
+# defaults to either using the system tools (CC, CXX, and CPP) or leaving
+# the variables blank (LDFLAGS, CFLAGS, and CPPFLAGS.)
+# Export these variables to ensure all build systems can generate .gir and
+# .typelib files properly.
+export CPP="${CPP:-${HOST_DIR}/bin/@BASENAME_TARGET_CPP@}"
+export CC="${CC:-${HOST_DIR}/bin/@BASENAME_TARGET_CC@}"
+export CXX="${CXX:-${HOST_DIR}/bin/@BASENAME_TARGET_CXX@}"
+export CPPFLAGS="${CPPFLAGS:-@TARGET_CPPFLAGS@}"
+export CFLAGS="${CFLAGS:-@TARGET_CFLAGS@}"
+export CXXFLAGS="${CXXFLAGS:-@TARGET_CXXFLAGS@}"
+export LDFLAGS="${LDFLAGS:-@TARGET_LDFLAGS@}"
+
+export GI_SCANNER_DISABLE_CACHE=1
+
+${HOST_DIR}/bin/g-ir-scanner \
+--lib-dirs-envvar=GIR_EXTRA_LIBS_PATH \
+--use-binary-wrapper=$(dirname $0)/g-ir-scanner-qemuwrapper \
+--use-ldd-wrapper=$(dirname $0)/g-ir-scanner-lddwrapper \
+--add-include-path=$(dirname $0)/../share/gir-1.0 "$@"

@@ -6,3 +6,6 @@ config BR2_ENDIAN
 
 config BR2_READELF_ARCH_NAME
 	default "OpenRISC 1000"
+
+# vim: ft=kconfig
+# -*- mode:kconfig; -*-

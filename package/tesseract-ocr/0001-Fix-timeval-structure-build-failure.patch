@@ -1,0 +1,27 @@
+From ea1e1ddfc0af9966a0c613a93087bc3e0a5979a7 Mon Sep 17 00:00:00 2001
+From: Gilles Talis <gilles.talis@gmail.com>
+Date: Fri, 19 Jul 2019 18:52:03 +0200
+Subject: [PATCH] Fix timeval structure build failure
+
+timeval structure definition requires <sys/time.h> to be included
+
+Signed-off-by: Gilles Talis <gilles.talis@gmail.com>
+---
+ src/ccutil/ocrclass.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/ccutil/ocrclass.h b/src/ccutil/ocrclass.h
+index d39a6dd..2a01118 100644
+--- a/src/ccutil/ocrclass.h
++++ b/src/ccutil/ocrclass.h
+@@ -28,6 +28,7 @@
+ 
+ #include <chrono>
+ #include <ctime>
++#include <sys/time.h>
+ #ifdef _WIN32
+ #include <winsock2.h> // for timeval
+ #endif
+-- 
+2.7.4
+

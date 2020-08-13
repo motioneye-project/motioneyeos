@@ -7,4 +7,4 @@ config BR2_PACKAGE_LSOF
 	  The lsof tool lists information about files opened by
 	  processes.
 
-	  http://people.freebsd.org/~abe/
+	  https://github.com/lsof-org/lsof

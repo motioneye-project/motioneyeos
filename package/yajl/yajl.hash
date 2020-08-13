@@ -1,2 +1,3 @@
 # Locally calculated
-sha256	3fb73364a5a30efe615046d07e6db9d09fd2b41c763c5f7d3bfb121cd5c5ac5a  yajl-2.1.0.tar.gz
+sha256  3fb73364a5a30efe615046d07e6db9d09fd2b41c763c5f7d3bfb121cd5c5ac5a  yajl-2.1.0.tar.gz
+sha256  054bf2c11686c5442850b1da58ad592e3d1d2a236a362e67279b957f8e662f5a  COPYING

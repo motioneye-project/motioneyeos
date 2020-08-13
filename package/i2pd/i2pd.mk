@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-I2PD_VERSION = 2.22.0
+I2PD_VERSION = 2.31.0
 I2PD_SITE = $(call github,PurpleI2P,i2pd,$(I2PD_VERSION))
 I2PD_LICENSE = BSD-3-Clause
 I2PD_LICENSE_FILES = LICENSE
@@ -22,7 +22,9 @@ I2PD_CONF_OPTS += -DWITH_GUI=OFF
 I2PD_CONF_OPTS += -DTHREADS_PTHREAD_ARG=OFF
 
 ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
-I2PD_CONF_OPTS += -DCMAKE_CXX_FLAGS="$(TARGET_CXXFLAGS) -latomic"
+I2PD_CONF_OPTS += \
+	-DHAVE_CXX_ATOMICS_WITHOUT_LIB=OFF \
+	-DHAVE_CXX_ATOMICS64_WITHOUT_LIB=OFF
 endif
 
 ifeq ($(BR2_STATIC_LIBS),y)
@@ -59,9 +61,6 @@ endef
 define I2PD_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 package/i2pd/i2pd.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/i2pd.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/i2pd.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/i2pd.service
 endef
 
 $(eval $(cmake-package))

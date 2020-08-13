@@ -1,2 +1,5 @@
-# From http://ftp.acc.umu.se/pub/gnome/sources/gsettings-desktop-schemas/3.22/gsettings-desktop-schemas-3.22.0.sha256sum
-sha256	0f06c7ba34c3a99e4d58b10889496133c9aaad6698ea2d8405d481c7f1a7eae1	gsettings-desktop-schemas-3.22.0.tar.xz
+# From http://ftp.acc.umu.se/pub/gnome/sources/gsettings-desktop-schemas/3.33/gsettings-desktop-schemas-3.33.1.sha256sum
+sha256	bd337f13955856140fdbd3073c56d4adca20333f8bdac41e429c3dca4730cdff	gsettings-desktop-schemas-3.33.1.tar.xz
+
+# Hash for license file
+sha256	dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551	COPYING

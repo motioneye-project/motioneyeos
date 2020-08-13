@@ -27,16 +27,13 @@ config BR2_TOOLCHAIN_EXTERNAL_CUSTOM_PREFIX
 
 choice
 	bool "External toolchain gcc version"
-	default BR2_TOOLCHAIN_EXTERNAL_GCC_8   if BR2_ARCH_NEEDS_GCC_AT_LEAST_8
-	default BR2_TOOLCHAIN_EXTERNAL_GCC_7   if BR2_ARCH_NEEDS_GCC_AT_LEAST_7
-	default BR2_TOOLCHAIN_EXTERNAL_GCC_6   if BR2_ARCH_NEEDS_GCC_AT_LEAST_6
-	default BR2_TOOLCHAIN_EXTERNAL_GCC_5   if BR2_ARCH_NEEDS_GCC_AT_LEAST_5
-	default BR2_TOOLCHAIN_EXTERNAL_GCC_4_9 if BR2_ARCH_NEEDS_GCC_AT_LEAST_4_9
-	default BR2_TOOLCHAIN_EXTERNAL_GCC_4_8 if BR2_ARCH_NEEDS_GCC_AT_LEAST_4_8
-	default BR2_TOOLCHAIN_EXTERNAL_GCC_4_3
 	help
 	  Set to the gcc version that is used by your external
 	  toolchain.
+
+config BR2_TOOLCHAIN_EXTERNAL_GCC_9
+	bool "9.x"
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_9
 
 config BR2_TOOLCHAIN_EXTERNAL_GCC_8
 	bool "8.x"
@@ -44,57 +41,46 @@ config BR2_TOOLCHAIN_EXTERNAL_GCC_8
 
 config BR2_TOOLCHAIN_EXTERNAL_GCC_7
 	bool "7.x"
-	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_8
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_7
 
 config BR2_TOOLCHAIN_EXTERNAL_GCC_6
 	bool "6.x"
-	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_7
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_6
 
 config BR2_TOOLCHAIN_EXTERNAL_GCC_5
 	bool "5.x"
-	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_6
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_5
 
 config BR2_TOOLCHAIN_EXTERNAL_GCC_4_9
 	bool "4.9.x"
-	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_5
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
 
 config BR2_TOOLCHAIN_EXTERNAL_GCC_4_8
 	bool "4.8.x"
-	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_4_9
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
 
 config BR2_TOOLCHAIN_EXTERNAL_GCC_4_7
 	bool "4.7.x"
-	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_4_8
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
 
 config BR2_TOOLCHAIN_EXTERNAL_GCC_4_6
 	bool "4.6.x"
-	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_4_8
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_6
 
 config BR2_TOOLCHAIN_EXTERNAL_GCC_4_5
 	bool "4.5.x"
-	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_4_8
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_5
 
 config BR2_TOOLCHAIN_EXTERNAL_GCC_4_4
 	bool "4.4.x"
-	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_4_8
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_4
 
 config BR2_TOOLCHAIN_EXTERNAL_GCC_4_3
 	bool "4.3.x"
-	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_4_8
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_3
 
 config BR2_TOOLCHAIN_EXTERNAL_GCC_OLD
 	bool "older"
-	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_4_8
 	help
 	  Use this option if your GCC version is older than any of the
 	  above.
@@ -105,6 +91,9 @@ config BR2_TOOLCHAIN_EXTERNAL_GCC_OLD
 	  work at all. Use such old toolchains at your own risk.
 
 endchoice
+
+comment "GCC older than 4.8 is not tested by Buildroot. Use at your own risk."
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
 
 choice
 	bool "External toolchain kernel headers series"
@@ -122,6 +111,37 @@ choice
 	    M = ( LINUX_VERSION_CODE >> 16 ) & 0xFF
 	    m = ( LINUX_VERSION_CODE >> 8  ) & 0xFF
 	    p = ( LINUX_VERSION_CODE >> 0  ) & 0xFF
+
+	  If your toolchain uses headers newer than the latest version
+	  in the choice, then select the latest version.
+
+config BR2_TOOLCHAIN_EXTERNAL_HEADERS_5_6
+	bool "5.6.x or later"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_6
+
+config BR2_TOOLCHAIN_EXTERNAL_HEADERS_5_5
+	bool "5.5.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_5
+
+config BR2_TOOLCHAIN_EXTERNAL_HEADERS_5_4
+	bool "5.4.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_4
+
+config BR2_TOOLCHAIN_EXTERNAL_HEADERS_5_3
+	bool "5.3.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_3
+
+config BR2_TOOLCHAIN_EXTERNAL_HEADERS_5_2
+	bool "5.2.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_2
+
+config BR2_TOOLCHAIN_EXTERNAL_HEADERS_5_1
+	bool "5.1.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_1
+
+config BR2_TOOLCHAIN_EXTERNAL_HEADERS_5_0
+	bool "5.0.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_0
 
 config BR2_TOOLCHAIN_EXTERNAL_HEADERS_4_20
 	bool "4.20.x"
@@ -292,6 +312,9 @@ config BR2_TOOLCHAIN_EXTERNAL_HEADERS_REALLY_OLD
 
 endchoice
 
+comment "Kernel headers older than 3.13 is not tested by Buildroot. Use at your own risk."
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_13
+
 choice
 	prompt "External toolchain C library"
 	default BR2_TOOLCHAIN_EXTERNAL_CUSTOM_UCLIBC
@@ -390,10 +413,22 @@ config BR2_TOOLCHAIN_EXTERNAL_HAS_SSP
 	default y if BR2_TOOLCHAIN_EXTERNAL_MUSL
 	select BR2_TOOLCHAIN_HAS_SSP
 	help
-	  Selection this option if your external toolchain has Stack
+	  Select this option if your external toolchain has Stack
 	  Smashing Protection support enabled. If you don't know,
 	  leave the default value, Buildroot will tell you if it's
 	  correct or not.
+
+config BR2_TOOLCHAIN_EXTERNAL_HAS_SSP_STRONG
+	bool "Toolchain has SSP strong support?"
+	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_4_9 && BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_4_9 && BR2_TOOLCHAIN_EXTERNAL_MUSL
+	depends on BR2_TOOLCHAIN_EXTERNAL_HAS_SSP
+	select BR2_TOOLCHAIN_HAS_SSP_STRONG
+	help
+	  Select this option if your external toolchain has strong
+	  Stack Smashing Protection support enabled. If you don't
+	  know, leave the default value, Buildroot will tell you if
+	  it's correct or not.
 
 config BR2_TOOLCHAIN_EXTERNAL_INET_RPC
 	bool "Toolchain has RPC support?"
@@ -413,6 +448,13 @@ config BR2_TOOLCHAIN_EXTERNAL_CXX
 	  support. If you don't know, leave the default value,
 	  Buildroot will tell you if it's correct or not.
 
+config BR2_TOOLCHAIN_EXTERNAL_DLANG
+	bool "Toolchain has D support?"
+	select BR2_TOOLCHAIN_HAS_DLANG
+	help
+	  Select this option if your external toolchain has D
+	  support.
+
 config BR2_TOOLCHAIN_EXTERNAL_FORTRAN
 	bool "Toolchain has Fortran support?"
 	select BR2_TOOLCHAIN_HAS_FORTRAN
@@ -421,12 +463,12 @@ config BR2_TOOLCHAIN_EXTERNAL_FORTRAN
 	  support. If you don't know, leave the default value,
 	  Buildroot will tell you if it's correct or not.
 
-config BR2_TOOLCHAIN_EXTRA_EXTERNAL_LIBS
-	string "Extra toolchain libraries to be copied to target"
+config BR2_TOOLCHAIN_EXTERNAL_OPENMP
+	bool "Toolchain has OpenMP support?"
+	select BR2_TOOLCHAIN_HAS_OPENMP
 	help
-	  If your external toolchain provides extra libraries that
-	  need to be copied to the target filesystem, enter them
-	  here, separated by spaces. They will be copied to the
-	  target's /lib directory.
+	  Select this option if your external toolchain has OpenMP
+	  support. If you don't know, leave the default value,
+	  Buildroot will tell you if it's correct or not.
 
 endif

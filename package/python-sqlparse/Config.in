@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_SQLPARSE
+	bool "python-sqlparse"
+	help
+	  sqlparse is a non-validating SQL parser for Python.
+	  It provides support for parsing, splitting and formatting
+	  SQL statements.
+
+	  https://github.com/andialbrecht/sqlparse

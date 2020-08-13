@@ -1,0 +1,5 @@
+# From https://www-eu.apache.org/dist/avro/avro-1.9.2/c/avro-c-1.9.2.tar.gz.sha512
+sha512  1bc4bb22c88b70235e8e0280dbb7aeee7aa3f6cb7ff78a1aa5a7a6a1aca5522e8cfc89064096eace1c07a50e98f2397abd3620de1a29f9e5103b6f4c84316927  avro-c-1.9.2.tar.gz
+
+# License files
+sha256  d62488d6ba17132e92c23c03c80bfedc848267f96ab36489fec860f76cf6819a  LICENSE

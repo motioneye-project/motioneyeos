@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NSS_PAM_LDAPD_VERSION = 0.9.8
+NSS_PAM_LDAPD_VERSION = 0.9.11
 NSS_PAM_LDAPD_SITE = http://arthurdejong.org/nss-pam-ldapd
 NSS_PAM_LDAPD_LICENSE = LGPL-2.1+
 NSS_PAM_LDAPD_LICENSE_FILES = COPYING
@@ -29,9 +29,6 @@ endif
 define NSS_PAM_LDAPD_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -m 644 -D package/nss-pam-ldapd/nslcd.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/nslcd.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -fs ../../../../usr/lib/systemd/system/nslcd.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/nslcd.service
 endef
 
 define NSS_PAM_LDAPD_INSTALL_INIT_SYSV

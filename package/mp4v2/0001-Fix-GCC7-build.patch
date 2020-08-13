@@ -10,6 +10,7 @@ no encoding parameters ppEncodingParams will be returned as a pointer to
 an empty string rather than as a null pointer
 
 Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+[Upstream status: https://github.com/TechSmith/mp4v2/pull/36]
 ---
  src/rtphint.cpp | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)

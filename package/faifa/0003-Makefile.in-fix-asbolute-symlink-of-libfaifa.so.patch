@@ -1,0 +1,32 @@
+From d16abf61049947c451a6411a13fc15dda32feb47 Mon Sep 17 00:00:00 2001
+From: Florian Fainelli <f.fainelli@gmail.com>
+Date: Sat, 6 Sep 2014 11:23:02 -0700
+Subject: [PATCH] Makefile.in: fix asbolute symlink of libfaifa.so
+
+Fixes #7
+
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+[Upstream: da2e279fd736d05bcd0ee6e4609c44fece017ba8]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ Makefile.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile.in b/Makefile.in
+index ba65bee..9dec7ee 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -98,9 +98,9 @@ install: installman strip
+ 	$(INSTALL) -m0755 hpav_cfg $(DESTDIR)$(sbindir)
+ 	$(INSTALL) -d $(DESTDIR)$(libdir)
+ 	$(INSTALL) -m0644 $(LIB_SONAME) $(DESTDIR)$(libdir)
+-	ln -sf $(DESTDIR)$(libdir)/$(LIB_SONAME) $(DESTDIR)$(libdir)/$(LIB_SHARED_SO)
+ 	$(INSTALL) -d $(DESTDIR)$(includedir)/faifa
+ 	cp $(HEADERS) $(DESTDIR)$(includedir)/faifa
++	cd $(DESTDIR)$(libdir) && ln -sf $(LIB_SONAME) $(LIB_SHARED_SO)
+ 
+ strip:
+ 	$(STRIP) $(APP)
+-- 
+2.23.0
+

@@ -4,10 +4,8 @@
 #
 ################################################################################
 
-# Use master version as the current stable is very old and some bugs
-# have been fixed since then.
-HIDAPI_VERSION = b5b2e1779b6cd2edda3066bbbf0921a2d6b1c3c0
-HIDAPI_SITE = $(call github,signal11,hidapi,$(HIDAPI_VERSION))
+HIDAPI_VERSION = 0.9.0
+HIDAPI_SITE = $(call github,libusb,hidapi,hidapi-$(HIDAPI_VERSION))
 HIDAPI_INSTALL_STAGING = YES
 # No configure provided, so we need to autoreconf.
 HIDAPI_AUTORECONF = YES

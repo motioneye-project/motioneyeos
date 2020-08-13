@@ -1,0 +1,42 @@
+From e00c211d51bec301cf04719b77076a8783ef44b5 Mon Sep 17 00:00:00 2001
+From: Raul Tambre <raul@tambre.ee>
+Date: Sat, 4 May 2019 15:48:17 -0400
+Subject: [PATCH] Fix incorrect use of 'is' operator for comparison in
+ python/lib/gdb/command/prompt.py
+
+The 'is' operator is not meant to be used for comparisons. It currently working
+is an implementation detail of CPython.  CPython 3.8 has added a SyntaxWarning
+for this.
+
+(cherry picked from commit b6484282f85bf7f11451b2441599c241d302ad9d)
+[Romain: backport to gdb 8.x]
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ gdb/python/lib/gdb/command/prompt.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/gdb/python/lib/gdb/command/prompt.py b/gdb/python/lib/gdb/command/prompt.py
+index 3d662a7d3f..04b9e49c22 100644
+--- a/gdb/python/lib/gdb/command/prompt.py
++++ b/gdb/python/lib/gdb/command/prompt.py
+@@ -45,7 +45,7 @@ The currently defined substitutions are:
+         self.hook_set = False
+ 
+     def get_show_string (self, pvalue):
+-        if self.value is not '':
++        if self.value:
+            return "The extended prompt is: " + self.value
+         else:
+            return "The extended prompt is not set."
+@@ -57,7 +57,7 @@ The currently defined substitutions are:
+         return ""
+ 
+     def before_prompt_hook(self, current):
+-        if self.value is not '':
++        if self.value:
+             return gdb.prompt.substitute_prompt(self.value)
+         else:
+             return None
+-- 
+2.25.4
+

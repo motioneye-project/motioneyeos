@@ -1,0 +1,27 @@
+Makefile.am: fix install-data-hook
+
+- Prefix $(appdefaultdir) and $(datarootdir) with $(DESTDIR) to allow
+  cross-compilation
+- Create $(DESTDIR)$(appdefaultdir) if it doesn't exist
+
+Upstream status: sent to Tom Sato <VEF00200@nifty.com>
+
+diff -Nuar xvkbd-4.0-orig/Makefile.am xvkbd-4.0/Makefile.am
+--- xvkbd-4.0-orig/Makefile.am	2019-10-06 11:27:13.692243604 +0200
++++ xvkbd-4.0/Makefile.am	2019-10-06 11:35:15.872263440 +0200
+@@ -17,11 +17,12 @@
+ 	[ which ad2c > /dev/null ] || ad2c XVkbd-common.ad > XVkbd-common.h
+ 
+ install-data-hook:
++	[ -d $(DESTDIR)$(appdefaultdir) ] || mkdir $(DESTDIR)$(appdefaultdir)
+ 	for file in *.ad; do \
+-		$(INSTALL_DATA) $$file $(appdefaultdir)/$${file%.ad}; \
++		$(INSTALL_DATA) $$file $(DESTDIR)$(appdefaultdir)/$${file%.ad}; \
+ 	done
+-	[ -d $(datarootdir)/xvkbd/ ] || mkdir $(datarootdir)/xvkbd/
+-	$(INSTALL_DATA) words.english $(datarootdir)/xvkbd/words.english
++	[ -d $(DESTDIR)$(datarootdir)/xvkbd/ ] || mkdir $(DESTDIR)$(datarootdir)/xvkbd/
++	$(INSTALL_DATA) words.english $(DESTDIR)$(datarootdir)/xvkbd/words.english
+ 
+ EXTRA_DIST = XVkbd-common.h *.ad *.xbm xvkbd.man README ChangeLog Imakefile words.english
+ 

@@ -19,7 +19,7 @@ choice
 	prompt "AT91 Bootstrap 3 version"
 
 config BR2_TARGET_AT91BOOTSTRAP3_LATEST_VERSION
-	bool "3.8.6"
+	bool "3.9.0"
 
 config BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_GIT
 	bool "Custom Git repository"
@@ -27,7 +27,14 @@ config BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_GIT
 	  This option allows Buildroot to get the AT91 Bootstrap 3
 	  source code from a Git repository.
 
+config BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_TARBALL
+	bool "Custom tarball"
+
 endchoice
+
+config BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_TARBALL_LOCATION
+	string "URL of custom AT91Bootstrap tarball"
+	depends on BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_TARBALL
 
 if BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_GIT
 
@@ -44,9 +51,10 @@ endif
 
 config BR2_TARGET_AT91BOOTSTRAP3_VERSION
 	string
-	default "v3.8.6" if BR2_TARGET_AT91BOOTSTRAP3_LATEST_VERSION
+	default "v3.9.0" if BR2_TARGET_AT91BOOTSTRAP3_LATEST_VERSION
 	default BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_REPO_VERSION \
 		if BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_GIT
+	default "custom"	if BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_TARBALL
 
 config BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_PATCH_DIR
 	string "custom patch dir"

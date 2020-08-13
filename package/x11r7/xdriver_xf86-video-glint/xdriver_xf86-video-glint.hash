@@ -1,2 +1,4 @@
 # From https://lists.x.org/archives/xorg-announce/2017-January/002759.html
-sha256 852833ab2ea9ce519195dfd061a6c7aa5945a093cdc19546d1e9e69df7d577d2  xf86-video-glint-1.2.9.tar.bz2
+sha256  852833ab2ea9ce519195dfd061a6c7aa5945a093cdc19546d1e9e69df7d577d2  xf86-video-glint-1.2.9.tar.bz2
+# Locally calculated
+sha256  6ca8e1a7e1d491f3618d3f14df1be64dbc8adefae7bbaf11d4920240dfb12f6e  COPYING

@@ -49,6 +49,7 @@ SKELETON_INIT_COMMON_HOSTS_LINE += $(SKELETON_INIT_COMMON_SHORT_HOSTNAME)
 endif
 define SKELETON_INIT_COMMON_SET_HOSTNAME
 	mkdir -p $(TARGET_DIR)/etc
+    # Following test commands are required due to the fact that /etc/{hosts,hostname} are symlinks in thingOS
 	test -f $(TARGET_DIR)/etc/hostname && \
 	        echo "$(SKELETON_INIT_COMMON_HOSTNAME)" > $(TARGET_DIR)/etc/hostname || true
 	test -f $(TARGET_DIR)/etc/hosts && \
@@ -61,6 +62,7 @@ endif
 ifneq ($(SKELETON_INIT_COMMON_ISSUE),)
 define SKELETON_INIT_COMMON_SET_ISSUE
 	mkdir -p $(TARGET_DIR)/etc
+    # Following test command is required due to the fact that /etc/issue is a symlink in thingOS
 	test -f $(TARGET_DIR)/etc/issue && \
 		echo "$(SKELETON_INIT_COMMON_ISSUE)" > $(TARGET_DIR)/etc/issue || true
 endef
@@ -79,6 +81,7 @@ else # !BR2_TARGET_ENABLE_ROOT_LOGIN
 SKELETON_INIT_COMMON_ROOT_PASSWORD = "*"
 endif
 define SKELETON_INIT_COMMON_SET_ROOT_PASSWD
+    # Following test command is required due to the fact that /etc/shadow is a symlink in thingOS
 	test -f $(TARGET_DIR)/etc/shadow && $(SED) s,^root:[^:]*:,root:$(SKELETON_INIT_COMMON_ROOT_PASSWORD):, $(TARGET_DIR)/etc/shadow || true
 endef
 SKELETON_INIT_COMMON_TARGET_FINALIZE_HOOKS += SKELETON_INIT_COMMON_SET_ROOT_PASSWD
@@ -98,6 +101,8 @@ SKELETON_INIT_COMMON_TARGET_FINALIZE_HOOKS += SKELETON_INIT_COMMON_ADD_SH_TO_SHE
 ifneq ($(SKELETON_INIT_COMMON_BIN_SH),)
 define SKELETON_INIT_COMMON_SET_BIN_SH
 	ln -sf $(SKELETON_INIT_COMMON_BIN_SH) $(TARGET_DIR)/bin/sh
+	$(SED) '/^root:/s,[^/]*$$,$(SKELETON_INIT_COMMON_BIN_SH),' \
+		$(TARGET_DIR)/etc/passwd
 endef
 endif
 endif

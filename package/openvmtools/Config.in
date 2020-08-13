@@ -4,11 +4,11 @@ config BR2_PACKAGE_OPENVMTOOLS
 	depends on BR2_USE_MMU # libglib2
 	depends on BR2_USE_WCHAR # libglib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
-	depends on BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	depends on BR2_ENABLE_LOCALE
 	depends on !BR2_TOOLCHAIN_USES_UCLIBC
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_LIBDNET
+	select BR2_PACKAGE_LIBTIRPC if !BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	help
 	  Open Virtual Machine Tools for VMware guest OS
 
@@ -22,34 +22,37 @@ config BR2_PACKAGE_OPENVMTOOLS
 
 if BR2_PACKAGE_OPENVMTOOLS
 
-config BR2_PACKAGE_OPENVMTOOLS_PROCPS
-	bool "procps support"
-	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
-	select BR2_PACKAGE_PROCPS_NG
-	help
-	  Enable support for procps / meminfo
-
-comment "procps support needs BR2_PACKAGE_BUSYBOX_SHOW_OTHERS"
-	depends on !BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
-
 config BR2_PACKAGE_OPENVMTOOLS_PAM
 	bool "PAM support"
 	# linux-pam needs locale and wchar, but we already have this
 	# dependency on the main symbol, above.
 	depends on !BR2_STATIC_LIBS
-	depends on !BR2_TOOLCHAIN_USES_MUSL # linux-pam
 	select BR2_PACKAGE_LINUX_PAM
 	help
 	  Support for PAM in openvmtools
 
-comment "PAM support needs a glibc toolchain w/ dynamic library"
-	depends on BR2_STATIC_LIBS || BR2_TOOLCHAIN_USES_MUSL
+comment "PAM support needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+
+config BR2_PACKAGE_OPENVMTOOLS_RESOLUTIONKMS
+	bool "resolutionkms support"
+	depends on BR2_PACKAGE_HAS_UDEV
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libdrm
+	depends on BR2_i386 || BR2_x86_64 # libdrm vmwgfx
+	select BR2_PACKAGE_LIBDRM
+	select BR2_PACKAGE_LIBDRM_VMWGFX
+	help
+	  Enable support for resolutionkms
+
+comment "resolutionkms needs udev, a toolchain w/ threads"
+	depends on BR2_i386 || BR2_x86_64
+	depends on !BR2_PACKAGE_HAS_UDEV || !BR2_TOOLCHAIN_HAS_THREADS
 
 endif
 
-comment "openvmtools needs a glibc or musl toolchain w/ wchar, threads, RPC, locale"
+comment "openvmtools needs a glibc or musl toolchain w/ wchar, threads, locale"
 	depends on BR2_i386 || BR2_x86_64
 	depends on BR2_USE_MMU
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
-		!BR2_TOOLCHAIN_HAS_NATIVE_RPC || !BR2_ENABLE_LOCALE || \
+		!BR2_ENABLE_LOCALE || \
 		BR2_TOOLCHAIN_USES_UCLIBC

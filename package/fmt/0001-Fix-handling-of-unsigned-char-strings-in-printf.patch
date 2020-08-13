@@ -1,0 +1,54 @@
+From 7d01859ef16e6b65bc023ad8bebfedecb088bf81 Mon Sep 17 00:00:00 2001
+From: Victor Zverovich <viz@fb.com>
+Date: Wed, 8 Apr 2020 12:32:34 -0700
+Subject: [PATCH] Fix handling of unsigned char strings in printf
+
+Downloaded from upstream commit
+https://github.com/fmtlib/fmt/commit/7d01859ef16e6b65bc023ad8bebfedecb088bf81
+
+to fix Kodi build error:
+https://github.com/xbmc/xbmc/issues/17629
+https://github.com/fmtlib/fmt/issues/1620
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ include/fmt/core.h  | 8 ++++++++
+ test/printf-test.cc | 6 ++++++
+ 2 files changed, 14 insertions(+)
+
+diff --git a/include/fmt/core.h b/include/fmt/core.h
+index 6df2875ac..dc10722bf 100644
+--- a/include/fmt/core.h
++++ b/include/fmt/core.h
+@@ -972,6 +972,14 @@ template <typename Context> struct arg_mapper {
+     static_assert(std::is_same<char_type, char>::value, "invalid string type");
+     return reinterpret_cast<const char*>(val);
+   }
++  FMT_CONSTEXPR const char* map(signed char* val) {
++    const auto* const_val = val;
++    return map(const_val);
++  }
++  FMT_CONSTEXPR const char* map(unsigned char* val) {
++    const auto* const_val = val;
++    return map(const_val);
++  }
+ 
+   FMT_CONSTEXPR const void* map(void* val) { return val; }
+   FMT_CONSTEXPR const void* map(const void* val) { return val; }
+diff --git a/test/printf-test.cc b/test/printf-test.cc
+index 5aaa27b13..545e02aab 100644
+--- a/test/printf-test.cc
++++ b/test/printf-test.cc
+@@ -447,6 +447,12 @@ TEST(PrintfTest, String) {
+   EXPECT_PRINTF(L"    (null)", L"%10s", null_wstr);
+ }
+ 
++TEST(PrintfTest, UCharString) {
++  unsigned char str[] = "test";
++  unsigned char* pstr = str;
++  EXPECT_EQ("test", fmt::sprintf("%s", pstr));
++}
++
+ TEST(PrintfTest, Pointer) {
+   int n;
+   void* p = &n;

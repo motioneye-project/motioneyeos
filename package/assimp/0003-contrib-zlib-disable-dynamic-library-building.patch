@@ -1,0 +1,31 @@
+From 2b8684aded0c383be64bac0fa59e39870252963f Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Sun, 12 Apr 2020 18:19:13 +0200
+Subject: [PATCH] contrib/zlib: disable dynamic library building
+
+Fixes compile failure for static only toolchains (and assimp
+links against the static one).
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ contrib/zlib/CMakeLists.txt | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/contrib/zlib/CMakeLists.txt b/contrib/zlib/CMakeLists.txt
+index 9d1fcc94..78346233 100644
+--- a/contrib/zlib/CMakeLists.txt
++++ b/contrib/zlib/CMakeLists.txt
+@@ -195,10 +195,7 @@ if(MINGW)
+     set(ZLIB_DLL_SRCS ${CMAKE_CURRENT_BINARY_DIR}/zlib1rc.obj)
+ endif(MINGW)
+ 
+-add_library(zlib SHARED ${ZLIB_SRCS} ${ZLIB_ASMS} ${ZLIB_DLL_SRCS} ${ZLIB_PUBLIC_HDRS} ${ZLIB_PRIVATE_HDRS})
+ add_library(zlibstatic STATIC ${ZLIB_SRCS} ${ZLIB_ASMS} ${ZLIB_PUBLIC_HDRS} ${ZLIB_PRIVATE_HDRS})
+-set_target_properties(zlib PROPERTIES DEFINE_SYMBOL ZLIB_DLL)
+-set_target_properties(zlib PROPERTIES SOVERSION 1)
+ 
+ INSTALL( TARGETS zlibstatic
+          LIBRARY DESTINATION ${ASSIMP_LIB_INSTALL_DIR}
+-- 
+2.26.0
+

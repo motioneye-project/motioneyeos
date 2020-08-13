@@ -8,6 +8,12 @@ config BR2_PACKAGE_PROFTPD
 
 if BR2_PACKAGE_PROFTPD
 
+config BR2_PACKAGE_PROFTPD_MOD_CAP
+	bool "mod_cap support"
+	select BR2_PACKAGE_LIBCAP
+	help
+	  Compile ProFTPD with mod_cap support
+
 config BR2_PACKAGE_PROFTPD_MOD_REWRITE
 	bool "mod_rewrite support"
 	help
@@ -40,6 +46,13 @@ config BR2_PACKAGE_PROFTPD_MOD_SQL_SQLITE
 	  Compile ProFTPD with mod_sql_sqlite support.
 
 endif
+
+config BR2_PACKAGE_PROFTPD_MOD_SFTP_SQL
+	bool "mod_sftp_sql support"
+	select BR2_PACKAGE_PROFTPD_MOD_SQL
+	select BR2_PACKAGE_PROFTPD_MOD_SFTP
+	help
+	  Compile ProFTPD with mod_sftp_sql support
 
 config BR2_PACKAGE_PROFTPD_MOD_QUOTATAB
 	bool "mod_quotatab support"

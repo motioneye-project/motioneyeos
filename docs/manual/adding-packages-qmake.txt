@@ -1,0 +1,81 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+=== Infrastructure for QMake-based packages
+
+[[qmake-package-tutorial]]
+
+==== +qmake-package+ tutorial
+
+First, let's see how to write a +.mk+ file for a QMake-based package, with
+an example :
+
+------------------------
+01: ################################################################################
+02: #
+03: # libfoo
+04: #
+05: ################################################################################
+06:
+07: LIBFOO_VERSION = 1.0
+08: LIBFOO_SOURCE = libfoo-$(LIBFOO_VERSION).tar.gz
+09: LIBFOO_SITE = http://www.foosoftware.org/download
+10: LIBFOO_CONF_OPTS = QT_CONFIG+=bar QT_CONFIG-=baz
+11: LIBFOO_DEPENDENCIES = bar
+12:
+13: $(eval $(qmake-package))
+------------------------
+
+On line 7, we declare the version of the package.
+
+On line 8 and 9, we declare the name of the tarball (xz-ed tarball
+recommended) and the location of the tarball on the Web. Buildroot
+will automatically download the tarball from this location.
+
+On line 10, we tell Buildroot what options to enable for libfoo.
+
+On line 11, we tell Buildroot the depednencies of libfoo.
+
+Finally, on line line 13, we invoke the +qmake-package+
+macro that generates all the Makefile rules that actually allows the
+package to be built.
+
+[[qmake-package-reference]]
+
+==== +qmake-package+ reference
+
+The main macro of the QMake package infrastructure is +qmake-package+.
+It is similar to the +generic-package+ macro.
+
+Just like the generic infrastructure, the QMake infrastructure works
+by defining a number of variables before calling the +qmake-package+
+macro.
+
+First, all the package metadata information variables that exist in
+the generic infrastructure also exist in the QMake infrastructure:
++LIBFOO_VERSION+, +LIBFOO_SOURCE+, +LIBFOO_PATCH+, +LIBFOO_SITE+,
++LIBFOO_SUBDIR+, +LIBFOO_DEPENDENCIES+, +LIBFOO_INSTALL_STAGING+,
++LIBFOO_INSTALL_TARGET+.
+
+An additional variable, specific to the QMake infrastructure, can
+also be defined.
+
+* +LIBFOO_CONF_ENV+, to specify additional environment variables to
+  pass to the +qmake+ script for the configuration step. By default, empty.
+
+* +LIBFOO_CONF_OPTS+, to specify additional options to pass to the
+  +qmake+ script for the configuration step. By default, empty.
+
+* +LIBFOO_MAKE_ENV+, to specify additional environment variables to the
+  +make+ command during the build and install steps. By default, empty.
+
+* +LIBFOO_MAKE_OPTS+, to specify additional targets to pass to the
+  +make+ command during the build step. By default, empty.
+
+* +LIBFOO_INSTALL_STAGING_OPTS+, to specify additional targets to pass
+  to the +make+ command during the staging installation step. By default,
+  +install+.
+
+* +LIBFOO_INSTALL_TARGET_OPTS+, to specify additional targets to pass
+  to the +make+ command during the target installation step. By default,
+  +install+.

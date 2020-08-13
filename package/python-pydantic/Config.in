@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_PYDANTIC
+	bool "python-pydantic"
+	depends on BR2_PACKAGE_PYTHON3
+	help
+	  Data validation and settings management using python 3.6
+	  type hinting.
+
+	  https://github.com/samuelcolvin/pydantic

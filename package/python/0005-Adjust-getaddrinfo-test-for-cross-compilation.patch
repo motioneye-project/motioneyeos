@@ -1,4 +1,4 @@
-From 2d971c3cdca9ecc55f2da8aba12ca89e1a66519a Mon Sep 17 00:00:00 2001
+From e674e29ceba34e55c9149ce99489e543aa4ebb01 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Tue, 7 Mar 2017 22:19:47 +0100
 Subject: [PATCH] Adjust getaddrinfo() test for cross-compilation
@@ -7,15 +7,17 @@ The getaddrinfo() test in configure.ac uses AC_RUN_IFELSE(), which isn't
 cross-compilation friendly.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[Peter: update for 2.7.16]
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
 ---
  configure.ac | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/configure.ac b/configure.ac
-index 4aafc82..63e6918 100644
+index 6bd8369105..77ca6d86ca 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -3527,7 +3527,7 @@ fi
+@@ -3563,7 +3563,7 @@ fi
  
  AC_MSG_RESULT($ac_cv_buggy_getaddrinfo)
  
@@ -25,5 +27,5 @@ index 4aafc82..63e6918 100644
  	if test $ipv6 = yes
  	then
 -- 
-2.7.4
+2.11.0
 

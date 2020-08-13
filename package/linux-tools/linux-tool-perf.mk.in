@@ -82,6 +82,18 @@ else
 PERF_MAKE_FLAGS += NO_LIBELF=1 NO_DWARF=1
 endif
 
+ifeq ($(BR2_PACKAGE_BINUTILS),y)
+PERF_DEPENDENCIES += binutils
+else
+PERF_MAKE_FLAGS += NO_DEMANGLE=1
+endif
+
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+PERF_DEPENDENCIES += openssl
+else
+PERF_MAKE_FLAGS += NO_LIBCRYPTO=1
+endif
+
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 PERF_DEPENDENCIES += zlib
 else

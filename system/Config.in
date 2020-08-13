@@ -11,6 +11,7 @@ config BR2_ROOTFS_SKELETON_DEFAULT
 	bool "default target skeleton"
 	select BR2_PACKAGE_SKELETON_INIT_SYSV if BR2_INIT_SYSV
 	select BR2_PACKAGE_SKELETON_INIT_SYSV if BR2_INIT_BUSYBOX
+	select BR2_PACKAGE_SKELETON_INIT_OPENRC if BR2_INIT_OPENRC
 	select BR2_PACKAGE_SKELETON_INIT_SYSTEMD if BR2_INIT_SYSTEMD
 	select BR2_PACKAGE_SKELETON_INIT_NONE if BR2_INIT_NONE
 	help
@@ -98,6 +99,16 @@ config BR2_INIT_SYSV
 	select BR2_PACKAGE_INITSCRIPTS
 	select BR2_PACKAGE_SYSVINIT
 
+config BR2_INIT_OPENRC
+	bool "OpenRC"
+	depends on BR2_USE_MMU
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_OPENRC
+
+comment "openrc needs a toolchain w/ dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS
+
 # In Buildroot, we decided not to support a split-usr when systemd is
 # used as an init system. This is a design decision, not a systemd
 # issue. Thus the select is with BR2_INIT_SYSTEMD (below) rather than
@@ -105,20 +116,25 @@ config BR2_INIT_SYSV
 config BR2_INIT_SYSTEMD
 	bool "systemd"
 	depends on BR2_PACKAGE_SYSTEMD_ARCH_SUPPORTS
-	depends on BR2_TOOLCHAIN_USES_GLIBC
-	depends on BR2_TOOLCHAIN_HAS_SSP
 	depends on BR2_USE_MMU
 	depends on !BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_TOOLCHAIN_HAS_SSP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_5
+	depends on BR2_HOST_GCC_AT_LEAST_5
 	select BR2_ROOTFS_MERGED_USR
 	select BR2_PACKAGE_SYSTEMD
 
-comment "systemd needs a glibc toolchain w/ SSP, headers >= 3.10"
+comment "systemd needs a glibc toolchain w/ SSP, headers >= 3.10, host and target gcc >= 5"
 	depends on BR2_PACKAGE_SYSTEMD_ARCH_SUPPORTS
 	depends on BR2_USE_MMU
 	depends on !BR2_TOOLCHAIN_USES_GLIBC || \
 		!BR2_TOOLCHAIN_HAS_SSP || \
-		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
+		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10 || \
+		!BR2_TOOLCHAIN_GCC_AT_LEAST_5 || \
+		!BR2_HOST_GCC_AT_LEAST_5
 
 config BR2_INIT_NONE
 	bool "None"
@@ -337,16 +353,16 @@ config BR2_TARGET_GENERIC_GETTY_BAUDRATE
 config BR2_TARGET_GENERIC_GETTY_TERM
 	string "TERM environment variable"
 	default "vt100"
-	# currently observed only by busybox and sysvinit
-	depends on BR2_INIT_BUSYBOX || BR2_INIT_SYSV
+	# currently observed by all but systemd
+	depends on !BR2_INIT_SYSTEMD
 	help
 	  Specify a TERM type.
 
 config BR2_TARGET_GENERIC_GETTY_OPTIONS
 	string "other options to pass to getty"
 	default ""
-	# currently observed only by busybox and sysvinit
-	depends on BR2_INIT_BUSYBOX || BR2_INIT_SYSV
+	# currently observed by all but systemd
+	depends on !BR2_INIT_SYSTEMD
 	help
 	  Any other flags you want to pass to getty,
 	  Refer to getty --help for details.
@@ -366,7 +382,8 @@ config BR2_TARGET_GENERIC_REMOUNT_ROOTFS_RW
 config BR2_SYSTEM_DHCP
 	string "Network interface to configure through DHCP"
 	default ""
-	depends on BR2_PACKAGE_BUSYBOX || BR2_PACKAGE_IFUPDOWN || BR2_PACKAGE_SYSTEMD_NETWORKD
+	depends on BR2_PACKAGE_BUSYBOX || BR2_PACKAGE_IFUPDOWN || \
+		BR2_PACKAGE_SYSTEMD_NETWORKD || BR2_PACKAGE_NETIFRC
 	help
 	  Enter here the name of the network interface (E.G. eth0) to
 	  automatically configure through DHCP at bootup.
@@ -377,8 +394,9 @@ config BR2_SYSTEM_DHCP
 	  overwrite /etc/network/interfaces or add a networkd
 	  configuration file.
 
-comment "automatic network configuration via DHCP needs ifupdown or busybox or networkd"
-	depends on !(BR2_PACKAGE_BUSYBOX || BR2_PACKAGE_IFUPDOWN || BR2_PACKAGE_SYSTEMD_NETWORKD)
+comment "automatic network configuration via DHCP needs ifupdown or busybox or networkd or netifrc"
+	depends on !(BR2_PACKAGE_BUSYBOX || BR2_PACKAGE_IFUPDOWN || \
+		BR2_PACKAGE_SYSTEMD_NETWORKD || BR2_PACKAGE_NETIFRC)
 
 endif # BR2_ROOTFS_SKELETON_DEFAULT
 
@@ -480,6 +498,8 @@ config BR2_TARGET_LOCALTIME
 	    America/New_York
 	    Pacific/Wallis
 	    ...
+
+	  Set to empty to not install a default time zone.
 
 endif # BR2_TARGET_TZ_INFO
 

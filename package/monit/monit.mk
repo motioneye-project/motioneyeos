@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MONIT_VERSION = 5.25.2
+MONIT_VERSION = 5.26.0
 MONIT_SITE = http://mmonit.com/monit/dist
 MONIT_LICENSE = AGPL-3.0 with OpenSSL exception
 MONIT_LICENSE_FILES = COPYING

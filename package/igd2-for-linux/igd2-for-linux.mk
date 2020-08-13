@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-IGD2_FOR_LINUX_VERSION = v1.2
-IGD2_FOR_LINUX_SITE = $(call github,ffontaine,igd2-for-linux,$(IGD2_FOR_LINUX_VERSION))
+IGD2_FOR_LINUX_VERSION = 1.2
+IGD2_FOR_LINUX_SITE = $(call github,ffontaine,igd2-for-linux,v$(IGD2_FOR_LINUX_VERSION))
 
 IGD2_FOR_LINUX_LICENSE = GPL-2.0
 IGD2_FOR_LINUX_LICENSE_FILES = linuxigd2/doc/LICENSE
@@ -40,9 +40,6 @@ endef
 define IGD2_FOR_LINUX_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 0644 package/igd2-for-linux/upnpd.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/upnpd.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/upnpd.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/upnpd.service
 endef
 
 $(eval $(generic-package))

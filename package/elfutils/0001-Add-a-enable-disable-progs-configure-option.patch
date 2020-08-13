@@ -13,9 +13,11 @@ obstack_printf() in uClibc for example).
 Based on the former patch by Thomas Petazzoni.
 
 [Vincent: tweak patch for 0.166]
+[Bernd: rebased patch for 0.177]
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 ---
  Makefile.am  | 6 +++++-
  configure.ac | 6 ++++++
@@ -44,7 +46,7 @@ diff --git a/configure.ac b/configure.ac
 index c2c1d90b2133..7b4c38381cca 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -259,6 +259,12 @@ AC_SUBST([LIBEBL_SUBDIR])
+@@ -345,6 +345,12 @@ AC_SUBST([LIBEBL_SUBDIR])
  AC_DEFINE_UNQUOTED(LIBEBL_SUBDIR, "$LIBEBL_SUBDIR")
  AH_TEMPLATE([LIBEBL_SUBDIR], [$libdir subdirectory containing libebl modules.])
  

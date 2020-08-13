@@ -1,7 +1,7 @@
-# https://sourceforge.net/projects/gphoto/files/libgphoto/2.5.17/
-md5 ae78e7a7936a6962c3a22b256bee1869 libgphoto2-2.5.17.tar.bz2
-sha1 b55167bbb73518c5b7f67f90e619c46d05005c7d libgphoto2-2.5.17.tar.bz2
+# https://sourceforge.net/projects/gphoto/files/libgphoto/2.5.23/
+md5 bf052ce815e607dc781c5b0f3c5ca5c0 libgphoto2-2.5.23.tar.bz2
+sha1 01f91d2b5d2aef7e80ab846fea4d5eb5cc67ed79 libgphoto2-2.5.23.tar.bz2
 
 # Locally calculated hash
-sha256 417464f0a313fa937e8a71cdf18a371cf01e750830195cd63ae31da0d092b555 libgphoto2-2.5.17.tar.bz2
+sha256 d8af23364aa40fd8607f7e073df74e7ace05582f4ba13f1724d12d3c97e8852d libgphoto2-2.5.23.tar.bz2
 sha256 ebc385a0b1d477be5177ed6d9129557aa59a3ad0f26ebe7dd97ee942a0fb68ee COPYING

@@ -1,11 +1,16 @@
 config BR2_PACKAGE_UDISKS
 	bool "udisks"
+	depends on BR2_ENABLE_LOCALE # parted
+	depends on BR2_HOST_GCC_AT_LEAST_4_9 # spidermonkey
+	depends on BR2_INSTALL_LIBSTDCPP # spidermonkey
 	depends on BR2_PACKAGE_HAS_UDEV
-	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus-glib -> glib2
-	depends on BR2_TOOLCHAIN_USES_GLIBC # polkit, lvm2
+	depends on BR2_PACKAGE_SPIDERMONKEY_ARCH_SUPPORTS # spidermonkey
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_9 # spidermonkey
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # polkit
 	depends on BR2_USE_MMU # lvm2
-	depends on !BR2_STATIC_LIBS # lvm2
 	depends on BR2_USE_WCHAR # dbus-glib -> glib2
+	depends on !BR2_TOOLCHAIN_USES_UCLIBC # polkit, lvm2, parted
+	depends on !BR2_STATIC_LIBS # lvm2, spidermonkey
 	select BR2_PACKAGE_DBUS
 	select BR2_PACKAGE_DBUS_GLIB
 	select BR2_PACKAGE_SG3_UTILS
@@ -30,9 +35,14 @@ if BR2_PACKAGE_UDISKS
 
 config BR2_PACKAGE_UDISKS_LVM2
 	bool "lvm2 support"
+	# The lvm app library can't compile against musl
+	depends on BR2_TOOLCHAIN_USES_GLIBC
 	select BR2_PACKAGE_LVM2_APP_LIBRARY
 	help
 	  Enable LVM2 support
+
+comment "lvm2 support needs a glibc toolchain"
+	depends on !BR2_TOOLCHAIN_USES_GLIBC
 
 endif
 
@@ -40,7 +50,13 @@ comment "udisks needs udev /dev management"
 	depends on BR2_USE_MMU
 	depends on !BR2_PACKAGE_HAS_UDEV
 
-comment "udisks needs a glibc toolchain w/ wchar, threads, dynamic library"
+comment "udisks needs a glibc or musl toolchain with locale, C++, wchar, dynamic library, NPTL, gcc >= 4.9"
 	depends on BR2_USE_MMU
-	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
-		BR2_STATIC_LIBS || !BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_PACKAGE_SPIDERMONKEY_ARCH_SUPPORTS
+	depends on !BR2_ENABLE_LOCALE || BR2_TOOLCHAIN_USES_UCLIBC || \
+		!BR2_INSTALL_LIBSTDCPP || \
+		BR2_STATIC_LIBS || \
+		!BR2_TOOLCHAIN_HAS_THREADS_NPTL || \
+		!BR2_HOST_GCC_AT_LEAST_4_9 || \
+		!BR2_TOOLCHAIN_GCC_AT_LEAST_4_9 || \
+		!BR2_USE_WCHAR

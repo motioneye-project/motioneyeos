@@ -1,2 +1,4 @@
 # Locally calculated after checking pgp signature
 sha256  dae2717c270fd5f62d790dbf80c19793c651b1b26b62c101b82d5fdf25a845bf  macchanger-1.7.0.tar.gz
+# Locally computed
+sha256  8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903  COPYING

@@ -1,0 +1,11 @@
+config BR2_PACKAGE_LIBUBOOTENV
+	bool "libubootenv"
+	select BR2_PACKAGE_ZLIB
+	help
+	  libubootenv is a library that provides a hardware independent
+	  way to access to U-Boot environment.
+
+	  The package provides the fw_printenv / fw_setenv utilities,
+	  new tools build from the library and not from U-Boot.
+
+	  https://github.com/sbabic/libubootenv/

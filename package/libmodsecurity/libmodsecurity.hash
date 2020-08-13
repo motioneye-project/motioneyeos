@@ -1,0 +1,4 @@
+# From https://github.com/SpiderLabs/ModSecurity/releases/download/v3.0.4/modsecurity-v3.0.4.tar.gz.sha256
+sha256  b4231177dd80b4e076b228e57d498670113b69d445bab86db25f65346c24db22  modsecurity-v3.0.4.tar.gz
+# Localy calculated
+sha256 c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4  LICENSE

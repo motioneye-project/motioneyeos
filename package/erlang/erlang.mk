@@ -5,7 +5,7 @@
 ################################################################################
 
 # See note below when updating Erlang
-ERLANG_VERSION = 21.0
+ERLANG_VERSION = 22.2
 ERLANG_SITE = http://www.erlang.org/download
 ERLANG_SOURCE = otp_src_$(ERLANG_VERSION).tar.gz
 ERLANG_DEPENDENCIES = host-erlang
@@ -14,12 +14,25 @@ ERLANG_LICENSE = Apache-2.0
 ERLANG_LICENSE_FILES = LICENSE.txt
 ERLANG_INSTALL_STAGING = YES
 
+# Remove the leftover deps directory from the ssl app
+# See https://bugs.erlang.org/browse/ERL-1168
+define ERLANG_REMOVE_SSL_DEPS
+	rm -rf $(@D)/lib/ssl/src/deps
+endef
+ERLANG_POST_PATCH_HOOKS += ERLANG_REMOVE_SSL_DEPS
+
 # Patched erts/aclocal.m4
-ERLANG_AUTORECONF = YES
+define ERLANG_RUN_AUTOCONF
+	cd $(@D) && PATH=$(BR_PATH) ./otp_build autoconf
+endef
+ERLANG_DEPENDENCIES += host-autoconf
+ERLANG_PRE_CONFIGURE_HOOKS += ERLANG_RUN_AUTOCONF
+HOST_ERLANG_DEPENDENCIES += host-autoconf
+HOST_ERLANG_PRE_CONFIGURE_HOOKS += ERLANG_RUN_AUTOCONF
 
 # Whenever updating Erlang, this value should be updated as well, to the
 # value of EI_VSN in the file lib/erl_interface/vsn.mk
-ERLANG_EI_VSN = 3.10.3
+ERLANG_EI_VSN = 3.13.1
 
 # The configure checks for these functions fail incorrectly
 ERLANG_CONF_ENV = ac_cv_func_isnan=yes ac_cv_func_isinf=yes
@@ -38,7 +51,7 @@ HOST_ERLANG_CONF_ENV += ERL_TOP=$(@D)
 
 # erlang uses openssl for all things crypto. Since the host tools (such as
 # rebar) uses crypto, we need to build host-erlang with support for openssl.
-HOST_ERLANG_DEPENDENCIES = host-openssl
+HOST_ERLANG_DEPENDENCIES += host-openssl
 HOST_ERLANG_CONF_OPTS = --without-javac --with-ssl=$(HOST_DIR)
 
 HOST_ERLANG_CONF_OPTS += --without-termcap
@@ -65,7 +78,7 @@ ERLANG_CONF_OPTS += --without-odbc
 endif
 
 # Always use Buildroot's zlib
-ERLANG_CONF_OPTS += --enable-shared-zlib
+ERLANG_CONF_OPTS += --disable-builtin-zlib
 ERLANG_DEPENDENCIES += zlib
 
 # Remove source, example, gs and wx files from staging and target.

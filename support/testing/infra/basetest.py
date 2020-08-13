@@ -11,11 +11,11 @@ BASIC_TOOLCHAIN_CONFIG = \
     BR2_TOOLCHAIN_EXTERNAL=y
     BR2_TOOLCHAIN_EXTERNAL_CUSTOM=y
     BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD=y
-    BR2_TOOLCHAIN_EXTERNAL_URL="http://autobuild.buildroot.org/toolchains/tarballs/br-arm-full-2017.05-1078-g95b1dae.tar.bz2"
-    BR2_TOOLCHAIN_EXTERNAL_GCC_4_9=y
-    BR2_TOOLCHAIN_EXTERNAL_HEADERS_3_10=y
+    BR2_TOOLCHAIN_EXTERNAL_URL="https://toolchains.bootlin.com/downloads/releases/toolchains/armv5-eabi/tarballs/armv5-eabi--uclibc--bleeding-edge-2018.11-1.tar.bz2"
+    BR2_TOOLCHAIN_EXTERNAL_GCC_8=y
+    BR2_TOOLCHAIN_EXTERNAL_HEADERS_4_14=y
     BR2_TOOLCHAIN_EXTERNAL_LOCALE=y
-    # BR2_TOOLCHAIN_EXTERNAL_HAS_THREADS_DEBUG is not set
+    BR2_TOOLCHAIN_HAS_THREADS_DEBUG=y
     BR2_TOOLCHAIN_EXTERNAL_CXX=y
     """
 
@@ -84,3 +84,9 @@ class BRTest(BRConfigTest):
         if self.emulator:
             self.emulator.stop()
         super(BRTest, self).tearDown()
+
+    # Run the given 'cmd' with a 'timeout' on the target and
+    # assert that the command succeeded
+    def assertRunOk(self, cmd, timeout=-1):
+        _, exit_code = self.emulator.run(cmd, timeout)
+        self.assertEqual(exit_code, 0)

@@ -1,0 +1,47 @@
+From 8e7da14647dada5eee8f583b0814bffb31d1b91e Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sun, 21 Apr 2019 23:17:34 +0200
+Subject: [PATCH] configure.ac: tweak CPPUNIT conditional
+
+Following review of buildroot's patch
+(http://patchwork.ozlabs.org/patch/1088520), tweak CPPUNIT to move call
+to AM_CONDITIONAL outside condition
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/linknx/linknx/commit/8e7da14647dada5eee8f583b0814bffb31d1b91e]
+---
+ configure.ac | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 51d8ae66..4d9d8efa 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -135,22 +135,20 @@ if test x"$WITH_CPPUNIT" != xno; then
+       AC_DEFINE([HAVE_CPPUNIT], [1], [cppunit])
+       AC_SUBST(CPPUNIT_CFLAGS)
+       AC_SUBST(CPPUNIT_LIBS)
+-      AM_CONDITIONAL(CPPUNIT, true)
++      found_cppunit=yes
+     ],[
+       AC_MSG_RESULT([no])
+-      AM_CONDITIONAL(CPPUNIT, false)
+     ])
+   else
+     PKG_CHECK_MODULES(CPPUNIT, $CPPUNITPC >= 1.9.6, [
+       AC_DEFINE([HAVE_CPPUNIT], [1], [cppunit])
+       AC_SUBST(CPPUNIT_CFLAGS)
+       AC_SUBST(CPPUNIT_LIBS)
+-      AM_CONDITIONAL([CPPUNIT], true)
+-    ],[AM_CONDITIONAL([CPPUNIT], false)])
++      found_cppunit=yes
++    ])
+   fi
+-else
+-  AM_CONDITIONAL([CPPUNIT], false)
+ fi
++AM_CONDITIONAL([CPPUNIT], [test x"$found_cppunit" = xyes])
+ 
+ dnl #########################################################################
+ dnl Check if using log4cpp

@@ -1,0 +1,21 @@
+config BR2_PACKAGE_LIBAPPARMOR
+	bool "libapparmor"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_16
+	help
+	  AppArmor is an effective and easy-to-use Linux application
+	  security system. AppArmor proactively protects the operating
+	  system and applications from external or internal threats,
+	  even zero-day attacks, by enforcing good behavior and
+	  preventing even unknown application flaws from being
+	  exploited.
+
+	  This package installs only the library.
+
+	  http://wiki.apparmor.net
+
+comment "libapparmor needs a toolchain w/ headers >= 3.16, threads"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_TOOLCHAIN_HAS_THREADS \
+		|| !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_16

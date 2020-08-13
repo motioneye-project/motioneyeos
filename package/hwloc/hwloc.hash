@@ -1,5 +1,6 @@
 # From https://www.open-mpi.org/software/hwloc/v1.11/
-md5 13d2e4dbce392cda41f1451d386d9a45  hwloc-1.11.7.tar.bz2
-sha1 7b78850b8504a93972a3f114a0e75f9b115607d9  hwloc-1.11.7.tar.bz2
+md5 3c792e23c209e9e1bafe9bdbc613d401  hwloc-1.11.13.tar.bz2
+sha1 c3ae96a845ff3800f28b28fdb48146f971589653  hwloc-1.11.13.tar.bz2
 # Locally computed
-sha256 ab6910e248eed8c85d08b529917a6aae706b32b346e886ba830895e36a809729  hwloc-1.11.7.tar.bz2
+sha256 a4494b7765f517c0990d1c7f09d98cb87755bb6b841e4e2cbfebca1b14bac9c8  hwloc-1.11.13.tar.bz2
+sha256 c1816ed2da6aea779c4f27352f807c8bbaf545c2843d7b2ae818e1d529028821  COPYING

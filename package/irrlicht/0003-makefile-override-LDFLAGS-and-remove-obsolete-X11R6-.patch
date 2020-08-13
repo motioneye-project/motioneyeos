@@ -1,0 +1,36 @@
+From 0ecb59c4dc575bb902c1955d8762f91ff79290a4 Mon Sep 17 00:00:00 2001
+From: Bartosz Bilas <b.bilas@grinn-global.com>
+Date: Tue, 23 Jun 2020 19:36:27 +0200
+Subject: [PATCH] makefile: override LDFLAGS and remove obsolete X11R6
+ lib/include directories
+
+Add "override" keyword to LDFLAGS variable in order to link libraries
+using buildroot cross-compiler correctly and remove those non-supported
+paths to lib/includes that are not used and not available in buildroot
+and in addition point to the host system libraries in a result
+cause the following warning:
+
+/home/bartekk/buildroot/output/host/opt/ext-toolchain/bin/../lib/gcc/arm-buildroot-linux-gnueabihf/9.2.0/../../../../arm-buildroot-linux-gnueabihf/bin/ld: warning: library search path "/usr/X11R6/lib" is unsafe for cross-compilation
+
+Signed-off-by: Bartosz Bilas <b.bilas@grinn-global.com>
+---
+ source/Irrlicht/Makefile | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/source/Irrlicht/Makefile b/source/Irrlicht/Makefile
+index 1a8277e..b323237 100644
+--- a/source/Irrlicht/Makefile
++++ b/source/Irrlicht/Makefile
+@@ -88,8 +88,7 @@ STATIC_LIB = libIrrlicht.a
+ LIB_PATH = ../../lib/$(SYSTEM)
+ INSTALL_DIR = /usr/local/lib
+ sharedlib install: SHARED_LIB = libIrrlicht.so
+-sharedlib: LDFLAGS += -L/usr/X11R6/lib$(LIBSELECT) -lGL -lXxf86vm
+-staticlib sharedlib: CXXINCS += -I/usr/X11R6/include
++sharedlib: override LDFLAGS += -lGL -lXxf86vm
+ 
+ #OSX specific options
+ staticlib_osx sharedlib_osx install_osx: SYSTEM = MacOSX
+-- 
+2.27.0
+

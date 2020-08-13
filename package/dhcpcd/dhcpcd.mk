@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DHCPCD_VERSION = 7.0.3
+DHCPCD_VERSION = 8.0.3
 DHCPCD_SOURCE = dhcpcd-$(DHCPCD_VERSION).tar.xz
 DHCPCD_SITE = http://roy.marples.name/downloads/dhcpcd
 DHCPCD_DEPENDENCIES = host-pkgconf
@@ -48,9 +48,6 @@ endef
 define DHCPCD_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 0644 package/dhcpcd/dhcpcd.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/dhcpcd.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/dhcpcd.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/dhcpcd.service
 endef
 endif
 

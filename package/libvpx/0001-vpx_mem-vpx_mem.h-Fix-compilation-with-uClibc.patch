@@ -16,7 +16,7 @@ index c14f288..82df745 100644
 --- a/vpx_mem/vpx_mem.h
 +++ b/vpx_mem/vpx_mem.h
 @@ -12,9 +12,6 @@
- #define VPX_MEM_VPX_MEM_H_
+ #define VPX_VPX_MEM_VPX_MEM_H_
  
  #include "vpx_config.h"
 -#if defined(__uClinux__)

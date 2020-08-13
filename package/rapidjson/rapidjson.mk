@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-RAPIDJSON_VERSION = v1.1.0
-RAPIDJSON_SITE = $(call github,miloyip,rapidjson,$(RAPIDJSON_VERSION))
+RAPIDJSON_VERSION = 1.1.0
+RAPIDJSON_SITE = $(call github,miloyip,rapidjson,v$(RAPIDJSON_VERSION))
 RAPIDJSON_LICENSE = MIT
 RAPIDJSON_LICENSE_FILES = license.txt
 

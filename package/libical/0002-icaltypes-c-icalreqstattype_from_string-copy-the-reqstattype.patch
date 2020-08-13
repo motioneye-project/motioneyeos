@@ -1,0 +1,27 @@
+From 6b9438d746cec6e4e632d78c5244f4be6314d1c9 Mon Sep 17 00:00:00 2001
+From: Allen Winter <allen.winter@kdab.com>
+Date: Sun, 28 May 2017 12:51:10 -0400
+Subject: [PATCH] icaltypes.c - icalreqstattype_from_string(), copy the
+ reqstattype's debug string into its own memory in the ring buffer.
+
+Issue#253
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved (and backported) from:
+https://github.com/libical/libical/commit/6b9438d746cec6e4e632d78c5244f4be6314d1c9]
+---
+ src/libical/icaltypes.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/libical/icaltypes.c b/src/libical/icaltypes.c
+index 70c50d29..85c33545 100644
+--- a/src/libical/icaltypes.c
++++ b/src/libical/icaltypes.c
+@@ -140,7 +140,7 @@ struct icalreqstattype icalreqstattype_from_string(const char *str)
+ 
+   p2 = strchr(p1+1,';');
+   if (p2 != 0 && *p2 != 0){
+-    stat.debug = p2+1;
++    stat.debug = icalmemory_tmp_copy(p2+1);
+   } 
+ 
+   return stat;

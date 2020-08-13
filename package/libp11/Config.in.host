@@ -1,0 +1,7 @@
+config BR2_PACKAGE_HOST_LIBP11
+	bool "host libp11"
+	help
+	  OpenSSL engine for PKCS#11 modules. Part of the OpenSC
+	  project.
+
+	  https://github.com/OpenSC/OpenSC/wiki

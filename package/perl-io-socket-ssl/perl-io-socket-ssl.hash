@@ -1,6 +1,6 @@
 # retrieved by scancpan from http://cpan.metacpan.org/
-md5    97fa6cd64f15db60f810cd8ab02d57fc IO-Socket-SSL-2.060.tar.gz
-sha256 fb5b2877ac5b686a5d7b8dd71cf5464ffe75d10c32047b5570674870e46b1b8c IO-Socket-SSL-2.060.tar.gz
+md5  4230c829c8875889848093b2b46a7284  IO-Socket-SSL-2.068.tar.gz
+sha256  4420fc0056f1827b4dd1245eacca0da56e2182b4ef6fc078f107dc43c3fb8ff9  IO-Socket-SSL-2.068.tar.gz
 
 # computed by scancpan
-sha256 090aff5421fd55a9dceeaf6c612c36360402e8d29c1284aef88c87be565ce032 README
+sha256  090aff5421fd55a9dceeaf6c612c36360402e8d29c1284aef88c87be565ce032  README

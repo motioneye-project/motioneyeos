@@ -25,9 +25,6 @@ endef
 define PTPD_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 package/ptpd/ptpd.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/ptpd.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/ptpd.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/ptpd.service
 endef
 
 $(eval $(generic-package))

@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/webencodings/json
+md5	32f6e261d52e57bf7e1c4d41546d15b8  webencodings-0.5.1.tar.gz
+sha256	b36a1c245f2d304965eb4e0a82848379241dc04b865afcc4aab16748587e1923  webencodings-0.5.1.tar.gz
+# Locally computed sha256 checksumms
+sha256	c27693b0174d6d04dafd0242857ae72763f5404b675972c777fd865bc3c0abe1  PKG-INFO

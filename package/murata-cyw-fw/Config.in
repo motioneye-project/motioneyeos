@@ -1,0 +1,97 @@
+config BR2_PACKAGE_MURATA_CYW_FW
+	bool "murata-cyw-fw"
+	help
+	  Murata Wireless firmware, NVRAM and Bluetooth HCD patch files.
+
+	  https://github.com/murata-wireless/cyw-fmac-fw
+	  https://github.com/murata-wireless/cyw-fmac-nvram
+	  https://github.com/murata-wireless/cyw-bt-patch
+
+if BR2_PACKAGE_MURATA_CYW_FW
+
+config BR2_PACKAGE_MURATA_CYW_FW_CYW43012
+	bool "CYW43012 (1LV)"
+	help
+	  Murata Wireless CYW43012 (1LV) module firmware files.
+
+config BR2_PACKAGE_MURATA_CYW_FW_CYW43340
+	bool "CYW43340/CYW43341 (1BW)"
+	help
+	  Murata Wireless CYW43340/CYW43341 (1BW) module firmware files.
+
+config BR2_PACKAGE_MURATA_CYW_FW_CYW43362
+	bool "CYW43362 (SN8000)"
+	help
+	  Murata Wireless CYW43362 (SN8000) module firmware files.
+
+config BR2_PACKAGE_MURATA_CYW_FW_CYW4339
+	bool "CYW4339 (1CK/ZP)"
+	help
+	  Murata Wireless CYW4339 (1CK/ZP) module firmware files.
+
+choice
+	prompt "CYW4339 module" if BR2_PACKAGE_MURATA_CYW_FW_CYW4339
+
+config BR2_PACKAGE_MURATA_CYW_FW_CYW4339_1CK
+	bool "1CK"
+
+config BR2_PACKAGE_MURATA_CYW_FW_CYW4339_ZP
+	bool "ZP"
+
+endchoice
+
+config BR2_PACKAGE_MURATA_CYW_FW_CYW43430
+	bool "CYW43430/CYW4343W/CYW43364 (1DX/1FX/1LN)"
+	help
+	  Murata Wireless CYW43430/CYW4343W/CYW43364 (1DX/1FX/1LN)
+	  module firmware files.
+
+choice
+	prompt "CYW43430/CYW4343W/CYW43364 module" if BR2_PACKAGE_MURATA_CYW_FW_CYW43430
+
+config BR2_PACKAGE_MURATA_CYW_FW_CYW43430_1DX
+	bool "1DX"
+
+config BR2_PACKAGE_MURATA_CYW_FW_CYW43430_1FX
+	bool "1FX"
+
+config BR2_PACKAGE_MURATA_CYW_FW_CYW43430_1LN
+	bool "1LN"
+
+endchoice
+
+config BR2_PACKAGE_MURATA_CYW_FW_CYW43455
+	bool "CYW43455 (1HK/1LC/1MW)"
+	help
+	  Murata Wireless CYW43455 (1HK/1LC/1MW) module firmware files.
+
+choice
+	prompt "CYW43455 module" if BR2_PACKAGE_MURATA_CYW_FW_CYW43455
+
+config BR2_PACKAGE_MURATA_CYW_FW_CYW43455_1HK
+	bool "1HK"
+
+config BR2_PACKAGE_MURATA_CYW_FW_CYW43455_1LC
+	bool "1LC"
+
+config BR2_PACKAGE_MURATA_CYW_FW_CYW43455_1MW
+	bool "1MW"
+
+endchoice
+
+config BR2_PACKAGE_MURATA_CYW_FW_CYW4354
+	bool "CYW4354 (1BB)"
+	help
+	  Murata Wireless CYW4354 (1BB) module firmware files.
+
+config BR2_PACKAGE_MURATA_CYW_FW_CYW4356
+	bool "CYW4356 (1CX)"
+	help
+	  Murata Wireless CYW4356 (1CX) module firmware files.
+
+config BR2_PACKAGE_MURATA_CYW_FW_CYW4359
+	bool "CYW4359 (1FD)"
+	help
+	  Murata Wireless CYW4359 (1FD) module firmware files.
+
+endif

@@ -1,5 +1,5 @@
-# From https://sourceforge.net/projects/pupnp/files/pupnp/libupnp-1.8.4/libupnp-1.8.4.tar.bz2.sha1
-sha1 93e7b3c94cf53eb59533b4b7b137ef5cc651e28b  libupnp-1.8.4.tar.bz2
+# From https://sourceforge.net/projects/pupnp/files/pupnp/libupnp-1.8.7/libupnp-1.8.7.tar.bz2.sha1
+sha1  2ea3011180c58b0584f0cb73cc8e685a0a1c4ec8  libupnp-1.8.7.tar.bz2
 # Locally computed:
-sha256	188d3f786d92fe14191f17634d2d87847eee7d2b568a5257ea23262fec9973d6	libupnp-1.8.4.tar.bz2
-sha256	c8b99423cad48bb44e2cf52a496361404290865eac259a82da6d1e4331ececb3	COPYING
+sha256  e38c69b2b67322e67cd53680db9b02c7c1f720a47a3cd626fd89d57d2dca93b8  libupnp-1.8.7.tar.bz2
+sha256  c8b99423cad48bb44e2cf52a496361404290865eac259a82da6d1e4331ececb3  COPYING

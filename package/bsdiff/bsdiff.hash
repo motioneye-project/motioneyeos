@@ -1,2 +1,4 @@
 # From http://www.daemonology.net/bsdiff/:
 md5	e6d812394f0e0ecc8d5df255aa1db22a  bsdiff-4.3.tar.gz
+# locally computed
+sha256  fc0a6e634ef77dcf14bf36c7b6d1e57ba1ac5c4809073dfaacb3b5f7ab277eb7  bsdiff.c

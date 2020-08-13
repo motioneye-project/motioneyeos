@@ -1,0 +1,73 @@
+From 4d5ddcdb9c03d4e829fe7080e497a00f0b379eff Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sun, 14 Jun 2020 17:33:31 +0200
+Subject: [PATCH] meson: add introspection option
+
+This will allow the user to build granite without gobject-introspection
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/elementary/granite/pull/410]
+---
+ lib/meson.build   | 38 ++++++++++++++++++++------------------
+ meson_options.txt |  1 +
+ 2 files changed, 21 insertions(+), 18 deletions(-)
+
+diff --git a/lib/meson.build b/lib/meson.build
+index a9fc4ed4..770feeb5 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -98,24 +98,26 @@ install_data(
+     install_dir: include_dir
+ )
+ 
+-# typelib generation isn't automated yet
+-g_ir_compiler = find_program('g-ir-compiler')
+-custom_target(
+-    granite_typelib,
+-    command: [
+-        g_ir_compiler,
+-        '--shared-library',
+-        '@PLAINNAME@',
+-        '--output',
+-        '@OUTPUT@',
+-        join_paths(meson.current_build_dir(), granite_gir),
+-    ],
+-    input: libgranite,
+-    output: granite_typelib,
+-    depends: libgranite,
+-    install: true,
+-    install_dir: join_paths(get_option('libdir'), 'girepository-1.0'),
+-)
++if get_option('introspection')
++    # typelib generation isn't automated yet
++    g_ir_compiler = find_program('g-ir-compiler')
++    custom_target(
++        granite_typelib,
++        command: [
++            g_ir_compiler,
++            '--shared-library',
++            '@PLAINNAME@',
++            '--output',
++            '@OUTPUT@',
++            join_paths(meson.current_build_dir(), granite_gir),
++        ],
++        input: libgranite,
++        output: granite_typelib,
++        depends: libgranite,
++        install: true,
++        install_dir: join_paths(get_option('libdir'), 'girepository-1.0'),
++    )
++endif
+ 
+ libgranite_dep = declare_dependency(
+     link_with: libgranite,
+diff --git a/meson_options.txt b/meson_options.txt
+index 9d9f62e9..bd1a1d6f 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -1 +1,2 @@
+ option('documentation', type: 'boolean', value: false, description: 'generate documentation with gtk-doc and valadoc')
++option('introspection', type: 'boolean', value: true, description: 'Whether to build introspection files')
+-- 
+2.26.2
+

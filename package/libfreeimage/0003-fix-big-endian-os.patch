@@ -1,0 +1,64 @@
+fixed PluginBMP, PluginDDS for compilation under Big Endian OS
+
+Downloaded from upstream commit:
+https://sourceforge.net/p/freeimage/svn/1809/
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -uNr FreeImage.orig/Source/FreeImage/PluginBMP.cpp FreeImage/Source/FreeImage/PluginBMP.cpp
+--- FreeImage.orig/Source/FreeImage/PluginBMP.cpp	2016-06-15 12:35:30.000000000 +0200
++++ FreeImage/Source/FreeImage/PluginBMP.cpp	2019-08-31 16:00:27.813378612 +0200
+@@ -518,7 +518,7 @@
+ 				io->read_proc(FreeImage_GetPalette(dib), used_colors * sizeof(RGBQUAD), 1, handle);
+ #if FREEIMAGE_COLORORDER == FREEIMAGE_COLORORDER_RGB
+ 				RGBQUAD *pal = FreeImage_GetPalette(dib);
+-				for(int i = 0; i < used_colors; i++) {
++				for(unsigned int i = 0; i < used_colors; i++) {
+ 					INPLACESWAP(pal[i].rgbRed, pal[i].rgbBlue);
+ 				}
+ #endif
+@@ -1419,7 +1419,7 @@
+ 
+ 			free(buffer);
+ #ifdef FREEIMAGE_BIGENDIAN
+-		} else if (bpp == 16) {
++		} else if (dst_bpp == 16) {
+ 			int padding = dst_pitch - dst_width * sizeof(WORD);
+ 			WORD pad = 0;
+ 			WORD pixel;
+@@ -1440,7 +1440,7 @@
+ 			}
+ #endif
+ #if FREEIMAGE_COLORORDER == FREEIMAGE_COLORORDER_RGB
+-		} else if (bpp == 24) {
++		} else if (dst_bpp == 24) {
+ 			int padding = dst_pitch - dst_width * sizeof(FILE_BGR);
+ 			DWORD pad = 0;
+ 			FILE_BGR bgr;
+@@ -1461,7 +1461,7 @@
+ 					}
+ 				}
+ 			}
+-		} else if (bpp == 32) {
++		} else if (dst_bpp == 32) {
+ 			FILE_BGRA bgra;
+ 			for(unsigned y = 0; y < dst_height; y++) {
+ 				BYTE *line = FreeImage_GetScanLine(dib, y);
+diff -uNr FreeImage.orig/Source/FreeImage/PluginDDS.cpp FreeImage/Source/FreeImage/PluginDDS.cpp
+--- FreeImage.orig/Source/FreeImage/PluginDDS.cpp	2018-07-31 17:04:58.000000000 +0200
++++ FreeImage/Source/FreeImage/PluginDDS.cpp	2019-08-31 16:00:39.213465120 +0200
+@@ -356,14 +356,6 @@
+ 	for(int i=0; i<11; i++) {
+ 		SwapLong(&header->surfaceDesc.dwReserved1[i]);
+ 	}
+-	SwapLong(&header->surfaceDesc.ddpfPixelFormat.dwSize);
+-	SwapLong(&header->surfaceDesc.ddpfPixelFormat.dwFlags);
+-	SwapLong(&header->surfaceDesc.ddpfPixelFormat.dwFourCC);
+-	SwapLong(&header->surfaceDesc.ddpfPixelFormat.dwRGBBitCount);
+-	SwapLong(&header->surfaceDesc.ddpfPixelFormat.dwRBitMask);
+-	SwapLong(&header->surfaceDesc.ddpfPixelFormat.dwGBitMask);
+-	SwapLong(&header->surfaceDesc.ddpfPixelFormat.dwBBitMask);
+-	SwapLong(&header->surfaceDesc.ddpfPixelFormat.dwRGBAlphaBitMask);
+ 	SwapLong(&header->surfaceDesc.ddsCaps.dwCaps1);
+ 	SwapLong(&header->surfaceDesc.ddsCaps.dwCaps2);
+ 	SwapLong(&header->surfaceDesc.ddsCaps.dwReserved[0]);

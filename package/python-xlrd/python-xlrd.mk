@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-PYTHON_XLRD_VERSION = 1.0.0
+PYTHON_XLRD_VERSION = 1.2.0
 PYTHON_XLRD_SOURCE = xlrd-$(PYTHON_XLRD_VERSION).tar.gz
-PYTHON_XLRD_SITE = https://pypi.python.org/packages/42/85/25caf967c2d496067489e0bb32df069a8361e1fd96a7e9f35408e56b3aab
+PYTHON_XLRD_SITE = https://files.pythonhosted.org/packages/aa/05/ec9d4fcbbb74bbf4da9f622b3b61aec541e4eccf31d3c60c5422ec027ce2
 PYTHON_XLRD_SETUP_TYPE = setuptools
 PYTHON_XLRD_LICENSE = BSD-3-Clause
-PYTHON_XLRD_LICENSE_FILES = xlrd/licences.py
+PYTHON_XLRD_LICENSE_FILES = LICENSE
 
 $(eval $(python-package))
 $(eval $(host-python-package))

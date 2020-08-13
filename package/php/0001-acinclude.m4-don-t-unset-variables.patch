@@ -10,14 +10,14 @@ Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 Signed-off-by: Adam Duskett <aduskett@gmail.com>
 [aduskett@gmail.com: Update for 7.3.0]
 ---
- acinclude.m4 | 4 ----
+ build/php.m4 | 4 ----
  1 file changed, 4 deletions(-)
 
-diff --git a/acinclude.m4 b/acinclude.m4
-index 28506b6..af4aa06 100644
---- a/acinclude.m4
-+++ b/acinclude.m4
-@@ -1921,8 +1921,6 @@ define([phpshift],[ifelse(index([$@],[,]),-1,,[substr([$@],incr(index([$@],[,]))
+diff --git a/build/php.m4 b/build/php.m4
+index e91ef988..9586c490 100644
+--- a/build/php.m4
++++ b/build/php.m4
+@@ -1587,8 +1587,6 @@ dnl PHP_CHECK_FUNC_LIB
  dnl
  AC_DEFUN([PHP_CHECK_FUNC_LIB],[
    ifelse($2,,:,[
@@ -26,14 +26,14 @@ index 28506b6..af4aa06 100644
    unset found
    AC_CHECK_LIB($2, $1, [found=yes], [
      AC_CHECK_LIB($2, __$1, [found=yes], [found=no])
-@@ -1954,8 +1952,6 @@ dnl in the default libraries and as a fall back in the specified library.
- dnl Defines HAVE_func and HAVE_library if found and adds the library to LIBS.
+@@ -1620,8 +1618,6 @@ dnl and as a fall back in the specified library. Defines HAVE_func and
+ dnl HAVE_library if found and adds the library to LIBS.
  dnl
  AC_DEFUN([PHP_CHECK_FUNC],[
 -  unset ac_cv_func_$1
 -  unset ac_cv_func___$1
    unset found
-   
+ 
    AC_CHECK_FUNC($1, [found=yes],[ AC_CHECK_FUNC(__$1,[found=yes],[found=no]) ])
 -- 
 2.7.4

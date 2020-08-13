@@ -1,0 +1,14 @@
+[Unit]
+Description=Suricata Intrusion Detection Service
+After=network.target
+
+[Service]
+EnvironmentFile=-/etc/default/suricata
+ExecStartPre=/bin/rm -f /var/run/suricata.pid
+ExecStartPre=/usr/bin/mkdir -p /var/log/suricata
+ExecStart=/usr/bin/suricata -c /etc/suricata/suricata.yaml -i eth0 --pidfile /var/run/suricata.pid
+ExecReload=/bin/kill -USR2 $MAINPID
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

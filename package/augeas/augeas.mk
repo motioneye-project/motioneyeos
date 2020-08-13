@@ -4,15 +4,12 @@
 #
 ################################################################################
 
-AUGEAS_VERSION = 1.11.0
+AUGEAS_VERSION = 1.12.0
 AUGEAS_SITE = http://download.augeas.net
 AUGEAS_INSTALL_STAGING = YES
 AUGEAS_LICENSE = LGPL-2.1+
 AUGEAS_LICENSE_FILES = COPYING
 AUGEAS_DEPENDENCIES = host-pkgconf readline libxml2
-
-# patching examples/Makefile.am, can be removed when updating from version 1.9.0
-AUGEAS_AUTORECONF = YES
 
 AUGEAS_CONF_OPTS = --disable-gnulib-tests
 

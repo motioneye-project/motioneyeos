@@ -1,2 +1,7 @@
-# From https://lists.x.org/archives/xorg-announce/2016-October/002724.html
-sha256 1ff9e7fa0e4adea912b16a5f0cfa7c1d35b0dcda0e216831f7715c8a3abcf51a  libXrandr-1.5.1.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2019-March/002979.html
+md5 18f3b20d522f45e4dadd34afb5bea048  libXrandr-1.5.2.tar.bz2
+sha1 7a1f6df239341b76fd59ebbe101d6f180adb43bb  libXrandr-1.5.2.tar.bz2
+sha256 8aea0ebe403d62330bb741ed595b53741acf45033d3bda1792f1d4cc3daee023  libXrandr-1.5.2.tar.bz2
+sha512 fcd005f9839e7ef980607128a5d76d7b671cc2f5755949e03c569c500d7e987cb3f6932750ab8bf6e2c1086ec69dde09d5831f0c2098b9f9ad46be4f56db0d87  libXrandr-1.5.2.tar.bz2
+# Locally computed
+sha256 73777e5be1cef2827d843e4b186803f050c66db472cf8076d88e2b5f71696e67  COPYING

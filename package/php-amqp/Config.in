@@ -1,6 +1,5 @@
 config BR2_PACKAGE_PHP_AMQP
 	bool "php-amqp"
-	depends on BR2_PACKAGE_PHP
 	depends on BR2_TOOLCHAIN_HAS_THREADS # rabbitmq-c
 	select BR2_PACKAGE_OPENSSL # rabbitmq-c: amqp_ssl_socket.h
 	select BR2_PACKAGE_RABBITMQ_C

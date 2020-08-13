@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-LUAJIT_VERSION = 2.0.5
-LUAJIT_SOURCE = LuaJIT-$(LUAJIT_VERSION).tar.gz
-LUAJIT_SITE = http://luajit.org/download
+LUAJIT_VERSION = 2.1.2
+LUAJIT_SITE = $(call github,moonjit,moonjit,$(LUAJIT_VERSION))
 LUAJIT_LICENSE = MIT
 LUAJIT_LICENSE_FILES = COPYRIGHT
 

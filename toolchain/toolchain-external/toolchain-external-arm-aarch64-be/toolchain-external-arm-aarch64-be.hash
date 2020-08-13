@@ -1,4 +1,4 @@
-# From https://developer.arm.com/-/media/Files/downloads/gnu-a/8.2-2018.11/gcc-arm-8.2-2018.11-x86_64-aarch64_be-linux-gnu.tar.xz.asc
-md5 ab9a31ebe529b0a0cae78e610a9ffa0b gcc-arm-8.2-2018.11-x86_64-aarch64_be-linux-gnu.tar.xz
+# From https://developer.arm.com/-/media/Files/downloads/gnu-a/9.2-2019.12/binrel/gcc-arm-9.2-2019.12-x86_64-aarch64_be-none-linux-gnu.tar.xz.asc
+md5 f9885977e7f949f35bc0820f4bf99ab2 gcc-arm-9.2-2019.12-x86_64-aarch64_be-none-linux-gnu.tar.xz
 # locally calculated
-sha256 36df73194804ac52053edf469c7ace73fb4b243a8306dadfb7b95c4f485abde4 gcc-arm-8.2-2018.11-x86_64-aarch64_be-linux-gnu.tar.xz
+sha256 55fc54a63567a35fb8280dfef91d50c0b5ad65aaea267f34fe7647b02d912f56 gcc-arm-9.2-2019.12-x86_64-aarch64_be-none-linux-gnu.tar.xz

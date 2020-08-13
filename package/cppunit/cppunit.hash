@@ -1,5 +1,6 @@
 # hash from: http://www.freedesktop.org/wiki/Software/cppunit/:
-md5	d1c6bdd5a76c66d2c38331e2d287bc01  cppunit-1.13.2.tar.gz
+md5	9dc669e6145cadd9674873e24943e6dd  cppunit-1.15.1.tar.gz
+sha256	89c5c6665337f56fd2db36bc3805a5619709d51fb136e51937072f63fcc717a7  cppunit-1.15.1.tar.gz
 
 # Locally calculated:
-sha512	8f4be569f321d577cec31931f49f4df143bc94e283605509b6ea50c60690aa91a2aed940e7eebd4b2413a4218f9a6c3978d312d8e587eab040283c6563846ecd  cppunit-1.13.2.tar.gz
+sha256	badf14d0aa3eaf1a7ae5f19a47a8ef2fc71a96802c4bc3d354535693c389f4e5  COPYING

@@ -1,0 +1,8 @@
+config BR2_PACKAGE_TINYSSH
+	bool "tinyssh"
+	depends on BR2_USE_MMU # fork()
+	help
+	  TinySSH is a minimalistic SSH server which implements only
+	  a subset of SSHv2 features.
+
+	  https://tinyssh.org

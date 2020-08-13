@@ -38,4 +38,12 @@ else
 OPENMPI_CONF_OPTS += --enable-mpi-fortran=no
 endif
 
+OPENMPI_CFLAGS = $(TARGET_CFLAGS)
+
+ifeq ($(BR2_TOOLCHAIN_HAS_GCC_BUG_68485),y)
+OPENMPI_CFLAGS += -O0
+endif
+
+OPENMPI_CONF_ENV = CFLAGS="$(OPENMPI_CFLAGS)"
+
 $(eval $(autotools-package))

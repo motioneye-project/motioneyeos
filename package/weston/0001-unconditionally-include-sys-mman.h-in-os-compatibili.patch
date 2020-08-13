@@ -1,0 +1,39 @@
+From 7b36f171d09354a2d3a48db0ae2d34d66aa4f1ae Mon Sep 17 00:00:00 2001
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Sat, 1 Feb 2020 20:02:29 -0700
+Subject: [PATCH] unconditionally include sys/mman.h in os-compatibility.c
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fixes:
+../shared/os-compatibility.c:273:25: error: ‘PROT_READ’ undeclared (first use in this function); did you mean ‘LOCK_READ’?
+  map = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED, file->fd, 0);
+                         ^~~~~~~~~
+                         LOCK_READ
+
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+[james.hilliard1@gmail.com: backport from upstream commit
+7b36f171d09354a2d3a48db0ae2d34d66aa4f1ae]
+---
+ shared/os-compatibility.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/shared/os-compatibility.c b/shared/os-compatibility.c
+index 5e1ce479..041c929f 100644
+--- a/shared/os-compatibility.c
++++ b/shared/os-compatibility.c
+@@ -34,10 +34,7 @@
+ #include <string.h>
+ #include <stdlib.h>
+ #include <libweston/zalloc.h>
+-
+-#ifdef HAVE_MEMFD_CREATE
+ #include <sys/mman.h>
+-#endif
+ 
+ #include "os-compatibility.h"
+ 
+-- 
+2.20.1
+

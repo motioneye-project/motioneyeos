@@ -1,0 +1,31 @@
+From 189a3b8397c61ba262a2221885e38dc514c59d94 Mon Sep 17 00:00:00 2001
+From: Paul Cercueil <paul@crapouillou.net>
+Date: Sat, 7 Dec 2019 00:00:57 +0100
+Subject: [PATCH] dlsym: Fix build under uClibc
+
+uClibc defines the __GLIBC__ macro too (I know, right?), so verify that
+__UCLIBC__ is not defined before we can use glibc-specific internal
+functions.
+
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Upstream: https://github.com/apitrace/apitrace/commit/189a3b8397c61ba262a2221885e38dc514c59d94
+---
+ wrappers/dlsym.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/wrappers/dlsym.cpp b/wrappers/dlsym.cpp
+index 2eda082a..5ab8465b 100644
+--- a/wrappers/dlsym.cpp
++++ b/wrappers/dlsym.cpp
+@@ -34,7 +34,7 @@
+ #include "os.hpp"
+ 
+ 
+-#ifdef __GLIBC__
++#if defined(__GLIBC__) && !defined(__UCLIBC__)
+ 
+ 
+ #include <dlfcn.h>
+-- 
+2.24.0
+

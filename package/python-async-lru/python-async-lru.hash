@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/async_lru/json
+md5	69bed62927426353513e68aec77989ab  async_lru-1.0.2.tar.gz
+sha256	baa898027619f5cc31b7966f96f00e4fc0df43ba206a8940a5d1af5336a477cb  async_lru-1.0.2.tar.gz
+# Locally computed sha256 checksums
+sha256	ea65975679bc2093be925d520358e41096bd96fddedee3e929160a5faadcf573  LICENSE

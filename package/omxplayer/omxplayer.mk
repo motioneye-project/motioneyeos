@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-OMXPLAYER_VERSION = 2ee17b22a6149a043a2e402580504f282c615373
+OMXPLAYER_VERSION = f06235cc9690a6d58187514452df8cf8fcdaacec
 OMXPLAYER_SITE = $(call github,popcornmix,omxplayer,$(OMXPLAYER_VERSION))
 OMXPLAYER_LICENSE = GPL-2.0+
 OMXPLAYER_LICENSE_FILES = COPYING

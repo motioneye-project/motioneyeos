@@ -43,6 +43,7 @@ config BR2_TARGET_ROOTFS_EXT2_REV
 
 config BR2_TARGET_ROOTFS_EXT2_LABEL
 	string "filesystem label"
+	default "rootfs"
 
 config BR2_TARGET_ROOTFS_EXT2_SIZE
 	string "exact size"

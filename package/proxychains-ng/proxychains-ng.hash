@@ -3,3 +3,4 @@ md5 34d840eb184e96bff418201c28a935c5  proxychains-ng-4.11.tar.bz2
 sha1 00bc3dc18f2b638c79112c99f082a7a2878beaad  proxychains-ng-4.11.tar.bz2
 # Locally computed:
 sha256  dcc4149808cd1fb5d9663cc09791f478805816b1f017381f424414c47f6376b6  proxychains-ng-4.11.tar.bz2
+sha256  86728623caeff60e9bcc37e03b432fd191de927eed48a72a3bb4ac4e53fe20df  COPYING

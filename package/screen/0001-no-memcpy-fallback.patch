@@ -1,0 +1,126 @@
+From: Maarten ter Huurne <maarten@treewalker.org>
+Date: Sat, 13 Sep 2014 11:37:59 +0200
+Subject: Do not use memcpy as an alternative for bcopy/memmove
+
+The configure script runs a small test program to check whether
+memcpy can handle overlapping memory areas. However, it is not valid
+to conclude that if a single case of overlapping memory is handled
+correctly, all cases will be handled correctly.
+
+Since screen already has its own bcopy implementation as a fallback
+for the case that bcopy and memmove are unusable, removing the memcpy
+option should not break any systems.
+
+Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
+[Ricardo: rebase on top of 4.3.1]
+Signed-off-by: Ricardo Martincoski <ricardo.martincoski@gmail.com>
+[Bernd: rebase on top of 4.7.0]
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ acconfig.h   |  3 +--
+ configure.ac | 18 +-----------------
+ os.h         |  8 ++------
+ osdef.h.in   | 10 +---------
+ 4 files changed, 5 insertions(+), 34 deletions(-)
+
+diff --git a/acconfig.h b/acconfig.h
+index 2e46985..9b0b9d4 100644
+--- a/acconfig.h
++++ b/acconfig.h
+@@ -476,7 +476,7 @@
+ #undef GETTTYENT
+ 
+ /*
+- * Define USEBCOPY if the bcopy/memcpy from your system's C library
++ * Define USEBCOPY if the bcopy from your system's C library
+  * supports the overlapping of source and destination blocks.  When
+  * undefined, screen uses its own (probably slower) version of bcopy().
+  * 
+@@ -487,7 +487,6 @@
+  * Their memove fails the test in the configure script. Sigh. (Juergen)
+  */
+ #undef USEBCOPY
+-#undef USEMEMCPY
+ #undef USEMEMMOVE
+ 
+ /*
+diff --git a/configure.ac b/configure.ac
+index 27690a6..b8e3bec 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1145,7 +1145,7 @@ AC_TRY_LINK(,[getttyent();], AC_DEFINE(GETTTYENT))
+ AC_CHECKING(fdwalk)
+ AC_TRY_LINK([#include <stdlib.h>], [fdwalk(NULL, NULL);],AC_DEFINE(HAVE_FDWALK))
+ 
+-AC_CHECKING(whether memcpy/memmove/bcopy handles overlapping arguments)
++AC_CHECKING(whether memmove/bcopy handles overlapping arguments)
+ AC_TRY_RUN([
+ main() {
+   char buf[10];
+@@ -1175,22 +1175,6 @@ main() {
+   exit(0); /* libc version works properly.  */
+ }], AC_DEFINE(USEMEMMOVE))
+ 
+-
+-AC_TRY_RUN([
+-#define bcopy(s,d,l) memcpy(d,s,l)
+-main() {
+-  char buf[10];
+-  strcpy(buf, "abcdefghi");
+-  bcopy(buf, buf + 2, 3);
+-  if (strncmp(buf, "ababcf", 6))
+-    exit(1);
+-  strcpy(buf, "abcdefghi");
+-  bcopy(buf + 2, buf, 3);
+-  if (strncmp(buf, "cdedef", 6))
+-    exit(1);
+-  exit(0); /* libc version works properly.  */
+-}], AC_DEFINE(USEMEMCPY),,:)
+-
+ AC_SYS_LONG_FILE_NAMES
+ 
+ AC_MSG_CHECKING(for vsprintf)
+diff --git a/os.h b/os.h
+index e827ac9..0b41fb9 100644
+--- a/os.h
++++ b/os.h
+@@ -142,12 +142,8 @@ extern int errno;
+ # ifdef USEMEMMOVE
+ #  define bcopy(s,d,len) memmove(d,s,len)
+ # else
+-#  ifdef USEMEMCPY
+-#   define bcopy(s,d,len) memcpy(d,s,len)
+-#  else
+-#   define NEED_OWN_BCOPY
+-#   define bcopy xbcopy
+-#  endif
++#  define NEED_OWN_BCOPY
++#  define bcopy xbcopy
+ # endif
+ #endif
+ 
+diff --git a/osdef.h.in b/osdef.h.in
+index 8687b60..e4057a0 100644
+--- a/osdef.h.in
++++ b/osdef.h.in
+@@ -58,16 +58,8 @@ extern int   bcmp __P((char *, char *, int));
+ extern int   killpg __P((int, int));
+ #endif
+ 
+-#ifndef USEBCOPY
+-# ifdef USEMEMCPY
+-extern void  memcpy __P((char *, char *, int));
+-# else
+-#  ifdef USEMEMMOVE
++#if defined(USEMEMMOVE) && !defined(USEBCOPY)
+ extern void  memmove __P((char *, char *, int));
+-#  else
+-extern void  bcopy __P((char *, char *, int));
+-#  endif
+-# endif
+ #else
+ extern void  bcopy __P((char *, char *, int));
+ #endif
+-- 
+1.8.4.5
+

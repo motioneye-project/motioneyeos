@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2012-March/001905.html
-sha256	17af6f4fb73e7310e087fbfe5d773bab2b0d6f37a894ae5ee32de4693af6ba92	xlogo-1.0.4.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2019-March/002963.html
+md5 e9d21de1dc8c8b9f854509a26a985cd7  xlogo-1.0.5.tar.bz2
+sha1 f025a0ad30c45cbec1c2f3b1610bff94fb4e9f33  xlogo-1.0.5.tar.bz2
+sha256 633d7a3aa5df61e4e643b740e5799664741ab1a0ba40593e54fcd15dc30f378e  xlogo-1.0.5.tar.bz2
+sha512 0d78e269b0be3c5de71de7f362b896bfd9934ecd9d0361b3302399b1269e029c4a9f35418d792121a1edc34405d753f9d69c996cc3a69ac717f2b0d1f736406b  xlogo-1.0.5.tar.bz2
+# Locally computed
+sha256 972b454b6c0da17cec61225ab9dfd4afc69fd8e7e4c629497197c6f79adc6fb0  COPYING

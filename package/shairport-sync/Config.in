@@ -1,12 +1,10 @@
 config BR2_PACKAGE_SHAIRPORT_SYNC
 	bool "shairport-sync"
-	depends on BR2_USE_MMU # libdaemon
 	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
 	depends on BR2_INSTALL_LIBSTDCPP
 	select BR2_PACKAGE_ALSA_LIB
 	select BR2_PACKAGE_ALSA_LIB_MIXER
 	select BR2_PACKAGE_LIBCONFIG
-	select BR2_PACKAGE_LIBDAEMON
 	select BR2_PACKAGE_OPENSSL if !BR2_PACKAGE_MBEDTLS
 	select BR2_PACKAGE_POPT
 	help
@@ -22,6 +20,26 @@ config BR2_PACKAGE_SHAIRPORT_SYNC
 
 if BR2_PACKAGE_SHAIRPORT_SYNC
 
+config BR2_PACKAGE_SHAIRPORT_SYNC_CONVOLUTION
+	bool "convolution support"
+	select BR2_PACKAGE_LIBSNDFILE
+	help
+	  Enable audio DSP convolution support.
+
+config BR2_PACKAGE_SHAIRPORT_SYNC_DBUS
+	bool "dbus support"
+	depends on BR2_USE_WCHAR # libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
+	depends on BR2_USE_MMU # libglib2
+	select BR2_PACKAGE_LIBGLIB2
+	help
+	  Enable support for support for the MPRIS and native
+	  Shairport Sync D-Bus interface.
+
+comment "shairport-sync dbus support needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+
 config BR2_PACKAGE_SHAIRPORT_SYNC_LIBSOXR
 	bool "libsoxr support"
 	select BR2_PACKAGE_LIBSOXR
@@ -33,6 +51,23 @@ config BR2_PACKAGE_SHAIRPORT_SYNC_LIBSOXR
 	  needed. This "interpolation" is normally inaudible, but it
 	  can be heard in some circumstances. Libsoxr allows this
 	  interpolation to be done much more smoothly and subtly.
+
+config BR2_PACKAGE_SHAIRPORT_SYNC_MQTT
+	bool "mqtt support"
+	depends on BR2_USE_MMU # avahi
+	depends on BR2_TOOLCHAIN_HAS_THREADS # avahi
+	depends on !BR2_STATIC_LIBS # avahi
+	select BR2_PACKAGE_AVAHI
+	select BR2_PACKAGE_AVAHI_DAEMON
+	select BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_MOSQUITTO
+	help
+	  Enable support for the MQTT, the Message Queuing Telemetry
+	  Transport protocol.
+
+comment "shairport-sync mqtt support needs a toolchain w/ dynamic library, threads"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS
 
 endif
 

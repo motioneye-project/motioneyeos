@@ -1,3 +1,6 @@
 # From http://sourceforge.net/projects/cppcms/files/cppdb/0.3.1/
 md5	129f1d75f46114b79160b93807d5223f	cppdb-0.3.1.tar.bz2
 sha1	c0410dcc482d71696ac9206044b3a3ac03d31f96	cppdb-0.3.1.tar.bz2
+# locally computed
+sha256  c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566  LICENSE_1_0.txt
+sha256  503ed52ef942d44bb26bd47dd5c6765927b198624e4f375e32cc660dfc2a0981  MIT.txt

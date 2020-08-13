@@ -1,8 +1,18 @@
 config BR2_PACKAGE_LIBGEOTIFF
 	bool "libgeotiff"
+	depends on BR2_INSTALL_LIBSTDCPP # proj
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 # proj
+	depends on BR2_TOOLCHAIN_HAS_THREADS # proj
+	depends on BR2_USE_WCHAR # proj
+	select BR2_PACKAGE_PROJ
 	select BR2_PACKAGE_TIFF
 	help
 	  Libgeotiff is an open source library normally hosted on top of
 	  libtiff for reading, and writing GeoTIFF information tags.
 
-	  http://geotiff.osgeo.org
+	  https://github.com/OSGeo/libgeotiff
+
+comment "libgeotiff needs a toolchain w/ C++, gcc >= 4.7, threads, wchar"
+	depends on !BR2_INSTALL_LIBSTDCPP || \
+		!BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 || \
+		!BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR

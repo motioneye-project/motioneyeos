@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SUPERTUXKART_VERSION = 0.9.3
+SUPERTUXKART_VERSION = 1.1
 SUPERTUXKART_SOURCE = supertuxkart-$(SUPERTUXKART_VERSION)-src.tar.xz
 SUPERTUXKART_SITE = http://downloads.sourceforge.net/project/supertuxkart/SuperTuxKart/$(SUPERTUXKART_VERSION)
 
@@ -15,13 +15,18 @@ SUPERTUXKART_LICENSE = GPL-3.0+
 SUPERTUXKART_LICENSE_FILES = COPYING
 
 SUPERTUXKART_DEPENDENCIES = \
+	host-pkgconf \
 	freetype \
+	enet \
+	harfbuzz \
 	jpeg \
 	libcurl \
+	libfribidi \
 	libgl \
-	libglu \
+	libglew \
 	libogg \
 	libpng \
+	libsquish \
 	libvorbis \
 	openal \
 	xlib_libXrandr \
@@ -31,21 +36,33 @@ SUPERTUXKART_DEPENDENCIES = \
 # the only user of the bundled libraries, turn off shared libraries entirely.
 # Disable In-game recorder (there is no libopenglrecorder package)
 SUPERTUXKART_CONF_OPTS = -DBUILD_SHARED_LIBS=OFF \
-	-DBUILD_RECORDER=OFF
-
-ifeq ($(BR2_PACKAGE_LIBFRIBIDI),y)
-SUPERTUXKART_DEPENDENCIES += libfribidi
-SUPERTUXKART_CONF_OPTS += -DUSE_FRIBIDI=ON
-else
-SUPERTUXKART_CONF_OPTS += -DUSE_FRIBIDI=OFF
-endif
+	-DBUILD_RECORDER=OFF \
+	-DUSE_SYSTEM_GLEW=ON \
+	-DUSE_SYSTEM_ENET=ON \
+	-DUSE_SYSTEM_SQUISH=ON
 
 ifeq ($(BR2_PACKAGE_BLUEZ5_UTILS),y)
 SUPERTUXKART_DEPENDENCIES += bluez5_utils
-SUPERTUXKART_CONF_OPTS += -DUSE_WIIUSE=ON
+SUPERTUXKART_CONF_OPTS += -DUSE_WIIUSE=ON -DUSE_SYSTEM_WIIUSE=ON
 else
 # Wiimote support relies on bluez5.
 SUPERTUXKART_CONF_OPTS += -DUSE_WIIUSE=OFF
+endif
+
+# Prefer openssl (the default) over nettle.
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+SUPERTUXKART_DEPENDENCIES += openssl
+SUPERTUXKART_CONF_OPTS += -DUSE_CRYPTO_OPENSSL=ON
+else
+SUPERTUXKART_DEPENDENCIES += nettle
+SUPERTUXKART_CONF_OPTS += -DUSE_CRYPTO_OPENSSL=OFF
+endif
+
+ifeq ($(BR2_PACKAGE_SQLITE),y)
+SUPERTUXKART_DEPENDENCIES += sqlite
+SUPERTUXKART_CONF_OPTS += -DUSE_SQLITE3=ON
+else
+SUPERTUXKART_CONF_OPTS += -DUSE_SQLITE3=OFF
 endif
 
 $(eval $(cmake-package))

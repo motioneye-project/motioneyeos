@@ -26,7 +26,10 @@ METACITY_DEPENDENCIES = libgtk2 \
 	xlib_libXcomposite \
 	xlib_libXfixes \
 	xlib_libXrender \
-	xlib_libXdamage
+	xlib_libXdamage \
+	$(TARGET_NLS_DEPENDENCIES)
+
+METACITY_CONF_ENV = LIBS=$(TARGET_NLS_LIBS)
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBXCURSOR),y)
 METACITY_DEPENDENCIES += xlib_libXcursor

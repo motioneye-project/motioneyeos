@@ -1,0 +1,39 @@
+From fe740316af970f57ec511cdeafb512510e4842a9 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sat, 9 Nov 2019 17:21:13 +0100
+Subject: [PATCH] CMakeLists.txt: add BUILD_OPENCV option
+
+Add BUILD_OPENCV option to allow the user to disable OpenCV. It is
+especially useful as opencv library can be built without highgui support
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/glassechidna/zxing-cpp/pull/90]
+---
+ CMakeLists.txt | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 738f4e1..12913cd 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.0)
+ project(zxing)
+ 
+ option(BUILD_TESTING "Enable generation of test targets" OFF)
++option(BUILD_OPENCV "Enable OpenCV classes and OpenCV cli executable" ON)
+ 
+ set(CMAKE_LIBRARY_PATH /opt/local/lib ${CMAKE_LIBRARY_PATH})
+ 
+@@ -44,8 +45,10 @@ else()
+     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+ endif()
+ 
+-# OpenCV classes
+-find_package(OpenCV)
++if (BUILD_OPENCV)
++    # OpenCV classes
++    find_package(OpenCV)
++endif()
+ if(OpenCV_FOUND)
+     list(APPEND LIBZXING_FILES
+         opencv/src/zxing/MatSource.cpp

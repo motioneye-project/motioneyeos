@@ -5,7 +5,8 @@
 ################################################################################
 
 FMLIB_VERSION = fsl-sdk-v2.0
-FMLIB_SITE = git://git.freescale.com/ppc/sdk/fmlib.git
+FMLIB_SITE = https://source.codeaurora.org/external/qoriq/qoriq-yocto-sdk/fmlib
+FMLIB_SITE_METHOD = git
 FMLIB_LICENSE = BSD-3-Clause, GPL-2.0+
 FMLIB_LICENSE_FILES = COPYING
 FMLIB_DEPENDENCIES = linux

@@ -9,30 +9,52 @@ config BR2_PACKAGE_LIBCURL
 
 if BR2_PACKAGE_LIBCURL
 
-config BR2_PACKAGE_CURL
+config BR2_PACKAGE_LIBCURL_CURL
 	bool "curl binary"
 	help
 	  Install curl binary as well
 
 config BR2_PACKAGE_LIBCURL_VERBOSE
-	bool "enable verbose strings"
+	bool "verbose strings"
 	help
 	  Enable verbose text strings
 
-config BR2_PACKAGE_LIBCURL_TLS_SUPPORT
-	bool
-	default y if BR2_PACKAGE_OPENSSL
-	default y if BR2_PACKAGE_GNUTLS
-	default y if BR2_PACKAGE_LIBNSS
-	default y if BR2_PACKAGE_MBEDTLS
+config BR2_PACKAGE_LIBCURL_PROXY_SUPPORT
+	bool "proxy support"
+	default y
+	help
+	  Enable proxy support.
+
+config BR2_PACKAGE_LIBCURL_COOKIES_SUPPORT
+	bool "cookies support"
+	default y
+	help
+	  Enable support for cookies.
+
+config BR2_PACKAGE_LIBCURL_EXTRA_PROTOCOLS_FEATURES
+	bool "enable extra protocols and features"
+	default y
+	help
+	  Enable the following extra protocols and features:
+	  - LDAP / LDAPS
+	  - POP3 / IMAP / SMTP
+	  - Telnet
+	  - TFTP
+	  - RTSP
+	  - SMB / CIFS
+	  - DICT
+	  - Gopher
 
 choice
 	prompt "SSL/TLS library to use"
-	depends on BR2_PACKAGE_LIBCURL_TLS_SUPPORT
 
 config BR2_PACKAGE_LIBCURL_OPENSSL
 	bool "OpenSSL"
 	depends on BR2_PACKAGE_OPENSSL
+
+config BR2_PACKAGE_LIBCURL_BEARSSL
+	bool "BearSSL"
+	depends on BR2_PACKAGE_BEARSSL
 
 config BR2_PACKAGE_LIBCURL_GNUTLS
 	bool "GnuTLS"
@@ -46,9 +68,13 @@ config BR2_PACKAGE_LIBCURL_MBEDTLS
 	bool "mbed TLS"
 	depends on BR2_PACKAGE_MBEDTLS
 
-endchoice
+config BR2_PACKAGE_LIBCURL_WOLFSSL
+	bool "WolfSSL"
+	depends on BR2_PACKAGE_WOLFSSL
 
-comment "A TLS library is needed for SSL/TLS support"
-	depends on !BR2_PACKAGE_LIBCURL_TLS_SUPPORT
+config BR2_PACKAGE_LIBCURL_TLS_NONE
+	bool "None"
+
+endchoice
 
 endif

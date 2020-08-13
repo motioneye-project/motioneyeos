@@ -1,0 +1,51 @@
+From 4f51b0a6b9a36cc56fa06eb0f76596d8e387f980 Mon Sep 17 00:00:00 2001
+From: Gary Bisson <gary.bisson@boundarydevices.com>
+Date: Fri, 27 Mar 2020 23:17:30 +0100
+Subject: [PATCH] Fix build with uclibc toolchain
+
+From: Laurent Gauthier (OSS) <laurent.gauthier_1@oss.nxp.com>
+
+By default, backtrace support is disabled in uclibc. In that case the
+execinfo.h header file is missing, producing a build error.
+
+Signed-off-by: Laurent Gauthier (OSS) <laurent.gauthier_1@oss.nxp.com>
+Signed-off-by: Gary Bisson <gary.bisson@boundarydevices.com>
+---
+ openmax_il/source/dbgmacros.h | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/openmax_il/source/dbgmacros.h b/openmax_il/source/dbgmacros.h
+index 3771c91..37ae09f 100755
+--- a/openmax_il/source/dbgmacros.h
++++ b/openmax_il/source/dbgmacros.h
+@@ -50,13 +50,6 @@
+ #    define __USE_GNU
+ #endif
+ 
+-#ifndef ANDROID
+-#include <execinfo.h>
+-#include <link.h>
+-#endif
+-#include <dlfcn.h>
+-#include <elf.h>
+-
+ /*****************
+  ** DEBUG FLAGS **
+  *****************/
+@@ -76,6 +69,13 @@
+ #define TRACE_FILE "trace.log"
+ #endif
+ 
++#ifndef ANDROID
++#include <execinfo.h>
++#include <link.h>
++#endif
++#include <dlfcn.h>
++#include <elf.h>
++
+ #ifdef LOG_IN_FILE
+ #define TRACE(...)                                              \
+     {                                                           \
+-- 
+2.25.1
+

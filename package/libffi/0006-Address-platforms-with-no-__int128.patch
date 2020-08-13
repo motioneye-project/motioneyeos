@@ -1,0 +1,28 @@
+From 6663047f56c2932a6b10a790f4ac6666dd181326 Mon Sep 17 00:00:00 2001
+From: Anthony Green <green@moxielogic.com>
+Date: Fri, 29 Nov 2019 07:00:35 -0500
+Subject: [PATCH] Address platforms with no __int128.
+
+[Retrieved from:
+https://github.com/libffi/libffi/commit/6663047f56c2932a6b10a790f4ac6666dd181326]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ src/powerpc/ffi_linux64.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/powerpc/ffi_linux64.c b/src/powerpc/ffi_linux64.c
+index de0d0337..73647701 100644
+--- a/src/powerpc/ffi_linux64.c
++++ b/src/powerpc/ffi_linux64.c
+@@ -547,9 +547,9 @@ ffi_prep_args64 (extended_cif *ecif, unsigned long *const stack)
+               if (next_arg.ul == gpr_end.ul)
+                 next_arg.ul = rest.ul;
+               if (vecarg_count < NUM_VEC_ARG_REGISTERS64 && i < nfixedargs)
+-                *vec_base.f128++ = **p_argv.f128;
++		memcpy (vec_base.f128++, *p_argv.f128, sizeof (float128));
+               else
+-                *next_arg.f128 = **p_argv.f128;
++		memcpy (next_arg.f128, *p_argv.f128, sizeof (float128));
+               if (++next_arg.f128 == gpr_end.f128)
+                 next_arg.f128 = rest.f128;
+               vecarg_count++;

@@ -8,7 +8,6 @@ config BR2_PACKAGE_PYTHON_DOCKER
 	select BR2_PACKAGE_PYTHON_REQUESTS # runtime
 	select BR2_PACKAGE_PYTHON_SIX # runtime
 	select BR2_PACKAGE_PYTHON_WEBSOCKET_CLIENT # runtime
-	select BR2_PACKAGE_PYTHON_DOCKER_PYCREDS # runtime
 	help
 	  A Python library for the Docker Engine API.
 

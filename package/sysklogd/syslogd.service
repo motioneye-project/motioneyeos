@@ -4,7 +4,7 @@ Requires=syslog.socket
 Wants=klogd.service
 
 [Service]
-ExecStart=/usr/sbin/syslogd -m 0 -n
+ExecStart=/sbin/syslogd -m 0 -n
 StandardOutput=null
 Restart=on-failure
 

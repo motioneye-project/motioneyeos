@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-CAPNPROTO_VERSION = v0.6.1
-CAPNPROTO_SITE = $(call github,capnproto,capnproto,$(CAPNPROTO_VERSION))
+CAPNPROTO_VERSION = 0.7.0
+CAPNPROTO_SITE = $(call github,capnproto,capnproto,v$(CAPNPROTO_VERSION))
 CAPNPROTO_LICENSE = MIT
 CAPNPROTO_LICENSE_FILES = LICENSE
 CAPNPROTO_INSTALL_STAGING = YES

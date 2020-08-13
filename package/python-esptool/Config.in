@@ -1,0 +1,10 @@
+config BR2_PACKAGE_PYTHON_ESPTOOL
+	bool "python-esptool"
+	select BR2_PACKAGE_PYTHON_ECDSA # runtime
+	select BR2_PACKAGE_PYTHON_PYAES # runtime
+	select BR2_PACKAGE_PYTHON_SERIAL # runtime
+	help
+	  A serial utility to communicate & flash code to Espressif
+	  ESP8266 & ESP32 chips.
+
+	  https://github.com/espressif/esptool

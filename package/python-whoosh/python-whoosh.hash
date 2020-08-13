@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/whoosh/json, sha256 locally computed
+# md5 from https://pypi.python.org/pypi/whoosh/json
 md5 c2710105f20b3e29936bd2357383c325 Whoosh-2.7.4.tar.gz
-sha256 7ca5633dbfa9e0e0fa400d3151a8a0c4bec53bd2ecedc0a67705b17565c31a83 Whoosh-2.7.4.tar.gz
+# Locally computed
+sha256  7ca5633dbfa9e0e0fa400d3151a8a0c4bec53bd2ecedc0a67705b17565c31a83  Whoosh-2.7.4.tar.gz
+sha256  464ef68037a0e5545e4716b4ff99f3f85ca89cf9e9a7ecfd7a02039ba1c34a90  LICENSE.txt

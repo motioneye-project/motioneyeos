@@ -1,5 +1,5 @@
 From a221304344b3f9db7e86d928cf97d77542bcf456 Mon Sep 17 00:00:00 2001
-From: Adam Duskett <Adamduskett@outlook.com>
+From: Adam Duskett <aduskett@gmail.com>
 Date: Mon, 9 Oct 2017 16:47:19 -0400
 Subject: [PATCH] Add PREFIX to host paths
 
@@ -10,7 +10,7 @@ Updated to work with version 2.5
 
 Signed-off-by: Clayton Shotwell <clayton.shotwell@rockwellcollins.com>
 Signed-off-by: Niranjan Reddy <niranjan.reddy@rockwellcollins.com>
-Signed-off-by: Adam Duskett <AdamDuskett@outlook.com>
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
 Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
 [Update for 2.8]
 ---

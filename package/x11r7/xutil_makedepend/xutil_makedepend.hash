@@ -1,2 +1,7 @@
-# From http://article.gmane.org/gmane.comp.freedesktop.xorg.announce/2007
-sha256	f7a80575f3724ac3d9b19eaeab802892ece7e4b0061dd6425b4b789353e25425	makedepend-1.0.5.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2019-March/002985.html
+md5 b2ca7f2f21f1c04a88b6a254c19c9b68  makedepend-1.0.6.tar.bz2
+sha1 3f321f7b570ec98f1fabc441267d29347a2e1456  makedepend-1.0.6.tar.bz2
+sha256 d558a52e8017d984ee59596a9582c8d699a1962391b632bec3bb6804bf4d501c  makedepend-1.0.6.tar.bz2
+sha512 eb0e8ee8ab7515806d7d98a060cdcd392ec38e4225e5e05db26daa6651f185d0b764aab403edeea904d4d23211b1f7db20daeee6eafce8abe65225784ed0aa42  makedepend-1.0.6.tar.bz2
+# Locally computed
+sha256 0530078db78c47ae978dc2bd77f4f427e6cd97df868672c95b1ef284113c8cb7  COPYING

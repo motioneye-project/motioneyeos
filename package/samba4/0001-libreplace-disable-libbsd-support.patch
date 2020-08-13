@@ -1,4 +1,4 @@
-From fc0304ba92ec7ae9a2f75fbc31d97fee39d19665 Mon Sep 17 00:00:00 2001
+From 4df82c9e03b68dc1621fe4c9ac6a29ae3e64e07e Mon Sep 17 00:00:00 2001
 From: Gustavo Zacarias <gustavo@zacarias.com.ar>
 Date: Wed, 7 Sep 2016 23:03:43 -0300
 Subject: [PATCH] libreplace: disable libbsd support
@@ -16,10 +16,10 @@ Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
  1 file changed, 15 deletions(-)
 
 diff --git a/lib/replace/wscript b/lib/replace/wscript
-index 6c7de5953f0..ac230d719f7 100644
+index 240d730cbee..c6d8df43c74 100644
 --- a/lib/replace/wscript
 +++ b/lib/replace/wscript
-@@ -304,21 +304,6 @@ def configure(conf):
+@@ -381,21 +381,6 @@ def configure(conf):
  
      strlcpy_in_bsd = False
  
@@ -42,5 +42,5 @@ index 6c7de5953f0..ac230d719f7 100644
                  struct ucred cred;
                  socklen_t cred_len;
 -- 
-2.18.0
+2.20.1
 

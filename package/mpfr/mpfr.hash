@@ -1,2 +1,5 @@
-# From http://lists.gnu.org/archive/html/info-gnu/2017-09/msg00004.html
-sha256 7a62ac1a04408614fccdc506e4844b10cf0ad2c2b1677097f8f35d3a1344a950  mpfr-3.1.6.tar.xz
+# From http://lists.gnu.org/archive/html/info-gnu/2019-01/msg00019.html
+sha256 1d3be708604eae0e42d578ba93b390c2a145f17743a744d8f3f8c2ad5855a38a  mpfr-4.0.2.tar.xz
+
+# Hash for license file
+sha256 e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118  COPYING.LESSER

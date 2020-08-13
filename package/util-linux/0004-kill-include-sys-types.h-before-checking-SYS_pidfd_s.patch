@@ -1,0 +1,62 @@
+From 3cfde0370d3a8949df0c5bcf447cec6692910ed2 Mon Sep 17 00:00:00 2001
+From: Sami Kerola <kerolasa@iki.fi>
+Date: Sat, 15 Feb 2020 21:12:50 +0000
+Subject: [PATCH] kill: include sys/types.h before checking
+ SYS_pidfd_send_signal
+
+Including sys/types.h must happen before SYS_pidfd_send_signal is checked,
+because that header defines variable in normal conditions.  When sys/types.h
+does not have SYS_pidfd_send_signal then fallback is defined in config.h
+that is included by default, and has therefore worked fine before and after
+this change.
+
+Signed-off-by: Sami Kerola <kerolasa@iki.fi>
+Signed-off-by: Carlos Santos <unixmania@gmail.com>
+---
+ include/pidfd-utils.h | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
+
+diff --git a/include/pidfd-utils.h b/include/pidfd-utils.h
+index 593346576..0baedd2c9 100644
+--- a/include/pidfd-utils.h
++++ b/include/pidfd-utils.h
+@@ -1,26 +1,28 @@
+ #ifndef UTIL_LINUX_PIDFD_UTILS
+ #define UTIL_LINUX_PIDFD_UTILS
+ 
+-#if defined(__linux__) && defined(SYS_pidfd_send_signal)
+-# include <sys/types.h>
++#if defined(__linux__)
+ # include <sys/syscall.h>
++# if defined(SYS_pidfd_send_signal)
++#  include <sys/types.h>
+ 
+-# ifndef HAVE_PIDFD_OPEN
++#  ifndef HAVE_PIDFD_OPEN
+ static inline int pidfd_send_signal(int pidfd, int sig, siginfo_t *info,
+ 				    unsigned int flags)
+ {
+ 	return syscall(SYS_pidfd_send_signal, pidfd, sig, info, flags);
+ }
+-# endif
++#  endif
+ 
+-# ifndef HAVE_PIDFD_SEND_SIGNAL
++#  ifndef HAVE_PIDFD_SEND_SIGNAL
+ static inline int pidfd_open(pid_t pid, unsigned int flags)
+ {
+ 	return syscall(SYS_pidfd_open, pid, flags);
+ }
+-# endif
++#  endif
+ 
+-# define UL_HAVE_PIDFD 1
++#  define UL_HAVE_PIDFD 1
+ 
+-#endif /* __linux__ && SYS_pidfd_send_signal */
++# endif	/* SYS_pidfd_send_signal */
++#endif /* __linux__ */
+ #endif /* UTIL_LINUX_PIDFD_UTILS */
+-- 
+2.18.2
+

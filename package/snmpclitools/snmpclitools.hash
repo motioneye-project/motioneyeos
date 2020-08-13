@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/snmpclitools/json
+md5	132b100f5e7b80715e6c1d424e89687c  snmpclitools-0.6.4.tar.gz
+sha256	820c45de419bf355c845a96610a395ec18a15176ac0362d388da7740266ea1ac  snmpclitools-0.6.4.tar.gz
+# Locally computed sha256 checksums
+sha256	ed5561a0f5b75e93aa026c1b9fdef58e7ccbf6b2e9a2458be732afc288209d23  PKG-INFO

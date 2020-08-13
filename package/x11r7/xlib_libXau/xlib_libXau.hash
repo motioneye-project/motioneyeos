@@ -1,2 +1,7 @@
-# From http://lists.freedesktop.org/archives/xorg/2013-May/055728.html
-sha256	fdd477320aeb5cdd67272838722d6b7d544887dfe7de46e1e7cc0c27c2bea4f2	libXau-1.0.8.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2019-February/002942.html
+md5 c5f16288f2da9f071b29111d68797480  libXau-1.0.9.tar.bz2
+sha1 ef9b1ad00f958c8b6e30a1bbc11fdfac311c9733  libXau-1.0.9.tar.bz2
+sha256 ccf8cbf0dbf676faa2ea0a6d64bcc3b6746064722b606c8c52917ed00dcb73ec  libXau-1.0.9.tar.bz2
+sha512 3ca454ba466a807ea28b0f715066d73dc76ad312697b121d43e4d5766215052e9b7ffb8fe3ed3e496fa3f2a13f164ac692ff85cc428e26731b679f0f06a1d562  libXau-1.0.9.tar.bz2
+# Locally computed
+sha256 56abe29bb1d9806a9e04fa9f80fed2c0f18027594df3f098148d814aef6bddfa  COPYING

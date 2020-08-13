@@ -1,0 +1,42 @@
+From de742f52d46d82db1fe1b0f3255043d48843901d Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Tue, 29 Oct 2019 11:14:35 +0100
+Subject: [PATCH] test/misc/test-nftw.c: fix build with latest glibc
+
+Fix the following error with latest glibc:
+
+In function 'open',
+    inlined from 'do_test' at tst-nftw.c:38:10,
+    inlined from 'main' at ../test-skeleton.c:318:12:
+/home/mark/buildroot-test/instance-0/output/host/riscv32-buildroot-linux-gnu/sysroot/usr/include/bits/fcntl2.h:50:4: error: call to '__open_missing_mode' declared with attribute error: open with O_CREAT or O_TMPFILE in second argument needs 3 arguments
+    __open_missing_mode ();
+    ^~~~~~~~~~~~~~~~~~~~~~
+
+Fixes:
+ - http://autobuild.buildroot.net/results/f370abcc8dc12975d96a46c34db978554f8c21db
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/wbx-github/uclibc-ng-test/pull/1]
+---
+ test/misc/tst-nftw.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/test/misc/tst-nftw.c b/test/misc/tst-nftw.c
+index 970dfc2..7a08c78 100644
+--- a/test/misc/tst-nftw.c
++++ b/test/misc/tst-nftw.c
+@@ -35,9 +35,9 @@ do_test(void)
+ 	perror("Creating path");
+     if ((mkdir(subpath, 0700)) < 0)
+ 	perror("Creating subpath");
+-    if ((open(filepath, O_CREAT)) < 0)
++    if ((open(filepath, O_CREAT, 0600)) < 0)
+ 	perror("Opening filepath");
+-    if ((open(filesubpath, O_CREAT)) < 0)
++    if ((open(filesubpath, O_CREAT, 0600)) < 0)
+ 	perror("Opening filesubpath");
+ 
+     if (nftw(path, process_one_entry, 100, (FTW_CHDIR|FTW_DEPTH|FTW_PHYS)) < 0)
+-- 
+2.23.0
+

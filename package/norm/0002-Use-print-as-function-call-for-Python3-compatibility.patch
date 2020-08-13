@@ -1,0 +1,29 @@
+From 8c02c2cbc6f07ddaef23e6bf2f6b9a269ed85ff4 Mon Sep 17 00:00:00 2001
+From: Titouan Christophe <titouan.christophe@railnova.eu>
+Date: Tue, 4 Feb 2020 11:59:07 +0100
+Subject: [PATCH] Use print as function call for Python3 compatibility
+
+A similar patch has already been applied upstream, in commit
+ada15125a1cbb3b1718d6eef78512a36ed327fcc, which will therefore be
+available in the next norm release
+
+Signed-off-by: Titouan Christophe <titouan.christophe@railnova.eu>
+---
+ wscript | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/wscript b/wscript
+index 8428899..0fdae96 100644
+--- a/wscript
++++ b/wscript
+@@ -32,7 +32,7 @@ for line in vfile.readlines():
+     if "#define" == line[0] and "VERSION" == line[1]:
+         VERSION = line[2].strip('"')
+ if VERSION is None:
+-    print "Warning: NORM VERSION not found!?"
++    print("Warning: NORM VERSION not found!?")
+ 
+ # So you don't need to do ./waf configure if you are just using the defaults
+ waflib.Configure.autoconfig = True
+-- 
+2.24.1

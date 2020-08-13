@@ -1,0 +1,46 @@
+From 5448ca9d92f7fa197060323a82a5f060ce7c31e7 Mon Sep 17 00:00:00 2001
+From: Pierre-Jean Texier <pjtexier@koncepto.io>
+Date: Wed, 22 May 2019 10:26:27 +0200
+Subject: [PATCH] src/CMakeLists.txt: do not force the build of a shared
+ library
+
+By definition, projects using CMake which can build either static or shared
+libraries use a BUILD_SHARED_LIBS flag to allow selecting between both.
+So, let CMake rely on the standard BUILD_SHARED_LIBS variable to decide
+whether a static or shared library should be built.
+
+however, we can control the behaviour as follows:
+
+   $. cmake -DBUILD_SHARED_LIBS=OFF ...
+
+   $. cmake -DBUILS_SHARED_LIBS=ON ...
+
+With Yocto/OE, just add the following option into the libubootenv recipe :
+
+EXTRA_OECMAKE = "-DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON"
+
+Signed-off-by: Pierre-Jean Texier <pjtexier@koncepto.io>
+[Upstream status: http://patchwork.ozlabs.org/patch/1103437/]
+---
+ src/CMakeLists.txt | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 051732b..c5f6dcb 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -10,10 +10,9 @@ SET(include_HEADERS
+   libuboot.h
+ )
+ 
+-add_library(ubootenv SHARED ${libubootenv_SOURCES} ${include_HEADERS})
++add_library(ubootenv ${libubootenv_SOURCES} ${include_HEADERS})
+ SET_TARGET_PROPERTIES(ubootenv PROPERTIES SOVERSION ${SOVERSION})
+ 
+-ADD_LIBRARY(ubootenv_static STATIC ${libubootenv_SOURCES} ${include_HEADERS})
+ add_executable(fw_printenv fw_printenv.c)
+ add_executable(fw_setenv fw_setenv.c)
+ target_link_libraries(fw_printenv ubootenv z)
+-- 
+2.7.4
+

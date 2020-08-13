@@ -1,0 +1,28 @@
+From 66bc1c2b9c74dab4706a1ca3696e863ed8d30433 Mon Sep 17 00:00:00 2001
+From: Max Krummenacher <max.krummenacher@toradex.com>
+Date: Sun, 15 Dec 2019 14:24:54 +0000
+Subject: [PATCH] waf: update to 2.0.12
+
+Prepare to allow building with python3.
+
+Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
+[Titouan: backport part from upstream, but drop the update of waf itself]
+Signed-off-by: Titouan Christophe <titouan.christophe@railnova.eu>
+---
+ wscript |  3 ++-
+ 2 files changed, 12 insertions(+), 11 deletions(-)
+
+diff --git a/wscript b/wscript
+index c3a9926..f076b64 100644
+--- a/wscript
++++ b/wscript
+@@ -152,7 +152,8 @@ def configure(conf):
+ 
+ 	# test for GStreamer libraries
+ 
+-	gst_version_str = conf.check_cfg(package = 'gstreamer-1.0 >= 1.2.0', modversion = "gstreamer-1.0", uselib_store = 'GSTREAMER', args = '--cflags --libs', mandatory = 1)
++	conf.check_cfg(package = 'gstreamer-1.0 >= 1.2.0', uselib_store = 'GSTREAMER', args = '--cflags --libs', mandatory = 1)
++	gst_version_str = conf.check_cfg(modversion = "gstreamer-1.0", uselib_store = 'GSTREAMER', args = '--cflags --libs', mandatory = 1)
+ 	gst_version = [int(x) for x in re.match('(\d*)\.(\d*)\.(\d*)', gst_version_str).groups()]
+ 	conf.env['GSTREAMER_VERSION'] = gst_version
+ 

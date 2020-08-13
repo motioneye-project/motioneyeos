@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/esptool/json
+md5	d17b9293910773045b9de0d5caa0597d  esptool-2.8.tar.gz
+sha256	1e4288d9f00e55ba36809cc79c493643c623bfa036d7b019a0ebe396284bc317  esptool-2.8.tar.gz
+# Locally computed sha256 checksums
+sha256	8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643  LICENSE

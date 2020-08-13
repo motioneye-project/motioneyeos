@@ -1,0 +1,19 @@
+config BR2_PACKAGE_NGINX_MODSECURITY
+	bool "nginx-modsecurity"
+	depends on BR2_PACKAGE_NGINX_HTTP
+	depends on BR2_INSTALL_LIBSTDCPP # libmodsecurity
+	depends on !BR2_STATIC_LIBS # libmodsecurity
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libmodsecurity
+	select BR2_PACKAGE_PCRE # libmodsecurity
+	select BR2_PACKAGE_LIBMODSECURITY
+	help
+	  The ModSecurity-nginx connector is the connection
+	  point between nginx and libmodsecurity
+	  (ModSecurity v3).
+
+	  https://github.com/SpiderLabs/ModSecurity-nginx
+
+comment "nginx-modsecurity needs a toolchain w/ C++, dynamic library, threads"
+	depends on BR2_PACKAGE_NGINX_HTTP
+	depends on !BR2_INSTALL_LIBSTDCPP || BR2_STATIC_LIBS || \
+		!BR2_TOOLCHAIN_HAS_THREADS

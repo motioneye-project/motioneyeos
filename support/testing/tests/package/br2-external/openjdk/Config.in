@@ -1,0 +1,2 @@
+source "$BR2_EXTERNAL_OPENJDK_PATH/package/openjdk-hello-world/Config.in"
+source "$BR2_EXTERNAL_OPENJDK_PATH/package/openjdk-jni-test/Config.in"

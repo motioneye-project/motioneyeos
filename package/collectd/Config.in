@@ -63,6 +63,13 @@ config BR2_PACKAGE_COLLECTD_LOGSTASH
 	help
 	  Writes log messages formatted as logstash JSON events.
 
+config BR2_PACKAGE_COLLECTD_LUA
+	bool "lua"
+	select BR2_PACKAGE_LUA
+	help
+	  Embeds a Lua interpreter into collectd and provides an
+	  interface to collectd's plugin system.
+
 config BR2_PACKAGE_COLLECTD_NOTIFY_EMAIL
 	bool "notify_email"
 	depends on !BR2_STATIC_LIBS # libesmtp
@@ -359,6 +366,13 @@ config BR2_PACKAGE_COLLECTD_OLSRD
 	help
 	  Reads information about meshed networks from olsrd.
 
+config BR2_PACKAGE_COLLECTD_ONEWIRE
+	bool "onewire"
+	select BR2_PACKAGE_OWFS
+	help
+	  Collects temperature information from sensors connected over
+	  the OneWire bus.
+
 config BR2_PACKAGE_COLLECTD_OPENLDAP
 	bool "openldap"
 	depends on BR2_USE_WCHAR
@@ -389,7 +403,7 @@ config BR2_PACKAGE_COLLECTD_POSTGRESQL
 	  Connects to and executes SQL statements on a PostgreSQL
 	  database. It then reads back the results and, depending on the
 	  configuration, the returned values are then converted into
-	  collectd “value lists”.
+	  collectd 'value lists'.
 
 comment "postgresql support needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR
@@ -403,6 +417,12 @@ config BR2_PACKAGE_COLLECTD_PROTOCOLS
 	bool "protocols"
 	help
 	  Collects information about the network protocols.
+
+config BR2_PACKAGE_COLLECTD_REDIS
+	bool "redis"
+	select BR2_PACKAGE_HIREDIS
+	help
+	  Connects to one or more instances of Redis.
 
 config BR2_PACKAGE_COLLECTD_SENSORS
 	bool "sensors"
@@ -524,6 +544,13 @@ menu "write plugins"
 
 comment "Select at least one for collectd to be useful"
 
+config BR2_PACKAGE_COLLECTD_AMQP
+	bool "amqp"
+	select BR2_PACKAGE_RABBITMQ_C
+	help
+	  Send/receive values via the Advanced Message Queuing Protocol
+	  (AMQP).
+
 config BR2_PACKAGE_COLLECTD_CSV
 	bool "csv"
 	help
@@ -536,6 +563,21 @@ config BR2_PACKAGE_COLLECTD_GRAPHITE
 	  Writes data collected to Carbon (Graphite's) storage API.
 	  http://graphite.wikidot.com/start
 
+config BR2_PACKAGE_COLLECTD_GRPC
+	bool "grpc"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 || BR2_TOOLCHAIN_HAS_ATOMIC # grpc
+	depends on BR2_INSTALL_LIBSTDCPP # grpc -> protobuf
+	depends on BR2_PACKAGE_PROTOBUF_ARCH_SUPPORTS # grpc -> protobuf
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # grpc -> protobuf
+	select BR2_PACKAGE_GRPC
+	help
+	  Send/receive values using the gRPC protocol.
+
+comment "grpc needs a toolchain w/ C++, gcc >= 4.8"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 || BR2_TOOLCHAIN_HAS_ATOMIC
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+	depends on BR2_PACKAGE_PROTOBUF_ARCH_SUPPORTS
+
 config BR2_PACKAGE_COLLECTD_MQTT
 	bool "mqtt"
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # mosquitto
@@ -547,6 +589,14 @@ config BR2_PACKAGE_COLLECTD_NETWORK
 	bool "network"
 	help
 	  Send/receive values from other instances of collectd.
+
+config BR2_PACKAGE_COLLECTD_NETWORK_GCRYPT
+	bool "crypto support"
+	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS # libgcrypt
+	depends on BR2_PACKAGE_COLLECTD_NETWORK
+	select BR2_PACKAGE_LIBGCRYPT
+	help
+	  Enable crypto support
 
 config BR2_PACKAGE_COLLECTD_RRDTOOL
 	bool "rrdtool"
@@ -563,7 +613,6 @@ config BR2_PACKAGE_COLLECTD_RIEMANN
 	# riemann-c-client -> protobuf-c
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
-	depends on BR2_HOST_GCC_AT_LEAST_4_8
 	select BR2_PACKAGE_RIEMANN_C_CLIENT
 	select BR2_PACKAGE_LIBTOOL
 	help
@@ -592,16 +641,21 @@ config BR2_PACKAGE_COLLECTD_WRITEPROMETHEUS
 	bool "write_prometheus"
 	depends on BR2_INSTALL_LIBSTDCPP # protobuf-c
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86" # protobuf-c
-	depends on BR2_HOST_GCC_AT_LEAST_4_8 # protobuf-c
 	select BR2_PACKAGE_LIBMICROHTTPD
 	select BR2_PACKAGE_PROTOBUF_C
 	help
 	  Publishes values using an embedded HTTP server, in a format
 	  compatible with Prometheus' collectd_exporter.
 
-comment "write_prometheus needs a toolchain w/ C++, host gcc >= 4.8"
-	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_HOST_GCC_AT_LEAST_4_8
+comment "write_prometheus needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
+
+config BR2_PACKAGE_COLLECTD_WRITEREDIS
+	bool "write_redis"
+	select BR2_PACKAGE_HIREDIS
+	help
+	  Sends data to Redis.
 
 config BR2_PACKAGE_COLLECTD_WRITESENSU
 	bool "write_sensu"

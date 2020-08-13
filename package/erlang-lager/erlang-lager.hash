@@ -1,2 +1,3 @@
 # Locally calculated
-sha256 c5f532dd236e07dad27976abcf12b9c90fcf33ffd6fe1b1d34639c06171c36ea erlang-lager-3.4.2.tar.gz
+sha256 c5bb4ba6f918e90d2e6671c3996d72c61f2a589b65c151b3df8011d046362981 erlang-lager-3.6.10.tar.gz
+sha256 809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0 LICENSE

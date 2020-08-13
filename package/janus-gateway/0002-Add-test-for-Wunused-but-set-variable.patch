@@ -16,32 +16,33 @@ supported, and only uses it in this case.
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 (rebased against v0.1.0)
 Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+(rebased against v0.6.3)
+Signed-off-by: Adam Duskett <Aduskett@gmail.com>
 ---
- Makefile.am                 |  2 +-
- configure.ac                |  3 ++
- m4/ax_check_compile_flag.m4 | 74 +++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 78 insertions(+), 1 deletion(-)
+ Makefile.am                 |  1 +
+ configure.ac                |  6 ++-
+ m4/ax_check_compile_flag.m4 | 74 +++++++++++++++++++++++++++++++++++++
+ 3 files changed, 79 insertions(+), 2 deletions(-)
  create mode 100644 m4/ax_check_compile_flag.m4
 
 diff --git a/Makefile.am b/Makefile.am
-index 5d23e0b..0f51f6a 100644
+index c6e9ad2..42d256b 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -6,7 +6,7 @@ AM_CFLAGS = \
- 	-Wnested-externs -Wstrict-prototypes -Wunsafe-loop-optimizations \
- 	-Wwrite-strings -Wno-missing-field-initializers -Wno-unused-parameter \
- 	-Wcast-align -Wformat-nonliteral -Wformat-security -Wswitch-default \
--	-Wmissing-include-dirs -Wno-aggregate-return -Wunused-but-set-variable \
-+	-Wmissing-include-dirs -Wno-aggregate-return @GCC_WARN_UNUSED_BUT_SET@ \
- 	-Warray-bounds -Wold-style-definition -Wsign-compare -Wlarger-than=65537
- AM_CFLAGS += -Wno-undef  # sophiasip is not -Wundef--safe
- AM_CFLAGS += -Wno-redundant-decls  # sophiasip also contains redundant declarations
+@@ -140,6 +140,7 @@ janus_CFLAGS = \
+ 	-DTRANSPORTDIR=\"$(transportdir)\" \
+ 	-DEVENTDIR=\"$(eventdir)\" \
+ 	-DCONFDIR=\"$(confdir)\" \
++	@GCC_WARN_UNUSED_BUT_SET@ \
+ 	$(BORINGSSL_CFLAGS) \
+ 	$(NULL)
+ 
 diff --git a/configure.ac b/configure.ac
-index 17870a7..f9bb1e4 100644
+index ca17a29..beef91a 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -7,6 +7,9 @@ AM_SILENT_RULES([yes])
- AC_GNU_SOURCE
+@@ -13,6 +13,9 @@ AM_SILENT_RULES([yes])
+ AC_USE_SYSTEM_EXTENSIONS
  
  AC_PROG_CC
 +AX_CHECK_COMPILE_FLAG([-Wunused-but-set-variable],
@@ -50,6 +51,16 @@ index 17870a7..f9bb1e4 100644
  
  LT_PREREQ([2.2])
  LT_INIT
+@@ -64,8 +67,7 @@ clang*)
+ 	CFLAGS="$CFLAGS \
+ 		-Wcast-align \
+ 		-Wno-override-init \
+-		-Wunsafe-loop-optimizations \
+-		-Wunused-but-set-variable"
++		-Wunsafe-loop-optimizations"
+ esac
+ 
+ JANUS_VERSION=63
 diff --git a/m4/ax_check_compile_flag.m4 b/m4/ax_check_compile_flag.m4
 new file mode 100644
 index 0000000..51df0c0
@@ -131,5 +142,5 @@ index 0000000..51df0c0
 +AS_VAR_POPDEF([CACHEVAR])dnl
 +])dnl AX_CHECK_COMPILE_FLAGS
 -- 
-2.1.0
+2.20.1
 

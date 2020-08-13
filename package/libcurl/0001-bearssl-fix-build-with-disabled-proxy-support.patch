@@ -1,0 +1,50 @@
+From 3a46be47cad5a3498b5f6d6007b7d1fe5b8dff78 Mon Sep 17 00:00:00 2001
+Message-Id: <3a46be47cad5a3498b5f6d6007b7d1fe5b8dff78.1594274321.git.baruch@tkos.co.il>
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Thu, 9 Jul 2020 08:14:49 +0300
+Subject: [PATCH] bearssl: fix build with disabled proxy support
+
+Avoid reference to fields that do not exist when CURL_DISABLE_PROXY is
+defined.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: https://github.com/curl/curl/pull/5666
+
+ lib/vtls/bearssl.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/lib/vtls/bearssl.c b/lib/vtls/bearssl.c
+index 628e16a124a9..44e7406e8e39 100644
+--- a/lib/vtls/bearssl.c
++++ b/lib/vtls/bearssl.c
+@@ -300,8 +300,12 @@ static CURLcode bearssl_connect_step1(struct connectdata *conn, int sockindex)
+   struct ssl_connect_data *connssl = &conn->ssl[sockindex];
+   struct ssl_backend_data *backend = connssl->backend;
+   const char * const ssl_cafile = SSL_CONN_CONFIG(CAfile);
++#ifndef CURL_DISABLE_PROXY
+   const char *hostname = SSL_IS_PROXY() ? conn->http_proxy.host.name :
+     conn->host.name;
++#else
++  const char *hostname = conn->host.name;
++#endif
+   const bool verifypeer = SSL_CONN_CONFIG(verifypeer);
+   const bool verifyhost = SSL_CONN_CONFIG(verifyhost);
+   CURLcode ret;
+@@ -386,8 +390,11 @@ static CURLcode bearssl_connect_step1(struct connectdata *conn, int sockindex)
+      */
+ 
+ #ifdef USE_NGHTTP2
+-    if(data->set.httpversion >= CURL_HTTP_VERSION_2 &&
+-       (!SSL_IS_PROXY() || !conn->bits.tunnel_proxy)) {
++    if(data->set.httpversion >= CURL_HTTP_VERSION_2
++#ifndef CURL_DISABLE_PROXY
++      && (!SSL_IS_PROXY() || !conn->bits.tunnel_proxy)
++#endif
++      ) {
+       backend->protocols[cur++] = NGHTTP2_PROTO_VERSION_ID;
+       infof(data, "ALPN, offering %s\n", NGHTTP2_PROTO_VERSION_ID);
+     }
+-- 
+2.27.0
+

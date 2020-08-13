@@ -1,0 +1,25 @@
+From 404763f096a312e12c0dc4764834987797411745 Mon Sep 17 00:00:00 2001
+From: Rechi <Rechi@users.noreply.github.com>
+Date: Sun, 24 Mar 2019 11:44:05 +0100
+Subject: [PATCH] [fix] add missing stddef.h include for offsetof macro
+
+Downloaded from upstream commit:
+https://github.com/xbmc/screensaver.matrixtrails/commit/404763f096a312e12c0dc4764834987797411745
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ src/matrixtrails.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/matrixtrails.cpp b/src/matrixtrails.cpp
+index 220855a..2817dbe 100644
+--- a/src/matrixtrails.cpp
++++ b/src/matrixtrails.cpp
+@@ -25,6 +25,7 @@
+ #include "matrixtrails.h"
+ #include "SOIL2/SOIL2.h"
+ 
++#include <stddef.h>
+ #include <vector>
+ 
+ ////////////////////////////////////////////////////////////////////////////

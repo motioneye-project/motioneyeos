@@ -4,8 +4,10 @@
 #
 ################################################################################
 
-LINUX_ZIGBEE_VERSION = v0.3.1
-LINUX_ZIGBEE_SITE = git://linux-zigbee.git.sourceforge.net/gitroot/linux-zigbee/linux-zigbee
+LINUX_ZIGBEE_VERSION = 0.3.1
+LINUX_ZIGBEE_SOURCE = lowpan-tools-$(LINUX_ZIGBEE_VERSION).tar.gz
+LINUX_ZIGBEE_SITE = \
+	http://downloads.sourceforge.net/project/linux-zigbee/linux-zigbee-sources/$(LINUX_ZIGBEE_VERSION)
 LINUX_ZIGBEE_LICENSE = GPL-2.0
 LINUX_ZIGBEE_LICENSE_FILES = COPYING
 LINUX_ZIGBEE_DEPENDENCIES = libnl host-pkgconf host-flex host-bison

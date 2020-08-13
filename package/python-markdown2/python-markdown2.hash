@@ -1,3 +1,5 @@
-# Locally computed
-sha256	53a6100ee005df09d0462cc246f8dc7cd48f4678d1074f36e7cff980a3819b48  python-markdown2-2.3.6.tar.gz
+# md5, sha256 from https://pypi.org/pypi/markdown2/json
+md5	a8dee88993d05a3e10765a57b1e1ea07  markdown2-2.3.8.tar.gz
+sha256	7ff88e00b396c02c8e1ecd8d176cfa418fb01fe81234dcea77803e7ce4f05dbe  markdown2-2.3.8.tar.gz
+# Locally computed sha256 checksums
 sha256	f8c7c4d554409cf621b8d653dbfffb719745fd36f5c49b8305258649b403ef9c  LICENSE.txt

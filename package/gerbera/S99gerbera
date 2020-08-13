@@ -1,7 +1,7 @@
 #!/bin/sh
 
 DAEMON="gerbera"
-PIDFILE="/var/run/$NAME.pid"
+PIDFILE="/var/run/$DAEMON.pid"
 
 GERBERA_ARGS="-c /etc/gerbera/config.xml -l /var/log/gerbera.log"
 

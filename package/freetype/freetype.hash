@@ -1,9 +1,9 @@
-# From https://sourceforge.net/projects/freetype/files/freetype2/2.9.1/
-md5 60ef7d8160cd4bf8cb118ee9d65367ca freetype-2.9.1.tar.bz2
-sha1 220c82062171c513e4017c523d196933c9de4a7d freetype-2.9.1.tar.bz2
+# From https://sourceforge.net/projects/freetype/files/freetype2/2.10.1/
+md5 bd42e75127f8431923679480efb5ba8f freetype-2.10.1.tar.xz
+sha1 79874ef4eaa52025126b71d836453b8279bdd331 freetype-2.10.1.tar.xz
 
 # Locally calculated
-sha256	db8d87ea720ea9d5edc5388fc7a0497bb11ba9fe972245e0f7f4c7e8b1e1e84d	freetype-2.9.1.tar.bz2
+sha256	16dbfa488a21fe827dc27eaf708f42f7aa3bb997d745d31a19781628c36ba26f	freetype-2.10.1.tar.xz
 sha256	fd056de4196903a676208ef58cfddafc7d583d1f28fa2e44c309cf84a59e62fb	docs/LICENSE.TXT
 sha256	08c135755dd589039470f1fdbb400daaabaaa50d0b366d19cebff4d22986baa1	docs/FTL.TXT
 sha256	c4120c6752c910c299e3bd9cb3a46ff262c268303ca2069b61f92f10a5656c18	docs/GPLv2.TXT

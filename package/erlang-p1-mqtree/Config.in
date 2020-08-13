@@ -1,0 +1,7 @@
+config BR2_PACKAGE_ERLANG_P1_MQTREE
+	bool "erlang-p1-mqtree"
+	select BR2_PACKAGE_ERLANG_P1_UTILS
+	help
+	  Index tree for MQTT topic filters.
+
+	  https://github.com/processone/mqtree

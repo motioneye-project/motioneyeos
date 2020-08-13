@@ -2,4 +2,5 @@
 md5 1a9238b83f9f13f09b7a4d53e00b4e84  lbreakout2-2.6.5.tar.gz
 sha1 d92326499165fd368be04378d633e13d42b4d2d7  lbreakout2-2.6.5.tar.gz
 # Locally computed:
-sha256 9104d6175553da3442dc6a5fc407a669e2f5aff3eedc5d30409eb003b7a78d6f  lbreakout2-2.6.5.tar.gz
+sha256  9104d6175553da3442dc6a5fc407a669e2f5aff3eedc5d30409eb003b7a78d6f  lbreakout2-2.6.5.tar.gz
+sha256  67f82e045cf7acfef853ea0f426575a8359161a0a325e19f02b529a87c4b6c34  COPYING

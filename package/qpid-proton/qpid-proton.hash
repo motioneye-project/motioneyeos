@@ -1,2 +1,4 @@
 # Hash from: http://www.apache.org/dist/qpid/proton/0.9.1/qpid-proton-0.9.1.tar.gz.sha
 sha1  98008d90acd0d47cbd7ac1572a2bb50b452338ed  qpid-proton-0.9.1.tar.gz
+# Locally computed
+sha256  9fade5e12873678456137b36cfa4a5983c3793836d41c011f2c2abb02ca36a66  LICENSE

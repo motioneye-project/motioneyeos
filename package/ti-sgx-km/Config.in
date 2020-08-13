@@ -8,46 +8,10 @@ config BR2_PACKAGE_TI_SGX_KM
 	select BR2_LINUX_NEEDS_MODULES
 	help
 	  Kernel modules for TI CPUs with SGX GPU.
-	  This package supports AM335x, AM437x, AM4430 and AM5430.
+	  This package supports AM335x only.
 	  It builds the kernel module and the user space binaries.
 	  For older CPUs or kernels use the ti-gfx package.
 
 	  Note: it needs a TI specific kernel to build properly.
 
-	  http://git.ti.com/graphics/omap5-sgx-ddk-linux
-
-if BR2_PACKAGE_TI_SGX_KM
-
-choice
-	prompt "Target"
-	default BR2_PACKAGE_TI_SGX_KM_AM335X if BR2_PACKAGE_TI_SGX_AM335X # legacy
-	default BR2_PACKAGE_TI_SGX_KM_AM437X if BR2_PACKAGE_TI_SGX_AM437X # legacy
-	default BR2_PACKAGE_TI_SGX_KM_AM4430 if BR2_PACKAGE_TI_SGX_AM4430 # legacy
-	default BR2_PACKAGE_TI_SGX_KM_AM5430 if BR2_PACKAGE_TI_SGX_AM5430 # legacy
-	default BR2_PACKAGE_TI_SGX_KM_AM335X
-	help
-	  Select the SOC for which you would like to install drivers.
-
-config BR2_PACKAGE_TI_SGX_KM_AM335X
-	bool "AM335x"
-	help
-	  AM335x CPU
-
-config BR2_PACKAGE_TI_SGX_KM_AM437X
-	bool "AM437x"
-	help
-	  AM437x CPU
-
-config BR2_PACKAGE_TI_SGX_KM_AM4430
-	bool "AM4430"
-	help
-	  AM4430 CPU
-
-config BR2_PACKAGE_TI_SGX_KM_AM5430
-	bool "AM5430"
-	help
-	  AM5430 CPU
-
-endchoice
-
-endif
+	  https://git.ti.com/cgit/graphics/omap5-sgx-ddk-linux

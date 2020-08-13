@@ -1,0 +1,39 @@
+From a47b7cd3aca70e9a0bddf8146eb4ab0cbd19c2c3 Mon Sep 17 00:00:00 2001
+From: tbeu <tbeu@users.noreply.github.com>
+Date: Fri, 15 Nov 2019 23:20:41 +0100
+Subject: [PATCH] Fix memory leak
+
+As reported by https://github.com/tbeu/matio/issues/131
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/tbeu/matio/commit/a47b7cd3aca70e9a0bddf8146eb4ab0cbd19c2c3]
+---
+ src/mat.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/src/mat.c b/src/mat.c
+index c9c6bd1..e62a9d2 100644
+--- a/src/mat.c
++++ b/src/mat.c
+@@ -220,6 +220,11 @@ int SafeMulDims(const matvar_t *matvar, size_t* nelems)
+ {
+     int i;
+ 
++    if ( matvar->rank == 0 ) {
++        *nelems = 0;
++        return 0;
++    }
++
+     for ( i = 0; i < matvar->rank; i++ ) {
+         if ( !psnip_safe_size_mul(nelems, *nelems, matvar->dims[i]) ) {
+             *nelems = 0;
+@@ -1640,7 +1645,7 @@ Mat_VarFree(matvar_t *matvar)
+         }
+ #endif
+         if ( NULL != matvar->internal->fieldnames &&
+-             matvar->internal->num_fields > 0 ) {
++            matvar->internal->num_fields > 0 ) {
+             size_t i;
+             for ( i = 0; i < matvar->internal->num_fields; i++ ) {
+                 if ( NULL != matvar->internal->fieldnames[i] )

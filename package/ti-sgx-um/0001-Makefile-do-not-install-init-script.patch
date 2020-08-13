@@ -1,0 +1,39 @@
+From afb92e4b1cd05388f519868215d0e8a4672ebb0e Mon Sep 17 00:00:00 2001
+From: Carlos Santos <unixmania@gmail.com>
+Date: Sun, 10 Nov 2019 22:44:44 -0300
+Subject: [PATCH] Makefile: do not install init script
+
+Use a custom one, made for Buildroot, instead.
+
+Signed-off-by: Carlos Santos <unixmania@gmail.com>
+---
+ Makefile | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 649111a..19016f3 100755
+--- a/Makefile
++++ b/Makefile
+@@ -3,7 +3,6 @@ TARGET_PRODUCT ?= jacinto6evm
+ SRCDIR = ./targetfs/${TARGET_PRODUCT}
+ 
+ prefix = /usr
+-etcdir = /etc
+ bindir = ${prefix}/bin
+ incdir = ${prefix}/include
+ libdir = ${prefix}/lib
+@@ -11,11 +10,9 @@ libdir = ${prefix}/lib
+ all:
+ 
+ install: 
+-	mkdir -p ${DESTDIR}${etcdir}
+ 	mkdir -p ${DESTDIR}${bindir}
+ 	mkdir -p ${DESTDIR}${incdir}
+ 	mkdir -p ${DESTDIR}${libdir}
+-	cp -ar ${SRCDIR}/etc/* ${DESTDIR}${etcdir}
+ 	cp -ar ${SRCDIR}/bin/* ${DESTDIR}${bindir}
+ 	cp -ar ${SRCDIR}/include/* ${DESTDIR}${incdir}
+ 	cp -ar ${SRCDIR}/lib/* ${DESTDIR}${libdir}
+-- 
+2.18.1
+

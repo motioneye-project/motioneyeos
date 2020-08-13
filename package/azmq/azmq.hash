@@ -1,4 +1,4 @@
 # Locally calculated
 # https://github.com/zeromq/azmq/archive/v1.0.2.tar.gz
-sha256 25fa8b07756cffae95e25a55c7ea42efe02e8cd797552201aa771dd69cfc8fbf  azmq-v1.0.2.tar.gz
+sha256 25fa8b07756cffae95e25a55c7ea42efe02e8cd797552201aa771dd69cfc8fbf  azmq-1.0.2.tar.gz
 sha256 c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566  LICENSE-BOOST_1_0

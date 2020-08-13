@@ -43,6 +43,11 @@ STRONGSWAN_CONF_OPTS += \
 	--with-imcvdir=/usr/lib/ipsec/imcvs \
 	--with-dev-headers=/usr/include
 
+# strongswan-5.6.1-5.6.3_gmp-pkcs1-verify.patch
+STRONGSWAN_IGNORE_CVES += CVE-2018-16151 CVE-2018-16152
+# strongswan-4.4.0-5.7.0_gmp-pkcs1-overflow.patch
+STRONGSWAN_IGNORE_CVES += CVE-2018-17540
+
 ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
 STRONGSWAN_CONF_ENV += LIBS='-latomic'
 endif

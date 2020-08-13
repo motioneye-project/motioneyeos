@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-REFPOLICY_VERSION = 2.20180114
+REFPOLICY_VERSION = 2.20190609
 REFPOLICY_SOURCE = refpolicy-$(REFPOLICY_VERSION).tar.bz2
-REFPOLICY_SITE = https://raw.githubusercontent.com/wiki/TresysTechnology/refpolicy/files
+REFPOLICY_SITE = https://github.com/SELinuxProject/refpolicy/releases/download/RELEASE_2_20190609
 REFPOLICY_LICENSE = GPL-2.0
 REFPOLICY_LICENSE_FILES = COPYING
 REFPOLICY_INSTALL_STAGING = YES
@@ -14,24 +14,18 @@ REFPOLICY_DEPENDENCIES = \
 	host-m4 \
 	host-checkpolicy \
 	host-policycoreutils \
+	host-python3 \
 	host-setools \
-	host-gawk \
-	policycoreutils
-
-ifeq ($(BR2_PACKAGE_PYTHON3),y)
-REFPOLICY_DEPENDENCIES += host-python3
-else
-REFPOLICY_DEPENDENCIES += host-python
-endif
+	host-gawk
 
 # Cannot use multiple threads to build the reference policy
 REFPOLICY_MAKE = \
+	PYTHON=$(HOST_DIR)/usr/bin/python3 \
 	TEST_TOOLCHAIN=$(HOST_DIR) \
 	$(TARGET_MAKE_ENV) \
 	$(MAKE1)
 
-REFPOLICY_POLICY_VERSION = \
-	$(call qstrip,$(BR2_PACKAGE_REFPOLICY_POLICY_VERSION))
+REFPOLICY_POLICY_VERSION = $(BR2_PACKAGE_LIBSEPOL_POLICY_VERSION)
 REFPOLICY_POLICY_STATE = \
 	$(call qstrip,$(BR2_PACKAGE_REFPOLICY_POLICY_STATE))
 

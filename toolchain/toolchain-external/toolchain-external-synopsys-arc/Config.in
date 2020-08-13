@@ -1,7 +1,6 @@
 config BR2_TOOLCHAIN_EXTERNAL_SYNOPSYS_ARC
-	bool "Synopsys ARC 2018.09 toolchain"
+	bool "Synopsys ARC 2019.09 toolchain"
 	depends on BR2_arc
-	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_8
 	depends on BR2_HOSTARCH = "x86_64"
 	select BR2_TOOLCHAIN_EXTERNAL_UCLIBC
 	select BR2_INSTALL_LIBSTDCPP
@@ -12,7 +11,7 @@ config BR2_TOOLCHAIN_EXTERNAL_SYNOPSYS_ARC
 	select BR2_TOOLCHAIN_HAS_THREADS_DEBUG
 	select BR2_TOOLCHAIN_HAS_SSP
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_15
-	select BR2_TOOLCHAIN_GCC_AT_LEAST_8
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_9
 	help
 	  Toolchain for the ARC cores, from
 	  https://github.com/foss-for-synopsys-dwc-arc-processors/toolchain/releases

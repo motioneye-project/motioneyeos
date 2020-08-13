@@ -7,5 +7,7 @@ config BR2_PACKAGE_FMT
 	  used as a safe alternative to printf or as a fast alternative
 	  to IOStreams.
 
+	  https://fmt.dev
+
 comment "fmt needs a toolchain w/ C++, wchar"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR

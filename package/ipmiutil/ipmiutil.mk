@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-IPMIUTIL_VERSION = 3.1.2
+IPMIUTIL_VERSION = 3.1.3
 IPMIUTIL_SITE = https://sourceforge.net/projects/ipmiutil/files
 IPMIUTIL_LICENSE = BSD-3-Clause
 IPMIUTIL_LICENSE_FILES = COPYING

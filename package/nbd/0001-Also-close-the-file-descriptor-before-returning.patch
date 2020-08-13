@@ -1,0 +1,25 @@
+From d2480de925e83c8bf60faa96141f4198bdf7f619 Mon Sep 17 00:00:00 2001
+From: Wouter Verhelst <w@uter.be>
+Date: Fri, 2 Aug 2019 10:33:00 +0200
+Subject: [PATCH] Also close the file descriptor before returning
+
+Coverity CID#1162721
+[Retrieved from:
+https://github.com/NetworkBlockDevice/nbd/commit/d2480de925e83c8bf60faa96141f4198bdf7f619]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ nbd-client.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/nbd-client.c b/nbd-client.c
+index e9ec0a86..94035886 100644
+--- a/nbd-client.c
++++ b/nbd-client.c
+@@ -930,6 +930,7 @@ void disconnect(char* device) {
+ 	if (ioctl(nbd, NBD_CLEAR_SOCK)<0)
+ 		err("Ioctl failed: %m\n");
+ 	printf("done\n");
++	close(nbd);
+ }
+ 
+ #if HAVE_NETLINK

@@ -1,0 +1,33 @@
+From fb8e7c535a88838cc8ae364cd2a099df6316d3b0 Mon Sep 17 00:00:00 2001
+From: Paul Cercueil <paul@crapouillou.net>
+Date: Tue, 30 Apr 2019 23:12:15 +0200
+Subject: [PATCH] Fix include of modplug.h
+
+The include path should be <libmodplug/modplug.h>, since the library
+doesn't provide any specific include path in its pkg-config file.
+
+This patch was obtained from this bug report:
+https://bugzilla.libsdl.org/show_bug.cgi?id=4893
+
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+
+---
+ music_modplug.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/music_modplug.h b/music_modplug.h
+index 92cbafd..49abbb0 100644
+--- a/music_modplug.h
++++ b/music_modplug.h
+@@ -1,6 +1,7 @@
+ #ifdef MODPLUG_MUSIC
+ 
+-#include "modplug.h"
++#include <libmodplug/modplug.h>
++
+ #include "SDL_rwops.h"
+ #include "SDL_audio.h"
+ #include "SDL_mixer.h"
+-- 
+2.21.0.593.g511ec345e18
+

@@ -1,2 +1,5 @@
+# From https://sourceforge.net/projects/loop-aes/files/aespipe/v2.4f/
+sha1 2c23e1a6be298cf4f173f06b1123e4ecd5e9a202  aespipe-v2.4f.tar.bz2
+md5 ed05c62c1954110f009bedda4bc1562f  aespipe-v2.4f.tar.bz2
 # Locally computed:
-sha256 c5ce656e0ade49b93e1163ec7b35450721d5743d8d804ad3a9e39add0389e50f  aespipe-v2.4d.tar.bz2
+sha256 b135e1659f58dc9be5e3c88923cd03d2a936096ab8cd7f2b3af4cb7a844cef96  aespipe-v2.4f.tar.bz2

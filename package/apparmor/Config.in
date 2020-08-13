@@ -1,0 +1,77 @@
+config BR2_PACKAGE_APPARMOR
+	bool "apparmor"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # libapparmor
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libapparmor
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_16 # libapparmor
+	select BR2_PACKAGE_LIBAPPARMOR
+	help
+	  AppArmor is an effective and easy-to-use Linux application
+	  security system. AppArmor proactively protects the operating
+	  system and applications from external or internal threats,
+	  even zero-day attacks, by enforcing good behavior and
+	  preventing even unknown application flaws from being
+	  exploited.
+
+	  This package builds the parser (which can load profiles).
+
+	  http://wiki.apparmor.net
+
+if BR2_PACKAGE_APPARMOR
+
+config BR2_PACKAGE_APPARMOR_BINUTILS
+	bool "binutils"
+	help
+	  A set of utilities (written in C):
+	    aa-enabled    aa-exec
+
+comment "utils need python3"
+	depends on !BR2_PACKAGE_PYTHON3
+
+config BR2_PACKAGE_APPARMOR_UTILS
+	bool "utils"
+	depends on BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_BUSYBOX_SHOW_OTHERS # net-tools
+	select BR2_PACKAGE_NET_TOOLS # runtime (aa-unconfined)
+	select BR2_PACKAGE_PYTHON3_READLINE
+	help
+	  A set of utilities (written in python):
+	    aa-audit          aa-disable      aa-logprof
+	    aa-autodep        aa-easyprof     aa-mergeprof
+	    aa-cleanprof      aa-enforce      aa-status
+	    aa-complain       aa-genprof      aa-unconfined
+
+if BR2_PACKAGE_APPARMOR_UTILS
+
+comment "utils (extras) need bash and perl, and busybox or gawk"
+	depends on !BR2_PACKAGE_BASH || !BR2_PACKAGE_PERL \
+		|| !(BR2_PACKAGE_BUSYBOX || BR2_PACKAGE_GAWK)
+
+config BR2_PACKAGE_APPARMOR_UTILS_EXTRA
+	bool "utils (extras)"
+	depends on BR2_PACKAGE_BASH
+	depends on BR2_PACKAGE_PERL
+	depends on BR2_PACKAGE_BUSYBOX || BR2_PACKAGE_GAWK
+	help
+	  An extra set of utilities (written in a mixture of sh,
+	  bash, perl, and awk):
+	    aa-decode          (bash + perl)
+	    aa-notify          (perl)
+	    aa-remove-unknown  (sh + awk)
+
+endif # BR2_PACKAGE_APPARMOR_UTILS
+
+config BR2_PACKAGE_APPARMOR_PROFILES
+	bool "profiles"
+	help
+	  Installs server-class profiles for a wide range of
+	  usual programs and daemons.
+
+endif # BR2_PACKAGE_APPARMOR
+
+comment "apparmor needs a toolchain w/ headers >= 3.16, threads, C++"
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS \
+		|| !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_16

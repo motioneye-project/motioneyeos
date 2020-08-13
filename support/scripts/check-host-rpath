@@ -11,6 +11,7 @@ export LC_ALL=C
 main() {
     local pkg="${1}"
     local hostdir="${2}"
+    local perpackagedir="${3}"
     local file ret
 
     # Remove duplicate and trailing '/' for proper match
@@ -20,7 +21,7 @@ main() {
     while read file; do
         is_elf "${file}" || continue
         elf_needs_rpath "${file}" "${hostdir}" || continue
-        check_elf_has_rpath "${file}" "${hostdir}" && continue
+        check_elf_has_rpath "${file}" "${hostdir}" "${perpackagedir}" && continue
         if [ ${ret} -eq 0 ]; then
             ret=1
             printf "***\n"
@@ -44,6 +45,15 @@ is_elf() {
 # needs such an RPATH if at least of the libraries used by the ELF
 # executable is available in the host library directory. This function
 # returns 0 when a RPATH is needed, 1 otherwise.
+#
+# With per-package directory support, ${hostdir} will point to the
+# current package per-package host directory, and this is where this
+# function will check if the libraries needed by the executable are
+# located (or not). In practice, the ELF executable RPATH may point to
+# another package per-package host directory, but that is fine because
+# if such an executable is within the current package per-package host
+# directory, its libraries will also have been copied into the current
+# package per-package host directory.
 elf_needs_rpath() {
     local file="${1}"
     local hostdir="${2}"
@@ -62,13 +72,19 @@ elf_needs_rpath() {
 # This function checks whether at least one of the RPATH of the given
 # ELF executable (first argument) properly points to the host library
 # directory (second argument), either through an absolute RPATH or a
-# relative RPATH. Having such a RPATH will make sure the ELF
-# executable will find at runtime the shared libraries it depends
-# on. This function returns 0 when a proper RPATH was found, or 1
-# otherwise.
+# relative RPATH. In the context of per-package directory support,
+# ${hostdir} (second argument) points to the current package host
+# directory. However, it is perfectly valid for an ELF binary to have
+# a RPATH pointing to another package per-package host directory,
+# which is why such RPATH is also accepted (the per-package directory
+# gets passed as third argument). Having a RPATH pointing to the host
+# directory will make sure the ELF executable will find at runtime the
+# shared libraries it depends on. This function returns 0 when a
+# proper RPATH was found, or 1 otherwise.
 check_elf_has_rpath() {
     local file="${1}"
     local hostdir="${2}"
+    local perpackagedir="${3}"
     local rpath dir
 
     while read rpath; do
@@ -77,6 +93,12 @@ check_elf_has_rpath() {
             dir="$( sed -r -e 's:/+:/:g; s:/$::;' <<<"${dir}" )"
             [ "${dir}" = "${hostdir}/lib" ] && return 0
             [ "${dir}" = "\$ORIGIN/../lib" ] && return 0
+	    # This check is done even for builds where
+	    # BR2_PER_PACKAGE_DIRECTORIES is disabled. In this case,
+	    # PER_PACKAGE_DIR and therefore ${perpackagedir} points to
+	    # a non-existent directory, and this check will always be
+	    # false.
+            [[ ${dir} =~ ${perpackagedir}/[^/]+/host/lib ]] && return 0
         done
     done < <( readelf -d "${file}"                                              \
               |sed -r -e '/.* \(R(UN)?PATH\) +Library r(un)?path: \[(.+)\]$/!d' \

@@ -1,0 +1,51 @@
+From bbcf4320134efd8a01ce5a02bb9af62019ca05f6 Mon Sep 17 00:00:00 2001
+From: Luca Ceresoli <luca@lucaceresoli.net>
+Date: Tue, 4 Feb 2020 15:57:48 +0100
+Subject: [PATCH] exim_lock: fix lstat-related build errors
+
+exim_lock fails to cross-compile with the Sourcery CodeBench ARM 2014.05
+toolchain due the a missing include of sys/types.h, needed for the
+constants used by fstat() and lstat().
+
+Discovered when cross-compiling with the Buildroot embedded Linux
+buildsystem.
+
+Fixes:
+
+  exim_lock.c:427:30: error: 'S_IFMT' undeclared (first use in this function)
+         if ((statbuf.st_mode & S_IFMT) == S_IFLNK)
+                                ^
+  exim_lock.c:427:30: note: each undeclared identifier is reported only once for each function it appears in
+  exim_lock.c:427:41: error: 'S_IFLNK' undeclared (first use in this function)
+         if ((statbuf.st_mode & S_IFMT) == S_IFLNK)
+                                           ^
+
+Signed-off-by: Luca Ceresoli <luca@lucaceresoli.net>
+Upstream-status: https://bugs.exim.org/show_bug.cgi?id=2523
+---
+ src/exim_lock.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/exim_lock.c b/src/exim_lock.c
+index 068216816054..cb140aff6436 100644
+--- a/src/exim_lock.c
++++ b/src/exim_lock.c
+@@ -13,6 +13,8 @@ Argument: the name of the lock file
+ Copyright (c) The Exim Maintainers 2016
+ */
+
++#define _XOPEN_SOURCE
++
+ #include "os.h"
+
+ #include <stdio.h>
+@@ -26,6 +28,7 @@ Copyright (c) The Exim Maintainers 2016
+ #include <unistd.h>
+ #include <utime.h>
+ #include <sys/utsname.h>
++#include <sys/types.h>
+ #include <sys/stat.h>
+ #include <sys/file.h>
+ #include <pwd.h>
+--
+2.25.0

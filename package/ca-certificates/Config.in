@@ -9,4 +9,4 @@ config BR2_PACKAGE_CA_CERTIFICATES
 	  Debian infrastructure and those shipped with Mozilla's
 	  browsers.
 
-	  http://anonscm.debian.org/gitweb/?p=collab-maint/ca-certificates.git
+	  https://salsa.debian.org/debian/ca-certificates

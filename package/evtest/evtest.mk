@@ -4,8 +4,9 @@
 #
 ################################################################################
 
-EVTEST_VERSION = 1.33
-EVTEST_SITE = http://cgit.freedesktop.org/evtest/snapshot
+EVTEST_VERSION = 1.34
+EVTEST_SOURCE = evtest-evtest-$(EVTEST_VERSION).tar.gz
+EVTEST_SITE = https://gitlab.freedesktop.org/libevdev/evtest/-/archive/evtest-$(EVTEST_VERSION)
 EVTEST_LICENSE = GPL-2.0+
 EVTEST_LICENSE_FILES = COPYING
 EVTEST_DEPENDENCIES = host-pkgconf

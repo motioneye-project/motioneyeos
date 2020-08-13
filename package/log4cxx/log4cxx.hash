@@ -1,2 +1,4 @@
 # Locally calculated after checking pgp signature
-sha256	0de0396220a9566a580166e66b39674cb40efd2176f52ad2c65486c99c920c8c	apache-log4cxx-0.10.0.tar.gz
+sha256  0de0396220a9566a580166e66b39674cb40efd2176f52ad2c65486c99c920c8c  apache-log4cxx-0.10.0.tar.gz
+# Locally computed
+sha256  cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30  LICENSE

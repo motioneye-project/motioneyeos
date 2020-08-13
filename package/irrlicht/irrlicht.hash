@@ -1,5 +1,10 @@
 # From https://sourceforge.net/projects/irrlicht/files/Irrlicht%20SDK/1.8/1.8.4
 md5 9401cfff801395010b0912211f3cbb4f irrlicht-1.8.4.zip
 sha1 38bf0223fe868d243d6a39d0dc191c8df6e03b3b irrlicht-1.8.4.zip
-# locally calculated
-sha256 f42b280bc608e545b820206fe2a999c55f290de5c7509a02bdbeeccc1bf9e433  irrlicht-1.8.4.zip
+# Locally calculated
+sha256  f42b280bc608e545b820206fe2a999c55f290de5c7509a02bdbeeccc1bf9e433  irrlicht-1.8.4.zip
+sha256  cc86e0b830f9d48933feb198f2741a7d9bb7c34fe8a35302d8ce36b8e2ecb27b  doc/aesGladman.txt
+sha256  e8a6b63336018eec09ac3a7cdfe5a80bda635641bc0397a77b8baa25bed03800  doc/bzip2-license.txt
+sha256  ca38f1ba4ab901111f6eee50009bd46dbd866e6beb98d592d843f7c162d73409  doc/irrlicht-license.txt
+sha256  67f098c29401646a0f52da432efc3bab0433c13f17effc3314e9fa523da51b75  doc/jpglib-license.txt
+sha256  e0f86c3e4acd285618faa55735ceedce46084a3cfb06b8f31d0d092bb68ae151  doc/libpng-license.txt

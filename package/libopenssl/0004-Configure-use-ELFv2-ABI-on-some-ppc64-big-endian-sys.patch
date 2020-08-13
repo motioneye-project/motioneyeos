@@ -1,0 +1,35 @@
+From b57cc2e4ee21babacbffc243626de72c248068ea Mon Sep 17 00:00:00 2001
+From: Andy Polyakov <appro@openssl.org>
+Date: Sun, 5 May 2019 18:30:55 +0200
+Subject: [PATCH] Configure: use ELFv2 ABI on some ppc64 big endian systems
+
+If _CALL_ELF is defined to be 2, it's an ELFv2 system.
+Conditionally switch to the v2 perlasm scheme.
+
+Reviewed-by: Paul Dale <paul.dale@oracle.com>
+Reviewed-by: Richard Levitte <levitte@openssl.org>
+(Merged from https://github.com/openssl/openssl/pull/8883)
+[vfazio: fixup for 1.1.1d]
+Signed-off-by: Vincent Fazio <vfazio@xes-inc.com>
+---
+ Configure | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/Configure b/Configure
+index 5a699836f3..f9152b1702 100755
+--- a/Configure
++++ b/Configure
+@@ -1413,6 +1413,10 @@ my %predefined_CXX = $config{CXX}
+     ? compiler_predefined($config{CROSS_COMPILE}.$config{CXX})
+     : ();
+ 
++if ($target eq "linux-ppc64" && !$disabled{asm}) {
++       $target{perlasm_scheme} = "linux64v2" if ($predefined_C{_CALL_ELF} == 2);
++}
++
+ # Check for makedepend capabilities.
+ if (!$disabled{makedepend}) {
+     if ($config{target} =~ /^(VC|vms)-/) {
+-- 
+2.25.0
+

@@ -1,2 +1,4 @@
 # From http://downloads.yoctoproject.org/releases/matchbox/matchbox-desktop/0.9/matchbox-desktop-0.9.1.tar.bz2.md5
 md5	3335a30b1a1aacfb39f23b505254765c	matchbox-desktop-0.9.1.tar.bz2
+# Locally computed
+sha256  32b1062f7da84967e7019d01ab805935caa7ab7321a7ced0e30ebe75e5df1670  COPYING

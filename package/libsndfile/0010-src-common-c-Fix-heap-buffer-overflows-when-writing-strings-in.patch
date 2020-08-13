@@ -1,0 +1,92 @@
+From cf7a8182c2642c50f1cf90dddea9ce96a8bad2e8 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=B6rn=20Heusipp?= <osmanx@problemloesungsmaschine.de>
+Date: Wed, 14 Jun 2017 12:25:40 +0200
+Subject: [PATCH] src/common.c: Fix heap buffer overflows when writing strings
+ in binheader
+
+Fixes the following problems:
+ 1. Case 's' only enlarges the buffer by 16 bytes instead of size bytes.
+ 2. psf_binheader_writef() enlarges the header buffer (if needed) prior to the
+    big switch statement by an amount (16 bytes) which is enough for all cases
+    where only a single value gets added. Cases 's', 'S', 'p' however
+    additionally write an arbitrary length block of data and again enlarge the
+    buffer to the required amount. However, the required space calculation does
+    not take into account the size of the length field which gets output before
+    the data.
+ 3. Buffer size requirement calculation in case 'S' does not account for the
+    padding byte ("size += (size & 1) ;" happens after the calculation which
+    uses "size").
+ 4. Case 'S' can overrun the header buffer by 1 byte when no padding is
+    involved
+    ("memcpy (&(psf->header.ptr [psf->header.indx]), strptr, size + 1) ;" while
+    the buffer is only guaranteed to have "size" space available).
+ 5. "psf->header.ptr [psf->header.indx] = 0 ;" in case 'S' always writes 1 byte
+    beyond the space which is guaranteed to be allocated in the header buffer.
+ 6. Case 's' can overrun the provided source string by 1 byte if padding is
+    involved ("memcpy (&(psf->header.ptr [psf->header.indx]), strptr, size) ;"
+    where "size" is "strlen (strptr) + 1" (which includes the 0 terminator,
+    plus optionally another 1 which is padding and not guaranteed to be
+    readable via the source string pointer).
+
+Closes: https://github.com/erikd/libsndfile/issues/292
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/erikd/libsndfile/commit/cf7a8182c2642c50f1cf90dddea9ce96a8bad2e8]
+---
+ src/common.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
+
+diff --git a/src/common.c b/src/common.c
+index 1a6204ca..6b2a2ee9 100644
+--- a/src/common.c
++++ b/src/common.c
+@@ -681,16 +681,16 @@ psf_binheader_writef (SF_PRIVATE *psf, const char *format, ...)
+ 					/* Write a C string (guaranteed to have a zero terminator). */
+ 					strptr = va_arg (argptr, char *) ;
+ 					size = strlen (strptr) + 1 ;
+-					size += (size & 1) ;
+ 
+-					if (psf->header.indx + (sf_count_t) size >= psf->header.len && psf_bump_header_allocation (psf, 16))
++					if (psf->header.indx + 4 + (sf_count_t) size + (sf_count_t) (size & 1) > psf->header.len && psf_bump_header_allocation (psf, 4 + size + (size & 1)))
+ 						return count ;
+ 
+ 					if (psf->rwf_endian == SF_ENDIAN_BIG)
+-						header_put_be_int (psf, size) ;
++						header_put_be_int (psf, size + (size & 1)) ;
+ 					else
+-						header_put_le_int (psf, size) ;
++						header_put_le_int (psf, size + (size & 1)) ;
+ 					memcpy (&(psf->header.ptr [psf->header.indx]), strptr, size) ;
++					size += (size & 1) ;
+ 					psf->header.indx += size ;
+ 					psf->header.ptr [psf->header.indx - 1] = 0 ;
+ 					count += 4 + size ;
+@@ -703,16 +703,15 @@ psf_binheader_writef (SF_PRIVATE *psf, const char *format, ...)
+ 					*/
+ 					strptr = va_arg (argptr, char *) ;
+ 					size = strlen (strptr) ;
+-					if (psf->header.indx + (sf_count_t) size > psf->header.len && psf_bump_header_allocation (psf, size))
++					if (psf->header.indx + 4 + (sf_count_t) size + (sf_count_t) (size & 1) > psf->header.len && psf_bump_header_allocation (psf, 4 + size + (size & 1)))
+ 						return count ;
+ 					if (psf->rwf_endian == SF_ENDIAN_BIG)
+ 						header_put_be_int (psf, size) ;
+ 					else
+ 						header_put_le_int (psf, size) ;
+-					memcpy (&(psf->header.ptr [psf->header.indx]), strptr, size + 1) ;
++					memcpy (&(psf->header.ptr [psf->header.indx]), strptr, size + (size & 1)) ;
+ 					size += (size & 1) ;
+ 					psf->header.indx += size ;
+-					psf->header.ptr [psf->header.indx] = 0 ;
+ 					count += 4 + size ;
+ 					break ;
+ 
+@@ -724,7 +723,7 @@ psf_binheader_writef (SF_PRIVATE *psf, const char *format, ...)
+ 					size = (size & 1) ? size : size + 1 ;
+ 					size = (size > 254) ? 254 : size ;
+ 
+-					if (psf->header.indx + (sf_count_t) size > psf->header.len && psf_bump_header_allocation (psf, size))
++					if (psf->header.indx + 1 + (sf_count_t) size > psf->header.len && psf_bump_header_allocation (psf, 1 + size))
+ 						return count ;
+ 
+ 					header_put_byte (psf, size) ;

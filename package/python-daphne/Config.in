@@ -1,0 +1,20 @@
+config BR2_PACKAGE_PYTHON_DAPHNE
+	bool "python-daphne"
+	depends on BR2_INSTALL_LIBSTDCPP # python-autobahn -> python-cryptography
+	depends on BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYTHON_ASGIREF # runtime
+	select BR2_PACKAGE_PYTHON_AUTOBAHN # runtime
+	select BR2_PACKAGE_PYTHON_TWISTED # runtime
+	select BR2_PACKAGE_PYTHON_TWISTED_TLS # runtime
+	help
+	  Daphne is a HTTP, HTTP2 and WebSocket protocol server for
+	  ASGI and ASGI-HTTP, developed to power Django Channels.
+	  It supports automatic negotiation of protocols; there's no
+	  need for URL prefixing to determine WebSocket endpoints
+	  versus HTTP endpoints.
+
+	  https://github.com/django/daphne
+
+comment "python-daphne needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
+	depends on BR2_PACKAGE_PYTHON3

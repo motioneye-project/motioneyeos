@@ -4,15 +4,13 @@
 #
 ################################################################################
 
-LIBSHOUT_VERSION = 2.4.1
-LIBSHOUT_SITE = http://downloads.xiph.org/releases/libshout
+LIBSHOUT_VERSION = 2.4.3
+LIBSHOUT_SITE = https://downloads.xiph.org/releases/libshout
 LIBSHOUT_LICENSE = LGPL-2.0+
 LIBSHOUT_LICENSE_FILES = COPYING
 LIBSHOUT_INSTALL_STAGING = YES
 LIBSHOUT_DEPENDENCIES = host-pkgconf libogg libvorbis
-
-# patching configure.ac
-LIBSHOUT_AUTORECONF = YES
+LIBSHOUT_CONF_OPTS = --disable-examples
 
 ifeq ($(BR2_PACKAGE_LIBTHEORA),y)
 LIBSHOUT_CONF_OPTS += --enable-theora

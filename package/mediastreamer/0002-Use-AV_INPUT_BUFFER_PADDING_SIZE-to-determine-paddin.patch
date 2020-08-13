@@ -17,6 +17,8 @@ Downloaded from
 https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=901735
 
 Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+[Fabrice: updated for 4.3.1]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
 ---
  src/utils/ffmpeg-priv.h     | 4 ++++
  src/videofilters/nowebcam.c | 4 ++--
@@ -37,28 +39,6 @@ index c0745a9a..d59ea0e1 100644
  #ifndef HAVE_FUN_avcodec_encode_video2
  int avcodec_encode_video2 (AVCodecContext *avctx, AVPacket *avpkt, const AVFrame *frame, int *got_packet_ptr);
  #endif
-diff --git a/src/videofilters/nowebcam.c b/src/videofilters/nowebcam.c
-index bd2ca838..4783de05 100644
---- a/src/videofilters/nowebcam.c
-+++ b/src/videofilters/nowebcam.c
-@@ -32,7 +32,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- #ifndef NO_FFMPEG
- #include "ffmpeg-priv.h"
- #else
--#define FF_INPUT_BUFFER_PADDING_SIZE 32
-+#define AV_INPUT_BUFFER_PADDING_SIZE 32
- #endif
- 
- #if TARGET_OS_IPHONE
-@@ -248,7 +248,7 @@ static mblk_t *_ms_load_jpeg_as_yuv(const char *jpgpath, MSVideoSize *reqsize){
- 			ms_error("Cannot load %s",jpgpath);
- 			return NULL;
- 		}
--		jpgbuf=(uint8_t*)ms_malloc0(statbuf.st_size + FF_INPUT_BUFFER_PADDING_SIZE);
-+		jpgbuf=(uint8_t*)ms_malloc0(statbuf.st_size + AV_INPUT_BUFFER_PADDING_SIZE);
- 		if (jpgbuf==NULL)
- 		{
- 			close(fd);
 -- 
 2.18.0
 

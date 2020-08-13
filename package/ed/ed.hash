@@ -1,4 +1,4 @@
-# From http://lists.gnu.org/archive/html/bug-ed/2019-01/msg00010.html
-sha256	ad4489c0ad7a108c514262da28e6c2a426946fb408a3977ef1ed34308bdfd174	ed-1.15.tar.lz
+# From https://lists.gnu.org/archive/html/bug-ed/2020-02/msg00002.html
+sha256  cfc07a14ab048a758473ce222e784fbf031485bcd54a76f74acfee1f390d8b2c  ed-1.16.tar.lz
 # Locally calculated
-sha256	f03a12bef9dfb7281864a0dd965166d4f4ec7a66633df2bc72fa4363e57de02c	COPYING
+sha256  f03a12bef9dfb7281864a0dd965166d4f4ec7a66633df2bc72fa4363e57de02c  COPYING

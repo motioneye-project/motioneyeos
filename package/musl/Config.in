@@ -8,3 +8,5 @@ config BR2_PACKAGE_MUSL
 		&& !(BR2_i386 || BR2_powerpc)
 	# Compatibility headers: cdefs.h, queue.h
 	select BR2_PACKAGE_MUSL_COMPAT_HEADERS
+	help
+	  https://www.musl-libc.org/

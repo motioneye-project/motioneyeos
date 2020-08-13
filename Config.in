@@ -14,38 +14,21 @@ config BR2_HOSTARCH
 	string
 	option env="HOSTARCH"
 
-config BR2_BUILD_DIR
+config BR2_BASE_DIR
 	string
-	option env="BUILD_DIR"
+	option env="BASE_DIR"
+
+# br2-external paths definitions
+source "$BR2_BASE_DIR/.br2-external.in.paths"
 
 # Hidden config symbols for packages to check system gcc version
 config BR2_HOST_GCC_VERSION
 	string
 	option env="HOST_GCC_VERSION"
 
-config BR2_HOST_GCC_AT_LEAST_4_5
-	bool
-	default y if BR2_HOST_GCC_VERSION = "4 5"
-
-config BR2_HOST_GCC_AT_LEAST_4_6
-	bool
-	default y if BR2_HOST_GCC_VERSION = "4 6"
-	select BR2_HOST_GCC_AT_LEAST_4_5
-
-config BR2_HOST_GCC_AT_LEAST_4_7
-	bool
-	default y if BR2_HOST_GCC_VERSION = "4 7"
-	select BR2_HOST_GCC_AT_LEAST_4_6
-
-config BR2_HOST_GCC_AT_LEAST_4_8
-	bool
-	default y if BR2_HOST_GCC_VERSION = "4 8"
-	select BR2_HOST_GCC_AT_LEAST_4_7
-
 config BR2_HOST_GCC_AT_LEAST_4_9
 	bool
 	default y if BR2_HOST_GCC_VERSION = "4 9"
-	select BR2_HOST_GCC_AT_LEAST_4_8
 
 config BR2_HOST_GCC_AT_LEAST_5
 	bool
@@ -67,22 +50,17 @@ config BR2_HOST_GCC_AT_LEAST_8
 	default y if BR2_HOST_GCC_VERSION = "8"
 	select BR2_HOST_GCC_AT_LEAST_7
 
+config BR2_HOST_GCC_AT_LEAST_9
+	bool
+	default y if BR2_HOST_GCC_VERSION = "9"
+	select BR2_HOST_GCC_AT_LEAST_8
+
 # When adding new entries above, be sure to update
 # the HOSTCC_MAX_VERSION variable in the Makefile.
 
 # Hidden boolean selected by packages in need of Java in order to build
 # (example: kodi)
 config BR2_NEEDS_HOST_JAVA
-	bool
-
-# Hidden boolean selected by packages in need of javac in order to build
-# (example: classpath)
-config BR2_NEEDS_HOST_JAVAC
-	bool
-
-# Hidden boolean selected by packages in need of jar in order to build
-# (example: classpath)
-config BR2_NEEDS_HOST_JAR
 	bool
 
 # Hidden boolean selected by pre-built packages for x86, when they
@@ -538,13 +516,14 @@ config BR2_OPTIMIZE_S
 	  This is the default.
 
 config BR2_OPTIMIZE_FAST
-	bool "optimize for fast"
+	bool "optimize for fast (may break packages!)"
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_6
 	help
 	  Optimize for fast. Disregard strict standards
 	  compliance. -Ofast enables all -O3 optimizations. It also
 	  enables optimizations that are not valid for all
-	  standard-compliant programs. It turns on -ffast-math and the
+	  standard-compliant programs, so be careful, as it may break
+	  some packages. It turns on -ffast-math and the
 	  Fortran-specific -fstack-arrays, unless -fmax-stack-var-size
 	  is specified, and -fno-protect-parens.
 
@@ -553,7 +532,6 @@ endchoice
 config BR2_GOOGLE_BREAKPAD_ENABLE
 	bool "Enable google-breakpad support"
 	depends on BR2_INSTALL_LIBSTDCPP
-	depends on BR2_HOST_GCC_AT_LEAST_4_8 # C++11
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # C++11
 	depends on BR2_USE_WCHAR
 	depends on BR2_TOOLCHAIN_HAS_THREADS
@@ -708,9 +686,39 @@ config BR2_REPRODUCIBLE
 	  This is labeled as an experimental feature, as not all
 	  packages behave properly to ensure reproducibility.
 
+config BR2_PER_PACKAGE_DIRECTORIES
+	bool "Use per-package directories (experimental)"
+	help
+	  This option will change the build process of Buildroot
+	  package to use per-package target and host directories.
+
+	  This is useful for two related purposes:
+
+	    - Cleanly isolate the build of each package, so that a
+	      given package only "sees" the dependencies it has
+	      explicitly expressed, and not other packages that may
+	      have by chance been built before.
+
+	    - Enable top-level parallel build.
+
+	  This is labeled as an experimental feature, as not all
+	  packages behave properly with per-package directories.
+
 endmenu
 
 comment "Security Hardening Options"
+
+config BR2_PIC_PIE
+	bool "Build code with PIC/PIE"
+	depends on BR2_SHARED_LIBS
+	depends on BR2_TOOLCHAIN_SUPPORTS_PIE
+	help
+	  Generate Position-Independent Code (PIC) and link
+	  Position-Independent Executables (PIE).
+
+comment "PIC/PIE needs a toolchain w/ PIE"
+	depends on BR2_SHARED_LIBS
+	depends on !BR2_TOOLCHAIN_SUPPORTS_PIE
 
 choice
 	bool "Stack Smashing Protection"
@@ -746,14 +754,15 @@ config BR2_SSP_REGULAR
 
 config BR2_SSP_STRONG
 	bool "-fstack-protector-strong"
-	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+	depends on BR2_TOOLCHAIN_HAS_SSP_STRONG
 	help
 	  Like -fstack-protector but includes additional functions to be
 	  protected - those that have local array definitions, or have
 	  references to local frame addresses.
 
-comment "Stack Smashing Protection strong needs a toolchain w/ gcc >= 4.9"
-	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+	  -fstack-protector-strong officially appeared in gcc 4.9, but
+	  some vendors have backported -fstack-protector-strong to older
+	  versions of gcc.
 
 config BR2_SSP_ALL
 	bool "-fstack-protector-all"
@@ -763,6 +772,12 @@ config BR2_SSP_ALL
 	  impact on the compiled binaries.
 
 endchoice
+
+config BR2_SSP_OPTION
+	string
+	default "-fstack-protector"        if BR2_SSP_REGULAR
+	default "-fstack-protector-strong" if BR2_SSP_STRONG
+	default "-fstack-protector-all"    if BR2_SSP_ALL
 
 comment "Stack Smashing Protection needs a toolchain w/ SSP"
 	depends on !BR2_TOOLCHAIN_HAS_SSP
@@ -788,10 +803,15 @@ config BR2_RELRO_PARTIAL
 
 config BR2_RELRO_FULL
 	bool "Full"
+	depends on BR2_TOOLCHAIN_SUPPORTS_PIE
+	select BR2_PIC_PIE
 	help
 	  This option includes the partial configuration, but also marks
 	  the GOT as read-only at the cost of initialization time during
 	  program loading, i.e every time an executable is started.
+
+comment "RELRO Full needs a toolchain w/ PIE"
+	depends on !BR2_TOOLCHAIN_SUPPORTS_PIE
 
 endchoice
 
@@ -859,4 +879,5 @@ source "package/Config.in.host"
 
 source "Config.in.legacy"
 
-source "$BR2_BUILD_DIR/.br2-external.in"
+# br2-external menus definitions
+source "$BR2_BASE_DIR/.br2-external.in.menus"

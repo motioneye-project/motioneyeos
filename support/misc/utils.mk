@@ -14,6 +14,20 @@ comma := ,
 empty :=
 space := $(empty) $(empty)
 
+# make 4.3:
+# https://lwn.net/Articles/810071/
+# Number signs (#) appearing inside a macro reference or function invocation
+#   no longer introduce comments and should not be escaped with backslashes:
+#   thus a call such as:
+#     foo := $(shell echo '#')
+#   is legal.  Previously the number sign needed to be escaped, for example:
+#     foo := $(shell echo '\#')
+#   Now this latter will resolve to "\#".  If you want to write makefiles
+#   portable to both versions, assign the number sign to a variable:
+#     H := \#
+#     foo := $(shell echo '$H')
+SHARP_SIGN := \#
+
 # Case conversion macros. This is inspired by the 'up' macro from gmsl
 # (http://gmsl.sf.net). It is optimised very heavily because these macros
 # are used a lot. It is about 5 times faster than forking a shell and tr.
@@ -69,6 +83,10 @@ finddirclauses = $(call notfirstword,$(patsubst %,-o -path '$(1)/%',$(2)))
 # Miscellaneous utility functions
 # notfirstword(wordlist): returns all but the first word in wordlist
 notfirstword = $(wordlist 2,$(words $(1)),$(1))
+
+# build a comma-separated list of quoted items, from a space-separated
+# list of unquoted items:   a b c d  -->  "a", "b", "c", "d"
+make-comma-list = $(subst $(space),$(comma)$(space),$(patsubst %,"%",$(strip $(1))))
 
 # Needed for the foreach loops to loop over the list of hooks, so that
 # each hook call is properly separated by a newline.

@@ -1,4 +1,4 @@
-# Locally calculated after checking pgp signature
-# https://download.libsodium.org/libsodium/releases/libsodium-1.0.16.tar.gz.sig
-sha256 eeadc7e1e1bcef09680fb4837d448fbdf57224978f865ac1c16745868fbd0533  libsodium-1.0.16.tar.gz
-sha256 6faf327c97dca6da69acefc6d3969d7bffb70a24f0707874870fdcfd6b0acf58  LICENSE
+# Locally calculated after checking Minisign signature
+# https://download.libsodium.org/libsodium/releases/libsodium-1.0.18.tar.gz.minisig
+sha256 6f504490b342a4f8a4c4a02fc9b866cbef8622d5df4e5452b46be121e46636c1  libsodium-1.0.18.tar.gz
+sha256 dea1855c9809f3faf22aa4a1fba20ec8af5a5587f23115012e5b98279cedc4af  LICENSE

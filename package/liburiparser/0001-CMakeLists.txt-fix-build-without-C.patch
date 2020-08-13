@@ -1,0 +1,33 @@
+From 0e385a6b747e967b6724ef3ded944c7da3b16f79 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Wed, 1 May 2019 11:18:29 +0200
+Subject: [PATCH] CMakeLists.txt: fix build without C++
+
+Specify that uriparser is a C project (C++ is needed only for the test
+runner) otherwise build will fail if no C++ compiler is found by cmake
+
+Fixes:
+ - http://autobuild.buildroot.org/results/1e191676f28905a81de6282e07978aa5d4f02039
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/uriparser/uriparser/pull/69]
+---
+ CMakeLists.txt | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index ceb79e0..40d3b20 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -39,6 +39,8 @@ cmake_minimum_required(VERSION 3.3)
+ project(uriparser
+     VERSION
+         0.9.3
++    LANGUAGES
++        C
+ )
+ 
+ # See https://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
+-- 
+2.20.1
+

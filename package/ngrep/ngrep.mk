@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-NGREP_VERSION = 1_47
-NGREP_SITE = $(call github,jpr5,ngrep,V$(NGREP_VERSION))
+NGREP_VERSION = 1.47
+NGREP_SITE = $(call github,jpr5,ngrep,$(subst .,_,V$(NGREP_VERSION)))
 NGREP_LICENSE = BSD-4-Clause-like, BSD-3-Clause (tcpkill)
 NGREP_LICENSE_FILES = LICENSE
 NGREP_INSTALL_STAGING = YES

@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-MBEDTLS_SITE = https://tls.mbed.org/code/releases
-MBEDTLS_VERSION = 2.7.9
-MBEDTLS_SOURCE = mbedtls-$(MBEDTLS_VERSION)-apache.tgz
+MBEDTLS_VERSION = 2.16.7
+MBEDTLS_SITE = $(call github,ARMmbed,mbedtls,mbedtls-$(MBEDTLS_VERSION))
 MBEDTLS_CONF_OPTS = \
 	-DENABLE_PROGRAMS=$(if $(BR2_PACKAGE_MBEDTLS_PROGRAMS),ON,OFF) \
 	-DENABLE_TESTING=OFF

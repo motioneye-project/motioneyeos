@@ -1,0 +1,26 @@
+config BR2_PACKAGE_WIREGUARD_LINUX_COMPAT
+	bool "wireguard linux-compat"
+	depends on BR2_LINUX_KERNEL
+	# kernel module requires 3.10+
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
+	# kernel module in upstream linux since 5.6
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_6
+	help
+	  WireGuard is an extremely simple yet fast and modern VPN
+	  that utilizes state-of-the-art cryptography. It aims to be
+	  faster, simpler, leaner, and more useful than IPSec, while
+	  avoiding the massive headache. It intends to be considerably
+	  more performant than OpenVPN. WireGuard is designed as a
+	  general purpose VPN for running on embedded interfaces and
+	  super computers alike, fit for many different
+	  circumstances.
+
+	  Support for WireGuard is included in Linux 5.6+. This
+	  package provides a backport of the kernel support for older
+	  kernels.
+
+	  https://www.wireguard.com
+
+comment "wireguard-linux-compat needs a toolchain w/ headers >= 3.10"
+	depends on BR2_LINUX_KERNEL
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10

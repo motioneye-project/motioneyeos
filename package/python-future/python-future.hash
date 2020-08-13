@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.python.org/pypi/future/json
+md5	e4579c836b9c025872efe230f6270349  future-0.18.2.tar.gz
+sha256	b1bead90b70cf6ec3f0710ae53a525360fa360d306a86583adc6bf83a4db537d  future-0.18.2.tar.gz
+# Locally computed sha256 checksums
+sha256	916e561392d48471b9c23437f56e2652f320cb3b119ceaa162edf41016f746b9  LICENSE.txt

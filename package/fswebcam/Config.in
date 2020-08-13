@@ -15,7 +15,7 @@ config BR2_PACKAGE_FSWEBCAM
 	  stdio where it can be piped to something like ncftpput or
 	  scp.
 
-	  http://www.firestorm.cx/fswebcam/
+	  https://www.sanslogic.co.uk/fswebcam/
 
 comment "fswebcam needs a toolchain w/ dynamic library"
 	depends on BR2_USE_MMU

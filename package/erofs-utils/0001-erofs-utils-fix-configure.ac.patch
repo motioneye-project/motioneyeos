@@ -1,0 +1,33 @@
+From eefd95b37e1042992cb07bec1ac3f6dbe199d8f0 Mon Sep 17 00:00:00 2001
+From: Haruue Icymoon <i@haruue.moe>
+Date: Fri, 22 Nov 2019 16:58:59 +0800
+Subject: [PATCH] erofs-utils: fix configure.ac
+
+./configure will fail when --with-lz4-libdir is not set, since
+$with_lz4_libdir will be an empty string and generate an empty -L
+into LDFLAGS. This patch fixes it.
+
+Link: https://lore.kernel.org/r/20191122085859.GA2414688@usamimi.host.haruue.net
+Signed-off-by: Haruue Icymoon <i@haruue.moe>
+Fixes: d51c2d043773 ("erofs-utils: introduce lz4/lz4hc compression algorithm")
+Signed-off-by: Gao Xiang <gaoxiang25@huawei.com>
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index f925358..870dfb9 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -174,7 +174,7 @@ if test "x$enable_lz4" = "xyes"; then
+ 
+   if test "x${have_lz4h}" = "xyes" ; then
+     saved_LDFLAGS=${LDFLAGS}
+-    LDFLAGS="-L$with_lz4_libdir ${LDFLAGS}"
++    test -z "${with_lz4_libdir}" || LDFLAGS="-L$with_lz4_libdir ${LDFLAGS}"
+     AC_CHECK_LIB(lz4, LZ4_compress_destSize, [
+       have_lz4="yes"
+       have_lz4hc="yes"
+-- 
+2.20.1
+

@@ -1,0 +1,57 @@
+From c9adb999cdb21f991f2c70b1d3b40e16d4fed2c0 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Mon, 4 May 2020 23:19:25 +0200
+Subject: [PATCH] evdevtouch: fix input_event time related compile
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fixes:
+
+  evdevtouch/qevdevtouchhandler.cpp: In member function ‘void QEvdevTouchScreenData::processInputEvent(input_event*)’:
+  evdevtouch/qevdevtouchhandler.cpp:579:29: error: ‘struct input_event’ has no member named ‘time’; did you mean ‘type’?
+           m_timeStamp = data->time.tv_sec + data->time.tv_usec / 1000000.0;
+                               ^~~~
+                               type
+  evdevtouch/qevdevtouchhandler.cpp:579:49: error: ‘struct input_event’ has no member named ‘time’; did you mean ‘type’?
+           m_timeStamp = data->time.tv_sec + data->time.tv_usec / 1000000.0;
+                                                   ^~~~
+                                                   type
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+Upstream: https://github.com/qt/qtbase/commit/71fb4d081c7f3675939ac8c62063631a18175fd1
+---
+ .../input/evdevtouch/qevdevtouchhandler.cpp            | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/src/platformsupport/input/evdevtouch/qevdevtouchhandler.cpp b/src/platformsupport/input/evdevtouch/qevdevtouchhandler.cpp
+index c51db59e..94a9b103 100644
+--- a/src/platformsupport/input/evdevtouch/qevdevtouchhandler.cpp
++++ b/src/platformsupport/input/evdevtouch/qevdevtouchhandler.cpp
+@@ -58,6 +58,14 @@
+ #include <linux/input.h>
+ #endif
+ 
++#ifndef input_event_sec
++#define input_event_sec time.tv_sec
++#endif
++
++#ifndef input_event_usec
++#define input_event_usec time.tv_usec
++#endif
++
+ #include <math.h>
+ 
+ #if QT_CONFIG(mtdev)
+@@ -576,7 +584,7 @@ void QEvdevTouchScreenData::processInputEvent(input_event *data)
+ 
+         // update timestamps
+         m_lastTimeStamp = m_timeStamp;
+-        m_timeStamp = data->time.tv_sec + data->time.tv_usec / 1000000.0;
++        m_timeStamp = data->input_event_sec + data->input_event_usec / 1000000.0;
+ 
+         m_lastTouchPoints = m_touchPoints;
+         m_touchPoints.clear();
+-- 
+2.26.2
+

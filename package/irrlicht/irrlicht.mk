@@ -38,6 +38,13 @@ ifeq ($(BR2_STATIC_LIBS),)
 IRRLICHT_CONF_OPTS += sharedlib
 endif
 
+# Irrlicht fail to detect properly the NEON support on aarch64 or ARM with NEON FPU support.
+# While linking an application with libIrrlicht.so, we get an undefined reference to
+# png_init_filter_functions_neon.
+# Some files are missing in the libpng bundled in Irrlicht, in particular arm/arm_init.c,
+# so disable NEON support completely.
+IRRLICHT_CONF_OPTS += CPPFLAGS="$(TARGET_CPPFLAGS) -DPNG_ARM_NEON_OPT=0"
+
 define IRRLICHT_BUILD_CMDS
 	$(TARGET_MAKE_ENV)
 		$(MAKE) -C $(@D)/$(IRRLICHT_SUBDIR) $(IRRLICHT_CONF_OPTS)

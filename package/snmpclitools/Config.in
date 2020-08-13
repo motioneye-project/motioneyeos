@@ -1,0 +1,9 @@
+config BR2_PACKAGE_SNMPCLITOOLS
+	bool "snmpclitools"
+	depends on BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYTHON_PYSMI # runtime
+	select BR2_PACKAGE_PYTHON_PYSNMP # runtime
+	help
+	  SNMP command-line tools.
+
+	  https://github.com/etingof/snmpclitools

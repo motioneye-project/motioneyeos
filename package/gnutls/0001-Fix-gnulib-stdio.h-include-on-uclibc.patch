@@ -1,0 +1,49 @@
+From 60fa934ffba3c230040328fdbbbf51f417f12871 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20S=C3=B8rensen?= <stefan.sorensen@spectralink.com>
+Date: Mon, 22 Jun 2020 14:11:05 +0200
+Subject: [PATCH] Fix gnulib stdio.h include on uclibc
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The __need_FILE define used by gnulib interferes with the uClibc stdio.h
+header, so move the inclusion the stdio.h to after __need_FILE has been
+undefined again.
+
+Signed-off-by: Stefan Sørensen <stefan.sorensen@spectralink.com>
+---
+ gl/fopen.c     | 2 +-
+ src/gl/fopen.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/gl/fopen.c b/gl/fopen.c
+index 8d6625a..248692c 100644
+--- a/gl/fopen.c
++++ b/gl/fopen.c
+@@ -23,8 +23,8 @@
+ #include <config.h>
+ 
+ /* Get the original definition of fopen.  It might be defined as a macro.  */
+-#include <stdio.h>
+ #undef __need_FILE
++#include <stdio.h>
+ 
+ static FILE *
+ orig_fopen (const char *filename, const char *mode)
+diff --git a/src/gl/fopen.c b/src/gl/fopen.c
+index 47d7f19..1f22f4f 100644
+--- a/src/gl/fopen.c
++++ b/src/gl/fopen.c
+@@ -23,8 +23,8 @@
+ #include <config.h>
+ 
+ /* Get the original definition of fopen.  It might be defined as a macro.  */
+-#include <stdio.h>
+ #undef __need_FILE
++#include <stdio.h>
+ 
+ static FILE *
+ orig_fopen (const char *filename, const char *mode)
+-- 
+2.25.4
+

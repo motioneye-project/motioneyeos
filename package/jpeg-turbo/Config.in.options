@@ -1,0 +1,11 @@
+if BR2_PACKAGE_JPEG_TURBO
+
+config BR2_PACKAGE_JPEG_TURBO_TOOLS
+	bool "jpeg-turbo tools"
+	help
+	  Libjpeg-turbo can also provide some tools like cjpeg,
+	  djpeg, jpegtran, rdjpgcom, tjbench and wrjpgcom.
+
+	  If you want to keep them enable this option.
+
+endif

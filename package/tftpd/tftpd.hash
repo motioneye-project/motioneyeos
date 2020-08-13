@@ -1,2 +1,5 @@
 # From https://www.kernel.org/pub/software/network/tftp/tftp-hpa/sha256sums.asc
 sha256	afee361df96a2f88344e191f6a25480fd714e1d28d176c3f10cc43fa206b718b	tftp-hpa-5.2.tar.xz
+
+# Hash for license file
+sha256	5efef82650b8ece733e37790fc70f05e426c9e1ef9640d4ebcb04867bd3f5e28	tftpd/tftpd.c

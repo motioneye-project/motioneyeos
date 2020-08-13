@@ -1,2 +1,3 @@
 # Locally calculated
-sha256 c14284d999cdd18fee4c6b22720f38beee962b2c8e099166d8d55d76a2111beb  opkg-utils-0.3.4.tar.gz
+sha256 5a3071019715cf3066946ac9a57fcb51117c611a3114efc56894afc8b3b51b4c  opkg-utils-0.4.2.tar.gz
+sha256 32b1062f7da84967e7019d01ab805935caa7ab7321a7ced0e30ebe75e5df1670  COPYING

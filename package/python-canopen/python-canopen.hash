@@ -1,0 +1,4 @@
+# sha256 from https://pypi.org/pypi/canopen/json
+sha256	4394770d528e93a48936138c4a7b37b5dff26d54f82a435ad9790cd1e43f55b9  canopen-1.0.0.tar.gz
+# Locally computed sha256 checksums
+sha256	0740d30978affcd91c0fc817b7cf942a332381bf0380fe17e60c6a0b377c6e0d  LICENSE.txt

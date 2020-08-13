@@ -1,4 +1,4 @@
-From e5b0d225f4343e82791cb80e4e0c01a9b49eeff4 Mon Sep 17 00:00:00 2001
+From 1522c6c00ee88eb1148d3b2021d32d819b416375 Mon Sep 17 00:00:00 2001
 From: Gustavo Zacarias <gustavo@zacarias.com.ar>
 Date: Tue, 7 Mar 2017 22:23:14 +0100
 Subject: [PATCH] Fix python-config for cross-builds
@@ -14,6 +14,8 @@ data/results.
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 [Bernd: rebased for Python 2.7.15]
 Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+[Peter: update for 2.7.16]
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
 ---
  Makefile.pre.in          |  13 +++---
  Misc/python-config.sh.in | 102 +++++++++++++++++++++++++++++++++++++++++++++++
@@ -22,10 +24,10 @@ Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
  create mode 100644 Misc/python-config.sh.in
 
 diff --git a/Makefile.pre.in b/Makefile.pre.in
-index 33b994d..beb0837 100644
+index c1c98ecc5a..727a92af42 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -171,7 +171,7 @@ SRCDIRS= 	@SRCDIRS@
+@@ -170,7 +170,7 @@ SRCDIRS= 	@SRCDIRS@
  SUBDIRSTOO=	Include Lib Misc Demo
  
  # Files and directories to be distributed
@@ -34,16 +36,16 @@ index 33b994d..beb0837 100644
  DISTFILES=	README ChangeLog $(CONFIGFILES)
  DISTDIRS=	$(SUBDIRS) $(SUBDIRSTOO) Ext-dummy
  DIST=		$(DISTFILES) $(DISTDIRS)
-@@ -431,7 +431,7 @@ LIBRARY_OBJS=	\
+@@ -403,7 +403,7 @@ LIBRARY_OBJS=	\
  
  # Default target
  all:		@DEF_MAKE_ALL_RULE@
 -build_all:	check-clean-src $(BUILDPYTHON) oldsharedmods sharedmods gdbhooks
 +build_all:	check-clean-src $(BUILDPYTHON) oldsharedmods sharedmods gdbhooks python-config
  
- # Compile a binary with profile guided optimization.
- profile-opt:
-@@ -1179,10 +1179,12 @@ $(srcdir)/Lib/$(PLATDIR):
+ # Check that the source is clean when building out of source.
+ check-clean-src:
+@@ -1190,10 +1190,12 @@ $(srcdir)/Lib/$(PLATDIR):
  	fi; \
  	cd $(srcdir)/Lib/$(PLATDIR); $(RUNSHARED) ./regen
  
@@ -58,7 +60,7 @@ index 33b994d..beb0837 100644
  
  # Install the include files
  INCLDIRSTOMAKE=$(INCLUDEDIR) $(CONFINCLUDEDIR) $(INCLUDEPY) $(CONFINCLUDEPY)
-@@ -1241,7 +1243,7 @@ libainstall:	all python-config
+@@ -1252,7 +1254,7 @@ libainstall:	@DEF_MAKE_RULE@ python-config
  	$(INSTALL_SCRIPT) $(srcdir)/Modules/makesetup $(DESTDIR)$(LIBPL)/makesetup
  	$(INSTALL_SCRIPT) $(srcdir)/install-sh $(DESTDIR)$(LIBPL)/install-sh
  	$(INSTALL_SCRIPT) python-config $(DESTDIR)$(BINDIR)/python$(VERSION)-config
@@ -67,7 +69,7 @@ index 33b994d..beb0837 100644
  	@if [ -s Modules/python.exp -a \
  		"`echo $(MACHDEP) | sed 's/^\(...\).*/\1/'`" = "aix" ]; then \
  		echo; echo "Installing support files for building shared extension modules on AIX:"; \
-@@ -1426,6 +1428,7 @@ clobber: clean profile-removal
+@@ -1434,6 +1436,7 @@ clobber: clean profile-removal
  		config.cache config.log pyconfig.h Modules/config.c
  	-rm -rf build platform
  	-rm -rf $(PYTHONFRAMEWORKDIR)
@@ -77,7 +79,7 @@ index 33b994d..beb0837 100644
  # remove all generated files, even Makefile[.pre]
 diff --git a/Misc/python-config.sh.in b/Misc/python-config.sh.in
 new file mode 100644
-index 0000000..10db4c1
+index 0000000000..10db4c12eb
 --- /dev/null
 +++ b/Misc/python-config.sh.in
 @@ -0,0 +1,102 @@
@@ -184,10 +186,10 @@ index 0000000..10db4c1
 +esac
 +done
 diff --git a/configure.ac b/configure.ac
-index 5d4232f..183a903 100644
+index 13f90b3ddd..3f28ef1371 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -905,6 +905,7 @@ fi
+@@ -919,6 +919,7 @@ fi
  
  # Other platforms follow
  if test $enable_shared = "yes"; then
@@ -195,7 +197,7 @@ index 5d4232f..183a903 100644
    AC_DEFINE(Py_ENABLE_SHARED, 1, [Defined if Python is built as a shared library.])
    case $ac_sys_system in
      BeOS*)
-@@ -965,6 +966,7 @@ if test $enable_shared = "yes"; then
+@@ -979,6 +980,7 @@ if test $enable_shared = "yes"; then
  
    esac
  else # shared is disabled
@@ -203,7 +205,7 @@ index 5d4232f..183a903 100644
    case $ac_sys_system in
      CYGWIN*)
            BLDLIBRARY='$(LIBRARY)'
-@@ -2096,6 +2098,9 @@ AC_SUBST(LDCXXSHARED)
+@@ -2128,6 +2130,9 @@ AC_SUBST(LDCXXSHARED)
  AC_SUBST(BLDSHARED)
  AC_SUBST(CCSHARED)
  AC_SUBST(LINKFORSHARED)
@@ -213,7 +215,7 @@ index 5d4232f..183a903 100644
  # SO is the extension of shared libraries `(including the dot!)
  # -- usually .so, .sl on HP-UX, .dll on Cygwin
  AC_MSG_CHECKING(SO)
-@@ -4818,7 +4823,7 @@ AC_MSG_RESULT($ENSUREPIP)
+@@ -4944,7 +4949,7 @@ AC_MSG_RESULT($ENSUREPIP)
  AC_SUBST(ENSUREPIP)
  
  # generate output files
@@ -223,5 +225,5 @@ index 5d4232f..183a903 100644
  AC_OUTPUT
  
 -- 
-2.7.4
+2.11.0
 

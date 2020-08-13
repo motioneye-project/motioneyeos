@@ -1,0 +1,20 @@
+config BR2_PACKAGE_PYTHON_CHANNELS
+	bool "python-channels"
+	depends on BR2_INSTALL_LIBSTDCPP # python-daphne -> python-autobahn -> python-cryptography
+	depends on BR2_PACKAGE_PYTHON3 # python-daphne
+	select BR2_PACKAGE_PYTHON_ASGIREF # runtime
+	select BR2_PACKAGE_PYTHON_DAPHNE # runtime
+	select BR2_PACKAGE_PYTHON_DJANGO # runtime
+	help
+	  Channels augments Django to bring WebSocket, long-poll
+	  HTTP, task offloading and other async support to your
+	  code, using familiar Django design patterns and a
+	  flexible underlying framework that lets you not only
+	  customize behaviours but also write support for your
+	  own protocols and needs.
+
+	  http://github.com/django/channels
+
+comment "python-channels needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
+	depends on BR2_PACKAGE_PYTHON3

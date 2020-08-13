@@ -1,0 +1,78 @@
+From 318f83f387678a3c0a2a729b506613011c6830b2 Mon Sep 17 00:00:00 2001
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Fri, 17 Jan 2020 14:09:30 +0000
+Subject: [PATCH] target/arm/arm-semi: fix SYS_OPEN to return nonzero
+ filehandle
+
+According to the specification "Semihosting for AArch32 and Aarch64",
+the SYS_OPEN operation should return:
+
+ - A nonzero handle if the call is successful
+ - -1 if the call is not successful
+
+So, it should never return 0.
+
+Prior to commit 35e9a0a8ce4b ("target/arm/arm-semi: Make semihosting
+code hand out its own file descriptors"), the guest fd matched to the
+host fd. It returned a nonzero handle on success since the fd 0 is
+already used for stdin.
+
+Now that the guest fd is the index of guestfd_array, it starts from 0.
+
+I noticed this issue particularly because Trusted Firmware-A built with
+PLAT=qemu is no longer working. Its io_semihosting driver only handles
+a positive return value as a valid filehandle.
+
+Basically, there are two ways to fix this:
+
+  - Use (guestfd - 1) as the index of guestfs_arrary. We need to insert
+    increment/decrement to convert the guestfd and the array index back
+    and forth.
+
+  - Keep using guestfd as the index of guestfs_array. The first entry
+    of guestfs_array is left unused.
+
+I thought the latter is simpler. We end up with wasting a small piece
+of memory for the unused first entry of guestfd_array, but this is
+probably not a big deal.
+
+Fixes: 35e9a0a8ce4b ("target/arm/arm-semi: Make semihosting code hand out its own file descriptors")
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20200109041228.10131-1-masahiroy@kernel.org
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+
+(cherry picked from commit 21bf9b06cb6d07c6cc437dfd47b47b28c2bb79db)
+Signed-off-by: Adrien Grassein <adrien.grassein@smile.fr>
+Signed-off-by: Romain Naour <romain.naour@smile.fr>
+---
+ target/arm/arm-semi.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/target/arm/arm-semi.c b/target/arm/arm-semi.c
+index 6f7b6d801b..4275dfc345 100644
+--- a/target/arm/arm-semi.c
++++ b/target/arm/arm-semi.c
+@@ -144,7 +144,8 @@ static int alloc_guestfd(void)
+         guestfd_array = g_array_new(FALSE, TRUE, sizeof(GuestFD));
+     }
+ 
+-    for (i = 0; i < guestfd_array->len; i++) {
++    /* SYS_OPEN should return nonzero handle on success. Start guestfd from 1 */
++    for (i = 1; i < guestfd_array->len; i++) {
+         GuestFD *gf = &g_array_index(guestfd_array, GuestFD, i);
+ 
+         if (gf->type == GuestFDUnused) {
+@@ -168,7 +169,7 @@ static GuestFD *do_get_guestfd(int guestfd)
+         return NULL;
+     }
+ 
+-    if (guestfd < 0 || guestfd >= guestfd_array->len) {
++    if (guestfd <= 0 || guestfd >= guestfd_array->len) {
+         return NULL;
+     }
+ 
+-- 
+2.24.1
+

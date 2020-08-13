@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-XTERM_VERSION = 327
+XTERM_VERSION = 349
 XTERM_SOURCE = xterm-$(XTERM_VERSION).tgz
 XTERM_SITE = http://invisible-mirror.net/archives/xterm
 XTERM_DEPENDENCIES = ncurses xlib_libXaw host-pkgconf
 XTERM_LICENSE = MIT
-XTERM_LICENSE_FILES = version.c
+XTERM_LICENSE_FILES = COPYING
 XTERM_CONF_OPTS = --enable-256-color \
 	--x-includes=$(STAGING_DIR)/usr/include \
 	--x-libraries=$(STAGING_DIR)/usr/lib

@@ -1,0 +1,70 @@
+From 50c8a3af1661c3950b9743d673fd46872860aa08 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Mon, 18 May 2020 07:53:20 +0200
+Subject: [PATCH] src: make path to m4 relocatable
+
+Commit a4ede8f85b0c9a254fcb01e5888cee1983095669 ("package: make bison
+a relocatable package") made Bison relocatable, but in fact it still
+contains one absolute reference: the M4 variable, which points to the
+M4 program. Let's fix that by using relocate().
+
+We don't use relocate2() to store the temporary buffer and re-use it,
+because m4path() is only called once.
+
+Upstream: submitted to the bison-patches@gnu.org mailing list
+https://lists.gnu.org/archive/html/bison-patches/2020-05/msg00078.html
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ src/files.c  | 7 +++++++
+ src/files.h  | 3 +++
+ src/output.c | 2 +-
+ 3 files changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/src/files.c b/src/files.c
+index 71c10e34..b8b43230 100644
+--- a/src/files.c
++++ b/src/files.c
+@@ -421,6 +421,13 @@ pkgdatadir (void)
+     }
+ }
+ 
++char const *
++m4path (void)
++{
++  char const *m4 = getenv("M4");
++  return m4 ? m4 : relocate(M4);
++}
++
+ void
+ output_file_names_free (void)
+ {
+diff --git a/src/files.h b/src/files.h
+index 00814ad0..64b6f8b5 100644
+--- a/src/files.h
++++ b/src/files.h
+@@ -64,6 +64,9 @@ extern char *all_but_ext;
+ /* Where our data files are installed.  */
+ char const *pkgdatadir (void);
+ 
++/* Where the m4 program is installed.  */
++char const *m4path (void);
++
+ void compute_output_file_names (void);
+ void output_file_names_free (void);
+ 
+diff --git a/src/output.c b/src/output.c
+index 1871fd75..ebe75095 100644
+--- a/src/output.c
++++ b/src/output.c
+@@ -682,7 +682,7 @@ static void
+ output_skeleton (void)
+ {
+   /* Compute the names of the package data dir and skeleton files.  */
+-  char const *m4 = (m4 = getenv ("M4")) ? m4 : M4;
++  char const *m4 = m4path ();
+   char const *datadir = pkgdatadir ();
+   char *skeldir = xpath_join (datadir, "skeletons");
+   char *m4sugar = xpath_join (datadir, "m4sugar/m4sugar.m4");
+-- 
+2.26.2
+
