@@ -1,0 +1,51 @@
+gist 4d213af40bb4786c3a51535bf7cc1fdd
+Author: Mr-DaveDev
+Date:   Thu Sep 29 22:07:12 2019
+
+diff --git a/Makefile.am b/Makefile.am
+index ecc20f1..8b262c0 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -1,6 +1,4 @@
+-ACLOCAL_AMFLAGS = -I m4
+-
+-SUBDIRS = src po man
++SUBDIRS = src man
+ 
+ sysconfdir = @sysconfdir@/$(PACKAGE)
+ sysconf_DATA = \
+diff --git a/configure.ac b/configure.ac
+index 6ee2554..42b1c36 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -6,10 +6,6 @@ AC_GNU_SOURCE
+ AC_CONFIG_HEADERS([config.h])
+ AC_CONFIG_SRCDIR([src/motion.c])
+ AC_CANONICAL_HOST
+-AC_CONFIG_MACRO_DIR([m4])
+-
+-AM_GNU_GETTEXT([external])
+-AM_GNU_GETTEXT_VERSION([0.19])
+ 
+ ##############################################################################
+ ###  Check additional system headers
+@@ -470,7 +466,6 @@ LDFLAGS="$TEMP_LDFLAGS"
+ AC_CONFIG_FILES([
+ 	Makefile
+ 	src/Makefile
+-  po/Makefile.in
+   man/Makefile
+   data/camera1-dist.conf
+   data/camera2-dist.conf
+diff --git a/src/Makefile.am b/src/Makefile.am
+index bedd1b3..aa253ca 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -4,7 +4,6 @@ if INC_MMAL_SRC
+ MMAL_SRC=raspicam/RaspiCamControl.c raspicam/RaspiCLI.c
+ endif
+ 
+-LIBS = @LIBINTL@ @LIBS@
+ 
+ bin_PROGRAMS = motion
+ 
