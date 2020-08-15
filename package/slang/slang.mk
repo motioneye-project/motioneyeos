@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SLANG_VERSION = 2.3.1a
+SLANG_VERSION = 2.3.2
 SLANG_SOURCE = slang-$(SLANG_VERSION).tar.bz2
 SLANG_SITE = http://www.jedsoft.org/releases/slang
 SLANG_LICENSE = GPL-2.0+

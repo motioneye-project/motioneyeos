@@ -15,9 +15,7 @@ class TestSquashfs(infra.basetest.BRTest):
 
     def test_run(self):
         unsquashfs_cmd = ["host/bin/unsquashfs", "-s", "images/rootfs.squashfs"]
-        out = subprocess.check_output(unsquashfs_cmd,
-                                      cwd=self.builddir,
-                                      env={"LANG": "C"})
+        out = infra.run_cmd_on_host(self.builddir, unsquashfs_cmd)
         out = out.splitlines()
         self.assertEqual(out[0],
                          "Found a valid SQUASHFS 4:0 superblock on images/rootfs.squashfs.")

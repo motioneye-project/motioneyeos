@@ -2,6 +2,8 @@ config BR2_PACKAGE_MTOOLS
 	bool "mtools"
 	depends on BR2_USE_WCHAR
 	depends on BR2_USE_MMU # fork()
+	# runtime UTF conversion support
+	select BR2_TOOLCHAIN_GLIBC_GCONV_LIBS_COPY if BR2_TOOLCHAIN_USES_GLIBC
 	help
 	  Mtools is a collection of utilities to access MS-DOS disks
 	  from Unix without mounting them. It supports Win'95 style

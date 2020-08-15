@@ -1,0 +1,34 @@
+From daf1163aba229afcfddf0f925aef7e97047e8959 Mon Sep 17 00:00:00 2001
+From: Ondrej Holy <oholy@redhat.com>
+Date: Thu, 23 May 2019 10:29:08 +0200
+Subject: [PATCH] admin: Allow changing file owner
+
+CAP_CHOWN is dropped together with other privilages and thus the backend
+can't change file owner. This might be probably e.g. in case of copy
+operation when G_FILE_COPY_ALL_METADATA is used. Let's keep CAP_CHOWN
+to fix this.
+
+[Retrieved from:
+https://gitlab.gnome.org/GNOME/gvfs/commit/daf1163aba229afcfddf0f925aef7e97047e8959]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ daemon/gvfsbackendadmin.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/daemon/gvfsbackendadmin.c b/daemon/gvfsbackendadmin.c
+index 23d16f16..a74d09cf 100644
+--- a/daemon/gvfsbackendadmin.c
++++ b/daemon/gvfsbackendadmin.c
+@@ -968,7 +968,8 @@ g_vfs_backend_admin_init (GVfsBackendAdmin *self)
+ 
+ #define REQUIRED_CAPS (CAP_TO_MASK(CAP_FOWNER) | \
+                        CAP_TO_MASK(CAP_DAC_OVERRIDE) | \
+-                       CAP_TO_MASK(CAP_DAC_READ_SEARCH))
++                       CAP_TO_MASK(CAP_DAC_READ_SEARCH) | \
++                       CAP_TO_MASK(CAP_CHOWN))
+ 
+ static void
+ acquire_caps (uid_t uid)
+-- 
+2.24.1
+

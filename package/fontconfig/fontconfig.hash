@@ -1,2 +1,5 @@
 # From https://lists.freedesktop.org/archives/fontconfig/2018-August/006324.html
 sha256 f655dd2a986d7aa97e052261b36aa67b0a64989496361eca8d604e6414006741 fontconfig-2.13.1.tar.bz2
+
+# Locally calculated
+sha256 fa4cd9ab005185e10cd8f7504518856c7dd36c01e766c2bac87f4fc638e9f886 COPYING

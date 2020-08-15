@@ -1,0 +1,44 @@
+From 24a352fc99ebde22235b05b18615817ef7f4263c Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Sun, 26 Apr 2020 15:33:39 +0200
+Subject: [PATCH] Use __WORDSIZE to define RADIX_BITS
+
+This allows to avoid having to support each CPU architecture
+individually.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ src/LibSupport.h | 17 +++--------------
+ 1 file changed, 3 insertions(+), 14 deletions(-)
+
+diff --git a/src/LibSupport.h b/src/LibSupport.h
+index b2e6a51..f064d20 100644
+--- a/src/LibSupport.h
++++ b/src/LibSupport.h
+@@ -64,20 +64,9 @@
+ #ifndef _LIB_SUPPORT_H_
+ #define _LIB_SUPPORT_H_
+ 
+-#ifndef RADIX_BITS
+-#   if defined(__x86_64__) || defined(__x86_64)				\
+-    || defined(__amd64__) || defined(__amd64) || defined(_WIN64) || defined(_M_X64) \
+-    || defined(_M_ARM64) || defined(__aarch64__) \
+-    || defined(__powerpc64__) || defined(__ppc64__)
+-#       define RADIX_BITS                      64
+-#   elif defined(__i386__) || defined(__i386) || defined(i386)		\
+-    || defined(_WIN32) || defined(_M_IX86)				\
+-    || defined(_M_ARM) || defined(__arm__) || defined(__thumb__)
+-#       define RADIX_BITS                      32
+-#   else
+-#       error Unable to determine RADIX_BITS from compiler environment
+-#   endif
+-#endif // RADIX_BITS
++#include <limits.h>
++
++#define RADIX_BITS __WORDSIZE
+ 
+ // These macros use the selected libraries to the proper include files.
+ #define LIB_QUOTE(_STRING_) #_STRING_
+-- 
+2.25.3
+

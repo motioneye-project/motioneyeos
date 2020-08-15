@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/project/tqdm
+md5	285af1f905f4c375f03a86a667047950  tqdm-4.40.1.tar.gz
+sha256	e405d16c98fcf30725d0c9d493ed07302a18846b5452de5253030ccd18996f87  tqdm-4.40.1.tar.gz
+# Locally computed sha256 checksums
+sha256	1bbf12d09d437844527b3cdaba01d379dac651b5cbb5ebb0d764274684d2680b  LICENCE

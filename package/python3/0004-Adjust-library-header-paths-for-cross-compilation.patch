@@ -1,4 +1,4 @@
-From e359a7a3c4f9e70360a068bef19c95938fdacede Mon Sep 17 00:00:00 2001
+From f5ed27c9b9efb4756630e5799be14fefdc3b2702 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Wed, 23 Dec 2015 11:33:14 +0100
 Subject: [PATCH] Adjust library/header paths for cross-compilation
@@ -21,7 +21,7 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  2 files changed, 15 insertions(+), 5 deletions(-)
 
 diff --git a/Lib/distutils/command/build_ext.py b/Lib/distutils/command/build_ext.py
-index 74de782d8a..d0c847b365 100644
+index 2d7cdf063f..cba150075c 100644
 --- a/Lib/distutils/command/build_ext.py
 +++ b/Lib/distutils/command/build_ext.py
 @@ -234,7 +234,10 @@ class build_ext(Command):
@@ -37,11 +37,11 @@ index 74de782d8a..d0c847b365 100644
                  # building python standard extensions
                  self.library_dirs.append('.')
 diff --git a/Lib/distutils/sysconfig.py b/Lib/distutils/sysconfig.py
-index 2bcd1dd288..422c13fa4f 100644
+index b51629eb94..011a437bcd 100644
 --- a/Lib/distutils/sysconfig.py
 +++ b/Lib/distutils/sysconfig.py
-@@ -17,10 +17,17 @@ import sys
- from .errors import DistutilsPlatformError
+@@ -18,10 +18,17 @@ from .errors import DistutilsPlatformError
+ from .util import get_platform, get_host_platform
  
  # These are needed in a couple of spots, so just compute them once.
 -PREFIX = os.path.normpath(sys.prefix)
@@ -63,5 +63,5 @@ index 2bcd1dd288..422c13fa4f 100644
  # Path to the base directory of the project. On Windows the binary may
  # live in project/PCbuild/win32 or project/PCbuild/amd64.
 -- 
-2.13.5
+2.20.1
 

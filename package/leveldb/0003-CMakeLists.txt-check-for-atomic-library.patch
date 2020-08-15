@@ -1,0 +1,49 @@
+From 9e82eb57870ec7c01734b44ed4bb994362004df3 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Fri, 27 Dec 2019 10:20:53 +0100
+Subject: [PATCH] CMakeLists.txt: check for atomic library
+
+On some architectures, atomic binutils are provided by the libatomic
+library from gcc. Linking with libatomic is therefore necessary,
+otherwise the build fails with:
+
+[100%] Linking CXX executable leveldbutil
+/home/fabrice/buildroot/output/host/opt/ext-toolchain/bin/../lib/gcc/sparc-buildroot-linux-uclibc/7.4.0/../../../../sparc-buildroot-linux-uclibc/bin/ld: libleveldb.a(env_posix.cc.o): in function `leveldb::(anonymous namespace)::Limiter::Acquire()':
+env_posix.cc:(.text+0x124): undefined reference to `__atomic_fetch_sub_4'
+
+This is often for example the case on sparcv8 32 bit.
+
+Fixes:
+ - http://autobuild.buildroot.org/results/01d5a50581ac9e9b46f40e6f9665f74897db5e6f
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/google/leveldb/pull/765]
+---
+ CMakeLists.txt | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index be41ba4..9d6773f 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -41,6 +41,7 @@ include(CheckIncludeFile)
+ check_include_file("unistd.h" HAVE_UNISTD_H)
+ 
+ include(CheckLibraryExists)
++check_library_exists(atomic __atomic_fetch_add_4 "" HAVE_ATOMIC)
+ check_library_exists(crc32c crc32c_value "" HAVE_CRC32C)
+ check_library_exists(snappy snappy_compress "" HAVE_SNAPPY)
+ check_library_exists(tcmalloc malloc "" HAVE_TCMALLOC)
+@@ -270,6 +271,9 @@ if(HAVE_CLANG_THREAD_SAFETY)
+       -Werror -Wthread-safety)
+ endif(HAVE_CLANG_THREAD_SAFETY)
+ 
++if(HAVE_ATOMIC)
++  target_link_libraries(leveldb atomic)
++endif(HAVE_ATOMIC)
+ if(HAVE_CRC32C)
+   target_link_libraries(leveldb crc32c)
+ endif(HAVE_CRC32C)
+-- 
+2.24.0
+

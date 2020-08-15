@@ -1,0 +1,29 @@
+From c2dc04f6b8c6784941b896e0b17c160dd43a566f Mon Sep 17 00:00:00 2001
+From: Carlos Santos <unixmania@gmail.com>
+Date: Sun, 1 Mar 2020 11:14:37 -0300
+Subject: [PATCH] init.d/agetty: start agetty after all services
+
+This is required for Buildroot, to prevent mixing service initialization
+messages with the getty prompt on devices with a single serial console.
+
+Signed-off-by: Carlos Santos <unixmania@gmail.com>
+---
+ init.d/agetty.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/init.d/agetty.in b/init.d/agetty.in
+index e1864628..a1ad4e9f 100644
+--- a/init.d/agetty.in
++++ b/init.d/agetty.in
+@@ -19,7 +19,7 @@ command_args_foreground="${agetty_options} ${port} ${baud} ${term_type}"
+ pidfile="/run/${RC_SVCNAME}.pid"
+ 
+ depend() {
+-	after local
++	after *
+ 	keyword -prefix
+ 	provide getty
+ }
+-- 
+2.18.2
+

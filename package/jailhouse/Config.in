@@ -1,0 +1,28 @@
+config BR2_PACKAGE_JAILHOUSE
+	bool "jailhouse"
+	depends on BR2_aarch64 || BR2_x86_64
+	depends on BR2_LINUX_KERNEL
+	help
+	  The Jailhouse partitioning Hypervisor based on Linux.
+
+	  https://github.com/siemens/jailhouse
+
+if BR2_PACKAGE_JAILHOUSE
+
+config BR2_PACKAGE_JAILHOUSE_HELPER_SCRIPTS
+	bool "helper scripts"
+	depends on BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_PYTHON_MAKO # runtime
+	help
+	  Python-based helpers for the Jailhouse Hypervisor.
+
+	  https://github.com/siemens/jailhouse
+
+comment "helper scripts require Python"
+	depends on !BR2_PACKAGE_PYTHON
+
+endif
+
+comment "jailhouse needs a Linux kernel to be built"
+	depends on BR2_aarch64 || BR2_x86_64
+	depends on !BR2_LINUX_KERNEL

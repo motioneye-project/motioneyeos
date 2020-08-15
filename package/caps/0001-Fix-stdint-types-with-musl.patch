@@ -1,0 +1,54 @@
+From 626e60a82120961ccee117dfcb5c28f72f8a26e5 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
+Date: Wed, 28 Aug 2019 11:25:49 +0200
+Subject: [PATCH] Fix stdint types with musl
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fetched from:
+https://github.com/dsacre/meta-lad/blob/master/recipes-multimedia/lv2/caps-lv2/fix-stdint-types-with-musl.patch
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ basics.h | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
+
+diff --git a/basics.h b/basics.h
+index 643d96e..34e5f63 100644
+--- a/basics.h
++++ b/basics.h
+@@ -39,6 +39,7 @@
+ #define _ISOC9X_SOURCE 1
+ 
+ #include <stdlib.h>
++#include <stdint.h>
+ #include <string.h>
+ 
+ #include <math.h>
+@@ -49,14 +50,14 @@
+ 
+ #include "ladspa.h"
+ 
+-typedef __int8_t			int8;
+-typedef __uint8_t			uint8;
+-typedef __int16_t			int16;
+-typedef __uint16_t		uint16;
+-typedef __int32_t			int32;
+-typedef __uint32_t		uint32;
+-typedef __int64_t			int64;
+-typedef __uint64_t		uint64;
++typedef int8_t			int8;
++typedef uint8_t			uint8;
++typedef int16_t			int16;
++typedef uint16_t		uint16;
++typedef int32_t			int32;
++typedef uint32_t		uint32;
++typedef int64_t			int64;
++typedef uint64_t		uint64;
+ 
+ #define MIN_GAIN 1e-6 /* -120 dB */
+ /* smallest non-denormal 32 bit IEEE float is 1.18e-38 */
+-- 
+2.22.0
+

@@ -1,0 +1,13 @@
+[Unit]
+Description=Precision Time Protocol daemon
+After=syslog.target network.target
+Before=time-sync.target
+Wants=time-sync.target
+Wants=phc2sys.service
+
+[Service]
+ExecStart=/usr/sbin/ptp4l -f /etc/linuxptp.cfg
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

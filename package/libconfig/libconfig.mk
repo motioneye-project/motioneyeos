@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBCONFIG_VERSION = v1.7.2
-LIBCONFIG_SITE = $(call github,hyperrealm,libconfig,$(LIBCONFIG_VERSION))
+LIBCONFIG_VERSION = 1.7.2
+LIBCONFIG_SITE = $(call github,hyperrealm,libconfig,v$(LIBCONFIG_VERSION))
 LIBCONFIG_LICENSE = LGPL-2.1+
 LIBCONFIG_LICENSE_FILES = COPYING.LIB
 LIBCONFIG_INSTALL_STAGING = YES

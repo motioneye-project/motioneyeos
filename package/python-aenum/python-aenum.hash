@@ -1,0 +1,4 @@
+# sha256 from https://pypi.org/pypi/aenum/json
+sha256	a4334cabf47c167d44ab5a6198837b80deec5d5bad1b5cf70c966c3a330260e8  aenum-2.2.3.tar.gz
+# locally calculated
+sha256	0db837e38002017b352666c83c8d3216ee5b9b2229375eb2cf4487f8c24e1f8c  aenum/LICENSE

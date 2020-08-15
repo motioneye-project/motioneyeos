@@ -9,12 +9,18 @@ config BR2_PACKAGE_HOST_QEMU_ARCH_SUPPORTS
 	default y if BR2_microblazebe
 	default y if BR2_mips
 	default y if BR2_mipsel
+	default y if BR2_nios2
+	default y if BR2_or1k
 	default y if BR2_powerpc
 	default y if BR2_powerpc64
 	default y if BR2_powerpc64le
+	default y if BR2_riscv
 	default y if BR2_sh
 	default y if BR2_sparc
+	default y if BR2_sparc64
+	default y if BR2_xtensa
 	default y if BR2_x86_64
+	depends on !BR2_x86_steamroller && !BR2_x86_core_avx2
 	depends on !BR2_powerpc_620 && !BR2_powerpc_630 && !BR2_powerpc_970
 
 config BR2_PACKAGE_HOST_QEMU_SYSTEM_ARCH_SUPPORTS
@@ -60,6 +66,12 @@ config BR2_PACKAGE_HOST_QEMU_LINUX_USER_MODE
 	  Enables the build of the user-land emulator, which allows to
 	  run user-space applications.
 
+	  Note that system calls made by the emulated user-land are
+	  serviced by the running host kernel. Therefore, if the
+	  kernel headers used by your target are more recent than
+	  the running host kernel, you may run into invalid system
+	  calls, which may yield surprising effects.
+
 config BR2_PACKAGE_HOST_QEMU_VDE2
 	bool "VDE2 support"
 	help
@@ -72,5 +84,10 @@ config BR2_PACKAGE_HOST_QEMU_VIRTFS
 	help
 	  Enables support for virtual filesystem in Qemu allowing
 	  shared filesystem between Qemu and its emulated target.
+
+config BR2_PACKAGE_HOST_QEMU_USB
+	bool "USB passthrough support"
+	help
+	  Enables USB passthrough support from guest to host.
 
 endif

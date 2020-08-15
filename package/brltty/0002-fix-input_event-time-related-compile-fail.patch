@@ -1,0 +1,52 @@
+From 43390f9906a8c663872e0eab56c1173032d1bd6c Mon Sep 17 00:00:00 2001
+From: Heiko Thiery <heiko.thiery@gmail.com>
+Date: Sun, 7 Jun 2020 12:58:38 +0200
+Subject: [PATCH] fix input_event time related compile fail
+
+./system_linux.c: In function 'writeInputEvent':
+./system_linux.c:962:23: error: 'struct input_event' has no member named 'time'; did you mean 'type'?
+   gettimeofday(&event.time, NULL);
+                       ^~~~
+                       type
+
+Signed-off-by: Heiko Thiery <heiko.thiery@gmail.com>
+---
+ Programs/system_linux.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/Programs/system_linux.c b/Programs/system_linux.c
+index a97ee7ff6..77052d32f 100644
+--- a/Programs/system_linux.c
++++ b/Programs/system_linux.c
+@@ -40,6 +40,14 @@
+ #ifdef HAVE_LINUX_INPUT_H
+ #include <linux/input.h>
+ 
++#ifndef input_event_sec
++#define input_event_sec time.tv_sec
++#endif
++
++#ifndef input_event_usec
++#define input_event_usec time.tv_usec
++#endif
++
+ #include "kbd_keycodes.h"
+ 
+ LINUX_KEY_MAP(xt00) = {
+@@ -957,9 +965,12 @@ int
+ writeInputEvent (UinputObject *uinput, uint16_t type, uint16_t code, int32_t value) {
+ #ifdef HAVE_LINUX_UINPUT_H
+   struct input_event event;
++  struct timeval tv;
+ 
+   memset(&event, 0, sizeof(event));
+-  gettimeofday(&event.time, NULL);
++  gettimeofday(&tv, NULL);
++  event.input_event_sec = tv.tv_sec;
++  event.input_event_usec = tv.tv_usec;
+   event.type = type;
+   event.code = code;
+   event.value = value;
+-- 
+2.20.1
+

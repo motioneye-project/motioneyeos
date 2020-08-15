@@ -1,0 +1,30 @@
+From 4645f74eb668cc1cf876d1e9bef933591da7575c Mon Sep 17 00:00:00 2001
+From: Adam Duskett <aduskett@gmail.com>
+Date: Mon, 3 Feb 2020 06:21:57 -0800
+Subject: [PATCH] set minimum cmake version to 3.10
+
+The CMakeLists.txt file uses the CMP0091 which is an MSVC runtime library flag
+abstraction macro.
+
+Because we are not building ninja for Microsoft, it is safe to remove this
+macro and set the minimum version to 3.10.
+
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+---
+ CMakeLists.txt | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 60fd8a1..a040e0b 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,5 +1,4 @@
+-cmake_minimum_required(VERSION 3.15)
+-cmake_policy(SET CMP0091 NEW)
++cmake_minimum_required(VERSION 3.10)
+ project(ninja)
+ 
+ if(CMAKE_BUILD_TYPE MATCHES "Release")
+-- 
+2.24.1
+

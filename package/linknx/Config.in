@@ -5,6 +5,7 @@ config BR2_PACKAGE_LINKNX
 	select BR2_PACKAGE_LIBPTHSEM
 	select BR2_PACKAGE_ARGP_STANDALONE \
 	       if BR2_TOOLCHAIN_USES_UCLIBC || BR2_TOOLCHAIN_USES_MUSL
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	help
 	  Linknx is an automation platform providing high level
 	  functionalities to EIB/KNX installation.

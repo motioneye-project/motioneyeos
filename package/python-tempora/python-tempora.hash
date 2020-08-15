@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/tempora/json, sha256 locally computed
-md5	cd0dd5c51c9645285ff505ec531cbcc8  tempora-1.7.tar.gz
-sha256	a264672b7f39198eb90b531490ade4e873f6e13839253636c3bd6a5549be1984  tempora-1.7.tar.gz
+# md5, sha256 from https://pypi.org/pypi/tempora/json
+md5	f8b2b0df1adf3f83b829a85e31bddb2d  tempora-1.14.1.tar.gz
+sha256	cb60b1d2b1664104e307f8e5269d7f4acdb077c82e35cd57246ae14a3427d2d6  tempora-1.14.1.tar.gz
+# Locally computed sha256 checksums
+sha256	a55e2ffe9b44998e621d51d8c094bed09acc4b5236ee73d7df395a33ba3c18fd  LICENSE

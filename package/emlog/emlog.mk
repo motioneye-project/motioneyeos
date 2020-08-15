@@ -4,10 +4,14 @@
 #
 ################################################################################
 
-EMLOG_VERSION = emlog-0.60
-EMLOG_SITE = $(call github,nicupavel,emlog,$(EMLOG_VERSION))
+EMLOG_VERSION = 0.70
+EMLOG_SITE = $(call github,nicupavel,emlog,emlog-$(EMLOG_VERSION))
 EMLOG_LICENSE = GPL-2.0
 EMLOG_LICENSE_FILES = COPYING
+
+# CVE-2019-16868 and CVE-2019-17073 are misclassified (by our CVE tracker) as
+# affecting emlog, while in fact it affects http://www.emlog.net.
+EMLOG_IGNORE_CVES += CVE-2019-16868 CVE-2019-17073
 
 define EMLOG_BUILD_CMDS
 	$(MAKE) -C $(@D) $(TARGET_CONFIGURE_OPTS) nbcat

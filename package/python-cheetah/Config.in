@@ -1,13 +1,12 @@
 config BR2_PACKAGE_PYTHON_CHEETAH
 	bool "python-cheetah"
-	depends on BR2_PACKAGE_PYTHON
 	help
 	  Cheetah is an open source template engine and code
 	  generation tool.
 
 	  It can be used standalone or combined with other tools and
-	  frameworks.  Web development is its principle use, but
+	  frameworks. Web development is its principle use, but
 	  Cheetah is very flexible and is also being used to generate
 	  C++ game code, Java, sql, form emails and even Python code.
 
-	  https://pypi.python.org/pypi/Cheetah/
+	  https://pypi.org/project/Cheetah3/

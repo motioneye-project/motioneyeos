@@ -5,7 +5,6 @@ config BR2_PACKAGE_STRESS_NG
 	depends on !BR2_TOOLCHAIN_USES_MUSL
 	# perf.c needs PERF_COUNT_HW_REF_CPU_CYCLES
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_3
-	depends on !BR2_microblaze # keyutils
 	# fenv.h lacks FE_INVALID, FE_OVERFLOW & FE_UNDERFLOW on nios2 and ARC
 	depends on !BR2_nios2
 	depends on !BR2_arc
@@ -21,7 +20,7 @@ config BR2_PACKAGE_STRESS_NG
 	  http://kernel.ubuntu.com/~cking/stress-ng/
 
 comment "stress-ng needs a glibc or uClibc toolchain w/ dynamic library, headers >= 3.3"
-	depends on !BR2_microblaze && !BR2_nios2 && !BR2_arc
+	depends on !BR2_nios2 && !BR2_arc
 	depends on BR2_USE_MMU
 	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_3 \
 		|| BR2_TOOLCHAIN_USES_MUSL

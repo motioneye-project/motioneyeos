@@ -1,2 +1,4 @@
 # From http://lists.x.org/archives/xorg-announce/2015-June/002616.html
-sha256	0af558957ac1be1b2863712c2475de8f4d7f14921fd01ded2e2fde4921b19319	xf86-input-vmmouse-13.1.0.tar.bz2
+sha256  0af558957ac1be1b2863712c2475de8f4d7f14921fd01ded2e2fde4921b19319  xf86-input-vmmouse-13.1.0.tar.bz2
+# Locally calculated
+sha256  804737a1582428fdde4e2bfd1e9f3ca07971fc3bdce20ba2d06cc2bba6c84a9e  COPYING

@@ -1,2 +1,4 @@
 # From http://lists.x.org/archives/xorg-announce/2010-October/001515.html
 sha1	030659e3728f5f7142e1cf727f147aceeabe4b9e	xf86dga-1.0.3.tar.bz2
+# Locally computed
+sha256  27d8cbdcde7a0bd062ce49cdf8c672201452a64e3e6823f09b1beffe2c4b8eff  COPYING

@@ -4,3 +4,5 @@ config BR2_PACKAGE_MATCHBOX_PANEL
 	help
 	  A flexible always present 'window bar' for holding
 	  application launchers.
+
+	  http://git.yoctoproject.org/cgit/cgit.cgi/matchbox-panel/

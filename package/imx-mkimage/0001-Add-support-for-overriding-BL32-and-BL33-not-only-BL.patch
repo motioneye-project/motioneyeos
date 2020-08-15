@@ -1,0 +1,60 @@
+From 4870df3d70e94f9f0d6c06f610cea2d88cd6edb5 Mon Sep 17 00:00:00 2001
+From: Erik Larsson <erik.larsson@combitech.se>
+Date: Thu, 8 Mar 2018 19:04:37 +0100
+Subject: [PATCH] Add support for overriding BL32 and BL33 not only BL31
+
+Signed-off-by: Erik Larsson <karl.erik.larsson@gmail.com>
+Signed-off-by: Christopher Dahlberg <crille.dahlberg@gmail.com>
+Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+---
+ iMX8M/mkimage_fit_atf.sh | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/iMX8M/mkimage_fit_atf.sh b/iMX8M/mkimage_fit_atf.sh
+index 95749b1..c1aa902 100755
+--- a/iMX8M/mkimage_fit_atf.sh
++++ b/iMX8M/mkimage_fit_atf.sh
+@@ -18,23 +18,23 @@ if [ ! -f $BL31 ]; then
+ 	echo "ERROR: BL31 file $BL31 NOT found" >&2
+ 	exit 0
+ else
+-	echo "bl31.bin size: " >&2
+-	ls -lct bl31.bin | awk '{print $5}' >&2
++	echo "$BL31 size: " >&2
++	ls -lct $BL31 | awk '{print $5}' >&2
+ fi
+ 
+-BL32="tee.bin"
++[ -z "$BL32" ] && BL32="tee.bin"
+ LOADABLES="\"atf@1\""
+ 
+ if [ ! -f $BL32 ]; then
+ 	BL32=/dev/null
+ else
+ 	echo "Building with TEE support, make sure your bl31 is compiled with spd. If you do not want tee, please delete tee.bin" >&2
+-	echo "tee.bin size: " >&2
+-	ls -lct tee.bin | awk '{print $5}' >&2
++	echo "$BL32 size: " >&2
++	ls -lct $BL32 | awk '{print $5}' >&2
+ 	LOADABLES="$LOADABLES, \"tee@1\""
+ fi
+ 
+-BL33="u-boot-nodtb.bin"
++[ -z "$BL33" ] && BL33="u-boot-nodtb.bin"
+ DEK_BLOB="dek_blob_fit_dummy.bin"
+ 
+ if [ ! -f $DEK_BLOB ]; then
+@@ -49,8 +49,8 @@ if [ ! -f $BL33 ]; then
+ 	exit 0
+ else
+ 
+-	echo "u-boot-nodtb.bin size: " >&2
+-	ls -lct u-boot-nodtb.bin | awk '{print $5}' >&2
++	echo "$BL33 size: " >&2
++	ls -lct $BL33 | awk '{print $5}' >&2
+ fi
+ 
+ for dtname in $*
+-- 
+2.25.1
+

@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBXMLPP_VERSION_MAJOR = 3.0
-LIBXMLPP_VERSION = $(LIBXMLPP_VERSION_MAJOR).1
+LIBXMLPP_VERSION_MAJOR = 3.2
+LIBXMLPP_VERSION = $(LIBXMLPP_VERSION_MAJOR).0
 LIBXMLPP_LICENSE = LGPL-2.1 (library), LGPL-2.0+ (examples)
 LIBXMLPP_LICENSE_FILES = COPYING
 LIBXMLPP_SOURCE = libxml++-$(LIBXMLPP_VERSION).tar.xz

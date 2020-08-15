@@ -1,0 +1,69 @@
+From 487407d722714f13e8a06d1a9d89f48a5738191e Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Fri, 12 Jul 2019 12:20:38 +0200
+Subject: [PATCH] Makefile: add targets to manage static building
+
+Add static-lib, shared-lib, install-static-lib and install-shared-lib
+targets to allow the user to build giflib when dynamic library support
+is not available or enable on the toolchain
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status:
+https://sourceforge.net/p/giflib/code/merge-requests/7]
+---
+ Makefile | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index b2bf6de..111f52f 100644
+--- a/Makefile
++++ b/Makefile
+@@ -61,10 +61,17 @@ UTILS = $(INSTALLABLE) \
+ 
+ LDLIBS=libgif.a -lm
+ 
+-all: libgif.so libgif.a libutil.so libutil.a $(UTILS)
++SHARED_LIBS = libgif.so libutil.so
++STATIC_LIBS = libgif.a libutil.a
++
++all: shared-lib static-lib $(UTILS)
+ 	$(MAKE) -C doc
+ 
+-$(UTILS):: libgif.a libutil.a
++$(UTILS):: $(STATIC_LIBS)
++
++shared-lib: $(SHARED_LIBS)
++
++static-lib: $(STATIC_LIBS)
+ 
+ libgif.so: $(OBJECTS) $(HEADERS)
+ 	$(CC) $(CFLAGS) -shared $(LDFLAGS) -Wl,-soname -Wl,libgif.so.$(LIBMAJOR) -o libgif.so $(OBJECTS)
+@@ -79,7 +86,7 @@ libutil.a: $(UOBJECTS) $(UHEADERS)
+ 	$(AR) rcs libutil.a $(UOBJECTS)
+ 
+ clean:
+-	rm -f $(UTILS) $(TARGET) libgetarg.a libgif.a libgif.so libutil.a libutil.so *.o
++	rm -f $(UTILS) $(TARGET) libgetarg.a $(SHARED_LIBS) $(STATIC_LIBS) *.o
+ 	rm -f libgif.so.$(LIBMAJOR).$(LIBMINOR).$(LIBPOINT)
+ 	rm -f libgif.so.$(LIBMAJOR)
+ 	rm -fr doc/*.1 *.html doc/staging
+@@ -96,12 +103,15 @@ install-bin: $(INSTALLABLE)
+ install-include:
+ 	$(INSTALL) -d "$(DESTDIR)$(INCDIR)"
+ 	$(INSTALL) -m 644 gif_lib.h "$(DESTDIR)$(INCDIR)"
+-install-lib:
++install-static-lib:
+ 	$(INSTALL) -d "$(DESTDIR)$(LIBDIR)"
+ 	$(INSTALL) -m 644 libgif.a "$(DESTDIR)$(LIBDIR)/libgif.a"
++install-shared-lib:
++	$(INSTALL) -d "$(DESTDIR)$(LIBDIR)"
+ 	$(INSTALL) -m 755 libgif.so "$(DESTDIR)$(LIBDIR)/libgif.so.$(LIBVER)"
+ 	ln -sf libgif.so.$(LIBVER) "$(DESTDIR)$(LIBDIR)/libgif.so.$(LIBMAJOR)"
+ 	ln -sf libgif.so.$(LIBMAJOR) "$(DESTDIR)$(LIBDIR)/libgif.so"
++install-lib: install-static-lib install-shared-lib
+ install-man:
+ 	$(INSTALL) -d "$(DESTDIR)$(MANDIR)/man1"
+ 	$(INSTALL) -m 644 doc/*.1 "$(DESTDIR)$(MANDIR)/man1"
+-- 
+2.20.1
+

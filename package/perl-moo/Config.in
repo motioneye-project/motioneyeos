@@ -1,7 +1,6 @@
 config BR2_PACKAGE_PERL_MOO
 	bool "perl-moo"
 	select BR2_PACKAGE_PERL_CLASS_METHOD_MODIFIERS # runtime
-	select BR2_PACKAGE_PERL_DEVEL_GLOBALDESTRUCTION # runtime
 	select BR2_PACKAGE_PERL_MODULE_RUNTIME # runtime
 	select BR2_PACKAGE_PERL_ROLE_TINY # runtime
 	select BR2_PACKAGE_PERL_SUB_QUOTE # runtime

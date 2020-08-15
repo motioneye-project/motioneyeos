@@ -1,7 +1,7 @@
 # From http://www.dest-unreach.org/socat/download.md5sum
-md5	607a24c15bd2cb54e9328bfbbd3a1ae9	socat-1.7.3.2.tar.bz2
-# Calculated based on the hash above
-sha256	e3561f808739383eb10fada1e5d4f26883f0311b34fd0af7837d0c95ef379251	socat-1.7.3.2.tar.bz2
+md5	3cca4f8cd9d2d1caabd9cc099451bac9	socat-1.7.3.4.tar.bz2
+# From http://www.dest-unreach.org/socat/download.sha256sum
+sha256	972374ca86f65498e23e3259c2ee1b8f9dbeb04d12c2a78c0c9b5d1cb97dfdfc	socat-1.7.3.4.tar.bz2
 # Locally calculated
 sha256	4846488cea98a2905dc75b7aa5eea721568e372447efe06b85bd896ee8c54f10	README
 sha256	8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643	COPYING

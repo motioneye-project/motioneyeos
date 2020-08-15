@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XDRIVER_XF86_INPUT_LIBINPUT
 	bool "xf86-input-libinput"
-	depends on BR2_ENABLE_LOCALE # libinput
 	depends on BR2_PACKAGE_HAS_UDEV # libinput
 	select BR2_PACKAGE_LIBINPUT
 	select BR2_PACKAGE_XORGPROTO
@@ -9,5 +8,5 @@ config BR2_PACKAGE_XDRIVER_XF86_INPUT_LIBINPUT
 	  around libinput, so while it does provide all features that
 	  libinput supports it does little beyond.
 
-comment "xf86-input-libinput needs udev /dev management and a toolchain w/ locale"
-	depends on !BR2_PACKAGE_HAS_UDEV || !BR2_ENABLE_LOCALE
+comment "xf86-input-libinput needs udev /dev management"
+	depends on !BR2_PACKAGE_HAS_UDEV

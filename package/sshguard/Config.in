@@ -1,0 +1,14 @@
+config BR2_PACKAGE_SSHGUARD
+	bool "sshguard"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_IPTABLES # runtime
+	help
+	  sshguard protects hosts from brute-force attacks against SSH
+	  and other services. It aggregates system logs and blocks
+	  repeat offenders using one of several firewall backends,
+	  including iptables, ipfw, and pf.
+
+	  https://www.sshguard.net
+
+comment "sshguard needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

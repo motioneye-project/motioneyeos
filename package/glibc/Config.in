@@ -1,5 +1,7 @@
 if BR2_TOOLCHAIN_BUILDROOT_GLIBC
 
+comment "Glibc Options"
+
 config BR2_PACKAGE_GLIBC
 	bool
 	default y
@@ -7,4 +9,11 @@ config BR2_PACKAGE_GLIBC
 	select BR2_TOOLCHAIN_HAS_SSP if BR2_PACKAGE_HOST_BINUTILS_SUPPORTS_CFI
 	help
 	  https://www.gnu.org/software/libc/
-endif
+
+config BR2_PACKAGE_GLIBC_UTILS
+	bool "Install glibc utilities"
+	help
+	  Enabling this option will compile and install the getconf,
+	  ldconfig, ldd and locale glibc utilities for the target.
+
+endif # BR2_TOOLCHAIN_BUILDROOT_GLIBC

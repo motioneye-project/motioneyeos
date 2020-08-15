@@ -1,0 +1,57 @@
+From 899d25c511c6ce779b7153e9ae2e41055b30b9c5 Mon Sep 17 00:00:00 2001
+From: Frank Vanbever <frank.vanbever@essensium.com>
+Date: Mon, 9 Mar 2020 12:36:47 +0100
+Subject: [PATCH] Add '.so' as additional shared object suffix
+
+EXT_SUFFIX includes a platform information tag starting from Python 3.5 [0]
+For example:
+
+    >>> sysconfig.get_config_var("EXT_SUFFIX")
+    '.cpython-38-aarch64-linux-gnu.so'
+
+This suffix only applies to cpython extensions i.e. not to the iptables shared
+objects.
+
+Adding '.so' as an additional suffix for shared objects fixes the issue.
+
+Fixes: Issue #301
+
+Signed-off-by: Frank Vanbever <frank.vanbever@essensium.com>
+
+Backported from: 899d25c511c6ce779b7153e9ae2e41055b30b9c5
+
+[0]: https://docs.python.org/3/whatsnew/3.5.html#build-and-c-api-changes
+---
+ iptc/util.py | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/iptc/util.py b/iptc/util.py
+index e6b1649..04fe905 100644
+--- a/iptc/util.py
++++ b/iptc/util.py
+@@ -80,12 +80,19 @@ def _do_find_library(name):
+ 
+ 
+ def _find_library(*names):
++    exts = []
+     if version_info >= (3, 3):
+-        ext = get_config_var("EXT_SUFFIX")
++        exts.append(get_config_var("EXT_SUFFIX"))
+     else:
+-        ext = get_config_var('SO')
++        exts.append(get_config_var('SO'))
++
++    if version_info >= (3, 5):
++        exts.append('.so')
++
+     for name in names:
+-        libnames = [name, "lib" + name, name + ext, "lib" + name + ext]
++        libnames = [name, "lib" + name]
++        for ext in exts:
++            libnames += [name + ext, "lib" + name + ext]
+         libdir = os.environ.get('IPTABLES_LIBDIR', None)
+         if libdir is not None:
+             libdirs = libdir.split(':')
+-- 
+2.20.1
+

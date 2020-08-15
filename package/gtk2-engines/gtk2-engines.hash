@@ -1,2 +1,4 @@
 # From http://ftp.gnome.org/pub/gnome/sources/gtk-engines/2.20/gtk-engines-2.20.2.sha256sum
-sha256	15b680abca6c773ecb85253521fa100dd3b8549befeecc7595b10209d62d66b5	gtk-engines-2.20.2.tar.bz2
+sha256  15b680abca6c773ecb85253521fa100dd3b8549befeecc7595b10209d62d66b5  gtk-engines-2.20.2.tar.bz2
+# Locally computed
+sha256  a9bdde5616ecdd1e980b44f360600ee8783b1f99b8cc83a2beb163a0a390e861  COPYING

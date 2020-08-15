@@ -1,0 +1,121 @@
+From 64ad80e6d95871f17be4cd01da15581f41ac0b2b Mon Sep 17 00:00:00 2001
+From: Stefan O'Rear <sorear2@gmail.com>
+Date: Fri, 11 Nov 2016 21:10:34 -0700
+Subject: [PATCH] Add RISC-V support
+
+These changes allow spidermonkey to cross-compile for riscv64 and riscv32.
+
+Upstream-status: Submitted
+See: https://bugzilla.mozilla.org/show_bug.cgi?id=1318905
+
+Signed-off-by: Stefan O'Rear <sorear2@gmail.com>
+Signed-off-by: Ricardo Salveti <ricardo@foundries.io>
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+---
+ build/autoconf/config.guess                      | 3 +++
+ build/moz.configure/init.configure               | 3 +++
+ js/src/jit/AtomicOperations.h                    | 2 ++
+ js/src/jit/none/AtomicOperations-feeling-lucky.h | 8 ++++++++
+ mfbt/tests/TestPoisonArea.cpp                    | 3 +++
+ python/mozbuild/mozbuild/configure/constants.py  | 4 ++++
+ 6 files changed, 23 insertions(+)
+
+diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
+index d5d667d4..1277a862 100755
+--- a/build/autoconf/config.guess
++++ b/build/autoconf/config.guess
+@@ -1029,6 +1029,9 @@ EOF
+     ppcle:Linux:*:*)
+ 	echo powerpcle-unknown-linux-${LIBC}
+ 	exit ;;
++    riscv32:Linux:*:* | riscv64:Linux:*:*)
++	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
++	exit ;;
+     s390:Linux:*:* | s390x:Linux:*:*)
+ 	echo ${UNAME_MACHINE}-ibm-linux-${LIBC}
+ 	exit ;;
+diff --git a/build/moz.configure/init.configure b/build/moz.configure/init.configure
+index 83b8d705..ef33db50 100644
+--- a/build/moz.configure/init.configure
++++ b/build/moz.configure/init.configure
+@@ -676,6 +676,9 @@ def split_triplet(triplet, allow_unknown=False):
+     elif cpu == 'sh4':
+         canonical_cpu = 'sh4'
+         endianness = 'little'
++    elif cpu in ('riscv32', 'riscv64'):
++        canonical_cpu = cpu
++        endianness = 'little'
+     elif allow_unknown:
+         canonical_cpu = cpu
+         endianness = 'unknown'
+diff --git a/js/src/jit/AtomicOperations.h b/js/src/jit/AtomicOperations.h
+index 3501e65b..fda0b148 100644
+--- a/js/src/jit/AtomicOperations.h
++++ b/js/src/jit/AtomicOperations.h
+@@ -393,6 +393,8 @@ inline bool AtomicOperations::isLockfreeJS(int32_t size) {
+ #include "jit/none/AtomicOperations-feeling-lucky.h"
+ #elif defined(__s390__) || defined(__s390x__)
+ #include "jit/none/AtomicOperations-feeling-lucky.h"
++#elif defined(__riscv)
++#include "jit/none/AtomicOperations-feeling-lucky.h"
+ #else
+ #error "No AtomicOperations support provided for this platform"
+ #endif
+diff --git a/js/src/jit/none/AtomicOperations-feeling-lucky.h b/js/src/jit/none/AtomicOperations-feeling-lucky.h
+index c0b43699..42b1f3e0 100644
+--- a/js/src/jit/none/AtomicOperations-feeling-lucky.h
++++ b/js/src/jit/none/AtomicOperations-feeling-lucky.h
+@@ -80,6 +80,14 @@
+ #define GNUC_COMPATIBLE
+ #endif
+ 
++#ifdef __riscv
++#define GNUC_COMPATIBLE
++#ifdef __riscv_xlen == 64
++#define HAS_64BIT_ATOMICS
++#define HAS_64BIT_LOCKFREE
++#endif
++#endif
++
+ // The default implementation tactic for gcc/clang is to use the newer
+ // __atomic intrinsics added for use in C++11 <atomic>.  Where that
+ // isn't available, we use GCC's older __sync functions instead.
+diff --git a/mfbt/tests/TestPoisonArea.cpp b/mfbt/tests/TestPoisonArea.cpp
+index 06c24ed0..fba9263c 100644
+--- a/mfbt/tests/TestPoisonArea.cpp
++++ b/mfbt/tests/TestPoisonArea.cpp
+@@ -168,6 +168,9 @@ static const ia64_instr _return_instr =
+ #define RETURN_INSTR _return_instr
+ #define RETURN_INSTR_TYPE ia64_instr
+ 
++#elif defined __riscv
++#define RETURN_INSTR 0x80828082 /* ret; ret */
++
+ #else
+ #error "Need return instruction for this architecture"
+ #endif
+diff --git a/python/mozbuild/mozbuild/configure/constants.py b/python/mozbuild/mozbuild/configure/constants.py
+index 33ae5a45..1067b6a4 100644
+--- a/python/mozbuild/mozbuild/configure/constants.py
++++ b/python/mozbuild/mozbuild/configure/constants.py
+@@ -50,6 +50,8 @@ CPU_bitness = {
+     'mips64': 64,
+     'ppc': 32,
+     'ppc64': 64,
++    'riscv32': 32,
++    'riscv64': 64,
+     's390': 32,
+     's390x': 64,
+     'sh4': 32,
+@@ -82,6 +84,8 @@ CPU_preprocessor_checks = OrderedDict((
+     ('s390', '__s390__'),
+     ('ppc64', '__powerpc64__'),
+     ('ppc', '__powerpc__'),
++    ('riscv32', '__riscv && __SIZEOF_POINTER__ == 4'),
++    ('riscv64', '__riscv && __SIZEOF_POINTER__ == 8'),
+     ('Alpha', '__alpha__'),
+     ('hppa', '__hppa__'),
+     ('sparc64', '__sparc__ && __arch64__'),
+-- 
+2.23.0
+

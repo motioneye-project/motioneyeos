@@ -1,5 +1,4 @@
 import os
-import subprocess
 import json
 
 import infra.basetest
@@ -26,13 +25,11 @@ class TestHardeningBase(infra.basetest.BRTest):
 
     def checksec_run(self, target_file):
         filepath = os.path.join(self.builddir, "target", target_file)
-        cmd = ["host/bin/checksec", "--output", "json", "--file", filepath]
+        cmd = ["host/bin/checksec", "--format=json",
+               "--file={}".format(filepath)]
         # Checksec is being used for elf file analysis only.  There are no
         # assumptions of target/run-time checks as part of this testing.
-        ret = subprocess.check_output(cmd,
-                                      stderr=open(os.devnull, "w"),
-                                      cwd=self.builddir,
-                                      env={"LANG": "C"})
+        ret = infra.run_cmd_on_host(self.builddir, cmd)
         return json.loads(ret)
 
 
@@ -45,8 +42,9 @@ class TestRelro(TestHardeningBase):
     def test_run(self):
         for f in self.checksec_files:
             out = self.checksec_run(f)
-            self.assertEqual(out["file"]["relro"], "full")
-            self.assertEqual(out["file"]["pie"], "yes")
+            filepath = os.path.join(self.builddir, "target", f)
+            self.assertEqual(out[filepath]["relro"], "full")
+            self.assertEqual(out[filepath]["pie"], "yes")
 
 
 class TestRelroPartial(TestHardeningBase):
@@ -58,8 +56,9 @@ class TestRelroPartial(TestHardeningBase):
     def test_run(self):
         for f in self.checksec_files:
             out = self.checksec_run(f)
-            self.assertEqual(out["file"]["relro"], "partial")
-            self.assertEqual(out["file"]["pie"], "no")
+            filepath = os.path.join(self.builddir, "target", f)
+            self.assertEqual(out[filepath]["relro"], "partial")
+            self.assertEqual(out[filepath]["pie"], "no")
 
 
 class TestSspNone(TestHardeningBase):
@@ -71,7 +70,8 @@ class TestSspNone(TestHardeningBase):
     def test_run(self):
         for f in self.checksec_files:
             out = self.checksec_run(f)
-            self.assertEqual(out["file"]["canary"], "no")
+            filepath = os.path.join(self.builddir, "target", f)
+            self.assertEqual(out[filepath]["canary"], "no")
 
 
 class TestSspStrong(TestHardeningBase):
@@ -83,7 +83,8 @@ class TestSspStrong(TestHardeningBase):
     def test_run(self):
         for f in self.checksec_files:
             out = self.checksec_run(f)
-            self.assertEqual(out["file"]["canary"], "yes")
+            filepath = os.path.join(self.builddir, "target", f)
+            self.assertEqual(out[filepath]["canary"], "yes")
 
 
 class TestFortifyNone(TestHardeningBase):
@@ -95,7 +96,8 @@ class TestFortifyNone(TestHardeningBase):
     def test_run(self):
         for f in self.checksec_files:
             out = self.checksec_run(f)
-            self.assertEqual(out["file"]["fortified"], "0")
+            filepath = os.path.join(self.builddir, "target", f)
+            self.assertEqual(out[filepath]["fortified"], "0")
 
 
 class TestFortifyConserv(TestHardeningBase):
@@ -107,4 +109,5 @@ class TestFortifyConserv(TestHardeningBase):
     def test_run(self):
         for f in self.checksec_files:
             out = self.checksec_run(f)
-            self.assertNotEqual(out["file"]["fortified"], "0")
+            filepath = os.path.join(self.builddir, "target", f)
+            self.assertNotEqual(out[filepath]["fortified"], "0")

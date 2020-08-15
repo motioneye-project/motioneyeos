@@ -13,6 +13,9 @@ NTFS_3G_DEPENDENCIES = host-pkgconf
 NTFS_3G_LICENSE = GPL-2.0+, LGPL-2.0+
 NTFS_3G_LICENSE_FILES = COPYING COPYING.LIB
 
+# 0001-Fixed-reporting-an-error-when-failed-to-build-the-mo.patch
+NTFS_3G_IGNORE_CVES += CVE-2019-9755
+
 ifeq ($(BR2_PACKAGE_LIBFUSE),y)
 NTFS_3G_CONF_OPTS += --with-fuse=external
 NTFS_3G_DEPENDENCIES += libfuse

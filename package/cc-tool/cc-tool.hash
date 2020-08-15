@@ -1,3 +1,6 @@
 # From http://sourceforge.net/projects/cctool/files/
 sha1 f313e55f019ea5338438633f5b5e689b699343e1  cc-tool-0.26-src.tgz
 md5 26960676f3e6264e612c299fbf8ec5ea  cc-tool-0.26-src.tgz
+
+# Hash for license file
+sha256 231f7edcc7352d7734a96eef0b8030f77982678c516876fcb81e25b32d68564c  COPYING

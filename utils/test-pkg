@@ -12,18 +12,19 @@ do_clean() {
 
 main() {
     local o O opts
-    local cfg dir pkg random toolchains_dir toolchain all number mode
-    local ret nb nb_skip nb_fail nb_legal nb_tc build_dir
+    local cfg dir pkg random toolchains_csv toolchain all number mode
+    local ret nb nb_skip nb_fail nb_legal nb_tc build_dir keep
     local -a toolchains
     local pkg_br_name
 
-    o='hac:d:n:p:r:t:'
-    O='help,config-snippet:build-dir:package:,random:,toolchains-dir:'
+    o='hakc:d:n:p:r:t:'
+    O='help,all,keep,config-snippet:,build-dir:,number:,package:,random:,toolchains-csv:'
     opts="$(getopt -n "${my_name}" -o "${o}" -l "${O}" -- "${@}")"
     eval set -- "${opts}"
 
     random=0
     all=0
+    keep=0
     number=0
     mode=0
     toolchains_csv="${TOOLCHAINS_CSV}"
@@ -34,6 +35,9 @@ main() {
             ;;
         (-a|--all)
             all=1; shift 1
+            ;;
+        (-k|--keep)
+            keep=1; shift 1
             ;;
         (-c|--config-snippet)
             cfg="${2}"; shift 2
@@ -134,6 +138,8 @@ main() {
 
     printf "%d builds, %d skipped, %d build failed, %d legal-info failed\n" \
         ${nb} ${nb_skip} ${nb_fail} ${nb_legal}
+
+    return $((nb_fail + nb_legal))
 }
 
 build_one() {
@@ -175,6 +181,12 @@ build_one() {
     # sources depending on the configuration (e.g. lua-5.2 vs. lua-5.3)
     if ! make O="${dir}" legal-info >> "${dir}/logfile" 2>&1; then
         return 3
+    fi
+
+    # If we get here, the build was successful. Clean up the build/host
+    # directories to save disk space, unless 'keep' was set.
+    if [ ${keep} -ne 1 ]; then
+        make O="${dir}" clean >> "${dir}/logfile" 2>&1
     fi
 }
 
@@ -235,6 +247,11 @@ Options:
         CSV file containing the paths to config fragments of toolchains to
         try. If not specified, the toolchains in ${TOOLCHAINS_CSV} will be
         used.
+
+    -k, --keep
+        Keep the build directories even if the build succeeds.
+        Note: the logfile and configuration is always retained, even without
+        this option.
 
 Example:
 

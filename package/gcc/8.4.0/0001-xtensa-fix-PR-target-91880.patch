@@ -1,0 +1,51 @@
+From 28623c81b50663e946790649352cb1b3ed23954d Mon Sep 17 00:00:00 2001
+From: Max Filippov <jcmvbkbc@gmail.com>
+Date: Tue, 24 Sep 2019 04:15:17 -0700
+Subject: [PATCH] xtensa: fix PR target/91880
+
+Xtensa hwloop_optimize segfaults when zero overhead loop is about to be
+inserted as the first instruction of the function.
+Insert zero overhead loop instruction into new basic block before the
+loop when basic block that precedes the loop is empty.
+
+2019-09-26  Max Filippov  <jcmvbkbc@gmail.com>
+gcc/
+	* config/xtensa/xtensa.c (hwloop_optimize): Insert zero overhead
+	loop instruction into new basic block before the loop when basic
+	block that precedes the loop is empty.
+
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+[Romain: rebase on gcc 8.4.0]
+Signed-off-by: Romain Naour <romain.naour@smile.fr>
+---
+Backported from: r276166
+
+ gcc/config/xtensa/xtensa.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/gcc/config/xtensa/xtensa.c b/gcc/config/xtensa/xtensa.c
+index 08f9f7c7a8f..de206527810 100644
+--- a/gcc/config/xtensa/xtensa.c
++++ b/gcc/config/xtensa/xtensa.c
+@@ -4232,7 +4232,9 @@ hwloop_optimize (hwloop_info loop)
+ 
+   seq = get_insns ();
+ 
+-  if (!single_succ_p (entry_bb) || vec_safe_length (loop->incoming) > 1)
++  entry_after = BB_END (entry_bb);
++  if (!single_succ_p (entry_bb) || vec_safe_length (loop->incoming) > 1
++      || !entry_after)
+     {
+       basic_block new_bb;
+       edge e;
+@@ -4253,7 +4255,6 @@ hwloop_optimize (hwloop_info loop)
+     }
+   else
+     {
+-      entry_after = BB_END (entry_bb);
+       while (DEBUG_INSN_P (entry_after)
+              || (NOTE_P (entry_after)
+ 		 && NOTE_KIND (entry_after) != NOTE_INSN_BASIC_BLOCK))
+-- 
+2.24.1
+

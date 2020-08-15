@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-DT_VERSION = v18.32
+DT_VERSION = 18.32
 DT_SITE = http://pkgs.fedoraproject.org/repo/pkgs/dt/$(DT_SOURCE)/3054aeaaba047a1dbe90c2132a382ee2
-DT_SOURCE = dt-source-$(DT_VERSION).tar.gz
+DT_SOURCE = dt-source-v$(DT_VERSION).tar.gz
 DT_STRIP_COMPONENTS = 2
 DT_LICENSE = ISC-like
 DT_LICENSE_FILES = LICENSE

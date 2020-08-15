@@ -10,8 +10,8 @@ cp ${BOARD_DIR}/initrd.gz ${BOOT_DIR}
 cp ${IMG_DIR}/zImage ${BOOT_DIR}/kernel.img
 cp ${IMG_DIR}/bcm2711-rpi-4-b.dtb ${BOOT_DIR}
 cp ${RPI_FW_DIR}/bootcode.bin ${BOOT_DIR}
-cp ${RPI_FW_DIR}/start4.elf ${BOOT_DIR}
-cp ${RPI_FW_DIR}/fixup4.dat ${BOOT_DIR}
+cp ${RPI_FW_DIR}/start.elf ${BOOT_DIR}
+cp ${RPI_FW_DIR}/fixup.dat ${BOOT_DIR}
 
 # copy overlays
 mkdir -p ${BOOT_DIR}/overlays

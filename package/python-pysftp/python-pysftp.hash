@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/pysftp/json
+md5  abc55b7122de3e86f0d547301f4ddf0c  pysftp-0.2.9.tar.gz
+sha256  fbf55a802e74d663673400acd92d5373c1c7ee94d765b428d9f977567ac4854a  pysftp-0.2.9.tar.gz
+# Locally computed sha256 checksums
+sha256  e648e3c7f439b52222a785a590223a0f7bad1a8a5fb89157d80d13123c7dcd25  LICENSE.txt

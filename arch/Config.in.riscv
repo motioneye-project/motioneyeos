@@ -80,8 +80,12 @@ endchoice
 
 choice
 	prompt "Target ABI"
-	default BR2_RISCV_ABI_ILP32 if !BR2_ARCH_IS_64
-	default BR2_RISCV_ABI_LP64 if BR2_ARCH_IS_64
+	default BR2_RISCV_ABI_ILP32D if !BR2_ARCH_IS_64 && BR2_RISCV_ISA_RVD
+	default BR2_RISCV_ABI_ILP32F if !BR2_ARCH_IS_64 && BR2_RISCV_ISA_RVF
+	default BR2_RISCV_ABI_ILP32  if !BR2_ARCH_IS_64
+	default BR2_RISCV_ABI_LP64D  if BR2_ARCH_IS_64 && BR2_RISCV_ISA_RVD
+	default BR2_RISCV_ABI_LP64F  if BR2_ARCH_IS_64 && BR2_RISCV_ISA_RVF
+	default BR2_RISCV_ABI_LP64   if BR2_ARCH_IS_64
 
 config BR2_RISCV_ABI_ILP32
 	bool "ilp32"
@@ -125,3 +129,6 @@ config BR2_GCC_TARGET_ABI
 
 config BR2_READELF_ARCH_NAME
 	default "RISC-V"
+
+# vim: ft=kconfig
+# -*- mode:kconfig; -*-

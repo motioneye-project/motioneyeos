@@ -9,13 +9,33 @@ GVFS_VERSION = $(GVFS_VERSION_MAJOR).4
 GVFS_SOURCE = gvfs-$(GVFS_VERSION).tar.xz
 GVFS_SITE = http://ftp.gnome.org/pub/GNOME/sources/gvfs/$(GVFS_VERSION_MAJOR)
 GVFS_INSTALL_STAGING = YES
-GVFS_DEPENDENCIES = host-pkgconf host-libglib2 libglib2 dbus shared-mime-info
+GVFS_DEPENDENCIES = host-pkgconf host-libglib2 libglib2 dbus shared-mime-info \
+	$(TARGET_NLS_DEPENDENCIES)
 GVFS_LICENSE = LGPL-2.0+
 GVFS_LICENSE_FILES = COPYING
+GVFS_LIBS = $(TARGET_NLS_LIBS)
+
+# 0001-admin-Prevent-access-if-any-authentication-agent-isn-t-available.patch
+GVFS_IGNORE_CVES += CVE-2019-3827
+
+# package/gvfs/0002-admin-Add-query_info_on_read-write-functionality.patch
+GVFS_IGNORE_CVES += CVE-2019-12448
+
+# 0003-admin-Allow-changing-file-owner.patch
+# 0004-admin-Use-fsuid-to-ensure-correct-file-ownership.patch
+GVFS_IGNORE_CVES += CVE-2019-12447
+
+# 0005-admin-Ensure-correct-ownership-when-moving-to-file-uri.patch
+GVFS_IGNORE_CVES += CVE-2019-12449
+
+# 0006-gvfsdaemon-Check-that-the-connecting-client-is-the-same-user.patch
+GVFS_IGNORE_CVES += CVE-2019-12795
 
 # Export ac_cv_path_LIBGCRYPT_CONFIG unconditionally to prevent
 # build system from searching the host paths.
-GVFS_CONF_ENV = ac_cv_path_LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config
+GVFS_CONF_ENV = \
+	ac_cv_path_LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config \
+	LIBS="$(GVFS_LIBS)"
 
 # Most of these are missing library support
 GVFS_CONF_OPTS = \
@@ -57,6 +77,7 @@ GVFS_CONF_OPTS += \
 	--enable-archive \
 	--with-archive-includes=$(STAGING_DIR)/usr \
 	--with-archive-libs=$(STAGING_DIR)/usr
+GVFS_LIBS += `$(PKG_CONFIG_HOST_BINARY) --libs libarchive`
 else
 GVFS_CONF_OPTS += --disable-archive
 endif

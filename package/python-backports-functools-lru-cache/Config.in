@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_BACKPORTS_FUNCTOOLS_LRU_CACHE
+	bool "python-backports-functools-lru-cache"
+	depends on BR2_PACKAGE_PYTHON
+	help
+	  Backport of functools.lru_cache from Python 3.3
+
+	  https://github.com/jaraco/backports.functools_lru_cache

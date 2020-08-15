@@ -4,28 +4,36 @@
 #
 ################################################################################
 
-GNURADIO_VERSION = 3.7.13.3
-GNURADIO_SITE = http://gnuradio.org/releases/gnuradio
+GNURADIO_VERSION = 3.8.1.0
+GNURADIO_SITE = https://github.com/gnuradio/gnuradio/releases/download/v$(GNURADIO_VERSION)
 GNURADIO_LICENSE = GPL-3.0+
 GNURADIO_LICENSE_FILES = COPYING
 
 GNURADIO_SUPPORTS_IN_SOURCE_BUILD = NO
 
+# needed to determine site-packages path
+ifeq ($(BR2_PACKAGE_PYTHON),y)
+GNURADIO_PYVER = $(PYTHON_VERSION_MAJOR)
+else ifeq ($(BR2_PACKAGE_PYTHON3),y)
+GNURADIO_PYVER = $(PYTHON3_VERSION_MAJOR)
+endif
+
 # host-python-mako and host-python-six are needed for volk to compile
 GNURADIO_DEPENDENCIES = \
+	$(if $(BR2_PACKAGE_PYTHON3),host-python3,host-python) \
 	host-python-mako \
 	host-python-six \
 	host-swig \
-	boost
-
-ifeq ($(BR2_PACKAGE_ORC),y)
-GNURADIO_DEPENDENCIES += orc
-endif
+	boost \
+	log4cpp \
+	gmp
 
 GNURADIO_CONF_OPTS = \
+	-DPYTHON_EXECUTABLE=$(HOST_DIR)/bin/python \
 	-DENABLE_DEFAULT=OFF \
 	-DENABLE_VOLK=ON \
 	-DENABLE_GNURADIO_RUNTIME=ON \
+	-DENABLE_TESTING=OFF \
 	-DENABLE_GR_QTGUI=OFF \
 	-DXMLTO_EXECUTABLE=NOTFOUND
 
@@ -37,20 +45,11 @@ ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
 GNURADIO_CONF_OPTS += -DCMAKE_EXE_LINKER_FLAGS=-latomic
 endif
 
-# Yes, this is silly, because -march is already known by the compiler
-# with the internal toolchain, and passed by the external wrapper for
-# external toolchains. Nonetheless, gnuradio does some matching on the
-# CFLAGS to decide whether to build the NEON functions or not, and
-# wants to see the string 'armv7' in the CFLAGS.
-ifeq ($(BR2_ARM_CPU_ARMV7A)$(BR2_ARM_CPU_HAS_NEON),yy)
-GNURADIO_CONF_OPTS += -DCMAKE_C_FLAGS="$(TARGET_CFLAGS) -march=armv7-a"
-endif
-
-# As soon as -mfpu=neon is supported by the compiler, gnuradio will try
-# to use it. But having NEON support in the compiler doesn't necessarily
-# mean we have NEON support in our CPU.
-ifeq ($(BR2_ARM_CPU_HAS_NEON),)
-GNURADIO_CONF_OPTS += -Dhave_mfpu_neon=0
+ifeq ($(BR2_PACKAGE_ORC),y)
+GNURADIO_DEPENDENCIES += orc
+GNURADIO_CONF_OPTS += -DENABLE_ORC=ON
+else
+GNURADIO_CONF_OPTS += -DENABLE_ORC=OFF
 endif
 
 ifeq ($(BR2_PACKAGE_GNURADIO_ANALOG),y)
@@ -115,24 +114,21 @@ else
 GNURADIO_CONF_OPTS += -DENABLE_GR_FILTER=OFF
 endif
 
-ifeq ($(BR2_PACKAGE_GNURADIO_LOG),y)
-GNURADIO_DEPENDENCIES += log4cpp
-GNURADIO_CONF_OPTS += -DENABLE_GR_LOG=ON
-else
-GNURADIO_CONF_OPTS += -DENABLE_GR_LOG=OFF
-endif
-
 ifeq ($(BR2_PACKAGE_GNURADIO_PYTHON),y)
-GNURADIO_DEPENDENCIES += python
+GNURADIO_DEPENDENCIES += python3
 GNURADIO_CONF_OPTS += -DENABLE_PYTHON=ON
+# mandatory to install python modules in site-packages and to use
+# correct path for python libraries
+GNURADIO_CONF_OPTS += -DGR_PYTHON_RELATIVE=ON \
+	-DGR_PYTHON_DIR=lib/python$(GNURADIO_PYVER)/site-packages
 else
 GNURADIO_CONF_OPTS += -DENABLE_PYTHON=OFF
 endif
 
 ifeq ($(BR2_PACKAGE_GNURADIO_PAGER),y)
-GNURADIO_CONF_OPTS += -DENABLE_PAGER=ON
+GNURADIO_CONF_OPTS += -DENABLE_GR_PAGER=ON
 else
-GNURADIO_CONF_OPTS += -DENABLE_PAGER=OFF
+GNURADIO_CONF_OPTS += -DENABLE_GR_PAGER=OFF
 endif
 
 ifeq ($(BR2_PACKAGE_GNURADIO_TRELLIS),y)

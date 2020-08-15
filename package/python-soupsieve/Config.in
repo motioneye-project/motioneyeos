@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_SOUPSIEVE
+	bool "python-soupsieve"
+	select BR2_PACKAGE_PYTHON_BACKPORTS_FUNCTOOLS_LRU_CACHE \
+	       if BR2_PACKAGE_PYTHON # runtime
+	help
+	  A modern CSS selector implementation for Beautiful Soup.
+
+	  https://github.com/facelessuser/soupsieve

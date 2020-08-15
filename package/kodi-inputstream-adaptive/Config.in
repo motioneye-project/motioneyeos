@@ -3,8 +3,6 @@ config BR2_PACKAGE_KODI_INPUTSTREAM_ADAPTIVE
 	# wvdecrypter/cdm/build/build_config.h
 	depends on BR2_aarch64 || BR2_arm || BR2_i386 || BR2_mipsel \
 		|| BR2_mips64el || BR2_x86_64
-	select BR2_PACKAGE_LIBPLATFORM
-	select BR2_PACKAGE_KODI_PLATFORM
 	help
 	  Kodi inputstream addon for several manifest types
 

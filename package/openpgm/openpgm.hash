@@ -1,2 +1,3 @@
 # Locally calculated
-sha256 ecd48fd0bcfd8351ce6dcf31b063dd8fe83d3dab41bca62a6ebd6880a88c4a69  openpgm-release-5-2-122.tar.gz
+sha256  acc1545fd8060aa66b17327110e2859e451cfc685ebd3b2211619728e3471b66  openpgm-5-2-122.tar.gz
+sha256  4a7d4ec71fa60969399fd4caad64d5a3003fee2775445f271a5a36a8ae743a29  openpgm/pgm/LICENSE

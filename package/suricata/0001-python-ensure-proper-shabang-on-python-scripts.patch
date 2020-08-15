@@ -1,0 +1,45 @@
+From 44fe2328b715db25134ee095526d2fa47e6cd834 Mon Sep 17 00:00:00 2001
+From: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Date: Wed, 1 Jan 2020 15:25:57 +0100
+Subject: [PATCH] python: ensure proper shabang on python scripts
+
+When instlling python scripts, distutils would use the python used to
+run setup.py as shabang for the scripts it installs.
+
+However, when cross-compiling, this is most often not correct.
+
+Instead, using '/usr/bin/env python' is guaranteed to find the proper
+python in the PATH, so we need to instruct setyup.py to use that as the
+executable.
+
+[yann.morin.1998@free.fr:
+  - author did not provide their SoB, but it's simple enough to
+    not require it for once
+  - provide proper commit log
+]
+Signed-off-by: Yann E. MORIN <yann.morin.1998@free.fr>
+---
+ python/Makefile.am | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/python/Makefile.am b/python/Makefile.am
+index 59d195f29..a41604f72 100644
+--- a/python/Makefile.am
++++ b/python/Makefile.am
+@@ -6,11 +6,11 @@ EXTRA_DIST =	setup.py \
+ if HAVE_PYTHON
+ all-local:
+ 	cd $(srcdir) && \
+-		$(HAVE_PYTHON) setup.py build --build-base $(abs_builddir)
++		$(HAVE_PYTHON) setup.py build -e "/usr/bin/env python" --build-base $(abs_builddir)
+ 
+ install-exec-local:
+ 	cd $(srcdir) && \
+-		$(HAVE_PYTHON) setup.py build --build-base $(abs_builddir) \
++		$(HAVE_PYTHON) setup.py build -e "/usr/bin/env python" --build-base $(abs_builddir) \
+ 		install --prefix $(DESTDIR)$(prefix)
+ 
+ uninstall-local:
+-- 
+2.20.1
+

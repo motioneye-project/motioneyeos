@@ -40,7 +40,7 @@ index 741db5ebf9d9..4862d42959f0 100644
 @@ -287,6 +288,7 @@ os_wrappers_test_LDADD = libtest-runner.la
  
  exec_fd_leak_checker_SOURCES = tests/exec-fd-leak-checker.c
- exec_fd_leak_checker_LDADD = libtest-runner.la
+ exec_fd_leak_checker_LDADD = libtest-helpers.la
 +endif
  
  EXTRA_DIST += tests/scanner-test.sh			\

@@ -1,0 +1,74 @@
+From 49b1c8df7e4ff3a441d831f926d87920952025bf Mon Sep 17 00:00:00 2001
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Sat, 2 May 2020 20:43:36 -0600
+Subject: [PATCH] Allow overriding g-ir-scanner and g-ir-compiler binaries.
+
+This is useful when one needs to force meson to use wrappers for cross
+compilation.
+
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+[james.hilliard1@gmail.com: backport and largely adapt upstream commit
+1e073c4c1bd7de06bc74d84e3807c9b210e57a22, as the version in master has
+undergone haevy refactorisation]
+---
+ mesonbuild/modules/gnome.py | 34 +++++++++++++++++++++-------------
+ 1 file changed, 21 insertions(+), 13 deletions(-)
+
+diff --git a/mesonbuild/modules/gnome.py b/mesonbuild/modules/gnome.py
+index a00005588..b6d7cc141 100644
+--- a/mesonbuild/modules/gnome.py
++++ b/mesonbuild/modules/gnome.py
+@@ -32,7 +32,7 @@ from ..mesonlib import (
+     MachineChoice, MesonException, OrderedSet, Popen_safe, extract_as_list,
+     join_args, unholder,
+ )
+-from ..dependencies import Dependency, PkgConfigDependency, InternalDependency
++from ..dependencies import Dependency, PkgConfigDependency, InternalDependency, ExternalProgram
+ from ..interpreterbase import noKwargs, permittedKwargs, FeatureNew, FeatureNewKwargs
+ 
+ # gresource compilation is broken due to the way
+@@ -735,21 +735,29 @@ class GnomeModule(ExtensionModule):
+         # these utilities via pkg-config, so it would be best to use the
+         # results from pkg-config when possible.
+         gi_util_dirs_check = [state.environment.get_build_dir(), state.environment.get_source_dir()]
+-        giscanner = self.interpreter.find_program_impl('g-ir-scanner')
+-        if giscanner.found():
+-            giscanner_path = giscanner.get_command()[0]
+-            if not any(x in giscanner_path for x in gi_util_dirs_check):
+-                giscanner = self.gir_dep.get_pkgconfig_variable('g_ir_scanner', {})
++        giscanner_bin = state.environment.lookup_binary_entry(MachineChoice.HOST, 'g-ir-scanner')
++        if giscanner_bin is not None:
++            giscanner = ExternalProgram.from_entry('g-ir-scanner', giscanner_bin)
+         else:
+-            giscanner = self.gir_dep.get_pkgconfig_variable('g_ir_scanner', {})
++            giscanner = self.interpreter.find_program_impl('g-ir-scanner')
++            if giscanner.found():
++                giscanner_path = giscanner.get_command()[0]
++                if not any(x in giscanner_path for x in gi_util_dirs_check):
++                    giscanner = self.gir_dep.get_pkgconfig_variable('g_ir_scanner', {})
++            else:
++                giscanner = self.gir_dep.get_pkgconfig_variable('g_ir_scanner', {})
+ 
+-        gicompiler = self.interpreter.find_program_impl('g-ir-compiler')
+-        if gicompiler.found():
+-            gicompiler_path = gicompiler.get_command()[0]
+-            if not any(x in gicompiler_path for x in gi_util_dirs_check):
+-                gicompiler = self.gir_dep.get_pkgconfig_variable('g_ir_compiler', {})
++        gicompiler_bin = state.environment.lookup_binary_entry(MachineChoice.HOST, 'g-ir-compiler')
++        if gicompiler_bin is not None:
++            gicompiler = ExternalProgram.from_entry('g-ir-compiler', gicompiler_bin)
+         else:
+-            gicompiler = self.gir_dep.get_pkgconfig_variable('g_ir_compiler', {})
++            gicompiler = self.interpreter.find_program_impl('g-ir-compiler')
++            if gicompiler.found():
++                gicompiler_path = gicompiler.get_command()[0]
++                if not any(x in gicompiler_path for x in gi_util_dirs_check):
++                    gicompiler = self.gir_dep.get_pkgconfig_variable('g_ir_compiler', {})
++            else:
++                gicompiler = self.gir_dep.get_pkgconfig_variable('g_ir_compiler', {})
+ 
+         ns = kwargs.pop('namespace')
+         nsversion = kwargs.pop('nsversion')
+-- 
+2.25.1
+

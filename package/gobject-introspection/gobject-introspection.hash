@@ -1,0 +1,4 @@
+#From http://ftp.gnome.org/pub/GNOME/sources/gobject-introspection/1.64/gobject-introspection-1.64.1.sha256sum
+sha256 80beae6728c134521926affff9b2e97125749b38d38744dc901f4010ee3e7fa7 gobject-introspection-1.64.1.tar.xz
+sha256 d245807f90032872d1438d741ed21e2490e1175dc8aa3afa5ddb6c8e529b58e5 COPYING.LGPL
+sha256 32b1062f7da84967e7019d01ab805935caa7ab7321a7ced0e30ebe75e5df1670 COPYING.GPL

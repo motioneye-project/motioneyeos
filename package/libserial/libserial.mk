@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBSERIAL_VERSION = v1.0.0
-LIBSERIAL_SITE = $(call github,crayzeewulf,libserial,$(LIBSERIAL_VERSION))
+LIBSERIAL_VERSION = 1.0.0
+LIBSERIAL_SITE = $(call github,crayzeewulf,libserial,v$(LIBSERIAL_VERSION))
 LIBSERIAL_INSTALL_STAGING = YES
 LIBSERIAL_LICENSE = BSD-3-Clause
 LIBSERIAL_LICENSE_FILES = LICENSE.txt

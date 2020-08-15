@@ -1,0 +1,10 @@
+config BR2_PACKAGE_PYTHON_AIOMONITOR
+	bool "python-aiomonitor"
+	depends on BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYTHON_TERMINALTABLES # runtime
+	select BR2_PACKAGE_PYTHON_AIOCONSOLE # runtime
+	help
+	  aiomonitor adds monitor and python REPL capabilities for
+	  asyncio application.
+
+	  https://github.com/aio-libs/aiomonitor

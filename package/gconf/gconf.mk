@@ -13,4 +13,11 @@ GCONF_DEPENDENCIES = dbus dbus-glib libglib2 libxml2 \
 GCONF_LICENSE = LGPL-2.0+
 GCONF_LICENSE_FILES = COPYING
 
+ifeq ($(BR2_PACKAGE_GOBJECT_INTROSPECTION),y)
+GCONF_CONF_OPTS += --enable-introspection
+GCONF_DEPENDENCIES += gobject-introspection
+else
+GCONF_CONF_OPTS += --disable-introspection
+endif
+
 $(eval $(autotools-package))

@@ -44,6 +44,22 @@ define BERKELEYDB_CONFIGURE_CMDS
 	)
 endef
 
+define HOST_BERKELEYDB_CONFIGURE_CMDS
+	(cd $(@D)/build_unix; rm -rf config.cache; \
+		$(HOST_CONFIGURE_OPTS) \
+		../dist/configure $(QUIET) \
+		--prefix=$(HOST_DIR) \
+		--with-gnu-ld \
+		--disable-cxx \
+		--disable-java \
+		--disable-tcl \
+		--disable-compat185 \
+		--with-pic \
+		--enable-o_direct \
+		--disable-mutexsupport \
+	)
+endef
+
 ifneq ($(BR2_PACKAGE_BERKELEYDB_TOOLS),y)
 
 define BERKELEYDB_REMOVE_TOOLS
@@ -61,3 +77,4 @@ endef
 BERKELEYDB_POST_INSTALL_TARGET_HOOKS += BERKELEYDB_REMOVE_DOCS
 
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))

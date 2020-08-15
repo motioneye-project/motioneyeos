@@ -1,3 +1,7 @@
-# From http://www.efficios.com/files/babeltrace/babeltrace-1.5.2.tar.bz2.{md5,sha1}
-md5 1176e7f69e128112d5f29fefec39c6ce  babeltrace-1.5.2.tar.bz2
-sha1 3316e8311ebbc9e8642ed399208c1846a6f0e0c3  babeltrace-1.5.2.tar.bz2
+# From http://www.efficios.com/files/babeltrace/babeltrace-1.5.7.tar.bz2.sha256
+sha256 215331e025ffd39c665a34231b9429180e48aca78f79fb972d0bf1322d2b807b  babeltrace-1.5.7.tar.bz2
+
+# Hash for license files
+sha256 2f801b7c2494850c3d91da820eb230502dc0192c9d0db024db37ec08d0be1434  mit-license.txt
+sha256 ab15fd526bd8dd18a9e77ebc139656bf4d33e97fc7238cd11bf60e2b9b8666c6  gpl-2.0.txt
+sha256 12d4222ac628fe4092cba8ed90bc5227a4dedd0b94973273cecbc393325bf1c2  LICENSE

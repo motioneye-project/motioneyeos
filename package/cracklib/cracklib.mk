@@ -4,12 +4,13 @@
 #
 ################################################################################
 
-CRACKLIB_VERSION = 2.9.6
-CRACKLIB_SITE = https://github.com/cracklib/cracklib/releases/download/cracklib-$(CRACKLIB_VERSION)
+CRACKLIB_VERSION = 2.9.7
+CRACKLIB_SITE = https://github.com/cracklib/cracklib/releases/download/v$(CRACKLIB_VERSION)
 CRACKLIB_LICENSE = LGPL-2.1
 CRACKLIB_LICENSE_FILES = COPYING.LIB
 CRACKLIB_INSTALL_STAGING = YES
-CRACKLIB_DEPENDENCIES = host-cracklib
+CRACKLIB_DEPENDENCIES = host-cracklib $(TARGET_NLS_DEPENDENCIES)
+CRACKLIB_CONF_ENV = LIBS=$(TARGET_NLS_LIBS)
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 CRACKLIB_CONF_OPTS += --with-zlib

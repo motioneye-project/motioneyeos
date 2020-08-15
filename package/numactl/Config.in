@@ -9,4 +9,4 @@ config BR2_PACKAGE_NUMACTL
 	  and memory nodes. It does this by supplying a NUMA memory
 	  policy to the operating system before running your program.
 
-	  http://oss.sgi.com/projects/libnuma/
+	  https://github.com/numactl/numactl

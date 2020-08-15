@@ -1,0 +1,55 @@
+From 514116d7bea89dad9f1deb7617b2277b5e9115cd Mon Sep 17 00:00:00 2001
+From: Gregory Maxwell <greg@xiph.org>
+Date: Wed, 16 Apr 2014 23:55:10 +0000
+Subject: [PATCH] oggenc: fix crash on raw file close, reported by Hanno in
+ issue #2009. pointer to a non-static struct was escaping its scope. Also fix
+ a C99-ism.
+
+svn path=/trunk/vorbis-tools/; revision=19117
+
+Fixes CVE-2014-9640
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ oggenc/oggenc.c   | 4 ++--
+ oggenc/skeleton.h | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/oggenc/oggenc.c b/oggenc/oggenc.c
+index 4a120f3..e7de0bb 100644
+--- a/oggenc/oggenc.c
++++ b/oggenc/oggenc.c
+@@ -97,6 +97,8 @@ int main(int argc, char **argv)
+               .3,-1,
+               0,0,0.f,
+               0, 0, 0, 0, 0};
++    input_format raw_format = {NULL, 0, raw_open, wav_close, "raw", 
++      N_("RAW file reader")};
+ 
+     int i;
+ 
+@@ -239,8 +241,6 @@ int main(int argc, char **argv)
+ 
+         if(opt.rawmode)
+         {
+-            input_format raw_format = {NULL, 0, raw_open, wav_close, "raw", 
+-                N_("RAW file reader")};
+ 
+             enc_opts.rate=opt.raw_samplerate;
+             enc_opts.channels=opt.raw_channels;
+diff --git a/oggenc/skeleton.h b/oggenc/skeleton.h
+index cf87dc2..168b8b6 100644
+--- a/oggenc/skeleton.h
++++ b/oggenc/skeleton.h
+@@ -41,7 +41,7 @@ typedef struct {
+     ogg_int64_t granule_rate_d;                            /* granule rate denominator */
+     ogg_int64_t start_granule;                             /* start granule value */
+     ogg_uint32_t preroll;                                   /* preroll */
+-    unsigned char granule_shift; // a 8-bit field           /* 1 byte value holding the granule shift */
++    unsigned char granule_shift;                            /* 1 byte value holding the granule shift */
+     char *message_header_fields;                            /* holds all the message header fields */
+     /* current total size of the message header fields, for realloc purpose, initially zero */
+     ogg_uint32_t current_header_size;
+-- 
+2.20.1
+

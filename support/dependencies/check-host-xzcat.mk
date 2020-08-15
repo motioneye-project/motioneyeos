@@ -3,6 +3,5 @@
 
 ifeq (,$(call suitable-host-package,xzcat,$(XZCAT)))
 BR2_XZCAT_HOST_DEPENDENCY = host-xz
-EXTRACTOR_DEPENDENCY_PRECHECKED_EXTENSIONS += .xz .lzma
 XZCAT = $(HOST_DIR)/bin/xzcat
 endif

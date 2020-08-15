@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PERL_MOJOLICIOUS_PLUGIN_CSPHEADER
+	bool "perl-mojolicious-plugin-cspheader"
+	select BR2_PACKAGE_PERL_MOJOLICIOUS # runtime
+	help
+	  Mojolicious Plugin to add Content-Security-Policy header to
+	  every HTTP response.
+
+	  https://metacpan.org/release/Mojolicious-Plugin-CSPHeader

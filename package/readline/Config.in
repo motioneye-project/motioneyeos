@@ -6,4 +6,4 @@ config BR2_PACKAGE_READLINE
 	  by applications that allow users to edit command lines
 	  as they are typed in.
 
-	  https://cnswww.cns.cwru.edu/php/chet/readline/rltop.html
+	  https://tiswww.case.edu/php/chet/readline/rltop.html

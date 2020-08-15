@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/Werkzeug/json, sha256 locally computed
-md5	e385b2c5a7193cff24c689b31e1124dc  Werkzeug-0.12.2.tar.gz
-sha256	903a7b87b74635244548b30d30db4c8947fe64c5198f58899ddcd3a13c23bb26  Werkzeug-0.12.2.tar.gz
+# md5, sha256 from https://pypi.org/pypi/werkzeug/json
+md5	5b23b4953efc4f52b1d0b33af6f7cd2d  Werkzeug-0.16.0.tar.gz
+sha256	7280924747b5733b246fe23972186c6b348f9ae29724135a6dfc1e53cea433e7  Werkzeug-0.16.0.tar.gz
+# Locally computed sha256 checksums
+sha256	3b49dcee4105eb37bac10faf1be260408fe85d252b8e9df2e0979fc1e094437b  LICENSE.rst

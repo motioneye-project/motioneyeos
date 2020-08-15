@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBERATION_VERSION = 2.00.1
-LIBERATION_SITE = https://releases.pagure.org/liberation-fonts
+LIBERATION_VERSION = 2.00.5
+LIBERATION_SITE = https://github.com/liberationfonts/liberation-fonts/files/2926169
 LIBERATION_SOURCE = liberation-fonts-ttf-$(LIBERATION_VERSION).tar.gz
 LIBERATION_TARGET_DIR = $(TARGET_DIR)/usr/share/fonts/liberation
 LIBERATION_LICENSE = OFL-1.1

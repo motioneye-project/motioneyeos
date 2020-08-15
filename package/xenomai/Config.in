@@ -170,11 +170,6 @@ config BR2_PACKAGE_XENOMAI_RTAI_SKIN
 	help
 	  This option allows to install the RTAI Xenomai skin
 
-config BR2_PACKAGE_XENOMAI_SMOKEY_SKIN
-	bool "Smokey skin"
-	help
-	  This option allows to install the Smokey Xenomai skin
-
 config BR2_PACKAGE_XENOMAI_UITRON_SKIN
 	bool "uITRON skin"
 	help

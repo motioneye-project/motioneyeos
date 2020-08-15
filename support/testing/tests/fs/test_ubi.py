@@ -21,10 +21,9 @@ class TestUbi(infra.basetest.BRTest):
     # To be investigated.
     def test_run(self):
         img = os.path.join(self.builddir, "images", "rootfs.ubi")
-        out = subprocess.check_output(["file", img],
-                                      cwd=self.builddir,
-                                      env={"LANG": "C"})
+        out = infra.run_cmd_on_host(self.builddir, ["file", img])
         out = out.splitlines()
+        self.assertIn("UBI image, version 1", out[0])
 
         subprocess.call(["truncate", "-s 128M", img])
 

@@ -1,6 +1,0 @@
-config BR2_PACKAGE_PERL_NET_PING
-	bool "perl-net-ping"
-	help
-	  check a remote host for reachability.
-
-	  https://metacpan.org/release/Net-Ping

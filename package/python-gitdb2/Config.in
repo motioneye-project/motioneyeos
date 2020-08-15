@@ -1,0 +1,13 @@
+config BR2_PACKAGE_PYTHON_GITDB2
+	bool "python-gitdb2"
+	select BR2_PACKAGE_PYTHON_SMMAP2 # runtime
+	select BR2_PACKAGE_PYTHON_ZLIB if BR2_PACKAGE_PYTHON  # runtime
+	select BR2_PACKAGE_PYTHON3_ZLIB if BR2_PACKAGE_PYTHON3  # runtime
+	help
+	  GitDB allows you to access bare git repositories for reading
+	  and writing. It aims at allowing full access to loose objects
+	  as well as packs with performance and scalability in mind. It
+	  operates exclusively on streams, allowing to handle large
+	  objects with a small memory footprint.
+
+	  https://github.com/gitpython-developers/gitdb

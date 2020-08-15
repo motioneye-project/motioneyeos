@@ -1,0 +1,33 @@
+From ff44d8b2d5211a502afdb3e612dae0e8133b5124 Mon Sep 17 00:00:00 2001
+From: Johannes Hofmann <Johannes.Hofmann@gmx.de>
+Date: Thu, 9 Jan 2020 22:07:15 +0100
+Subject: [PATCH] Support OpenSSL 1.1.0
+
+taken-from: pkgsrc (Ryo ONODERA)
+submitted-by: Jun Ebihara <jun@soum.co.jp>
+
+Upstream: https://hg.dillo.org/dillo/rev/b171b8610400
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ dpi/https.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/dpi/https.c b/dpi/https.c
+index 766b3af..025cfc4 100644
+--- a/dpi/https.c
++++ b/dpi/https.c
+@@ -476,7 +476,11 @@ static int handle_certificate_problem(SSL * ssl_connection)
+       case X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT:
+          /*Either self signed and untrusted*/
+          /*Extract CN from certificate name information*/
++#if OPENSSL_VERSION_NUMBER < 0x10100000L
+          if ((cn = strstr(remote_cert->name, "/CN=")) == NULL) {
++#else
++         if ((cn = strstr(X509_get_subject_name(remote_cert), "/CN=")) == NULL) {
++#endif
+             strcpy(buf, "(no CN given)");
+          } else {
+             char *cn_end;
+-- 
+2.24.1
+

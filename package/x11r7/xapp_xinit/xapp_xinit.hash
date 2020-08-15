@@ -1,7 +1,7 @@
-# From https://lists.x.org/archives/xorg-announce/2018-March/002863.html
-md5 2da154b2f80ca9637b1a17b13af0880c  xinit-1.4.0.tar.bz2
-sha1 fcdca692b09a45f546016fff78718d1cf7e7852f  xinit-1.4.0.tar.bz2
-sha256 230835eef2f5978a1e1344928168119373f6df1d0a32c09515e545721ee582ef  xinit-1.4.0.tar.bz2
-sha512 53a29081130c1e195eb441ee77ccaa044b18b4cca3d2d5da3a6d67aa421dfd9718fa18b6be6232a41e40cf260c8190064c4d8d9ab771177bd5cd12e77a8fa79e  xinit-1.4.0.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2019-March/002962.html
+md5 6d506ab2efc17a08e87778654e099d37  xinit-1.4.1.tar.bz2
+sha1 d874a2eecf2c30291e327851b151fdab8183260c  xinit-1.4.1.tar.bz2
+sha256 de9b8f617b68a70f6caf87da01fcf0ebd2b75690cdcba9c921d0ef54fa54abb9  xinit-1.4.1.tar.bz2
+sha512 6cbc5d025a891c419f3f4493381b2fca57a67d78df866d2f16a83426f86bad6eca7f240fac12b25cbcc63df0fec41f625407184e044898602d66483715315340  xinit-1.4.1.tar.bz2
 # Locally computed
 sha256 c47001aa217d4ae7787121d80634db4bdba564e49a0ecab8d48b1bdc4edee1c7 COPYING

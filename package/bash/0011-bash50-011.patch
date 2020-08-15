@@ -1,0 +1,63 @@
+From https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-011
+
+Signed-off-by: Pascal de Bruijn <p.debruijn@unilogic.nl>
+
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	5.0
+Patch-ID:	bash50-011
+
+Bug-Reported-by:	Matt Whitlock
+Bug-Reference-ID:	
+Bug-Reference-URL:	https://savannah.gnu.org/support/?109671
+
+Bug-Description:
+
+The conditional command did not perform appropriate quoted null character
+removal on its arguments, causing syntax errors and attempts to stat
+invalid pathnames.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-5.0-patched/subst.c	2018-12-22 17:43:37.000000000 -0500
+--- b/subst.c	2019-04-14 13:25:41.000000000 -0400
+***************
+*** 3626,3630 ****
+     SPECIAL is 2, this is an rhs argument for the =~ operator, and should
+     be quoted appropriately for regcomp/regexec.  The caller is responsible
+!    for removing the backslashes if the unquoted word is needed later. */   
+  char *
+  cond_expand_word (w, special)
+--- 3642,3648 ----
+     SPECIAL is 2, this is an rhs argument for the =~ operator, and should
+     be quoted appropriately for regcomp/regexec.  The caller is responsible
+!    for removing the backslashes if the unquoted word is needed later. In
+!    any case, since we don't perform word splitting, we need to do quoted
+!    null character removal. */
+  char *
+  cond_expand_word (w, special)
+***************
+*** 3647,3650 ****
+--- 3665,3670 ----
+        if (special == 0)			/* LHS */
+  	{
++ 	  if (l->word)
++ 	    word_list_remove_quoted_nulls (l);
+  	  dequote_list (l);
+  	  r = string_list (l);
+*** ../bash-5.0/patchlevel.h	2016-06-22 14:51:03.000000000 -0400
+--- b/patchlevel.h	2016-10-01 11:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 10
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 11
+  
+  #endif /* _PATCHLEVEL_H_ */

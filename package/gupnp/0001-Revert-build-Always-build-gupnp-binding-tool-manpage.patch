@@ -1,0 +1,60 @@
+From 9225b076d107538209fbd5b8bbc21a68d1b2c016 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Wed, 15 Jul 2020 22:42:44 +0200
+Subject: [PATCH] Revert "build: Always build gupnp-binding-tool manpage"
+
+This reverts commit 23f54c2a1e8718e836224d68dafded091604a677 until
+upstream decides what to do between adding a new option or renaming
+gtk_doc into documentation:
+https://gitlab.gnome.org/GNOME/gupnp/-/issues/17
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ doc/meson.build | 2 --
+ meson.build     | 5 ++++-
+ 2 files changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/doc/meson.build b/doc/meson.build
+index b71b657..478650b 100644
+--- a/doc/meson.build
++++ b/doc/meson.build
+@@ -4,7 +4,6 @@ version_xml = configure_file(input: 'version.xml.in',
+                output: 'version.xml', configuration:
+                entities)
+ 
+-if get_option('gtk_doc')
+ gnome.gtkdoc('gupnp',
+              main_xml : 'gupnp-docs.xml',
+              src_dir : [join_paths(meson.source_root(), 'libgupnp'),
+@@ -27,7 +26,6 @@ gnome.gtkdoc('gupnp',
+                  'gupnp-types-private.h'
+              ],
+              install : true)
+-endif
+ 
+ xsltproc = find_program('xsltproc', required: false)
+ if xsltproc.found()
+diff --git a/meson.build b/meson.build
+index 28c40b2..dea0a49 100644
+--- a/meson.build
++++ b/meson.build
+@@ -31,12 +31,15 @@ dependencies = [
+ subdir('libgupnp')
+ subdir('tests')
+ subdir('tools')
+-subdir('doc')
+ 
+ if get_option('vapi') and get_option('introspection')
+     subdir('vala')
+ endif
+ 
++if get_option('gtk_doc')
++    subdir('doc')
++endif
++
+ if get_option('examples')
+     subdir('examples')
+ endif
+-- 
+2.27.0
+

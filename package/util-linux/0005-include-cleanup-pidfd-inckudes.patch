@@ -1,0 +1,40 @@
+From 0a4035ff2e4fd5b5ae0cf8f8665696c2aff53b75 Mon Sep 17 00:00:00 2001
+From: Karel Zak <kzak@redhat.com>
+Date: Tue, 10 Mar 2020 11:43:16 +0100
+Subject: [PATCH] include: cleanup pidfd inckudes
+
+Signed-off-by: Karel Zak <kzak@redhat.com>
+Signed-off-by: Carlos Santos <unixmania@gmail.com>
+---
+ include/pidfd-utils.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/include/pidfd-utils.h b/include/pidfd-utils.h
+index 0baedd2c9..4a6c3a604 100644
+--- a/include/pidfd-utils.h
++++ b/include/pidfd-utils.h
+@@ -3,10 +3,10 @@
+ 
+ #if defined(__linux__)
+ # include <sys/syscall.h>
+-# if defined(SYS_pidfd_send_signal)
++# if defined(SYS_pidfd_send_signal) && defined(SYS_pidfd_open)
+ #  include <sys/types.h>
+ 
+-#  ifndef HAVE_PIDFD_OPEN
++#  ifndef HAVE_PIDFD_SEND_SIGNAL
+ static inline int pidfd_send_signal(int pidfd, int sig, siginfo_t *info,
+ 				    unsigned int flags)
+ {
+@@ -14,7 +14,7 @@ static inline int pidfd_send_signal(int pidfd, int sig, siginfo_t *info,
+ }
+ #  endif
+ 
+-#  ifndef HAVE_PIDFD_SEND_SIGNAL
++#  ifndef HAVE_PIDFD_OPEN
+ static inline int pidfd_open(pid_t pid, unsigned int flags)
+ {
+ 	return syscall(SYS_pidfd_open, pid, flags);
+-- 
+2.18.2
+

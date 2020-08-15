@@ -1,0 +1,30 @@
+From 5fceeeb0d1cdccdb2870f65444f2965344f3b8b9 Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Sat, 19 Oct 2019 09:32:41 +0200
+Subject: [PATCH] configure: define HAVE_LIBBSD when libbsd was found
+
+Patch sent upstream:
+https://gitlab.freedesktop.org/xorg/lib/libxfont/merge_requests/6
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ configure.ac | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/configure.ac b/configure.ac
+index f507c28..cc7ca91 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -53,6 +53,9 @@ AC_CHECK_HEADERS([endian.h poll.h sys/poll.h])
+ # Checks for library functions.
+ AC_CHECK_FUNCS([poll readlink])
+ AC_SEARCH_LIBS([strlcat], [bsd])
++if test "$ac_cv_search_strlcat" = "-lbsd"; then
++  AC_DEFINE(HAVE_LIBBSD,1,[Has libbsd])
++fi
+ AC_CONFIG_LIBOBJ_DIR([src/util])
+ AC_REPLACE_FUNCS([reallocarray strlcat strlcpy])
+ 
+-- 
+2.20.1
+

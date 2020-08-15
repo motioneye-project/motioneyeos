@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/aiohttp-mako/json
+md5	c0f2da2851d0b6e819b5c882f700bb11  aiohttp-mako-0.4.0.tar.gz
+sha256	f10bdee54589b6567e8a0339db582276fdaaa198764541d2f9741f1d3836312c  aiohttp-mako-0.4.0.tar.gz
+# Locally computed sha256 checksums
+sha256	b81fea0e0d4cda42faf00466cabe7b9e2a0cc3a0ffbf20ae3773c18e077c7c52  LICENSE

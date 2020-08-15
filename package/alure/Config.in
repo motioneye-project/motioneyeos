@@ -1,0 +1,61 @@
+config BR2_PACKAGE_ALURE
+	bool "alure"
+	depends on BR2_PACKAGE_OPENAL_ARCH_SUPPORTS
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_9 # C++11
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # openal
+	depends on BR2_USE_WCHAR # use wchar_t
+	depends on !BR2_TOOLCHAIN_HAS_GCC_BUG_64735 # std::shared_future
+	select BR2_PACKAGE_OPENAL
+	help
+	  Alure is a C++ 3D audio API. It uses OpenAL for audio
+	  rendering, and provides common higher-level features such as
+	  file loading and decoding, buffer caching, background
+	  streaming, and source management for virtually unlimited
+	  sound source handles.
+
+	  https://kcat.strangesoft.net/alure.html
+
+if BR2_PACKAGE_ALURE
+
+config BR2_PACKAGE_ALURE_FLAC_DECODER
+	bool "flac decoder"
+	help
+	  Enables the built-in FLAC decoder.
+
+config BR2_PACKAGE_ALURE_MINIMP3_DECODER
+	bool "minimp3 decoder"
+	help
+	  Enables the built-in minimp3 decoder.
+
+config BR2_PACKAGE_ALURE_OPUS_DECODER
+	bool "opus decoder"
+	select BR2_PACKAGE_LIBOGG
+	select BR2_PACKAGE_OPUS
+	help
+	  Enables the built-in libopusfile decoder.
+
+config BR2_PACKAGE_ALURE_SNDFILE_DECODER
+	bool "sndfile decoder"
+	select BR2_PACKAGE_LIBSNDFILE
+	help
+	  Enables the built-in libsndfile decoder.
+
+config BR2_PACKAGE_ALURE_VORBIS_DECODER
+	bool "vorbis decoder"
+	select BR2_PACKAGE_LIBOGG
+	select BR2_PACKAGE_LIBVORBIS
+	help
+	  Enables the built-in libvorbis decoder.
+
+endif
+
+comment "alure needs a toolchain w/ C++, gcc >= 4.9, NPTL, wchar"
+	depends on BR2_PACKAGE_OPENAL_ARCH_SUPPORTS
+	depends on !BR2_INSTALL_LIBSTDCPP \
+		|| !BR2_TOOLCHAIN_GCC_AT_LEAST_4_9 \
+		|| !BR2_TOOLCHAIN_HAS_THREADS_NPTL || !BR2_USE_WCHAR
+
+comment "alure needs a toolchain not affected by GCC bug 64735"
+	depends on BR2_PACKAGE_OPENAL_ARCH_SUPPORTS
+	depends on BR2_TOOLCHAIN_HAS_GCC_BUG_64735

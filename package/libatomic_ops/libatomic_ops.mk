@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBATOMIC_OPS_VERSION = v7.6.6
-LIBATOMIC_OPS_SITE = $(call github,ivmai,libatomic_ops,$(LIBATOMIC_OPS_VERSION))
+LIBATOMIC_OPS_VERSION = 7.6.10
+LIBATOMIC_OPS_SITE = $(call github,ivmai,libatomic_ops,v$(LIBATOMIC_OPS_VERSION))
 LIBATOMIC_OPS_AUTORECONF = YES
 
 # From doc/LICENSING.txt: "Our intent is to make it easy to use

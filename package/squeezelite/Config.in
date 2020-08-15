@@ -9,12 +9,11 @@ config BR2_PACKAGE_SQUEEZELITE
 	select BR2_PACKAGE_FLAC
 	select BR2_PACKAGE_LIBMAD
 	select BR2_PACKAGE_LIBVORBIS
-	select BR2_PACKAGE_FAAD2
 	select BR2_PACKAGE_MPG123
 	help
 	  Logitech Media Server client
 
-	  https://code.google.com/p/squeezelite/
+	  https://github.com/ralph-irving/squeezelite/
 
 if BR2_PACKAGE_SQUEEZELITE
 
@@ -26,6 +25,14 @@ config BR2_PACKAGE_SQUEEZELITE_FFMPEG
 
 config BR2_PACKAGE_SQUEEZELITE_DSD
 	bool "Enable DSD decoding"
+
+config BR2_PACKAGE_SQUEEZELITE_LIRC
+	bool "Enable lirc support"
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_LIRC_TOOLS
+
+comment "lirc support needs a toolchain with C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
 
 config BR2_PACKAGE_SQUEEZELITE_RESAMPLE
 	bool "Enable resampling support"

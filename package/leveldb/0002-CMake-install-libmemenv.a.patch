@@ -1,0 +1,74 @@
+From 2fa960098e5b6f9daa9f7d6cab27188566859be8 Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Sat, 12 Oct 2019 14:43:46 +0200
+Subject: [PATCH] CMake: install libmemenv.a
+
+Needed for qt5webkit
+https://git.busybox.net/buildroot/commit/?id=8a10d9ce311c6cb0490d76921cae55618c258354
+https://git.busybox.net/buildroot/commit/?id=16f847340d07dce620e4c3fc0a099aa79898d86a
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ CMakeLists.txt | 26 +++++++++++++++++++++++++-
+ 1 file changed, 25 insertions(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index a65afbf..83b2425 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -187,6 +187,30 @@ target_sources(leveldb
+     "${LEVELDB_PUBLIC_INCLUDE_DIR}/write_batch.h"
+ )
+ 
++set(libmemenv_a_sources
++    "${PROJECT_SOURCE_DIR}/helpers/memenv/memenv.cc"
++    "${PROJECT_SOURCE_DIR}/helpers/memenv/memenv.h"
++    )
++add_library(memenv STATIC ${libmemenv_a_sources})
++target_compile_definitions(memenv
++  PRIVATE
++    # Used by include/export.h when building shared libraries.
++    LEVELDB_COMPILE_LIBRARY
++    # Used by port/port.h.
++    ${LEVELDB_PLATFORM_NAME}=1
++)
++if (NOT HAVE_CXX17_HAS_INCLUDE)
++  target_compile_definitions(memenv
++    PRIVATE
++      LEVELDB_HAS_PORT_CONFIG_H=1
++  )
++endif(NOT HAVE_CXX17_HAS_INCLUDE)
++target_include_directories(memenv
++  PUBLIC
++    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
++    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
++)
++
+ if (WIN32)
+   target_sources(leveldb
+     PRIVATE
+@@ -418,7 +436,7 @@ endif(LEVELDB_BUILD_BENCHMARKS)
+ 
+ if(LEVELDB_INSTALL)
+   include(GNUInstallDirs)
+-  install(TARGETS leveldb
++  install(TARGETS leveldb memenv
+     EXPORT leveldbTargets
+     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+@@ -444,6 +462,12 @@ if(LEVELDB_INSTALL)
+     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/leveldb
+   )
+ 
++  install(
++    FILES
++      "${PROJECT_SOURCE_DIR}/helpers/memenv/memenv.h"
++    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/helpers/memenv
++  )
++
+   include(CMakePackageConfigHelpers)
+   write_basic_package_version_file(
+       "${PROJECT_BINARY_DIR}/leveldbConfigVersion.cmake"
+-- 
+2.20.1
+

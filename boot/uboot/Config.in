@@ -3,6 +3,8 @@ config BR2_TARGET_UBOOT
 	help
 	  Build "Das U-Boot" Boot Monitor
 
+	  https://www.denx.de/wiki/U-Boot
+
 if BR2_TARGET_UBOOT
 choice
 	prompt "Build system"
@@ -39,7 +41,7 @@ choice
 	  Select the specific U-Boot version you want to use
 
 config BR2_TARGET_UBOOT_LATEST_VERSION
-	bool "2018.09"
+	bool "2020.04"
 
 config BR2_TARGET_UBOOT_CUSTOM_VERSION
 	bool "Custom version"
@@ -87,7 +89,7 @@ endif
 
 config BR2_TARGET_UBOOT_VERSION
 	string
-	default "2018.09"	if BR2_TARGET_UBOOT_LATEST_VERSION
+	default "2020.04"	if BR2_TARGET_UBOOT_LATEST_VERSION
 	default BR2_TARGET_UBOOT_CUSTOM_VERSION_VALUE \
 		if BR2_TARGET_UBOOT_CUSTOM_VERSION
 	default "custom"	if BR2_TARGET_UBOOT_CUSTOM_TARBALL
@@ -145,11 +147,50 @@ config BR2_TARGET_UBOOT_NEEDS_DTC
 	  Select this option if your U-Boot board configuration
 	  requires the Device Tree compiler to be available.
 
+config BR2_TARGET_UBOOT_NEEDS_PYTHON
+	bool
+
+choice
+	bool "U-Boot needs host Python"
+
+config BR2_TARGET_UBOOT_NEEDS_PYTHON_NONE
+	bool "no"
+	depends on !BR2_TARGET_UBOOT_NEEDS_PYTHON
+	help
+	  Select this option if U-Boot does not need any
+	  host python to build.
+
+config BR2_TARGET_UBOOT_NEEDS_PYTHON2
+	bool "python 2.x"
+	help
+	  Select this option if U-Boot needs a host Python 2.x
+	  interpreter. This is the case for some U-Boot
+	  configurations, prior to U-Boot 2020.01.
+
+config BR2_TARGET_UBOOT_NEEDS_PYTHON3
+	bool "python 3.x"
+	help
+	  Select this option if U-Boot needs a host Python 3.x
+	  interpreter. This is the case for some U-Boot
+	  configurations, after U-Boot 2020.01.
+
+endchoice
+
 config BR2_TARGET_UBOOT_NEEDS_PYLIBFDT
 	bool "U-Boot needs pylibfdt"
+	select BR2_TARGET_UBOOT_NEEDS_PYTHON
 	help
 	  Select this option if your U-Boot board configuration
 	  requires the Python libfdt library to be available.
+
+config BR2_TARGET_UBOOT_NEEDS_PYELFTOOLS
+	bool "U-Boot needs pyelftools"
+	select BR2_TARGET_UBOOT_NEEDS_PYTHON
+	help
+	  Select this option if your U-Boot board configuration
+	  requires the Python pyelftools library to be available.
+	  This is used by some rockchip SOCs for elf parsing.
+	  For example: rk3399 soc boards.
 
 config BR2_TARGET_UBOOT_NEEDS_OPENSSL
 	bool "U-Boot needs OpenSSL"
@@ -217,6 +258,9 @@ config BR2_TARGET_UBOOT_FORMAT_DTB_IMX
 config BR2_TARGET_UBOOT_FORMAT_IMG
 	bool "u-boot.img"
 
+config BR2_TARGET_UBOOT_FORMAT_ITB
+	bool "u-boot.itb"
+
 config BR2_TARGET_UBOOT_FORMAT_IMX
 	bool "u-boot.imx"
 
@@ -241,7 +285,7 @@ config BR2_TARGET_UBOOT_FORMAT_SD
 	  This is Freescale i.MX28 SB format, with a header for booting
 	  from an SD card.
 
-	  U-boot includes an mxsboot tool to generate this format,
+	  U-Boot includes an mxsboot tool to generate this format,
 	  starting from 2011.12.
 
 	  See doc/README.mxs (or doc/README.mx28_common before 2013.07)
@@ -253,7 +297,7 @@ config BR2_TARGET_UBOOT_FORMAT_NAND
 	  This is Freescale i.MX28 BootStream format (.sb), with a
 	  header for booting from a NAND flash.
 
-	  U-boot includes an mxsboot tool to generate this format,
+	  U-Boot includes an mxsboot tool to generate this format,
 	  starting from 2011.12.
 
 	  There are two possibilities when preparing an image writable
@@ -490,6 +534,8 @@ config BR2_TARGET_UBOOT_ENVIMAGE_SOURCE
 
 	  Multiple source files are concatenated in the order listed.
 
+	  Leave empty to generate image from compiled-in env.
+
 config BR2_TARGET_UBOOT_ENVIMAGE_SIZE
 	string "Size of environment"
 	help
@@ -541,5 +587,11 @@ config BR2_TARGET_UBOOT_CUSTOM_DTS_PATH
 	  file must refer to it.
 
 endif
+
+config BR2_TARGET_UBOOT_CUSTOM_MAKEOPTS
+	string "Custom make options"
+	help
+	  List of custom make options passed at build time. Can be
+	  used for example to pass a DEVICE_TREE= value.
 
 endif # BR2_TARGET_UBOOT

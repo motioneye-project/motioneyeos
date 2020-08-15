@@ -1,8 +1,5 @@
 config BR2_PACKAGE_LIBNFC
 	bool "libnfc"
-	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
-	select BR2_PACKAGE_LIBUSB
-	select BR2_PACKAGE_LIBUSB_COMPAT
 	help
 	  Public platform independent Near Field Communication (NFC)
 	  library.
@@ -11,11 +8,70 @@ config BR2_PACKAGE_LIBNFC
 
 if BR2_PACKAGE_LIBNFC
 
+config BR2_PACKAGE_LIBNFC_ACR122_PCSC
+	bool "acr122_pcsc driver"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # pcsc-lite
+	depends on BR2_USE_MMU # pcsc-lite
+	depends on !BR2_STATIC_LIBS # pcsc-lite
+	select BR2_PACKAGE_PCSC_LITE
+	help
+	  support for acr112_pcsc driver
+
+comment "acr122_pcsc driver needs a toolchain w/ threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+
+config BR2_PACKAGE_LIBNFC_ACR122_USB
+	bool "acr122_usb driver"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_LIBUSB
+	select BR2_PACKAGE_LIBUSB_COMPAT
+	help
+	  support for acr122_usb driver
+
+comment "acr122_usb driver needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_LIBNFC_ACR122S
+	bool "acr122s driver"
+	help
+	  support for acr122s driver
+
+config BR2_PACKAGE_LIBNFC_ARYGON
+	bool "arygon driver"
+	default y
+	help
+	  support for arygon driver
+
+config BR2_PACKAGE_LIBNFC_PN532_I2C
+	bool "pn532_i2c driver"
+	help
+	  support for pn532_i2c driver
+
+config BR2_PACKAGE_LIBNFC_PN532_SPI
+	bool "pn532_spi driver"
+	help
+	  support for pn532_spi driver
+
+config BR2_PACKAGE_LIBNFC_PN532_UART
+	bool "pn532_uart driver"
+	help
+	  support for pn532_uart driver
+
+config BR2_PACKAGE_LIBNFC_PN53X_USB
+	bool "pn53x_usb driver"
+	default y
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_LIBUSB
+	select BR2_PACKAGE_LIBUSB_COMPAT
+	help
+	  support for pn53x_usb driver
+
+comment "pn53x_usb driver needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
 config BR2_PACKAGE_LIBNFC_EXAMPLES
 	bool "build libnfc examples"
 	select BR2_PACKAGE_READLINE
 
 endif
-
-comment "libnfc needs a toolchain w/ threads"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS

@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/pysmb/json, sha256 locally computed
+# md5 from https://pypi.python.org/pypi/pysmb/json
 md5 e6f9ce0032db528aae060f7019bd409c pysmb-1.1.19.tar.gz
-sha256 fa4e6b4a4f2afbfbd71e9179c491f8c77bc2ad19e0bc866d7c6cbfa9ae272602 pysmb-1.1.19.tar.gz
+# Locally computed
+sha256  fa4e6b4a4f2afbfbd71e9179c491f8c77bc2ad19e0bc866d7c6cbfa9ae272602  pysmb-1.1.19.tar.gz
+sha256  2b1a0a56543c1bda07f5583dddaf544442c139d3f46747d4700c7031ef354c14  LICENSE

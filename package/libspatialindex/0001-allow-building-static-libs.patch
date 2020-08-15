@@ -1,0 +1,32 @@
+From caee28d84685071da3ff3a4ea57ff0b6ae64fc87 Mon Sep 17 00:00:00 2001
+From: SpaceIm <30052553+SpaceIm@users.noreply.github.com>
+Date: Sat, 28 Mar 2020 19:08:40 +0100
+Subject: [PATCH] allow building static libs (#183)
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/libspatialindex/libspatialindex/commit/caee28d84685071da3ff3a4ea57ff0b6ae64fc87]
+---
+ CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index c34ee8d..3bfac51 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -43,7 +43,6 @@ SET(SIDX_VERSION_MINOR "9")
+ SET(SIDX_VERSION_PATCH "3")
+ SET(SIDX_LIB_VERSION "6.1.1")
+ SET(SIDX_LIB_SOVERSION "6")
+-SET(BUILD_SHARED_LIBS ON)
+ 
+ 
+ set(SIDX_VERSION_STRING "${SIDX_VERSION_MAJOR}.${SIDX_VERSION_MINOR}.${SIDX_VERSION_PATCH}")
+@@ -52,6 +51,7 @@ set(SIDX_VERSION_STRING "${SIDX_VERSION_MAJOR}.${SIDX_VERSION_MINOR}.${SIDX_VERS
+ # libspatialindex general cmake options
+ #------------------------------------------------------------------------------
+ 
++option(BUILD_SHARED_LIBS "Build shared libraries" ON)
+ option(SIDX_BUILD_TESTS "Enables integrated test suites" OFF)
+ 
+ 

@@ -4,7 +4,7 @@
 #
 
 CTL=/usr/sbin/ejabberdctl
-DEFAULT=/etc/default/ejabberd
+DEFAULT=/etc/ejabberd/ejabberdctl.cfg
 INSTALLUSER=ejabberd
 RUNDIR=/var/run/ejabberd
 

@@ -1,0 +1,35 @@
+config BR2_PACKAGE_PIPEWIRE
+	bool "pipewire"
+	depends on BR2_PACKAGE_HAS_UDEV # libudev
+	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, alsa-lib
+	depends on BR2_USE_MMU # dbus
+	select BR2_PACKAGE_ALSA_LIB
+	select BR2_PACKAGE_DBUS
+	help
+	  PipeWire is a server and user space API to deal with
+	  multimedia pipelines.
+
+	  https://pipewire.org/
+
+if BR2_PACKAGE_PIPEWIRE
+
+config BR2_PACKAGE_PIPEWIRE_GSTREAMER
+	bool "pipewire gstreamer plugins"
+	depends on BR2_USE_WCHAR # libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
+	depends on BR2_USE_MMU # libglib2
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_GSTREAMER1
+	select BR2_PACKAGE_GST1_PLUGINS_BASE
+	help
+	  Build GStreamer plugins
+
+comment "pipewire gstreamer support needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+
+endif
+
+comment "pipewire needs udev and a toolchain w/ threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_PACKAGE_HAS_UDEV || !BR2_TOOLCHAIN_HAS_THREADS

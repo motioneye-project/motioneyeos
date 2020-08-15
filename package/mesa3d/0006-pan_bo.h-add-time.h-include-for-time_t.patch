@@ -1,0 +1,32 @@
+From fc93d357efd207525a4ddaac609ab5a6bf469bcd Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Sun, 22 Mar 2020 11:48:31 +0100
+Subject: [PATCH] pan_bo.h: add time.h include for time_t
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fixes:
+
+  ../src/gallium/drivers/panfrost/pan_bo.h:93:9: error: unknown type name ‘time_t’
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ src/gallium/drivers/panfrost/pan_bo.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/gallium/drivers/panfrost/pan_bo.h b/src/gallium/drivers/panfrost/pan_bo.h
+index 414c356b95c..6dda393095d 100644
+--- a/src/gallium/drivers/panfrost/pan_bo.h
++++ b/src/gallium/drivers/panfrost/pan_bo.h
+@@ -29,6 +29,7 @@
+ #include <panfrost-misc.h>
+ #include "pipe/p_state.h"
+ #include "util/list.h"
++#include <time.h>
+ 
+ struct panfrost_screen;
+ 
+-- 
+2.25.1
+

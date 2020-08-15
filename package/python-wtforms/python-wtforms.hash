@@ -1,5 +1,6 @@
 # md5, sha256 from https://pypi.org/pypi/wtforms/json
-md5	41c0008dbe7bd98892c58f7457a46a4a  WTForms-2.2.1.tar.gz
-sha256	0cdbac3e7f6878086c334aa25dc5a33869a3954e9d1e015130d65a69309b3b61  WTForms-2.2.1.tar.gz
+md5  bff06943e59671581af07f80d14bda5f  WTForms-2.3.1.tar.gz
+sha256  861a13b3ae521d6700dac3b2771970bd354a63ba7043ecc3a82b5288596a1972  WTForms-2.3.1.tar.gz
 # Locally computed sha256 checksums
-sha256	64cba207423f4478e3262c2e54209f8cd2057d687e200a50e0203db5659947a5  LICENSE.rst
+sha256  cf40d60ff34f6b2b68a53d220f8b66567b5ac8dd1119b37b62fd15e9518fe59b  LICENSE.rst
+sha256  c9362a7258a11c84a8f7e825ccbbb5c425c6fc02368d3aee6494533fb99ba1f4  docs/license.rst

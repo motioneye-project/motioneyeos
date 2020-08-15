@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/aiohttp_cors/json
+md5	de3940a901b269be82c8bd9f28d53ff0  aiohttp-cors-0.7.0.tar.gz
+sha256	4d39c6d7100fd9764ed1caf8cebf0eb01bf5e3f24e2e073fda6234bc48b19f5d  aiohttp-cors-0.7.0.tar.gz
+# Locally computed sha256 checksums
+sha256	86cb2262ff825ce1c8b8fb9ea9f5174318badc3912639b9275fc25d0e305c556  LICENSE

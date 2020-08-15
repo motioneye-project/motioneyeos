@@ -15,11 +15,13 @@ be prefixed by the sysroot, and which path should not be prefixed by
 the sysroot.
 
 So, let's simply have a whitelist of paths that should be prefixed:
-includedir, libdir, mapdir, pkgdatadir and sdkdir. This list of
-variables was collected over years of Buildroot development. All other
-paths are not prefixed by the sysroot.
+g_ir_scanner, g_ir_compiler, g_ir_generate, includedir, libdir, mapdir,
+pkgdatadir and sdkdir. This list of variables was collected over years of
+Buildroot development. All other paths are not prefixed by the sysroot.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+[Updated to include gobject-introspection paths]
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
 ---
  libpkgconf/tuple.c | 60 ++++++++++++++++++++++++++++++++--------------
  1 file changed, 42 insertions(+), 18 deletions(-)
@@ -28,7 +30,7 @@ diff --git a/libpkgconf/tuple.c b/libpkgconf/tuple.c
 index 8523709..7cd2fff 100644
 --- a/libpkgconf/tuple.c
 +++ b/libpkgconf/tuple.c
-@@ -160,6 +160,18 @@ dequote(const char *value)
+@@ -160,6 +160,21 @@ dequote(const char *value)
  	return buf;
  }
  
@@ -36,6 +38,9 @@ index 8523709..7cd2fff 100644
 +pkgconf_tuple_parse_sysroot(const pkgconf_client_t *client, pkgconf_list_t *vars, const char *value, bool add_sysroot);
 +
 +const char *sysrooted_keys[] = {
++	"g_ir_scanner",
++	"g_ir_compiler",
++	"g_ir_generate",
 +	"includedir",
 +	"libdir",
 +	"mapdir",

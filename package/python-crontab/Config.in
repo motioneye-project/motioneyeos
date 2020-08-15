@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PYTHON_CRONTAB
+	bool "python-crontab"
+	select BR2_PACKAGE_PYTHON_DATEUTIL # runtime
+	help
+	  Crontab module for reading and writing crontab files and
+	  accessing the system cron automatically and simply using
+	  a direct API.
+
+	  https://gitlab.com/doctormo/python-crontab/

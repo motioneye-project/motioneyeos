@@ -23,8 +23,8 @@ between distributions).
 ** +make+ (version 3.81 or any later)
 ** +binutils+
 ** +build-essential+ (only for Debian based systems)
-** +gcc+ (version 4.4 or any later)
-** `g++` (version 4.4 or any later)
+** +gcc+ (version 4.8 or any later)
+** `g++` (version 4.8 or any later)
 ** +bash+
 ** +patch+
 ** +gzip+
@@ -32,7 +32,6 @@ between distributions).
 ** +perl+ (version 5.8.7 or any later)
 ** +tar+
 ** +cpio+
-** +python+ (version 2.7 or any later)
 ** +unzip+
 ** +rsync+
 ** +file+ (must be in +/usr/bin/file+)
@@ -45,6 +44,14 @@ between distributions).
 
 === Optional packages
 
+* Recommended dependencies:
++
+Some features or utilities in Buildroot, like the legal-info, or the
+graph generation tools, have additional dependencies. Although they
+are not mandatory for a simple build, they are still highly recommended:
++
+** +python+ (version 2.7 or any later)
+
 * Configuration interface dependencies:
 +
 For these libraries, you need to install both runtime and development
@@ -52,7 +59,7 @@ data, which in many distributions are packaged separately. The
 development packages typically have a _-dev_ or _-devel_ suffix.
 +
 ** +ncurses5+ to use the 'menuconfig' interface
-** +qt4+ to use the 'xconfig' interface
+** +qt5+ to use the 'xconfig' interface
 ** +glib2+, +gtk2+ and +glade2+ to use the 'gconfig' interface
 
 * Source fetching tools:

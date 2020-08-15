@@ -4,3 +4,5 @@ config BR2_PACKAGE_MATCHBOX_DESKTOP
 	select BR2_PACKAGE_ZLIB
 	help
 	  A PDA style application launcher or 'item browser'.
+
+	  http://git.yoctoproject.org/cgit/cgit.cgi/matchbox-desktop

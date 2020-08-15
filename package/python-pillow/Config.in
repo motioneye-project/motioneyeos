@@ -1,5 +1,6 @@
 config BR2_PACKAGE_PYTHON_PILLOW
 	bool "python-pillow"
+	depends on BR2_PACKAGE_PYTHON3
 	help
 	  Pillow is the "friendly" PIL fork by Alex Clark and
 	  Contributors. PIL is the Python Imaging Library by Fredrik

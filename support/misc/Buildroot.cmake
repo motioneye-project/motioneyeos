@@ -1,5 +1,6 @@
 # Impersonate a Linux system. Afterall, that's what we are...
 set(CMAKE_SYSTEM_NAME Linux)
+set(CMAKE_SYSTEM ${CMAKE_SYSTEM_NAME})
 include(Platform/Linux)
 
 # Override problematic settings, to avoid RPATH against host lib directories.

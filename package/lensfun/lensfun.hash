@@ -2,4 +2,6 @@
 sha1 1d978b15aa7304d66a4931fa37ca9f8f89396c16 lensfun-0.3.2.tar.gz
 md5 247e59a0812ec451f6cd0d20b3379cb5 lensfun-0.3.2.tar.gz
 # Locally calculated
-sha256 ae8bcad46614ca47f5bda65b00af4a257a9564a61725df9c74cb260da544d331 lensfun-0.3.2.tar.gz
+sha256  ae8bcad46614ca47f5bda65b00af4a257a9564a61725df9c74cb260da544d331  lensfun-0.3.2.tar.gz
+sha256  8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903  docs/gpl-3.0.txt
+sha256  a853c2ffec17057872340eee242ae4d96cbf2b520ae27d903e1b2fef1a5f9d1c  docs/lgpl-3.0.txt

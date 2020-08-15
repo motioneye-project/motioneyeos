@@ -1,5 +1,7 @@
 config BR2_PACKAGE_PYTHON_TEMPORA
 	bool "python-tempora"
+	depends on BR2_PACKAGE_PYTHON3 # python-jaraco-functools
+	select BR2_PACKAGE_PYTHON_JARACO_FUNCTOOLS # runtime
 	select BR2_PACKAGE_PYTHON_SIX # runtime
 	select BR2_PACKAGE_PYTHON_PYTZ # runtime
 	help

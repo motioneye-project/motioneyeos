@@ -1,0 +1,41 @@
+From dbb4452787cb966cc74b2015689961875fd5d668 Mon Sep 17 00:00:00 2001
+From: Ryan Barnett <ryanbarnett3@gmail.com>
+Date: Mon, 27 Apr 2020 22:03:25 -0500
+Subject: [PATCH] Use DESTDIR when installing mount.smb3 and optionally install
+ man page
+
+Properly create mount.smb3 symlink by using DESTDIR. Also use
+CONFIG_MAN to optionally install manpage for mount.smb3.
+
+Signed-off-by: Ryan Barnett <ryanbarnett3@gmail.com>
+---
+Upstream: https://marc.info/?l=linux-cifs&m=158804444725745&w=2
+---
+ Makefile.am | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index fe9cd34..e0587f1 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -119,11 +119,13 @@ endif
+ SUBDIRS = contrib
+ 
+ install-exec-hook:
+-	(cd $(ROOTSBINDIR) && ln -sf mount.cifs mount.smb3)
++	(cd $(DESTDIR)$(ROOTSBINDIR) && ln -sf mount.cifs mount.smb3)
+ 
++if CONFIG_MAN
+ install-data-hook:
+-	(cd $(man8dir) && ln -sf mount.cifs.8 mount.smb3.8)
++	(cd $(DESTDIR)$(man8dir) && ln -sf mount.cifs.8 mount.smb3.8)
++endif
+ 
+ uninstall-hook:
+-	(cd $(ROOTSBINDIR) && rm -f $(ROOTSBINDIR)/mount.smb3)
+-	(cd $(man8dir) && rm -f $(man8dir)/mount.smb3.8)
++	rm -f $(DESTDIR)$(ROOTSBINDIR)/mount.smb3
++	rm -f $(DESTDIR)$(man8dir)/mount.smb3.8
+-- 
+2.17.1
+

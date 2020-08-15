@@ -1,4 +1,4 @@
-From 2a310549aaeaba05f640ade43488bb893101ce4a Mon Sep 17 00:00:00 2001
+From 8aea14bbd20b04b8fffaf35138ebdcbd39e433a3 Mon Sep 17 00:00:00 2001
 From: "Yann E. MORIN" <yann.morin.1998@free.fr>
 Date: Sat, 29 Oct 2016 16:35:26 +0200
 Subject: [PATCH] xen/Rules.mk: fix build with CFLAGS from environment
@@ -19,18 +19,18 @@ Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/xen/Rules.mk b/xen/Rules.mk
-index a9fda71..09ccbfa 100644
+index 3090ea7828..d535bf9e2f 100644
 --- a/xen/Rules.mk
 +++ b/xen/Rules.mk
-@@ -49,7 +49,7 @@ ALL_OBJS-$(CONFIG_CRYPTO)   += $(BASEDIR)/crypto/built_in.o
- CFLAGS += -nostdinc -fno-builtin -fno-common
- CFLAGS += -Werror -Wredundant-decls -Wno-pointer-arith
- CFLAGS += -pipe -g -D__XEN__ -include $(BASEDIR)/include/xen/config.h
+@@ -61,7 +61,7 @@ CFLAGS += -Werror -Wredundant-decls -Wno-pointer-arith
+ $(call cc-option-add,CFLAGS,CC,-Wvla)
+ CFLAGS += -pipe -D__XEN__ -include $(BASEDIR)/include/xen/config.h
+ CFLAGS-$(CONFIG_DEBUG_INFO) += -g
 -CFLAGS += '-D__OBJECT_FILE__="$@"'
 +CFLAGS += -U__OBJECT_FILE__ '-D__OBJECT_FILE__="$@"'
  
  ifneq ($(clang),y)
  # Clang doesn't understand this command line argument, and doesn't appear to
 -- 
-2.7.4
+2.22.0
 

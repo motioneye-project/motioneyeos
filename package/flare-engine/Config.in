@@ -2,7 +2,6 @@ config BR2_PACKAGE_FLARE_ENGINE
 	bool "flare-engine"
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on !BR2_STATIC_LIBS # SDL2
-	depends on !BR2_TOOLCHAIN_HAS_GCC_BUG_85180
 	select BR2_PACKAGE_SDL2
 	select BR2_PACKAGE_SDL2_IMAGE
 	select BR2_PACKAGE_SDL2_MIXER
@@ -18,6 +17,3 @@ config BR2_PACKAGE_FLARE_ENGINE
 
 comment "flare-engine needs a toolchain w/ C++, dynamic library"
 	depends on !BR2_INSTALL_LIBSTDCPP || BR2_STATIC_LIBS
-
-comment "flare-engine needs a toolchain not affected by GCC bug 85180"
-	depends on BR2_TOOLCHAIN_HAS_GCC_BUG_85180

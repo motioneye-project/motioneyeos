@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_BROTLI
+	bool "python-brotli"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  Python bindings for the Brotli compression library.
+
+	  https://github.com/google/brotli

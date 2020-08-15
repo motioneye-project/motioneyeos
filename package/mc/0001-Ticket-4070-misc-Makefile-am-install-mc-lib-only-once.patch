@@ -1,0 +1,60 @@
+From afb09f7cd7024484845ade25e15b8b93d6cf2d2c Mon Sep 17 00:00:00 2001
+From: Sergei Trofimovich <slyfox@gentoo.org>
+Date: Tue, 3 Mar 2020 09:26:12 +0000
+Subject: [PATCH] Ticket #4070: misc/Makefile.am: install mc.lib only once.
+
+Before the change mc.lib was installed twice due to being
+in two _DATA variables:
+
+dist_pkgdata_DATA = \
+        mc.lib
+
+pkgdata_DATA = \
+        $(dist_pkgdata_DATA) \
+        $(PKGDATA_OUT)
+
+This causes occasional install failures when two parallel
+`/usr/bin/install` calls race in installing the file:
+
+$ make -j20 DESTDIR=/var/tmp/portage/app-misc/mc-4.8.24/image install
+...
+ /usr/lib/portage/python3.6/ebuild-helpers/xattr/install \
+    -c -m 644 mc.lib '/var/tmp/portage/app-misc/mc-4.8.24/image/usr/share/mc'
+ /usr/lib/portage/python3.6/ebuild-helpers/xattr/install \
+    -c -m 644 mc.lib mc.charsets '/var/tmp/portage/app-misc/mc-4.8.24/image/usr/share/mc'
+...
+ /usr/bin/install: cannot create regular file
+   '/var/tmp/portage/app-misc/mc-4.8.24/image/usr/share/mc/mc.lib': File exists
+
+After the change mc.lib is present only in dist_pkgdata_DATA.
+
+Signed-off-by: Sergei Trofimovich <slyfox@gentoo.org>
+Signed-off-by: Andrew Borodin <aborodin@vmail.ru>
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/MidnightCommander/mc/commit/afb09f7cd7024484845ade25e15b8b93d6cf2d2c]
+---
+ misc/Makefile.am | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/misc/Makefile.am b/misc/Makefile.am
+index 8ed1826136..24f4a0e1ad 100644
+--- a/misc/Makefile.am
++++ b/misc/Makefile.am
+@@ -17,7 +17,6 @@ dist_pkgdata_DATA = \
+ 	mc.lib
+ 
+ pkgdata_DATA = \
+-	$(dist_pkgdata_DATA) \
+ 	$(PKGDATA_OUT)
+ 
+ SCRIPTS_IN = \
+@@ -54,7 +53,6 @@ EXTRA_DIST = \
+ 	$(LIBFILES_SCRIPT) \
+ 	$(SCRIPTS_IN) \
+ 	$(noinst_DATA) \
+-	$(dist_pkgdata_DATA) \
+ 	$(PKGDATA_IN)
+ 
+ install-data-hook:

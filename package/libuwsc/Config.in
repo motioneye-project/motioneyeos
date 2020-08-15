@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LIBUWSC
+	bool "libuwsc"
+	select BR2_PACKAGE_LIBEV
+	help
+	  A Lightweight and fully asynchronous WebSocket client
+	  library based on libev.
+
+	  https://github.com/zhaojh329/libuwsc

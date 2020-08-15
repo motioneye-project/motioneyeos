@@ -12,15 +12,14 @@ ZMQPP_LICENSE = MPL-2.0
 ZMQPP_LICENSE_FILES = LICENSE
 ZMQPP_MAKE_OPTS = LD="$(TARGET_CXX)" BUILD_PATH=./build PREFIX=/usr
 ZMQPP_LDFLAGS = $(TARGET_LDFLAGS) -lpthread
-ZMQPP_CONFIG = $(if $(BR2_ENABLE_DEBUG),debug,release)
 
 # gcc bug internal compiler error: in merge_overlapping_regs, at
 # regrename.c:304. This bug is fixed since gcc 6.
 # By setting CONFIG to empty, all optimizations such as -funroll-loops
-# -ffast-math -finline-functions -fomit-frame-pointer are disabled
-ifeq ($(BR2_or1k):$(BR2_TOOLCHAIN_GCC_AT_LEAST_6),y:)
-# check-package OverriddenVariable
-ZMQPP_CONFIG =
+# -ffast-math -finline-functions -fomit-frame-pointer are disabled,
+# so only set CONFIG for the non-affected cases.
+ifneq ($(BR2_or1k):$(BR2_TOOLCHAIN_GCC_AT_LEAST_6),y:)
+ZMQPP_CONFIG = $(if $(BR2_ENABLE_DEBUG),debug,release)
 endif
 
 ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)

@@ -1,7 +1,6 @@
 config BR2_PACKAGE_EFL
 	bool "efl"
 	 # g++ issue with 4.4.5, tested with g++ 4.7.2
-	depends on BR2_HOST_GCC_AT_LEAST_4_7
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_PACKAGE_LUAJIT_ARCH_SUPPORTS # luajit
@@ -144,15 +143,14 @@ comment "Warning: one of the recommended option for EFL is not enabled"
 
 config BR2_PACKAGE_EFL_EOLIAN_CPP
 	bool "Enable Eolian C++ bindings"
-	depends on BR2_HOST_GCC_AT_LEAST_4_8 # Eolian (host) needs C++11
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # Eolian needs C++11
 	help
 	  Eolian is an EO object parser and code generator.
 	  With this option enabled Eolian will handle automatic
 	  generation of EFL bindings for the C++11 language.
 
-comment "Eolian needs host and target gcc >= 4.8"
-	depends on !BR2_HOST_GCC_AT_LEAST_4_8 || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+comment "Eolian needs gcc >= 4.8"
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
 
 comment "libecore video support"
 
@@ -168,7 +166,6 @@ config BR2_PACKAGE_EFL_X_XLIB
 	select BR2_PACKAGE_XLIB_LIBXCURSOR
 	select BR2_PACKAGE_XLIB_LIBXDAMAGE
 	select BR2_PACKAGE_XLIB_LIBXINERAMA
-	select BR2_PACKAGE_XLIB_LIBXP
 	select BR2_PACKAGE_XLIB_LIBXRANDR
 	select BR2_PACKAGE_XLIB_LIBXRENDER
 	select BR2_PACKAGE_XLIB_LIBXSCRNSAVER
@@ -222,7 +219,6 @@ endchoice # OpenGL support
 
 config BR2_PACKAGE_EFL_ELPUT
 	bool "Elput"
-	depends on BR2_ENABLE_LOCALE # libinput
 	depends on BR2_PACKAGE_EFL_EEZE
 	select BR2_PACKAGE_LIBINPUT
 	select BR2_PACKAGE_LIBXKBCOMMON
@@ -233,24 +229,23 @@ config BR2_PACKAGE_EFL_ELPUT
 	  libinput without having to duplicate the code in each
 	  subsystem.
 
-comment "Elput support needs udev /dev management (eeze), locales"
-	depends on !BR2_PACKAGE_EFL_EEZE || !BR2_ENABLE_LOCALE
+comment "Elput support needs udev /dev management (eeze)"
+	depends on !BR2_PACKAGE_EFL_EEZE
 
 config BR2_PACKAGE_EFL_DRM
 	bool "Evas DRM Engine"
 	depends on BR2_PACKAGE_EFL_EEZE
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libdrm
 	depends on BR2_PACKAGE_MESA3D_OPENGL_EGL # require libgbm from mesa3d
-	depends on BR2_ENABLE_LOCALE # efl-elput <- libinput
 	select BR2_PACKAGE_EFL_ELPUT
 	select BR2_PACKAGE_LIBDRM
 	select BR2_PACKAGE_LIBXKBCOMMON
 	help
 	  This option enable building support for the Evas DRM Engine.
 
-comment "Evas DRM Engine needs udev /dev management (eeze), mesa3d w/ EGL support, threads, locales"
+comment "Evas DRM Engine needs udev /dev management (eeze), mesa3d w/ EGL support, threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_PACKAGE_MESA3D_OPENGL_EGL \
-		|| !BR2_PACKAGE_EFL_EEZE || !BR2_ENABLE_LOCALE
+		|| !BR2_PACKAGE_EFL_EEZE
 
 comment "libevas loaders"
 
@@ -295,16 +290,21 @@ config BR2_PACKAGE_EFL_LIBRAW
 config BR2_PACKAGE_EFL_SVG
 	bool "SVG loader"
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # librsvg -> pango -> harfbuzz
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # librsvg -> pango -> harfbuzz
 	select BR2_PACKAGE_LIBRSVG
 	select BR2_PACKAGE_CAIRO
 	help
 	  This option enables the Evas generic SVG loader
 
+comment "SVG loader needs a toolchain w/ gcc >= 4.8"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+
 endif # BR2_PACKAGE_EFL
 
 comment "efl needs a toolchain w/ C++, dynamic library, gcc >= 4.7, threads, wchar"
 	depends on !BR2_INSTALL_LIBSTDCPP \
-		|| !BR2_HOST_GCC_AT_LEAST_4_7 || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 \
+		|| !BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 \
 		|| BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR
 	depends on BR2_PACKAGE_LUAJIT_ARCH_SUPPORTS
 	depends on BR2_USE_MMU

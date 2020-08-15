@@ -1,2 +1,4 @@
 # From http://lists.x.org/archives/xorg-announce/2014-November/002494.html
-sha256	bbca7c6aa59939b9f6a0fb9fff15dfd62176420ffd4ae30c8d92a6a125fbe6b0	rgb-1.0.6.tar.bz2
+sha256  bbca7c6aa59939b9f6a0fb9fff15dfd62176420ffd4ae30c8d92a6a125fbe6b0  rgb-1.0.6.tar.bz2
+# Locally computed
+sha256  1d08eb3384f5dedc7735bcfae1aa58cb64643ca9389edce3312b1c3cefbfdaa7  COPYING

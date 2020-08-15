@@ -1,0 +1,15 @@
+config BR2_PACKAGE_IMA_EVM_UTILS
+	bool "ima-evm-utils"
+	depends on BR2_USE_MMU # keyutils
+	depends on !BR2_STATIC_LIBS # keyutils
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_KEYUTILS
+	help
+	  Linux Integrity Measurement Architecture (IMA)
+	  Extended Verification Module (EVM) tools.
+
+	  https://sourceforge.net/p/linux-ima/wiki/Home/
+
+comment "ima-evm-utils needs dynamic library support"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS

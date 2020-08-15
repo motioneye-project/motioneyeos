@@ -2,5 +2,6 @@
 md5    941ad06eadc86b47f3a32da405665c41 GDTextUtil-0.86.tar.gz
 sha256 886ecbf85cfe94f4135ee5689c4847a9ae783ecb99e6759e12c734f2dd6116bc GDTextUtil-0.86.tar.gz
 
-# computed by scancpan
+# Hash for license files
 sha256 710484e3a1196664bbe8a5ad5d53c528e01226eb20e2885a4e1131eb6c6565cd Dustismo.LICENSE
+sha256 93ca7dd7f372c79e8ec1f849f2a418a67d195e4027c1b3e3dd8444fb30f3e97c README

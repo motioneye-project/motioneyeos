@@ -1,0 +1,27 @@
+From f9d881cc55c89f51240f93308713216cfec793eb Mon Sep 17 00:00:00 2001
+From: Adam Duskett <Aduskett@gmail.com>
+Date: Sat, 3 Aug 2019 14:23:19 -0400
+Subject: [PATCH] remove pytest-runner requirement
+
+Setup does not actually require pytest-runner. As such, remove it.
+
+Signed-off-by: Adam Duskett <Aduskett@gmail.com>
+---
+ setup.py | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/setup.py b/setup.py
+index 64e94f1..4e3abb0 100755
+--- a/setup.py
++++ b/setup.py
+@@ -23,7 +23,6 @@ setup(
+     packages=find_packages() + ["twisted.plugins"],
+     include_package_data=True,
+     install_requires=["twisted[tls]>=18.7", "autobahn>=0.18", "asgiref~=3.2"],
+-    setup_requires=["pytest-runner"],
+     extras_require={
+         "tests": ["hypothesis~=3.88", "pytest~=3.10", "pytest-asyncio~=0.8"]
+     },
+-- 
+2.21.0
+

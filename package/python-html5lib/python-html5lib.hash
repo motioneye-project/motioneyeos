@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/html5lib/json, sha256 locally computed
-md5	5ada1243b7a863624b2f35245b2186e9  html5lib-1.0b10.tar.gz
-sha256	0d5fd54d5b2b79b876007a70c033a4023577768d18022c15681c00561432a0f9  html5lib-1.0b10.tar.gz
+# md5, sha256 from https://pypi.org/pypi/html5lib/json
+md5	942a0688d6bdf20d087c9805c40182ad  html5lib-1.0.1.tar.gz
+sha256	66cb0dcfdbbc4f9c3ba1a63fdb511ffdbd4f513b2b6d81b80cd26ce6b3fb3736  html5lib-1.0.1.tar.gz
+# Locally computed sha256 checksums
+sha256	16a39991619e92f18680932da2a9199fdf7d95df3ecaedc52ea06218aabafd6f  LICENSE

@@ -1,0 +1,82 @@
+From https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-015
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	5.0
+Patch-ID:	bash50-015
+
+Bug-Reported-by:	Yu Kou <ckyoog@gmail.com>
+Bug-Reference-ID:	<CAAqoF9Ko3nAShJXGzucafs-ByUagzZ4nbQonwEkwC7s9UqfWKw@mail.gmail.com>
+Bug-Reference-URL:	https://lists.gnu.org/archive/html/bug-bash/2019-05/msg00032.html
+
+Bug-Description:
+
+If alias expansion is enabled when processing the command argument to the
+`-c' option, an alias is defined in that command, and the command ends with
+the invocation of that alias, the shell's command parser can prematurely
+terminate before the entire command is executed.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-20190426/builtins/evalstring.c	2019-01-29 14:15:19.000000000 -0500
+--- b/builtins/evalstring.c	2019-05-15 14:19:36.000000000 -0400
+***************
+*** 92,95 ****
+--- 92,96 ----
+  	  running_trap == 0 &&
+  	  *bash_input.location.string == '\0' &&
++ 	  parser_expanding_alias () == 0 &&
+  	  command->type == cm_simple &&
+  	  signal_is_trapped (EXIT_TRAP) == 0 &&
+***************
+*** 106,109 ****
+--- 107,111 ----
+  {
+    return (*bash_input.location.string == '\0' &&
++ 	  parser_expanding_alias () == 0 &&
+  	  (command->value.Connection->connector == AND_AND || command->value.Connection->connector == OR_OR || command->value.Connection->connector == ';') &&
+  	  command->value.Connection->second->type == cm_simple);
+***************
+*** 291,295 ****
+    with_input_from_string (string, from_file);
+    clear_shell_input_line ();
+!   while (*(bash_input.location.string))
+      {
+        command = (COMMAND *)NULL;
+--- 293,297 ----
+    with_input_from_string (string, from_file);
+    clear_shell_input_line ();
+!   while (*(bash_input.location.string) || parser_expanding_alias ())
+      {
+        command = (COMMAND *)NULL;
+***************
+*** 546,550 ****
+  
+    with_input_from_string (string, from_file);
+!   while (*(bash_input.location.string))
+      {
+        command = (COMMAND *)NULL;
+--- 548,552 ----
+  
+    with_input_from_string (string, from_file);
+!   while (*(bash_input.location.string))		/* XXX - parser_expanding_alias () ? */
+      {
+        command = (COMMAND *)NULL;
+*** ../bash-5.0/patchlevel.h	2016-06-22 14:51:03.000000000 -0400
+--- b/patchlevel.h	2016-10-01 11:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 14
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 15
+  
+  #endif /* _PATCHLEVEL_H_ */

@@ -8,6 +8,7 @@ User=rabbitmq
 Group=rabbitmq
 Environment=HOME=/var/lib/rabbitmq
 WorkingDirectory=/var/lib/rabbitmq
+LogsDirectory=/var/log/rabbitmq
 ExecStart=/usr/sbin/rabbitmq-server
 ExecStop=/usr/sbin/rabbitmqctl stop
 

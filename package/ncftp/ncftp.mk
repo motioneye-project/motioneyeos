@@ -21,7 +21,7 @@ NCFTP_CONF_OPTS = --disable-ccdv
 # We need to pass -I because of the non-standard m4 directory name, and
 # none of the other autotools are used, so the below is the easiest.
 define NCFTP_RUN_AUTOCONF
-	(cd $(@D); $(HOST_DIR)/bin/autoconf -I$(@D)/autoconf_local/)
+	(cd $(@D); $(AUTOCONF) -I$(@D)/autoconf_local/)
 endef
 NCFTP_PRE_CONFIGURE_HOOKS += NCFTP_RUN_AUTOCONF
 

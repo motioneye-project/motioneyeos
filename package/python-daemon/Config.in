@@ -1,6 +1,7 @@
 config BR2_PACKAGE_PYTHON_DAEMON
 	bool "python-daemon"
 	select BR2_PACKAGE_PYTHON_DOCUTILS # runtime
+	select BR2_PACKAGE_PYTHON_LOCKFILE # runtime
 	help
 	  Library to implement a well-behaved Unix daemon process.
 

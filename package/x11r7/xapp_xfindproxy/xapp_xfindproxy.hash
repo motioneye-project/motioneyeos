@@ -1,2 +1,4 @@
 # From http://lists.x.org/archives/xorg-announce/2015-April/002573.html
-sha256	5626bda27c7faa5cbe289a17f8552538fff08a96d542b85efdda1804ccf8a01f	xfindproxy-1.0.4.tar.bz2
+sha256  5626bda27c7faa5cbe289a17f8552538fff08a96d542b85efdda1804ccf8a01f  xfindproxy-1.0.4.tar.bz2
+# Locally computed
+sha256  373984cd13212f3e2fbbcdf88694fd1f5a3658ed9184a6ac44f686fc2e8620f2  COPYING

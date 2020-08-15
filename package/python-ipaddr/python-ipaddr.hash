@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi?:action=show_md5&digest=f2c7852f95862715f92e7d089dc3f2cf, sha256 locally computed
-md5	f2c7852f95862715f92e7d089dc3f2cf  ipaddr-2.1.11.tar.gz
-sha256	1b555b8a8800134fdafe32b7d0cb52f5bdbfdd093707c3dd484c5ea59f1d98b7  ipaddr-2.1.11.tar.gz
+# md5, sha256 from https://pypi.org/pypi/ipaddr/json
+md5	f88353e40dec06410acfa075b8209b27  ipaddr-2.2.0.tar.gz
+sha256	4092dfe667588d16aa12b59acb7c8a4024e5dcb23a681cd0b0b602373eca88d6  ipaddr-2.2.0.tar.gz
+# Locally computed sha256 checksums
+sha256	175b3b509d5c840db72ad8c22d22a690d15c67b317f34de8a8bb0a66059e8215  COPYING

@@ -12,7 +12,7 @@ config BR2_PACKAGE_HIDAPI
 	  to interface with USB and Bluetooth HID-Class devices on
 	  Windows, Linux, and Mac OS X.
 
-	  http://www.signal11.us/oss/hidapi/
+	  http://github.com/libusb/hidapi/
 
 comment "hidapi needs udev /dev management and a toolchain w/ NPTL threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL || !BR2_PACKAGE_HAS_UDEV

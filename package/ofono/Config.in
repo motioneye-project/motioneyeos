@@ -1,12 +1,13 @@
 config BR2_PACKAGE_OFONO
 	bool "ofono"
-	depends on BR2_USE_WCHAR # gettext, libglib2
+	depends on BR2_USE_WCHAR # gettext, libglib2, ell
 	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, libglib2
 	depends on BR2_USE_MMU # dbus, libglib2
-	depends on !BR2_STATIC_LIBS # dlopen()
+	depends on !BR2_STATIC_LIBS # dlopen(), ell
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
-	select BR2_PACKAGE_LIBCAP_NG
 	select BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_ELL
+	select BR2_PACKAGE_LIBCAP_NG
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_MOBILE_BROADBAND_PROVIDER_INFO
 	help

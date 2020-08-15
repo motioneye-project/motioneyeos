@@ -4,13 +4,15 @@
 #
 ################################################################################
 
-BATMAN_ADV_VERSION = 2017.0.1
+BATMAN_ADV_VERSION = 2019.3
 BATMAN_ADV_SITE = https://downloads.open-mesh.org/batman/stable/sources/batman-adv
-BATMAN_ADV_LICENSE = GPL-2.0
+BATMAN_ADV_LICENSE = GPL-2.0, MIT (batman_adv.h)
+BATMAN_ADV_LICENSE_FILES = LICENSES/preferred/GPL-2.0 LICENSES/preferred/MIT
 
 # Bridge Loop Avoidance, Distributed Arp Table are always enabled
 BATMAN_ADV_CFLAGS = \
 	-I$(@D)/compat-include/ \
+	-I$(@D)/include/ \
 	-include $(@D)/compat.h \
 	-DBATADV_SOURCE_VERSION=\"\\\"$(BATMAN_ADV_VERSION)\\\"\"
 BATMAN_ADV_MODULE_MAKE_OPTS = \

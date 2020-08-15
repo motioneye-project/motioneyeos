@@ -12,13 +12,13 @@ Signed-off-by: Samuel Martin <s.martin49@gmail.com>
  urcu/compiler.h | 9 ++++++++-
  1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/urcu/compiler.h b/urcu/compiler.h
+diff --git a/include/urcu/compiler.h b/include/urcu/compiler.h
 index 1e30903..56115f1 100644
---- a/urcu/compiler.h
-+++ b/urcu/compiler.h
+--- a/include/urcu/compiler.h
++++ b/include/urcu/compiler.h
 @@ -118,10 +118,17 @@
  				+ __GNUC_PATCHLEVEL__)
- 
+
  /*
 + * Official gcc releases from 4.8.0 to 4.8.2 have the following bug,
 + * however, many arm toolchain providers have the included the fix for
@@ -35,6 +35,6 @@ index 1e30903..56115f1 100644
  #   error Your gcc version produces clobbered frame accesses
  #  endif
  # endif
--- 
+--
 1.9.0
 

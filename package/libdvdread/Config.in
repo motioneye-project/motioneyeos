@@ -5,4 +5,4 @@ config BR2_PACKAGE_LIBDVDREAD
 	  libdvdread provides a simple foundation for reading
 	  DVD-Video images.
 
-	  http://www.mplayerhq.hu/MPlayer/releases/dvdnav/
+	  https://www.videolan.org/developers/libdvdnav.html

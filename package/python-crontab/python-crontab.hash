@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/python-crontab/json
+md5  65fe16d44568de2671d334a637e64a3b  python-crontab-2.4.2.tar.gz
+sha256  ed9583cff430715d9560cbad28309429ac13f3fdb13051ac2288050e05abc392  python-crontab-2.4.2.tar.gz
+# Locally computed sha256 checksums
+sha256  da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768  COPYING

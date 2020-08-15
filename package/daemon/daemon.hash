@@ -1,3 +1,4 @@
 # md5 from http://www.libslack.org/daemon/; sha256 locally calculated
 md5 6cd0a28630a29ac279bc501f39baec66 daemon-0.6.4.tar.gz
 sha256 c4b9ea4aa74d55ea618c34f1e02c080ddf368549037cb239ee60c83191035ca1 daemon-0.6.4.tar.gz
+sha256 204d8eff92f95aac4df6c8122bc1505f468f3a901e5a4cc08940e0ede1938994 LICENSE

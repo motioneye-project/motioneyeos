@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/crossbar/json
-md5	462a204da3c776cbb770b98f9047e8e7  crossbar-19.1.2.tar.gz
-sha256	269d534a65c136a5c952a6accccf256f457569f731ee65e201e5a14e69db471a  crossbar-19.1.2.tar.gz
+md5  f1756c5a7eac95aa0ff3e307cdd960df  crossbar-20.4.2.tar.gz
+sha256  67a14864850b562c2b5586eca37f39b2eff3d650ba955bace894e6b5d0633dbb  crossbar-20.4.2.tar.gz
 # Locally computed
-sha256  57c8ff33c9c0cfc3ef00e650a1cc910d7ee479a8bc509f6c9209a7c2a11399d6  LICENSE
+sha256  57c8ff33c9c0cfc3ef00e650a1cc910d7ee479a8bc509f6c9209a7c2a11399d6  crossbar/LICENSE

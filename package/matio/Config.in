@@ -1,0 +1,8 @@
+config BR2_PACKAGE_MATIO
+	bool "matio"
+	select BR2_PACKAGE_ZLIB
+	help
+	  matio is an C library for reading and writing MATLAB MAT
+	  files.
+
+	  https://sourceforge.net/projects/matio

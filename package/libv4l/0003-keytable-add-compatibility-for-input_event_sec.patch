@@ -1,0 +1,35 @@
+From 986345e5673b1e68db513a4f72e6e79c74512a3b Mon Sep 17 00:00:00 2001
+From: Rosen Penev <rosenp@gmail.com>
+Date: Tue, 7 Apr 2020 18:13:44 -0700
+Subject: [PATCH] keytable: add compatibility for input_event_sec
+
+Linux 4.16 added support for this macro. When it is not available,
+define it back to the previous value.
+
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Signed-off-by: Sean Young <sean@mess.org>
+
+[Upstream: https://git.linuxtv.org/v4l-utils.git/patch/?id=8b7e6ce9367fe09ca9398b5f3cc75bba2598b162]
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ utils/keytable/keytable.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/utils/keytable/keytable.c b/utils/keytable/keytable.c
+index 318c064..705867c 100644
+--- a/utils/keytable/keytable.c
++++ b/utils/keytable/keytable.c
+@@ -62,6 +62,10 @@ struct input_keymap_entry_v2 {
+ 	u_int8_t  scancode[32];
+ };
+ 
++#ifndef input_event_sec
++#define input_event_sec time.tv_sec
++#define input_event_usec time.tv_usec
++#endif
+ 
+ #define IR_PROTOCOLS_USER_DIR IR_KEYTABLE_USER_DIR "/protocols"
+ #define IR_PROTOCOLS_SYSTEM_DIR IR_KEYTABLE_SYSTEM_DIR "/protocols"
+-- 
+2.26.2
+

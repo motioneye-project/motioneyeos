@@ -1,0 +1,76 @@
+From 407c96fc790d0d11ca9603a2a533216c745b5051 Mon Sep 17 00:00:00 2001
+From: Stefan Nickl <Stefan.Nickl@gmail.com>
+Date: Mon, 13 May 2019 22:33:21 +0200
+Subject: [PATCH] Make scheduler functions Linux-compatible
+
+Let sched_getscheduler(), sched_setscheduler(), sched_getparam(),
+sched_setparam() invoke the Linux syscalls of the same name instead
+of returning -ENOSYS.
+
+Signed-off-by: Stefan Nickl <Stefan.Nickl@gmail.com>
+---
+ src/sched/sched_getparam.c     | 3 +--
+ src/sched/sched_getscheduler.c | 3 +--
+ src/sched/sched_setparam.c     | 3 +--
+ src/sched/sched_setscheduler.c | 3 +--
+ 4 files changed, 4 insertions(+), 8 deletions(-)
+
+diff --git a/src/sched/sched_getparam.c b/src/sched/sched_getparam.c
+index 76f10e4..65be107 100644
+--- a/src/sched/sched_getparam.c
++++ b/src/sched/sched_getparam.c
+@@ -1,8 +1,7 @@
+ #include <sched.h>
+-#include <errno.h>
+ #include "syscall.h"
+ 
+ int sched_getparam(pid_t pid, struct sched_param *param)
+ {
+-	return __syscall_ret(-ENOSYS);
++	return syscall(SYS_sched_getparam, pid, param);
+ }
+diff --git a/src/sched/sched_getscheduler.c b/src/sched/sched_getscheduler.c
+index 394e508..4c922f6 100644
+--- a/src/sched/sched_getscheduler.c
++++ b/src/sched/sched_getscheduler.c
+@@ -1,8 +1,7 @@
+ #include <sched.h>
+-#include <errno.h>
+ #include "syscall.h"
+ 
+ int sched_getscheduler(pid_t pid)
+ {
+-	return __syscall_ret(-ENOSYS);
++	return syscall(SYS_sched_getscheduler, pid);
+ }
+diff --git a/src/sched/sched_setparam.c b/src/sched/sched_setparam.c
+index 18623ee..f699faf 100644
+--- a/src/sched/sched_setparam.c
++++ b/src/sched/sched_setparam.c
+@@ -1,8 +1,7 @@
+ #include <sched.h>
+-#include <errno.h>
+ #include "syscall.h"
+ 
+ int sched_setparam(pid_t pid, const struct sched_param *param)
+ {
+-	return __syscall_ret(-ENOSYS);
++	return syscall(SYS_sched_setparam, pid, param);
+ }
+diff --git a/src/sched/sched_setscheduler.c b/src/sched/sched_setscheduler.c
+index 4435f21..e678221 100644
+--- a/src/sched/sched_setscheduler.c
++++ b/src/sched/sched_setscheduler.c
+@@ -1,8 +1,7 @@
+ #include <sched.h>
+-#include <errno.h>
+ #include "syscall.h"
+ 
+ int sched_setscheduler(pid_t pid, int sched, const struct sched_param *param)
+ {
+-	return __syscall_ret(-ENOSYS);
++	return syscall(SYS_sched_setscheduler, pid, sched, param);
+ }
+-- 
+2.21.0
+

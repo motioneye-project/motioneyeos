@@ -1,0 +1,33 @@
+comment "gcnano-binaries needs a Linux kernel to be built"
+	depends on BR2_arm
+	depends on !BR2_LINUX_KERNEL
+
+comment "gcnano-binaries needs a glibc toolchain w/ threads, dynamic library"
+	depends on BR2_arm
+	depends on !BR2_TOOLCHAIN_USES_GLIBC || !BR2_TOOLCHAIN_HAS_THREADS \
+		|| BR2_STATIC_LIBS
+
+config BR2_PACKAGE_GCNANO_BINARIES
+	bool "gcnano-binaries"
+	depends on BR2_arm
+	depends on BR2_LINUX_KERNEL
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libdrm, wayland
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_HAS_LIBEGL
+	select BR2_PACKAGE_HAS_LIBGLES
+	select BR2_PACKAGE_LIBDRM
+	select BR2_PACKAGE_WAYLAND
+	help
+	  Driver and libaries for stm vivante gcnano gpu.
+	  https://github.com/STMicroelectronics/gcnano-binaries/
+
+if BR2_PACKAGE_GCNANO_BINARIES
+
+config BR2_PACKAGE_PROVIDES_LIBEGL
+	default "gcnano-binaries"
+
+config BR2_PACKAGE_PROVIDES_LIBGLES
+	default "gcnano-binaries"
+
+endif

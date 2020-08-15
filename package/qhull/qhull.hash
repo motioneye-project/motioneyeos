@@ -1,4 +1,5 @@
-# From http://www.qhull.org/download/qhull-2015.2.md5sum
-md5	e6270733a826a6a7c32b796e005ec3dc	qhull-2015-src-7.2.0.tgz
+# From http://www.qhull.org/download/qhull-2019.1.md5sum
+md5	53c04f9c89b491b17b10c7ea1eaa4cc8	qhull-2019-src-7.3.2.tgz
 # Locally computed
-sha256	78b010925c3b577adc3d58278787d7df08f7c8fb02c3490e375eab91bb58a436	qhull-2015-src-7.2.0.tgz
+sha256	2b7990558c363076261564f61b74db4d0d73b71869755108a469038c07dc43fb	qhull-2019-src-7.3.2.tgz
+sha256	34db0c0c4f931861d720555c9cd7a2e228d1290ba29af0f2ee80c41bb2038afb	COPYING.txt

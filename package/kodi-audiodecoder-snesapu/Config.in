@@ -1,7 +1,6 @@
 config BR2_PACKAGE_KODI_AUDIODECODER_SNESAPU
 	bool "kodi-audiodecoder-snesapu"
-	select BR2_PACKAGE_KODI_PLATFORM
 	help
 	  SPC decoder addon for Kodi
 
-	  https://github.com/notspiff/audiodecoder.snesapu
+	  https://github.com/xbmc/audiodecoder.snesapu

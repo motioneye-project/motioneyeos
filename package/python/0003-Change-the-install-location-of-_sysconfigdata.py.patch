@@ -1,4 +1,4 @@
-From 0ef0d4ddd3f2261e381f22061a9a451dfbb1dc9e Mon Sep 17 00:00:00 2001
+From e3f3c454ec4992a2283640cef0a35da5a05fb399 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Tue, 7 Mar 2017 22:17:59 +0100
 Subject: [PATCH] Change the install location of _sysconfigdata.py
@@ -19,16 +19,18 @@ this directory gets added to the PYTHONPATH of the host Python
 interpreter when building Python modules for the target.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[Peter: update for 2.7.16]
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
 ---
  Makefile.pre.in | 12 ++++++++++--
  configure.ac    |  2 +-
  2 files changed, 11 insertions(+), 3 deletions(-)
 
 diff --git a/Makefile.pre.in b/Makefile.pre.in
-index e288964..5367df7 100644
+index 9297e7fc89..49d3c0926f 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -529,6 +529,9 @@ pybuilddir.txt: $(BUILDPYTHON)
+@@ -509,6 +509,9 @@ pybuilddir.txt: $(BUILDPYTHON)
  		rm -f ./pybuilddir.txt ; \
  		exit 1 ; \
  	fi
@@ -38,7 +40,7 @@ index e288964..5367df7 100644
  
  # This is shared by the math and cmath modules
  Modules/_math.o: Modules/_math.c Modules/_math.h
-@@ -1080,7 +1083,7 @@ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
+@@ -1091,7 +1094,7 @@ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
  		else	true; \
  		fi; \
  	done
@@ -47,7 +49,7 @@ index e288964..5367df7 100644
  	do \
  		if test -x $$i; then \
  			$(INSTALL_SCRIPT) $$i $(DESTDIR)$(LIBDEST); \
-@@ -1090,6 +1093,11 @@ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
+@@ -1101,6 +1104,11 @@ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
  			echo $(INSTALL_DATA) $$i $(LIBDEST); \
  		fi; \
  	done
@@ -59,7 +61,7 @@ index e288964..5367df7 100644
  	@for d in $(LIBSUBDIRS); \
  	do \
  		a=$(srcdir)/Lib/$$d; \
-@@ -1418,7 +1426,7 @@ distclean: clobber
+@@ -1426,7 +1434,7 @@ distclean: clobber
  		Modules/Setup Modules/Setup.local Modules/Setup.config \
  		Modules/ld_so_aix Modules/python.exp Misc/python.pc
  	-rm -f python*-gdb.py
@@ -69,18 +71,18 @@ index e288964..5367df7 100644
  	# Expansion is performed here by shell (spawned by make) itself before
  	# arguments are passed to find. So LC_ALL=C must be set as a separate
 diff --git a/configure.ac b/configure.ac
-index 1273465..5f89797 100644
+index aecf6066e8..7143172b98 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -33,7 +33,7 @@ if test "$cross_compiling" = yes; then
+@@ -36,7 +36,7 @@ if test "$cross_compiling" = yes; then
  	    AC_MSG_ERROR([python$PACKAGE_VERSION interpreter not found])
  	fi
          AC_MSG_RESULT($interp)
 -	PYTHON_FOR_BUILD='_PYTHON_PROJECT_BASE=$(abs_builddir) _PYTHON_HOST_PLATFORM=$(_PYTHON_HOST_PLATFORM) PYTHONPATH=$(shell test -f pybuilddir.txt && echo $(abs_builddir)/`cat pybuilddir.txt`:)$(srcdir)/Lib:$(srcdir)/Lib/$(PLATDIR) '$interp
 +	PYTHON_FOR_BUILD='_PYTHON_PROJECT_BASE=$(abs_builddir) _PYTHON_HOST_PLATFORM=$(_PYTHON_HOST_PLATFORM) PYTHONPATH=$(shell test -f pysysconfigdatadir.txt && echo $(abs_builddir)/`cat pysysconfigdatadir.txt`:)$(srcdir)/Lib:$(srcdir)/Lib/$(PLATDIR) '$interp
      fi
-     # Used to comment out stuff for rebuilding generated files
-     GENERATED_COMMENT='#'
+ elif test "$cross_compiling" = maybe; then
+     AC_MSG_ERROR([Cross compiling required --host=HOST-TUPLE and --build=ARCH])
 -- 
-2.7.4
+2.11.0
 

@@ -22,9 +22,7 @@ LIBMEDIAART_CONF_OPTS += \
 	--disable-qt
 else ifeq ($(BR2_PACKAGE_LIBMEDIAART_BACKEND_QT),y)
 # qt5 needs c++11 (since qt-5.7)
-ifeq ($(BR2_PACKAGE_QT5_VERSION_LATEST),y)
 LIBMEDIAART_CONF_ENV += CXXFLAGS="$(TARGET_CXXFLAGS) -std=c++11"
-endif
 LIBMEDIAART_DEPENDENCIES += qt5base
 LIBMEDIAART_CONF_OPTS += \
 	--disable-gdkpixbuf \
@@ -33,6 +31,13 @@ else ifeq ($(BR2_PACKAGE_LIBMEDIAART_BACKEND_NONE),y)
 LIBMEDIAART_CONF_OPTS += \
 	--disable-gdkpixbuf \
 	--disable-qt
+endif
+
+ifeq ($(BR2_PACKAGE_GOBJECT_INTROSPECTION),y)
+LIBMEDIAART_CONF_OPTS += --enable-introspection
+LIBMEDIAART_DEPENDENCIES += gobject-introspection
+else
+LIBMEDIAART_CONF_OPTS += --disable-introspection
 endif
 
 $(eval $(autotools-package))

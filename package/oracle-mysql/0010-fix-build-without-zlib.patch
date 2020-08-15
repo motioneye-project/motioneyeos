@@ -1,0 +1,52 @@
+Fix build without zlib
+
+Don't include unconditionally zlib.h, and compile out code that
+requires zlib support.
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+
+diff -durN mysql-5.1.73.orig/mysys/checksum.c mysql-5.1.73/mysys/checksum.c
+--- mysql-5.1.73.orig/mysys/checksum.c	2020-07-14 17:34:38.212304432 +0200
++++ mysql-5.1.73/mysys/checksum.c	2020-07-14 18:06:45.076342493 +0200
+@@ -16,7 +16,9 @@
+ 
+ #include <my_global.h>
+ #include <my_sys.h>
++#ifdef HAVE_COMPRESS
+ #include <zlib.h>
++#endif
+ 
+ /*
+   Calculate a long checksum for a memoryblock.
+diff -durN mysql-5.1.73.orig/sql/item_strfunc.cc mysql-5.1.73/sql/item_strfunc.cc
+--- mysql-5.1.73.orig/sql/item_strfunc.cc	2020-07-14 17:34:38.160304431 +0200
++++ mysql-5.1.73/sql/item_strfunc.cc	2020-07-14 18:04:36.956339962 +0200
+@@ -35,7 +35,9 @@
+ #include "my_md5.h"
+ #include "sha1.h"
+ #include "my_aes.h"
++#ifdef HAVE_COMPRESS
+ #include <zlib.h>
++#endif
+ C_MODE_START
+ #include "../mysys/my_static.h"			// For soundex_map
+ C_MODE_END
+diff -durN mysql-5.1.73.orig/sql/sql_table.cc mysql-5.1.73/sql/sql_table.cc
+--- mysql-5.1.73.orig/sql/sql_table.cc	2020-07-14 17:34:38.156304431 +0200
++++ mysql-5.1.73/sql/sql_table.cc	2020-07-14 18:14:48.628352044 +0200
+@@ -1681,6 +1681,7 @@
+       goto end;
+     }
+   }
++#ifdef HAVE_COMPRESS
+   if (flags & WFRM_PACK_FRM)
+   {
+     /*
+@@ -1702,6 +1703,7 @@
+     }
+     error= my_delete(shadow_frm_name, MYF(MY_WME));
+   }
++#endif
+   if (flags & WFRM_INSTALL_SHADOW)
+   {
+ #ifdef WITH_PARTITION_STORAGE_ENGINE

@@ -11,11 +11,6 @@ ALSAMIXERGUI_LICENSE = GPL-2.0+
 ALSAMIXERGUI_LICENSE_FILES = debian/copyright
 ALSAMIXERGUI_AUTORECONF = YES
 
-ALSAMIXERGUI_CONF_ENV = \
-	ac_cv_lib_fltk_numericsort=yes \
-	ac_cv_lib_fltk_fl_numericsort=yes \
-	ac_cv_lib_asound_snd_ctl_open=yes
-
 ALSAMIXERGUI_DEPENDENCIES = fltk alsa-lib
 
 $(eval $(autotools-package))

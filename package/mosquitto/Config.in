@@ -1,14 +1,21 @@
 config BR2_PACKAGE_MOSQUITTO
 	bool "mosquitto"
-	depends on !BR2_STATIC_LIBS # builds .so
 	help
-	  Mosquitto is an open source message broker that implements
-	  the MQ Telemetry Transport protocol versions 3.1 and
-	  3.1.1. MQTT provides a lightweight method of carrying out
-	  messaging using a publish/subscribe model. This makes it
-	  suitable for "machine to machine" messaging such as with low
-	  power sensors or mobile devices such as phones, embedded
-	  computers or microcontrollers like the Arduino.
+	  Eclipse Mosquitto is an open source (EPL/EDL licensed) message
+	  broker that implements the MQTT protocol versions 5.0, 3.1.1
+	  and 3.1. Mosquitto is lightweight and is suitable for use on
+	  all devices from low power single board computers to full
+	  servers.
+
+	  The MQTT protocol provides a lightweight method of carrying
+	  out messaging using a publish/subscribe model. This makes it
+	  suitable for Internet of Things messaging such as with low
+	  power sensors or mobile devices such as phones,
+	  embedded computers or microcontrollers.
+
+	  The Mosquitto project also provides a C library for
+	  implementing MQTT clients, and the very popular mosquitto_pub
+	  and mosquitto_sub command line MQTT clients.
 
 	  http://mosquitto.org/
 
@@ -16,12 +23,12 @@ config BR2_PACKAGE_MOSQUITTO_BROKER
 	bool "install the mosquitto broker"
 	default y
 	depends on BR2_USE_MMU # fork()
+	depends on !BR2_STATIC_LIBS # include <dlfcn.h>
 	depends on BR2_PACKAGE_MOSQUITTO
 	help
 	  Build and install the mosquitto broker onto target.
 
-comment "mosquitto broker needs a system with MMU"
-	depends on BR2_PACKAGE_MOSQUTTO && !BR2_USE_MMU
-
-comment "mosquitto needs a toolchain w/ dynamic library"
+comment "mosquitto broker needs a toolchain w/ dynamic library"
+	depends on BR2_USE_MMU
 	depends on BR2_STATIC_LIBS
+	depends on BR2_PACKAGE_MOSQUITTO

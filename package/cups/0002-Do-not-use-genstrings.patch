@@ -14,6 +14,8 @@ Signed-off-by: Olivier Schonken <olivier.schonken@gmail.com>
 it, remove useless and potentially confusing 'echo' before the
 genstrings call.]
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[Fabrice: updated for 2.3.0]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
 ---
  ppdc/Makefile | 2 --
  1 file changed, 2 deletions(-)
@@ -23,9 +25,9 @@ index 68bf6b2..d57a0c9 100644
 --- a/ppdc/Makefile
 +++ b/ppdc/Makefile
 @@ -242,8 +242,6 @@ genstrings:		genstrings.o libcupsppdc.a ../cups/$(LIBCUPSSTATIC) \
- 	$(CXX) $(ARCHFLAGS) $(LDFLAGS) -o genstrings genstrings.o \
- 		libcupsppdc.a ../cups/$(LIBCUPSSTATIC) $(LIBGSSAPI) $(SSLLIBS) \
- 		$(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(LD_CXX) $(ARCHFLAGS) $(ALL_LDFLAGS) -o genstrings genstrings.o \
+		libcupsppdc.a $(LINKCUPSSTATIC)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 -	echo Generating localization strings...
 -	./genstrings >sample.c
  

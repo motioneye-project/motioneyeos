@@ -1,0 +1,21 @@
+config BR2_PACKAGE_LIBMODSECURITY
+	bool "libmodsecurity"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_PCRE
+	help
+	  Libmodsecurity is one component of the ModSecurity
+	  v3 project. The library codebase serves as an
+	  interface to ModSecurity Connectors taking in web
+	  traffic and applying traditional ModSecurity
+	  processing. In general, it provides the capability
+	  to load/interpret rules written in the ModSecurity
+	  SecRules format and apply them to HTTP content
+	  provided by your application via Connectors.
+
+	  https://github.com/SpiderLabs/ModSecurity
+
+comment "libmodsecurity needs a toolchain w/ C++, dynamic library, threads"
+	depends on !BR2_INSTALL_LIBSTDCPP || BR2_STATIC_LIBS || \
+		!BR2_TOOLCHAIN_HAS_THREADS

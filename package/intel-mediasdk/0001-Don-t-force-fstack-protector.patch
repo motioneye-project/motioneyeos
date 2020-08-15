@@ -1,0 +1,52 @@
+From 28ca7393c08cb54b87d11c1ca92821e48f54781b Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Mon, 15 Apr 2019 23:09:33 +0200
+Subject: [PATCH] Don't force -fstack-protector
+
+This allows the environment to decide whether SSP should be used or
+not, for example to support toolchains that don't have SSP support.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ api/mfx_dispatch/linux/CMakeLists.txt | 2 +-
+ builder/FindPackages.cmake            | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/api/mfx_dispatch/linux/CMakeLists.txt b/api/mfx_dispatch/linux/CMakeLists.txt
+index 15a4bd9a..4415f840 100644
+--- a/api/mfx_dispatch/linux/CMakeLists.txt
++++ b/api/mfx_dispatch/linux/CMakeLists.txt
+@@ -100,7 +100,7 @@ target_link_libraries(mfx dl)
+ get_api_version(MFX_VERSION_MAJOR MFX_VERSION_MINOR)
+ 
+ set_target_properties( mfx PROPERTIES LINK_FLAGS
+-  "-Wl,--no-undefined,-z,relro,-z,now,-z,noexecstack -Wl,--version-script=${CMAKE_CURRENT_SOURCE_DIR}/libmfx.map -fstack-protector")
++  "-Wl,--no-undefined,-z,relro,-z,now,-z,noexecstack -Wl,--version-script=${CMAKE_CURRENT_SOURCE_DIR}/libmfx.map")
+ set_target_properties( mfx PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_LIB_DIR}/${CMAKE_BUILD_TYPE} FOLDER mfx )
+ set_target_properties( mfx PROPERTIES   VERSION ${MFX_VERSION_MAJOR}.${MFX_VERSION_MINOR})
+ set_target_properties( mfx PROPERTIES SOVERSION ${MFX_VERSION_MAJOR})
+diff --git a/builder/FindPackages.cmake b/builder/FindPackages.cmake
+index 7e36ae2d..5b8b9b9d 100644
+--- a/builder/FindPackages.cmake
++++ b/builder/FindPackages.cmake
+@@ -83,7 +83,7 @@ function( configure_build_variant_linux target variant )
+     return() # should not occur; just in case
+   endif()
+   set( link_flags_list "-Wl,--no-undefined,-z,relro,-z,now,-z,noexecstack -Wl,--no-as-needed -ldl")
+-  append_property( ${ARGV0} LINK_FLAGS "${link_flags_list} ${MFX_LDFLAGS} -fstack-protector" )
++  append_property( ${ARGV0} LINK_FLAGS "${link_flags_list} ${MFX_LDFLAGS}" )
+ #  message( STATUS "Libva located at: ${PKG_LIBVA_LIBRARY_DIRS}" )
+ 
+   if( ARGV1 MATCHES hw AND Linux )
+@@ -448,7 +448,7 @@ function(configure_dependencies target dependencies variant)
+   endforeach()
+ 
+   set(SCOPE_CFLAGS ${SCOPE_CFLAGS} PARENT_SCOPE)
+-  set(SCOPE_LINKFLAGS "${SCOPE_LINKFLAGS} -Wl,--no-undefined,-z,relro,-z,now,-z,noexecstack -fstack-protector" PARENT_SCOPE)
++  set(SCOPE_LINKFLAGS "${SCOPE_LINKFLAGS} -Wl,--no-undefined,-z,relro,-z,now,-z,noexecstack" PARENT_SCOPE)
+   set(SCOPE_LIBS ${SCOPE_LIBS} PARENT_SCOPE)
+ endfunction()
+ 
+-- 
+2.20.1
+

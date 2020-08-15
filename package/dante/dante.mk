@@ -4,15 +4,22 @@
 #
 ################################################################################
 
-DANTE_VERSION = 1.4.1
+DANTE_VERSION = 1.4.2
 DANTE_SITE = http://www.inet.no/dante/files
 DANTE_LICENSE = BSD-3-Clause
 DANTE_LICENSE_FILES = LICENSE
 
-# 0002-compiler.m4-do-not-remove-g-flag.patch touches a m4 file
+# Needed so that our libtool patch applies properly
 DANTE_AUTORECONF = YES
 
-DANTE_CONF_OPTS += --disable-client --disable-preload --without-pam
+DANTE_CONF_OPTS += --disable-client --disable-preload
+
+ifeq ($(BR2_PACKAGE_LIBMINIUPNPC),y)
+DANTE_DEPENDENCIES += libminiupnpc
+DANTE_CONF_OPTS += --with-upnp
+else
+DANTE_CONF_OPTS += --without-upnp
+endif
 
 ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
 DANTE_DEPENDENCIES += linux-pam

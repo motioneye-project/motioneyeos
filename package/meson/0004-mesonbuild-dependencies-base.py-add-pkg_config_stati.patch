@@ -1,0 +1,41 @@
+From 71295eec724f89ef5f5822c17cf44480335225cd Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sat, 15 Feb 2020 15:13:59 +0100
+Subject: [PATCH] mesonbuild/dependencies/base.py: add pkg_config_static
+
+Allow the user to always call pkg-config with --static thanks to a
+pkg_config_static property. This will allow to fix static build failures
+with libglib2:
+
+FAILED: gio/gio
+/home/naourr/work/instance-0/output-1/host/bin/arm-linux-gcc  -o gio/gio 'gio/6ae6c9e@@gio@exe/gio-tool.c.o' 'gio/6ae6c9e@@gio@exe/gio-tool-cat.c.o' 'gio/6ae6c9e@@gio@exe/gio-tool-copy.c.o' 'gio/6ae6c9e@@gio@exe/gio-tool-info.c.o' 'gio/6ae6c9e@@gio@exe/gio-tool-list.c.o' 'gio/6ae6c9e@@gio@exe/gio-tool-mime.c.o' 'gio/6ae6c9e@@gio@exe/gio-tool-mkdir.c.o' 'gio/6ae6c9e@@gio@exe/gio-tool-monitor.c.o' 'gio/6ae6c9e@@gio@exe/gio-tool-mount.c.o' 'gio/6ae6c9e@@gio@exe/gio-tool-move.c.o' 'gio/6ae6c9e@@gio@exe/gio-tool-open.c.o' 'gio/6ae6c9e@@gio@exe/gio-tool-rename.c.o' 'gio/6ae6c9e@@gio@exe/gio-tool-remove.c.o' 'gio/6ae6c9e@@gio@exe/gio-tool-save.c.o' 'gio/6ae6c9e@@gio@exe/gio-tool-set.c.o' 'gio/6ae6c9e@@gio@exe/gio-tool-trash.c.o' 'gio/6ae6c9e@@gio@exe/gio-tool-tree.c.o' -Wl,--as-needed -Wl,--no-undefined -Wl,-O1 -static -Wl,--start-group gio/libgio-2.0.a glib/libglib-2.0.a gobject/libgobject-2.0.a gmodule/libgmodule-2.0.a -pthread /home/naourr/work/instance-0/output-1/host/arm-buildroot-linux-uclibcgnueabi/sysroot/usr/lib/libz.a /home/naourr/work/instance-0/output-1/host/arm-buildroot-linux-uclibcgnueabi/sysroot/usr/lib/libmount.a /home/naourr/work/instance-0/output-1/host/arm-buildroot-linux-uclibcgnueabi/sysroot/usr/lib/libpcre.a -lm /home/naourr/work/instance-0/output-1/host/arm-buildroot-linux-uclibcgnueabi/sysroot/usr/lib/libffi.a -Wl,--end-group '-Wl,-rpath,$ORIGIN/:$ORIGIN/../glib:$ORIGIN/../gobject:$ORIGIN/../gmodule' -Wl,-rpath-link,/home/naourr/work/instance-0/output-1/build/libglib2-2.62.4/build/gio -Wl,-rpath-link,/home/naourr/work/instance-0/output-1/build/libglib2-2.62.4/build/glib -Wl,-rpath-link,/home/naourr/work/instance-0/output-1/build/libglib2-2.62.4/build/gobject -Wl,-rpath-link,/home/naourr/work/instance-0/output-1/build/libglib2-2.62.4/build/gmodule
+/home/naourr/work/instance-0/output-1/host/opt/ext-toolchain/bin/../lib/gcc/arm-buildroot-linux-uclibcgnueabi/8.3.0/../../../../arm-buildroot-linux-uclibcgnueabi/bin/ld: /home/naourr/work/instance-0/output-1/host/arm-buildroot-linux-uclibcgnueabi/sysroot/usr/lib/libmount.a(la-fs.o): in function `__mnt_fs_set_source_ptr':
+fs.c:(.text+0x5ec): undefined reference to `blkid_parse_tag_string'
+
+Fixes:
+ - http://autobuild.buildroot.org/results/0d36952def63cb69628697fa6408aeb6ce10cb5b
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Romain: Fix if condition, pkg_config_static is a string not a boolean]
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ mesonbuild/dependencies/base.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/mesonbuild/dependencies/base.py b/mesonbuild/dependencies/base.py
+index 5636602e..de4e87bc 100644
+--- a/mesonbuild/dependencies/base.py
++++ b/mesonbuild/dependencies/base.py
+@@ -858,7 +858,8 @@ class PkgConfigDependency(ExternalDependency):
+     def _set_libs(self):
+         env = None
+         libcmd = [self.name, '--libs']
+-        if self.static:
++        if self.static or \
++           (self.env.properties[self.for_machine].get('pkg_config_static', None) == 'true'):
+             libcmd.append('--static')
+         # Force pkg-config to output -L fields even if they are system
+         # paths so we can do manual searching with cc.find_library() later.
+-- 
+2.25.4
+

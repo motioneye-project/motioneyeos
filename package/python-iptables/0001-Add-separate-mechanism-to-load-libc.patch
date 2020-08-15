@@ -1,0 +1,90 @@
+From e3557528d7cdcdc2c579212be8837bc9b54635a4 Mon Sep 17 00:00:00 2001
+From: Frank Vanbever <frank.vanbever@essensium.com>
+Date: Thu, 20 Feb 2020 12:14:08 +0100
+Subject: [PATCH] Add separate mechanism to load libc
+
+ctypes.util.find_library() always returns None for systems which do not have the
+tools installed to determine the location of a given shared library (i.e.
+ldconfig, gcc, objdump). If find_libary() fails attempt to load known libc by
+SONAME.
+
+Upstream: https://github.com/ldx/python-iptables/commit/e3557528d7cdcdc2c579212be8837bc9b54635a4
+
+Signed-off-by: Frank Vanbever <frank.vanbever@essensium.com>
+---
+ iptc/ip4tc.py   |  4 ++--
+ iptc/util.py    | 16 ++++++++++++++++
+ iptc/xtables.py |  4 ++--
+ 3 files changed, 20 insertions(+), 4 deletions(-)
+
+diff --git a/iptc/ip4tc.py b/iptc/ip4tc.py
+index 4c5d690..4ddd2dc 100644
+--- a/iptc/ip4tc.py
++++ b/iptc/ip4tc.py
+@@ -9,7 +9,7 @@ import socket
+ import struct
+ import weakref
+ 
+-from .util import find_library, load_kernel
++from .util import find_library, load_kernel, find_libc
+ from .xtables import (XT_INV_PROTO, NFPROTO_IPV4, XTablesError, xtables,
+                       xt_align, xt_counters, xt_entry_target, xt_entry_match)
+ 
+@@ -26,7 +26,7 @@ if not hasattr(socket, 'IPPROTO_SCTP'):
+ 
+ _IFNAMSIZ = 16
+ 
+-_libc = ct.CDLL("libc.so.6")
++_libc = find_libc()
+ _get_errno_loc = _libc.__errno_location
+ _get_errno_loc.restype = ct.POINTER(ct.c_int)
+ _malloc = _libc.malloc
+diff --git a/iptc/util.py b/iptc/util.py
+index ae5fb9b..e6b1649 100644
+--- a/iptc/util.py
++++ b/iptc/util.py
+@@ -109,3 +109,19 @@ def find_library(*names):
+             major = int(m.group(1))
+         return lib, major
+     return None, None
++
++
++def find_libc():
++    lib = ctypes.util.find_library('c')
++    if lib is not None:
++        return ctypes.CDLL(lib, mode=ctypes.RTLD_GLOBAL)
++
++    libnames = ['libc.so.6', 'libc.so.0', 'libc.so']
++    for name in libnames:
++        try:
++            lib = ctypes.CDLL(name, mode=ctypes.RTLD_GLOBAL)
++            return lib
++        except:
++            pass
++
++    return None
+diff --git a/iptc/xtables.py b/iptc/xtables.py
+index 93bc080..cf21029 100644
+--- a/iptc/xtables.py
++++ b/iptc/xtables.py
+@@ -6,7 +6,7 @@ import sys
+ import weakref
+ 
+ from . import version
+-from .util import find_library
++from .util import find_library, find_libc
+ from .errors import *
+ 
+ XT_INV_PROTO = 0x40  # invert the sense of PROTO
+@@ -792,7 +792,7 @@ class xtables_target(ct.Union):
+                 ("v12", _xtables_target_v12)]
+ 
+ 
+-_libc, _ = find_library("c")
++_libc = find_libc()
+ _optind = ct.c_long.in_dll(_libc, "optind")
+ _optarg = ct.c_char_p.in_dll(_libc, "optarg")
+ 
+-- 
+2.20.1
+

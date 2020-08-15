@@ -1,0 +1,61 @@
+From 646a78262b18e19721cd41ee515215221dd241b6 Mon Sep 17 00:00:00 2001
+From: Hongxu Jia <hongxu.jia@windriver.com>
+Date: Thu, 12 Jul 2018 18:12:42 +0800
+Subject: [PATCH] allow newer autoconf versions
+
+Spidermonkey is hardcoded to use Autoconf 2.13, which is from 1999!
+The reasoning behind using 2.13 is because newer versions of Autoconf at the
+time did not work correctly with the custom m4 macros in the source code.
+However: Because we are building just the spidermonkey engine instead of the
+entire firefox package, and we are using a tarball with a pre-setup
+old-configure file, there is no need for the old version of autoconf.
+
+See: https://bugzilla.mozilla.org/show_bug.cgi?id=104642
+
+Upstream-Status: Inappropriate [embedded specific]
+
+Signed-off-by: Hongxu Jia <hongxu.jia@windriver.com>
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+---
+ build/moz.configure/old.configure | 4 ++--
+ js/src/old-configure              | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/build/moz.configure/old.configure b/build/moz.configure/old.configure
+index 17d0c5bf..436fcc5e 100644
+--- a/build/moz.configure/old.configure
++++ b/build/moz.configure/old.configure
+@@ -33,7 +33,7 @@ def autoconf(mozconfig, autoconf):
+     autoconf = autoconf[0] if autoconf else None
+ 
+     for ac in (mozconfig_autoconf, autoconf, 'autoconf-2.13', 'autoconf2.13',
+-               'autoconf213'):
++               'autoconf213', 'autoconf'):
+         if ac:
+             autoconf = find_program(ac)
+             if autoconf:
+@@ -87,7 +87,7 @@ def prepare_configure(old_configure, mozconfig, autoconf, build_env, shell,
+             old_configure = os.path.join(old_configure_dir, 'js', 'src',
+                                          os.path.basename(old_configure))
+ 
+-    refresh = True
++    refresh = False
+     if exists(old_configure):
+         mtime = getmtime(old_configure)
+         aclocal = os.path.join(build_env.topsrcdir, 'build', 'autoconf',
+diff --git a/js/src/old-configure b/js/src/old-configure
+index 58cc646f..ebd2646e 100644
+--- a/js/src/old-configure
++++ b/js/src/old-configure
+@@ -587,7 +587,7 @@ if test -z "$srcdir"; then
+   ac_prog=$0
+   ac_confdir=`echo $ac_prog|sed 's%/[^/][^/]*$%%'`
+   test "x$ac_confdir" = "x$ac_prog" && ac_confdir=.
+-  srcdir=$ac_confdir
++  srcdir="$ac_confdir/../../"
+   if test ! -r $srcdir/$ac_unique_file; then
+     srcdir=..
+   fi
+-- 
+2.23.0
+

@@ -1,0 +1,14 @@
+config BR2_PACKAGE_ERLANG_P1_ACME
+	bool "erlang-p1-acme"
+	depends on BR2_INSTALL_LIBSTDCPP # erlang-jiffy
+	select BR2_PACKAGE_ERLANG_IDNA
+	select BR2_PACKAGE_ERLANG_JIFFY
+	select BR2_PACKAGE_ERLANG_JOSE
+	select BR2_PACKAGE_ERLANG_P1_YCONF
+	help
+	  ACME client library for Erlang.
+
+	  https://github.com/processone/p1_acme
+
+comment "erlang-p1-acme needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP

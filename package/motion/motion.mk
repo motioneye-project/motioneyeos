@@ -16,13 +16,17 @@ MOTION_CONF_OPTS = --without-pgsql \
                    --without-mariadb \
                    --with-ffmpeg=$(STAGING_DIR)/usr/lib
 
-define MOTION_INSTALL_TARGET_CMDS
-    cp $(@D)/src/motion $(TARGET_DIR)/usr/bin/motion
-endef
-
 ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
 MOTION_DEPENDENCIES += rpi-userland
 endif
 
-$(eval $(autotools-package))
+define MOTION_INSTALL_TARGET_CMDS
+    cp $(@D)/src/motion $(TARGET_DIR)/usr/bin/motion
+endef
 
+define MOTION_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -D -m 644 package/motion/motion.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/motion.service
+endef
+
+$(eval $(autotools-package))

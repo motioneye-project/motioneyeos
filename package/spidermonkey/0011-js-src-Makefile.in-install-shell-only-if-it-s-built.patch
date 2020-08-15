@@ -1,0 +1,28 @@
+From b5e4a9926cf50d12e9c5c05c6d1b161e5b662d62 Mon Sep 17 00:00:00 2001
+From: Carlos Santos <unixmania@gmail.com>
+Date: Sat, 7 Mar 2020 23:42:02 -0300
+Subject: [PATCH] js/src/Makefile.in: install shell only if it's built
+
+Prevents an installation error if we configure with --disable-js-shell.
+
+Signed-off-by: Carlos Santos <unixmania@gmail.com>
+---
+ js/src/Makefile.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/js/src/Makefile.in b/js/src/Makefile.in
+index 4ac9f48..9c8fb64 100644
+--- a/js/src/Makefile.in
++++ b/js/src/Makefile.in
+@@ -136,7 +136,7 @@ endif
+ 
+ install::
+ 	$(MAKE) -C build install
+-	$(MAKE) -C shell install
++	if [ -d shell ]; then $(MAKE) -C shell install; fi
+ 
+ ifdef HAVE_DTRACE
+ javascript-trace.h: $(srcdir)/devtools/javascript-trace.d
+-- 
+2.18.2
+

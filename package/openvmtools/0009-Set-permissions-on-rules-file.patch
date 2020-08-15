@@ -1,0 +1,23 @@
+From c3ef6a8285132871ad10f9300d8afff55d8d6de2 Mon Sep 17 00:00:00 2001
+From: puneetse <22071208+puneetse@users.noreply.github.com>
+Date: Wed, 16 Oct 2019 10:09:38 -0700
+Subject: [PATCH] Set permissions on rules file
+
+udevs rules should not be executable otherwise udev will log a warning in the journal
+
+Signed-off-by: Pascal de Bruijn <p.debruijn@unilogic.nl>
+---
+ udev/Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/udev/Makefile.am b/udev/Makefile.am
+index 68fbc3e27..8b9a4d716 100644
+--- a/udev/Makefile.am
++++ b/udev/Makefile.am
+@@ -17,5 +17,5 @@
+ 
+ install-data-local:
+ 	$(INSTALL) -d $(DESTDIR)$(UDEVRULESDIR)
+-	$(INSTALL) $(srcdir)/99-vmware-scsi-udev.rules $(DESTDIR)$(UDEVRULESDIR)
++	$(INSTALL) -m 0644 $(srcdir)/99-vmware-scsi-udev.rules $(DESTDIR)$(UDEVRULESDIR)
+ 

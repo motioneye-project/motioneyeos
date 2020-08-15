@@ -1,0 +1,45 @@
+From 4d330d0d3155211f119b3082f728ae42dcc01e96 Mon Sep 17 00:00:00 2001
+From: Ondrej Mosnacek <omosnace@redhat.com>
+Date: Thu, 23 Jan 2020 13:57:15 +0100
+Subject: [PATCH] checkpolicy: remove unused te_assertions
+
+This variable is declared in a header file, but never defined or used.
+The te_assert structure definition is only used in this declaration, so
+remove both.
+
+Upstream: https://github.com/SELinuxProject/selinux/commit/4d330d0d3155211f119b3082f728ae42dcc01e96#diff-daf264ea505347df0d59a3a97a07742e
+
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+Signed-off-by: Matthew Weber <matthew.weber@rockwellcollins.com>
+---
+ checkpolicy.h | 14 --------------
+ 1 file changed, 14 deletions(-)
+
+diff --git a/checkpolicy.h b/checkpolicy.h
+index 3868f1fa..f127687e 100644
+--- a/checkpolicy.h
++++ b/checkpolicy.h
+@@ -1,20 +1,6 @@
+ #ifndef _CHECKPOLICY_H_
+ #define _CHECKPOLICY_H_
+ 
+-#include <sepol/policydb/ebitmap.h>
+-
+-typedef struct te_assert {
+-	ebitmap_t stypes;
+-	ebitmap_t ttypes;
+-	ebitmap_t tclasses;
+-	int self;
+-	sepol_access_vector_t *avp;
+-	unsigned long line;
+-	struct te_assert *next;
+-} te_assert_t;
+-
+-te_assert_t *te_assertions;
+-
+ extern unsigned int policyvers;
+ 
+ #endif
+-- 
+2.17.1
+

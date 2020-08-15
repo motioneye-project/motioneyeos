@@ -1,0 +1,35 @@
+osdep.m4: Remove getaddrinfo() too low checks
+
+dante runs AC_PREPROC_IFELSE then it fills $ERRVALFILE by running the
+following command:
+
+cat conftest.i | grep gaierrval: >>$2
+
+As a result, $ERRVALFILE does not contain the expected values because
+the expected value is not on the same line than gaierrval:
+
+ gaierrval: 
+ # 130 "conftest.c" 3 4
+           -3
+
+So drop these checks
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+
+diff -Nuar dante-1.4.2-orig/osdep.m4 dante-1.4.2/osdep.m4
+--- dante-1.4.2-orig/osdep.m4	2019-12-09 21:28:38.936003218 +0100
++++ dante-1.4.2/osdep.m4	2019-12-09 21:49:48.764019371 +0100
+@@ -956,13 +956,7 @@
+ unset UNIQUEVALS UNIQUESYMBOLS
+ if test -s $ERRVALFILE; then
+     UNIQUEVALS=`sort $ERRVALFILE | uniq | wc -l | awk '{ print $1 }'`
+-    if test $UNIQUEVALS -le 1; then
+-        AC_MSG_FAILURE([error: getaddrinfo() error value count too low])
+-    fi
+     UNIQUESYMBOLS=`cat $ERRVALFILE | wc -l | awk '{ print $1 }'`
+-    if test $UNIQUESYMBOLS -le 1; then
+-        AC_MSG_FAILURE([error: getaddrinfo() error symbol count too low])
+-    fi
+ 
+     if test $ERRNOCNT -ne $UNIQUESYMBOLS; then
+ 	AC_MSG_FAILURE([internal error: errno symbol count mismatch])

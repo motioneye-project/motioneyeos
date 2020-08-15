@@ -1,0 +1,5 @@
+# From https://www-eu.apache.org/dist/avro/avro-1.9.2/py3/avro-python3-1.9.2.tar.gz.sha512
+sha512  f981fd72bc64eb71e6c132c551700e89a8ebdd6cd9d7e6fa7559831cee69749fc255a49ee0859afd106e0d913c36327b27ca4c7b36efbf740515881b92076cb6  avro-python3-1.9.2.tar.gz
+
+# License files
+sha256  c79a7fea0e3cac04cd43f20e7b648e5a0ff8fa5344e644b0ee09ca1162b62747  avro/LICENSE

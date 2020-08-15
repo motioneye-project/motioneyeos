@@ -1,0 +1,21 @@
+configure: remove predefined -O2 optimization flag
+
+CFLAGS_OPT variable forces to use -O2 optimization flag denying the
+possibility to use different optimization flag values.
+
+Remove -O2 flag from CFLAGS_OPT.
+
+Signed-off-by: Giulio Benetti <giulio.benetti@micronovasrl.com>
+---
+diff -urpN prboom-2.5.0.orig/configure.ac prboom-2.5.0/configure.ac
+--- prboom-2.5.0.orig/configure.ac	2019-06-20 14:07:45.058481879 +0200
++++ prboom-2.5.0/configure.ac	2019-06-20 14:09:05.066238825 +0200
+@@ -48,7 +48,7 @@ else
+ fi
+ 
+ dnl --- cph: work out flags to pass to compiler
+-CFLAGS_OPT="-O2 -fomit-frame-pointer"
++CFLAGS_OPT="-fomit-frame-pointer"
+ AC_C_COMPILE_FLAGS(-Wall)
+ dnl --- Option to enable debugging
+ AC_ARG_ENABLE(debug,AC_HELP_STRING([--enable-debug],[turns on various debugging features, like range checking and internal heap diagnostics]),,enable_debug="no")

@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-BZIP2_VERSION = 1.0.6
-BZIP2_SITE = http://sources.buildroot.net
+BZIP2_VERSION = 1.0.8
+BZIP2_SITE = https://sourceware.org/pub/bzip2
 BZIP2_INSTALL_STAGING = YES
 BZIP2_LICENSE = bzip2 license
 BZIP2_LICENSE_FILES = LICENSE

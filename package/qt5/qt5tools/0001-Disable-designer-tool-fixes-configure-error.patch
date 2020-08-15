@@ -1,0 +1,44 @@
+From ba3c7c2233e8d4875abd6c391764d87a9bd59c5d Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Tue, 17 Dec 2019 11:01:59 +0100
+Subject: [PATCH] Disable designer tool (fixes configure error).
+
+Fixes:
+
+  .../build/qt5tools-5.14.0/src/designer/src/components/lib/lib.pro
+  Project ERROR: Multiple modules claim plugin type 'designer' (uitools, in addition to designer)
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ src/linguist/linguist/linguist.pro | 2 +-
+ src/src.pro                        | 3 ---
+ 2 files changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/src/linguist/linguist/linguist.pro b/src/linguist/linguist/linguist.pro
+index af74df8..d7dfd7a 100644
+--- a/src/linguist/linguist/linguist.pro
++++ b/src/linguist/linguist/linguist.pro
+@@ -1,4 +1,4 @@
+-QT += core-private gui-private widgets xml uitools-private printsupport
++QT += core-private gui-private widgets xml printsupport
+ 
+ DEFINES += QT_NO_CAST_FROM_ASCII QT_NO_CAST_TO_ASCII
+ 
+diff --git a/src/src.pro b/src/src.pro
+index 5c256ea..6d079be 100644
+--- a/src/src.pro
++++ b/src/src.pro
+@@ -7,10 +7,7 @@ qtHaveModule(widgets) {
+         QT_FOR_CONFIG += widgets
+         qtConfig(pushbutton):qtConfig(toolbutton) {
+             SUBDIRS = assistant \
+-                      designer \
+                       pixeltool
+-
+-            linguist.depends = designer
+         }
+         qtHaveModule(quick):qtConfig(thread):qtConfig(toolbutton): SUBDIRS += distancefieldgenerator
+     }
+-- 
+2.23.0
+

@@ -1,0 +1,44 @@
+From 0e0e95dbc380c5eede3a2fc1631294a98078e30f Mon Sep 17 00:00:00 2001
+From: Aymeric Moizard <amoizard@gmail.com>
+Date: Fri, 13 Mar 2020 16:34:41 +0100
+Subject: fix: fix OSIP_MONOTHREAD compilation error introduced with epoll
+ implementation
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+http://git.savannah.nongnu.org/cgit/exosip.git/patch/?id=0e0e95dbc380c5eede3a2fc1631294a98078e30f]
+---
+ src/eXconf.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/eXconf.c b/src/eXconf.c
+index baf90be..6165eb3 100644
+--- a/src/eXconf.c
++++ b/src/eXconf.c
+@@ -801,12 +801,15 @@ eXosip_init (struct eXosip_t *excontext)
+   }
+ 
+   if (excontext->poll_method == EXOSIP_USE_EPOLL_LT) {
++#ifndef OSIP_MONOTHREAD
+     struct epoll_event ev;
++#endif
+     excontext->epfdctl = epoll_create (1);
+     if (excontext->epfdctl < 0) {
+       return OSIP_UNDEFINED_ERROR;
+     }
+     
++#ifndef OSIP_MONOTHREAD
+     memset(&ev, 0, sizeof(struct epoll_event));
+     ev.events = EPOLLIN;
+     ev.data.fd = jpipe_get_read_descr (excontext->j_socketctl_event);
+@@ -815,6 +818,7 @@ eXosip_init (struct eXosip_t *excontext)
+       _eXosip_closesocket (excontext->epfdctl);
+       return OSIP_UNDEFINED_ERROR;
+     }
++#endif
+   }
+ #endif
+   
+-- 
+cgit v1.2.1
+

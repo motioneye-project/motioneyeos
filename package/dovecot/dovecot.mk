@@ -5,8 +5,8 @@
 ################################################################################
 
 DOVECOT_VERSION_MAJOR = 2.3
-DOVECOT_VERSION = $(DOVECOT_VERSION_MAJOR).5.2
-DOVECOT_SITE = https://www.dovecot.org/releases/$(DOVECOT_VERSION_MAJOR)
+DOVECOT_VERSION = $(DOVECOT_VERSION_MAJOR).10.1
+DOVECOT_SITE = https://dovecot.org/releases/$(DOVECOT_VERSION_MAJOR)
 DOVECOT_INSTALL_STAGING = YES
 DOVECOT_LICENSE = LGPL-2.1, MIT, Public Domain, BSD-3-Clause, Unicode-DFS-2015
 DOVECOT_LICENSE_FILES = COPYING COPYING.LGPL COPYING.MIT
@@ -14,6 +14,8 @@ DOVECOT_DEPENDENCIES = \
 	host-pkgconf \
 	$(if $(BR2_PACKAGE_LIBICONV),libiconv) \
 	openssl
+# add host-gettext for AM_ICONV macro
+DOVECOT_DEPENDENCIES += host-gettext
 
 DOVECOT_CONF_ENV = \
 	RPCGEN=__disable_RPCGEN_rquota \
@@ -62,6 +64,13 @@ DOVECOT_CONF_OPTS += --with-sodium
 DOVECOT_DEPENDENCIES += libsodium
 else
 DOVECOT_CONF_OPTS += --without-sodium
+endif
+
+ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
+DOVECOT_CONF_OPTS += --with-pam
+DOVECOT_DEPENDENCIES += linux-pam
+else
+DOVECOT_CONF_OPTS += --without-pam
 endif
 
 ifeq ($(BR2_PACKAGE_DOVECOT_MYSQL),y)

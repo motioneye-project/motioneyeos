@@ -1,0 +1,39 @@
+Fix PATH_MAX detection by including sys/param.h if available
+
+Patch sent upstream:
+https://bz.apache.org/bugzilla/show_bug.cgi?id=63782
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -uNr apr-1.7.0.orig/configure.in apr-1.7.0/configure.in
+--- apr-1.7.0.orig/configure.in	2019-04-01 19:40:46.000000000 +0200
++++ apr-1.7.0/configure.in	2019-09-29 17:03:41.803326791 +0200
+@@ -1586,6 +1586,7 @@
+ AC_SUBST(stringh)
+ AC_SUBST(stringsh)
+ AC_SUBST(sys_ioctlh)
++AC_SUBST(sys_paramh)
+ AC_SUBST(sys_sendfileh)
+ AC_SUBST(sys_signalh)
+ AC_SUBST(sys_socketh)
+diff -uNr apr-1.7.0.orig/include/apr.h.in apr-1.7.0/include/apr.h.in
+--- apr-1.7.0.orig/include/apr.h.in	2019-03-22 14:30:31.000000000 +0100
++++ apr-1.7.0/include/apr.h.in	2019-09-29 17:04:54.203815469 +0200
+@@ -95,6 +95,7 @@
+ #define APR_HAVE_STRINGS_H       @stringsh@
+ #define APR_HAVE_INTTYPES_H      @inttypesh@
+ #define APR_HAVE_SYS_IOCTL_H     @sys_ioctlh@
++#define APR_HAVE_SYS_PARAM_H     @sys_paramh@
+ #define APR_HAVE_SYS_SENDFILE_H  @sys_sendfileh@
+ #define APR_HAVE_SYS_SIGNAL_H    @sys_signalh@
+ #define APR_HAVE_SYS_SOCKET_H    @sys_socketh@
+@@ -206,6 +207,9 @@
+ #include <sys/syslimits.h>
+ #endif
+ #endif
++#if APR_HAVE_SYS_PARAM_H
++#include <sys/param.h>
++#endif
+ 
+ /* __APPLE__ is now the official pre-defined macro for macOS */
+ #ifdef __APPLE__

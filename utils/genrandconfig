@@ -39,17 +39,9 @@ def urlopen_closing(uri):
     return contextlib.closing(_urllib.urlopen(uri))
 
 
-if sys.hexversion >= 0x3000000:
-    def decode_byte_list(bl):
-        return [b.decode() for b in bl]
-else:
-    def decode_byte_list(e):
-        return e
-
-
 class SystemInfo:
     DEFAULT_NEEDED_PROGS = ["make", "git", "gcc", "timeout"]
-    DEFAULT_OPTIONAL_PROGS = ["bzr", "java", "javac", "jar"]
+    DEFAULT_OPTIONAL_PROGS = ["bzr", "java", "javac", "jar", "diffoscope"]
 
     def __init__(self):
         self.needed_progs = list(self.__class__.DEFAULT_NEEDED_PROGS)
@@ -128,7 +120,7 @@ def get_toolchain_configs(toolchains_csv, buildrootdir):
     with open(toolchains_csv) as r:
         # filter empty lines and comments
         lines = [t for t in r.readlines() if len(t.strip()) > 0 and t[0] != '#']
-        toolchains = decode_byte_list(lines)
+        toolchains = lines
     configs = []
 
     (_, _, _, _, hostarch) = os.uname()
@@ -198,7 +190,7 @@ def is_toolchain_usable(configfile, config):
     return True
 
 
-def fixup_config(configfile):
+def fixup_config(sysinfo, configfile):
     """Finalize the configuration and reject any problematic combinations
 
     This function returns 'True' when the configuration has been
@@ -207,20 +199,12 @@ def fixup_config(configfile):
     generated).
     """
 
-    sysinfo = SystemInfo()
     with open(configfile) as configf:
         configlines = configf.readlines()
 
     BR2_TOOLCHAIN_EXTERNAL_URL = 'BR2_TOOLCHAIN_EXTERNAL_URL="http://autobuild.buildroot.org/toolchains/tarballs/'
 
     if "BR2_NEEDS_HOST_JAVA=y\n" in configlines and not sysinfo.has("java"):
-        return False
-    if "BR2_NEEDS_HOST_JAVAC=y\n" in configlines and not sysinfo.has("javac"):
-        return False
-    if "BR2_NEEDS_HOST_JAR=y\n" in configlines and not sysinfo.has("jar"):
-        return False
-    # python-nfc needs bzr
-    if 'BR2_PACKAGE_PYTHON_NFC=y\n' in configlines and not sysinfo.has("bzr"):
         return False
     # The ctng toolchain is affected by PR58854
     if 'BR2_PACKAGE_LTTNG_TOOLS=y\n' in configlines and \
@@ -262,6 +246,9 @@ def fixup_config(configfile):
        'BR2_PACKAGE_LIBFFI=y\n' in configlines:
         return False
     if 'BR2_ARM_CPU_ARMV7M=y\n' in configlines and \
+       'BR2_PACKAGE_LIBFFI=y\n' in configlines:
+        return False
+    if 'BR2_nds32=y\n' in configlines and \
        'BR2_PACKAGE_LIBFFI=y\n' in configlines:
         return False
     if 'BR2_PACKAGE_SUNXI_BOARDS=y\n' in configlines:
@@ -328,6 +315,8 @@ def gen_config(args):
     packages.
     """
 
+    sysinfo = SystemInfo()
+
     # Select a random toolchain configuration
     configs = get_toolchain_configs(args.toolchains_csv, args.buildrootdir)
 
@@ -345,6 +334,10 @@ def gen_config(args):
     # Allow hosts with old certificates to download over https
     configlines.append("BR2_WGET=\"wget --passive-ftp -nd -t 3 --no-check-certificate\"\n")
 
+    # Per-package folder
+    if randint(0, 15) == 0:
+        configlines.append("BR2_PER_PACKAGE_DIRECTORIES=y\n")
+
     # Amend the configuration with a few things.
     if randint(0, 20) == 0:
         configlines.append("BR2_ENABLE_DEBUG=y\n")
@@ -360,6 +353,30 @@ def gen_config(args):
         configlines.append("BR2_PACKAGE_PYTHON_PY_ONLY=y\n")
     if randint(0, 5) == 0:
         configlines.append("BR2_OPTIMIZE_2=y\n")
+    if randint(0, 4) == 0:
+        configlines.append("BR2_SYSTEM_ENABLE_NLS=y\n")
+    if randint(0, 4) == 0:
+        configlines.append("BR2_PIC_PIE=y\n")
+    if randint(0, 4) == 0:
+        configlines.append("BR2_RELRO_FULL=y\n")
+    elif randint(0, 4) == 0:
+        configlines.append("BR2_RELRO_PARTIAL=y\n")
+    if randint(0, 4) == 0:
+        configlines.append("BR2_SSP_ALL=y\n")
+    elif randint(0, 4) == 0:
+        configlines.append("BR2_SSP_REGULAR=y\n")
+    elif randint(0, 4) == 0:
+        configlines.append("BR2_SSP_STRONG=y\n")
+    if randint(0, 4) == 0:
+        configlines.append("BR2_FORTIFY_SOURCE_2=y\n")
+    elif randint(0, 4) == 0:
+        configlines.append("BR2_FORTIFY_SOURCE_1=y\n")
+
+    # Randomly enable BR2_REPRODUCIBLE 10% of times
+    # also enable tar filesystem images for testing
+    if sysinfo.has("diffoscope") and randint(0, 10) == 0:
+        configlines.append("BR2_REPRODUCIBLE=y\n")
+        configlines.append("BR2_TARGET_ROOTFS_TAR=y\n")
 
     # Write out the configuration file
     if not os.path.exists(args.outputdir):
@@ -392,7 +409,7 @@ def gen_config(args):
                                "KCONFIG_PROBABILITY=%d" % randint(1, 30),
                                "randpackageconfig"])
 
-        if fixup_config(configfile):
+        if fixup_config(sysinfo, configfile):
             break
 
     subprocess.check_call(["make", "O=%s" % args.outputdir, "-C", args.buildrootdir,

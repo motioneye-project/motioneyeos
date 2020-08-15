@@ -4,9 +4,10 @@
 #
 ################################################################################
 
-BATCTL_VERSION = 2017.0
+BATCTL_VERSION = 2019.3
 BATCTL_SITE = http://downloads.open-mesh.org/batman/releases/batman-adv-$(BATCTL_VERSION)
-BATCTL_LICENSE = GPL-2.0
+BATCTL_LICENSE = GPL-2.0, MIT (batman_adv.h, list.h)
+BATCTL_LICENSE_FILES = LICENSES/preferred/GPL-2.0 LICENSES/preferred/MIT
 BATCTL_DEPENDENCIES = libnl host-pkgconf
 
 define BATCTL_BUILD_CMDS

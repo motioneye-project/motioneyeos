@@ -1,0 +1,44 @@
+From 3be619b814c16c02a02499e7a157dabd065926dd Mon Sep 17 00:00:00 2001
+From: Sergey Fursov <geyser85@gmail.com>
+Date: Sun, 31 Mar 2019 12:45:50 +0700
+Subject: [PATCH] support PyYAML up to 5.1 version
+
+Signed-off-by: Sergey Fursov <geyser85@gmail.com>
+[Upstream: https://github.com/docker/compose/pull/6623]
+(cherry picked from commit d2ca096f46a56cd4db494c593ed84e5c255dc15d)
+[Peter: allow all 5.x]
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ requirements.txt | 2 +-
+ setup.py         | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/requirements.txt b/requirements.txt
+index d868fdeb..e3dbc807 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -16,7 +16,7 @@ paramiko==2.4.2
+ pypiwin32==219; sys_platform == 'win32' and python_version < '3.6'
+ pypiwin32==223; sys_platform == 'win32' and python_version >= '3.6'
+ PySocks==1.6.7
+-PyYAML==4.2b1
++PyYAML==5.1
+ requests==2.20.0
+ six==1.10.0
+ texttable==1.6.2
+diff --git a/setup.py b/setup.py
+index c9e4729d..17ab678e 100644
+--- a/setup.py
++++ b/setup.py
+@@ -32,7 +32,7 @@ def find_version(*file_paths):
+ install_requires = [
+     'cached-property >= 1.2.0, < 2',
+     'docopt >= 0.6.1, < 1',
+-    'PyYAML >= 3.10, < 5',
++    'PyYAML >= 3.10, < 6',
+     'requests >= 2.20.0, < 3',
+     'texttable >= 0.9.0, < 2',
+     'websocket-client >= 0.32.0, < 1',
+-- 
+2.20.1
+

@@ -1,7 +1,8 @@
 config BR2_PACKAGE_EASY_RSA
 	bool "easy-rsa"
 	select BR2_PACKAGE_OPENSSL # runtime
-	select BR2_PACKAGE_OPENSSL_BIN
+	select BR2_PACKAGE_LIBOPENSSL_BIN if BR2_PACKAGE_LIBOPENSSL
+	select BR2_PACKAGE_LIBRESSL_BIN if BR2_PACKAGE_LIBRESSL
 	help
 	  Simple shell based CA utility
 

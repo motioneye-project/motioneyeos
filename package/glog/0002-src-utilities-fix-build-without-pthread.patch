@@ -1,0 +1,83 @@
+From 9630e0e848da22e27b346c38d9b05f0a16cbf7b3 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Thu, 31 Oct 2019 19:27:16 +0100
+Subject: [PATCH] src/utilities: fix build without pthread
+
+- Remove is_default_thread function which is an internal and not used
+  function
+- Remove g_main_thread_id as it was used only by is_default_thread
+
+Fixes:
+ - http://autobuild.buildroot.net/results/5320bbe1205e782e3516d9bead8d1ed825bcbaad
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/google/glog/commit/9630e0e848da22e27b346c38d9b05f0a16cbf7b3]
+---
+ src/utilities.cc | 16 +++-------------
+ src/utilities.h  |  2 --
+ 2 files changed, 3 insertions(+), 15 deletions(-)
+
+diff --git a/src/utilities.cc b/src/utilities.cc
+index d463b33b..9a1e35d0 100644
+--- a/src/utilities.cc
++++ b/src/utilities.cc
+@@ -61,7 +61,6 @@ using std::string;
+ _START_GOOGLE_NAMESPACE_
+ 
+ static const char* g_program_invocation_short_name = NULL;
+-static pthread_t g_main_thread_id;
+ 
+ _END_GOOGLE_NAMESPACE_
+ 
+@@ -181,16 +180,6 @@ bool IsGoogleLoggingInitialized() {
+   return g_program_invocation_short_name != NULL;
+ }
+ 
+-bool is_default_thread() {
+-  if (g_program_invocation_short_name == NULL) {
+-    // InitGoogleLogging() not yet called, so unlikely to be in a different
+-    // thread
+-    return true;
+-  } else {
+-    return pthread_equal(pthread_self(), g_main_thread_id);
+-  }
+-}
+-
+ #ifdef OS_WINDOWS
+ struct timeval {
+   long tv_sec, tv_usec;
+@@ -276,9 +265,11 @@ pid_t GetTID() {
+   return getpid();  // Linux:  getpid returns thread ID when gettid is absent
+ #elif defined OS_WINDOWS && !defined OS_CYGWIN
+   return GetCurrentThreadId();
+-#else
++#elif defined(HAVE_PTHREAD)
+   // If none of the techniques above worked, we use pthread_self().
+   return (pid_t)(uintptr_t)pthread_self();
++#else
++  return -1;
+ #endif
+ }
+ 
+@@ -350,7 +341,6 @@ void InitGoogleLoggingUtilities(const char* argv0) {
+   if (!slash)  slash = strrchr(argv0, '\\');
+ #endif
+   g_program_invocation_short_name = slash ? slash + 1 : argv0;
+-  g_main_thread_id = pthread_self();
+ 
+ #ifdef HAVE_STACKTRACE
+   InstallFailureFunction(&DumpStackTraceAndExit);
+diff --git a/src/utilities.h b/src/utilities.h
+index ca21cfb3..c66f9146 100644
+--- a/src/utilities.h
++++ b/src/utilities.h
+@@ -163,8 +163,6 @@ const char* ProgramInvocationShortName();
+ 
+ bool IsGoogleLoggingInitialized();
+ 
+-bool is_default_thread();
+-
+ int64 CycleClock_Now();
+ 
+ int64 UsecToCycles(int64 usec);

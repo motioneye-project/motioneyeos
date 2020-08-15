@@ -51,10 +51,11 @@ config BR2_PACKAGE_GSTREAMER1_PLUGIN_REGISTRY
 	  increase the launch-time for a GStreamer application.
 
 config BR2_PACKAGE_GSTREAMER1_INSTALL_TOOLS
-	bool "install gst-launch & gst-inspect"
+	bool "install tools"
 	default y
 	help
-	  Install the gst-launch and gst-inspect tools. This will take
-	  up additional space on the target.
+	  Install the gst-inspect, gst-launch, gst-stats and
+	  gst-typefind tools. This will take up additional space on
+	  the target.
 
 endif

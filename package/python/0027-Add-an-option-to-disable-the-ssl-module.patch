@@ -1,18 +1,20 @@
-From fc16ab40e3e6a5b4deed2fa7c5475fa216ff8d17 Mon Sep 17 00:00:00 2001
+From a0e56b96c3bfb04a5c8ecc0987cdd294d8ce116b Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Tue, 7 Mar 2017 22:30:22 +0100
 Subject: [PATCH] Add an option to disable the ssl module
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[Peter: update for 2.7.16]
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
 ---
  configure.ac | 6 ++++++
  1 file changed, 6 insertions(+)
 
 diff --git a/configure.ac b/configure.ac
-index 524614c..cadac82 100644
+index 361e8c120e..8fe47d8c37 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2834,6 +2834,12 @@ AC_ARG_ENABLE(nis,
+@@ -2863,6 +2863,12 @@ AC_ARG_ENABLE(nis,
      	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} nis"
    	  fi])
  
@@ -26,5 +28,5 @@ index 524614c..cadac82 100644
  	AS_HELP_STRING([--disable-dbm], [disable DBM]),
  	[ if test "$enableval" = "no"; then
 -- 
-2.7.4
+2.11.0
 

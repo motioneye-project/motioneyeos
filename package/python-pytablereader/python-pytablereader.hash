@@ -1,4 +1,5 @@
-# md5 from https://pypi.python.org/pypi/pytablereader/json, sha256 locally computed
-md5	bad666f031a336466c0e9d5c0f4c5783  pytablereader-0.15.0.tar.gz
-sha256	edd7d78ceb1692a1b29254f45574f85f03cd04311d2dfd2256a299c6634cc022  pytablereader-0.15.0.tar.gz
-sha256  7588265082eed5e9f4afd5090c57e610b740ec547b16aaaab739ba07c5eefb15  LICENSE
+# md5, sha256 from https://pypi.org/pypi/pytablereader/json
+md5	23ba6121e2f916dfbf4015516779dfcd  pytablereader-0.26.1.tar.gz
+sha256	f2e1477de8886267b765af7861baacc65606761bfabb0689f118cc5d27861f26  pytablereader-0.26.1.tar.gz
+# Locally computed sha256 checksums
+sha256	7fcef461a93fea587224132a865d1285969c9bec15baf59caeb7a8c7638a8744  LICENSE

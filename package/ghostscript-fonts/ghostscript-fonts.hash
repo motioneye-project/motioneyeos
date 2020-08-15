@@ -1,2 +1,5 @@
 # From http://sourceforge.net/projects/gs-fonts/files/gs-fonts/8.11%20%28base%2035%2C%20GPL%29/
 sha1	2a7198e8178b2e7dba87cb5794da515200b568f5	ghostscript-fonts-std-8.11.tar.gz
+# Locally computed
+sha256 0eb6f356119f2e49b2563210852e17f57f9dcc5755f350a69a46a0d641a0c401  ghostscript-fonts-std-8.11.tar.gz
+sha256 32b1062f7da84967e7019d01ab805935caa7ab7321a7ced0e30ebe75e5df1670  COPYING

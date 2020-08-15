@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-WINE_VERSION = 3.0.4
+WINE_VERSION = 5.0
 WINE_SOURCE = wine-$(WINE_VERSION).tar.xz
-WINE_SITE = https://dl.winehq.org/wine/source/3.0
+WINE_SITE = https://dl.winehq.org/wine/source/5.0
 WINE_LICENSE = LGPL-2.1+
 WINE_LICENSE_FILES = COPYING.LIB LICENSE
 WINE_DEPENDENCIES = host-bison host-flex host-wine
@@ -19,13 +19,16 @@ WINE_CONF_OPTS = \
 	--disable-win64 \
 	--without-capi \
 	--without-coreaudio \
+	--without-faudio \
 	--without-gettext \
 	--without-gettextpo \
 	--without-gphoto \
 	--without-gsm \
 	--without-hal \
 	--without-opencl \
-	--without-oss
+	--without-oss \
+	--without-vkd3d \
+	--without-vulkan
 
 # Wine uses a wrapper around gcc, and uses the value of --host to
 # construct the filename of the gcc to call.  But for external
@@ -193,7 +196,7 @@ else
 WINE_CONF_OPTS += --without-ldap
 endif
 
-ifeq ($(BR2_PACKAGE_MESA3D_OSMESA),y)
+ifeq ($(BR2_PACKAGE_MESA3D_OSMESA_CLASSIC),y)
 WINE_CONF_OPTS += --with-osmesa
 WINE_DEPENDENCIES += mesa3d
 else
@@ -220,6 +223,13 @@ WINE_DEPENDENCIES += sane-backends
 WINE_CONF_ENV += SANE_CONFIG=$(STAGING_DIR)/usr/bin/sane-config
 else
 WINE_CONF_OPTS += --without-sane
+endif
+
+ifeq ($(BR2_PACKAGE_SDL2),y)
+WINE_CONF_OPTS += --with-sdl
+WINE_DEPENDENCIES += sdl2
+else
+WINE_CONF_OPTS += --without-sdl
 endif
 
 ifeq ($(BR2_PACKAGE_TIFF),y)
@@ -348,6 +358,7 @@ HOST_WINE_CONF_OPTS += \
 	--without-capi \
 	--without-cms \
 	--without-coreaudio \
+	--without-faudio \
 	--without-cups \
 	--without-curses \
 	--without-dbus \
@@ -356,6 +367,7 @@ HOST_WINE_CONF_OPTS += \
 	--without-glu \
 	--without-gnutls \
 	--without-gsm \
+	--without-gssapi \
 	--without-gstreamer \
 	--without-hal \
 	--without-jpeg \
@@ -372,8 +384,11 @@ HOST_WINE_CONF_OPTS += \
 	--without-pulse \
 	--without-png \
 	--without-sane \
+	--without-sdl \
 	--without-tiff \
 	--without-v4l \
+	--without-vkd3d \
+	--without-vulkan \
 	--without-x \
 	--without-xcomposite \
 	--without-xcursor \

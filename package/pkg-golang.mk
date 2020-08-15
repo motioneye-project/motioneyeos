@@ -25,11 +25,19 @@ GO_BIN = $(HOST_DIR)/bin/go
 
 # We pass an empty GOBIN, otherwise "go install: cannot install
 # cross-compiled binaries when GOBIN is set"
-GO_TARGET_ENV = \
-	$(HOST_GO_TARGET_ENV) \
+GO_COMMON_ENV = \
 	PATH=$(BR_PATH) \
 	GOBIN= \
 	CGO_ENABLED=$(HOST_GO_CGO_ENABLED)
+
+GO_TARGET_ENV = \
+	$(HOST_GO_TARGET_ENV) \
+	$(GO_COMMON_ENV)
+
+GO_HOST_ENV = \
+	CGO_CFLAGS="$(HOST_CFLAGS)" \
+	CGO_LDFLAGS="$(HOST_LDFLAGS)" \
+	$(GO_COMMON_ENV)
 
 ################################################################################
 # inner-golang-package -- defines how the configuration, compilation and
@@ -44,20 +52,16 @@ GO_TARGET_ENV = \
 #             packages
 #  argument 4 is the type (target or host)
 #
-# NOTE Only type target is supported at the moment
 ################################################################################
 
 define inner-golang-package
 
 $(2)_WORKSPACE ?= _gopath
 
-ifeq ($(BR2_STATIC_LIBS),y)
-$(2)_LDFLAGS += -extldflags '-static'
-endif
-
 $(2)_BUILD_OPTS += \
 	-ldflags "$$($(2)_LDFLAGS)" \
 	-tags "$$($(2)_TAGS)" \
+	-trimpath \
 	-p $(PARALLEL_JOBS)
 
 # Target packages need the Go compiler on the host.
@@ -98,6 +102,13 @@ endif
 # Build step. Only define it if not already defined by the package .mk
 # file.
 ifndef $(2)_BUILD_CMDS
+ifeq ($(4),target)
+
+ifeq ($(BR2_STATIC_LIBS),y)
+$(2)_LDFLAGS += -extldflags '-static'
+endif
+
+# Build package for target
 define $(2)_BUILD_CMDS
 	$$(foreach d,$$($(2)_BUILD_TARGETS),\
 		cd $$($(2)_SRC_PATH); \
@@ -109,6 +120,20 @@ define $(2)_BUILD_CMDS
 			./$$(d)
 	)
 endef
+else
+# Build package for host
+define $(2)_BUILD_CMDS
+	$$(foreach d,$$($(2)_BUILD_TARGETS),\
+		cd $$($(2)_SRC_PATH); \
+		$$(GO_HOST_ENV) \
+			GOPATH="$$(@D)/$$($(2)_WORKSPACE)" \
+			$$($(2)_GO_ENV) \
+			$$(GO_BIN) build -v $$($(2)_BUILD_OPTS) \
+			-o $$(@D)/bin/$$(or $$($(2)_BIN_NAME),$$(notdir $$(d))) \
+			./$$(d)
+	)
+endef
+endif
 endif
 
 # Target installation step. Only define it if not already defined by the
@@ -117,6 +142,15 @@ ifndef $(2)_INSTALL_TARGET_CMDS
 define $(2)_INSTALL_TARGET_CMDS
 	$$(foreach d,$$($(2)_INSTALL_BINS),\
 		$(INSTALL) -D -m 0755 $$(@D)/bin/$$(d) $(TARGET_DIR)/usr/bin/$$(d)
+	)
+endef
+endif
+
+# Host installation step
+ifndef $(2)_INSTALL_CMDS
+define $(2)_INSTALL_CMDS
+	$$(foreach d,$$($(2)_INSTALL_BINS),\
+		$(INSTALL) -D -m 0755 $$(@D)/bin/$$(d) $(HOST_DIR)/bin/$$(d)
 	)
 endef
 endif
@@ -132,3 +166,4 @@ endef # inner-golang-package
 ################################################################################
 
 golang-package = $(call inner-golang-package,$(pkgname),$(call UPPERCASE,$(pkgname)),$(call UPPERCASE,$(pkgname)),target)
+host-golang-package = $(call inner-golang-package,host-$(pkgname),$(call UPPERCASE,host-$(pkgname)),$(call UPPERCASE,$(pkgname)),host)

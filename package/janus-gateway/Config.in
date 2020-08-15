@@ -5,6 +5,7 @@ menuconfig BR2_PACKAGE_JANUS_GATEWAY
 	depends on BR2_USE_MMU # libnice
 	depends on !BR2_STATIC_LIBS # dlopen
 	select BR2_PACKAGE_JANSSON
+	select BR2_PACKAGE_LIBCONFIG
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_LIBNICE
 	select BR2_PACKAGE_LIBSRTP
@@ -76,11 +77,7 @@ comment "RabbitMQ transport needs a toolchain w/ dynamic library, threads"
 
 config BR2_PACKAGE_JANUS_GATEWAY_REST
 	bool "REST (HTTP/HTTPS)"
-	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_LIBMICROHTTPD
-
-comment "REST transport needs a toolchain w/ threads"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_JANUS_GATEWAY_UNIX_SOCKETS
 	bool "Unix Sockets"

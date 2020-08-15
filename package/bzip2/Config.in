@@ -5,3 +5,5 @@ config BR2_PACKAGE_BZIP2
 	  It typically compresses files to within 10% to 15% of the best
 	  available techniques, while being around twice as fast at
 	  compression and six times faster at decompression.
+
+	  https://sourceware.org/bzip2/

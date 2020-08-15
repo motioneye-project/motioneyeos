@@ -1,0 +1,41 @@
+From e13a342c079aeb73e31dfa19eaca119761bac3f3 Mon Sep 17 00:00:00 2001
+From: Jonas Meurer <jonas@freesources.org>
+Date: Tue, 11 Jun 2019 12:16:46 +0200
+Subject: [PATCH] Fix #501: Uninitialized read in gdImageCreateFromXbm
+ (CVE-2019-11038)
+
+Bug-Debian-Security: https://security-tracker.debian.org/tracker/CVE-2019-11038
+Bug-Debian: https://bugs.debian.org/929821
+Bug: https://github.com/libgd/libgd/issues/501
+
+We have to ensure that `sscanf()` does indeed read a hex value here,
+and bail out otherwise.
+
+Original patch by Christoph M. Becker <cmbecker69@gmx.de> for PHP libgd ext.
+https://git.php.net/?p=php-src.git;a=commit;h=ed6dee9a198c904ad5e03113e58a2d2c200f5184
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ src/gd_xbm.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/src/gd_xbm.c b/src/gd_xbm.c
+index 4ca41ac..cf0545e 100644
+--- a/src/gd_xbm.c
++++ b/src/gd_xbm.c
+@@ -169,7 +169,11 @@ BGD_DECLARE(gdImagePtr) gdImageCreateFromXbm(FILE * fd)
+ 			}
+ 			h[3] = ch;
+ 		}
+-		sscanf(h, "%x", &b);
++		if (sscanf(h, "%x", &b) != 1) {
++			gd_error("invalid XBM");
++			gdImageDestroy(im);
++			return 0;
++		}
+ 		for (bit = 1; bit <= max_bit; bit = bit << 1) {
+ 			gdImageSetPixel(im, x++, y, (b & bit) ? 1 : 0);
+ 			if (x == im->sx) {
+-- 
+2.20.1
+

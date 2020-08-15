@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/dnspython/json
+md5	bc9ca3b3a82164667d5730ec6d5248a2  dnspython-1.16.0.zip
+sha256	36c5e8e38d4369a08b6780b7f27d790a292b2b08eea01607865bf0936c558e01  dnspython-1.16.0.zip
+# Locally computed sha256 checksums
+sha256  c3ea3ff5654b329c19d3bc5f7481af623c3dded4a6145585499f843ad3d741cd  LICENSE

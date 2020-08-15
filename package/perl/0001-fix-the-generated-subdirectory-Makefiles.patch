@@ -7,6 +7,8 @@ all variables used by BR must be propagated
 
 similar to https://github.com/Perl-Toolchain-Gang/ExtUtils-MakeMaker/commit/98e8532fffe5afa8186329acc44fb957427f1823
 
+see https://github.com/Perl-Toolchain-Gang/ExtUtils-MakeMaker/pull/331, merged in EU-MM v7.35_08
+
 Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
 ---
  cpan/ExtUtils-MakeMaker/lib/ExtUtils/MakeMaker.pm | 2 +-

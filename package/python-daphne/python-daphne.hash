@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/daphne/json
+md5	564353eaed92659e3b113d966a0288f2  daphne-2.4.1.tar.gz0
+sha256  1e41d02d78da373c1f8504835cdca6d447b5d64c2941661d4bd968d412b6c383  daphne-2.4.1.tar.gz
+# Locally computed sha256
+sha256 b846415d1b514e9c1dff14a22deb906d794bc546ca6129f950a18cd091e2a669 LICENSE

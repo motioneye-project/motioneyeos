@@ -1,0 +1,28 @@
+From 95c6184d9ff70a47c41768850923a96de9e544aa Mon Sep 17 00:00:00 2001
+From: Natanael Copa <ncopa@alpinelinux.org>
+Date: Wed, 18 Nov 2015 10:41:01 +0000
+Subject: [PATCH] Use configure test for sys/stat.h include
+
+This is needed for musl libc.
+
+Signed-off-by: Natanael Copa <ncopa@alpinelinux.org>
+[Retrieved from:
+http://cgit.openembedded.org/meta-openembedded/tree/meta-oe/recipes-support/open-vm-tools/open-vm-tools/0011-Use-configure-test-for-sys-stat.h-include.patch?h=sumo]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ open-vm-tools/services/plugins/vix/vixTools.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: open-vm-tools/services/plugins/vix/vixTools.c
+===================================================================
+--- open-vm-tools.orig/services/plugins/vix/vixTools.c
++++ open-vm-tools/services/plugins/vix/vixTools.c
+@@ -66,7 +66,7 @@
+ #include <unistd.h>
+ #endif
+ 
+-#if defined(sun) || defined(__FreeBSD__) || defined(__APPLE__)
++#ifdef HAVE_SYS_STAT_H
+ #include <sys/stat.h>
+ #endif
+ 

@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_PYSFTP
+	bool "python-pysftp"
+	select BR2_PACKAGE_PYTHON_PARAMIKO # runtime
+	help
+	  A friendly face on SFTP.
+
+	  https://bitbucket.org/dundeemt/pysftp

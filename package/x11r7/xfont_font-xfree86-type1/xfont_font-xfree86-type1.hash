@@ -1,2 +1,4 @@
 # From http://www.x.org/archive/current/src/everything/CHECKSUMS
-sha256 caebf42aec7be7f3bd40e0f232d6f34881b853dc84acfcdf7458358701fbe34a font-xfree86-type1-1.0.4.tar.bz2
+sha256  caebf42aec7be7f3bd40e0f232d6f34881b853dc84acfcdf7458358701fbe34a  font-xfree86-type1-1.0.4.tar.bz2
+# Locally computed
+sha256  51e6bc6513b3fa94512d8dd570240498c878605f25292c3883d92fdfca18d0c6  COPYING

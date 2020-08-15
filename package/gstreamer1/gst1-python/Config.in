@@ -1,0 +1,24 @@
+config BR2_PACKAGE_GST1_PYTHON
+	bool "gst1-python"
+	depends on BR2_USE_MMU # libglib2, gobject-introspection
+	depends on BR2_PACKAGE_HOST_QEMU_ARCH_SUPPORTS # gobject-introspection
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_9 # gobject-introspection
+	depends on BR2_TOOLCHAIN_USES_GLIBC # gobject-introspection
+	depends on BR2_PACKAGE_PYTHON3 # gobject-introspection
+	select BR2_PACKAGE_GOBJECT_INTROSPECTION
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_PYTHON_GOBJECT
+	help
+	  GStreamer python overrides for the gobject-introspection-based
+	  pygst bindings.
+
+	  https://gstreamer.freedesktop.org/modules/gst-python.html
+
+comment "gst1-python needs python3"
+	depends on !BR2_PACKAGE_PYTHON3
+
+comment "gst1-python needs a glibc toolchain, gcc >= 4.9"
+	depends on BR2_USE_MMU
+	depends on BR2_PACKAGE_HOST_QEMU_ARCH_SUPPORTS
+	depends on !BR2_TOOLCHAIN_USES_GLIBC || \
+		!BR2_TOOLCHAIN_GCC_AT_LEAST_4_9

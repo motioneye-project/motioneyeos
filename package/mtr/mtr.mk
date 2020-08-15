@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-MTR_VERSION = 66de3ecbab28b054b868a73fbb57f30549d770ac
-MTR_SITE = $(call github,traviscross,mtr,$(MTR_VERSION))
+MTR_VERSION = 0.93
+MTR_SITE = $(call github,traviscross,mtr,v$(MTR_VERSION))
 MTR_AUTORECONF = YES
 MTR_CONF_OPTS = --without-gtk
 MTR_DEPENDENCIES = host-pkgconf $(if $(BR2_PACKAGE_NCURSES),ncurses)

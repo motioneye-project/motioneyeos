@@ -10,3 +10,19 @@ config BR2_PACKAGE_HOST_RCW
 	  then use this toolset and examples.
 
 	  https://source.codeaurora.org/external/qoriq/qoriq-components/rcw/
+
+if BR2_PACKAGE_HOST_RCW
+
+config BR2_PACKAGE_HOST_RCW_CUSTOM_PATH
+	string "RCW Source file paths"
+	help
+	  Space-separated list of .rcw and .rcwi files, that will be
+	  used to generate a RCW binary. The entire list of .rcwi files
+	  used by the .rcw file must be specified. There must be a
+	  single .rcw file in the list.
+
+	  This is optional. If left empty, the rcw package will be
+	  included for use in the SDK or with post scripts but no
+	  RCW binary will not be generated.
+
+endif

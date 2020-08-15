@@ -98,7 +98,7 @@ config snippet. For example, here's how you would test +libcurl+ with
 ----
 $ cat libcurl.config
 BR2_PACKAGE_LIBCURL=y
-BR2_PACKAGE_CURL=y
+BR2_PACKAGE_LIBCURL_CURL=y
 BR2_PACKAGE_OPENSSL=y
 ----
 

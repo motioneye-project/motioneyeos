@@ -6,4 +6,4 @@ config BR2_PACKAGE_EVTEST
 	  device. It then monitors the device and displays all the
 	  events layer events generated.
 
-	  http://cgit.freedesktop.org/evtest
+	  https://gitlab.freedesktop.org/libevdev/evtest

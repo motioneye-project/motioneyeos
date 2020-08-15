@@ -2,3 +2,5 @@ config BR2_PACKAGE_ZD1211_FIRMWARE
 	bool "zd1211-firmware"
 	help
 	  Firmware for the ZyDAS ZD1211 / Atheros AR5007UG wifi devices.
+
+	  https://sourceforge.net/projects/zd1211/

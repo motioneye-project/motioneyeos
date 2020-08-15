@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBSCRYPT_VERSION = v1.21
-LIBSCRYPT_SITE = $(call github,technion,libscrypt,$(LIBSCRYPT_VERSION))
+LIBSCRYPT_VERSION = 1.21
+LIBSCRYPT_SITE = $(call github,technion,libscrypt,v$(LIBSCRYPT_VERSION))
 LIBSCRYPT_LICENSE = BSD-2-Clause
 LIBSCRYPT_LICENSE_FILES = LICENSE
 LIBSCRYPT_INSTALL_STAGING = YES

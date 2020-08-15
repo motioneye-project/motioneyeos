@@ -1,0 +1,9 @@
+config BR2_PACKAGE_MDEVD
+	bool "mdevd"
+	depends on BR2_USE_MMU # skalibs
+	select BR2_PACKAGE_SKALIBS
+	help
+	  mdevd is a small daemon managing kernel hotplug events,
+	  similarly to udevd.
+
+	  http://skarnet.org/software/mdevd/

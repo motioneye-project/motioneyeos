@@ -1,10 +1,11 @@
 menuconfig BR2_PACKAGE_KF5
 	bool "KF5"
 	depends on BR2_PACKAGE_QT5
-	depends on BR2_PACKAGE_QT5_VERSION_LATEST
 	help
 	  This option enables the KF5 KDE Frameworks. Sub-options
 	  allow to select which modules should be built.
+
+	  https://techbase.kde.org/KDE_Frameworks
 
 if BR2_PACKAGE_KF5
 source "package/kf5/kf5-extra-cmake-modules/Config.in"
