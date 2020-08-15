@@ -14,7 +14,7 @@ MOTION_CONF_OPTS = --without-pgsql \
                    --without-sqlite3 \
                    --without-mysql \
                    --without-mariadb \
-                   --with-ffmpeg=$(STAGING_DIR)/usr/lib
+                   --with-ffmpeg
 
 ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
 MOTION_DEPENDENCIES += rpi-userland
