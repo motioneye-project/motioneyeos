@@ -1,0 +1,29 @@
+From a02b5e3bb41026ca6031d01942a093e9ce54edf3 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Tue, 21 Aug 2018 21:11:40 +0200
+Subject: [PATCH] double-conversion: enable for microblaze
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+[Rebased for Qt5.12.0]
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+[Rebased for Qt5.14.0]
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ src/3rdparty/double-conversion/include/double-conversion/utils.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/3rdparty/double-conversion/include/double-conversion/utils.h b/src/3rdparty/double-conversion/include/double-conversion/utils.h
+index 70e697ca..2bb8e389 100644
+--- a/src/3rdparty/double-conversion/include/double-conversion/utils.h
++++ b/src/3rdparty/double-conversion/include/double-conversion/utils.h
+@@ -102,6 +102,7 @@ int main(int argc, char** argv) {
+     defined(__AARCH64EL__) || defined(__aarch64__) || defined(__AARCH64EB__) || \
+     defined(__riscv) || \
+     defined(__or1k__) || defined(__arc__) || \
++    defined(__microblaze__) || \
+     defined(__EMSCRIPTEN__)
+ #define DOUBLE_CONVERSION_CORRECT_DOUBLE_OPERATIONS 1
+ #elif defined(__mc68000__) || \
+-- 
+2.23.0
+

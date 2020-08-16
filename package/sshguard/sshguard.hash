@@ -1,0 +1,4 @@
+# sha256 from https://sourceforge.net/projects/sshguard/files/sshguard/2.4.0/sshguard-2.4.0.sha256
+sha256  065ca4091b3a96802714b560dbbc3d9f0e67574e99e2b6e8857aa1027d17d6c0  sshguard-2.4.0.tar.gz
+# Locally calculated
+sha256  c3ae64f12153a1bc55bc234d09f40a08ab0e0149fffc972c0b7f02d5a12c1a5c  COPYING

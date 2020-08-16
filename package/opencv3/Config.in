@@ -140,6 +140,7 @@ config BR2_PACKAGE_OPENCV3_LIB_ML
 config BR2_PACKAGE_OPENCV3_LIB_OBJDETECT
 	bool "objdetect"
 	# opencv_core dependency is already enabled
+	select BR2_PACKAGE_OPENCV3_LIB_CALIB3D
 	select BR2_PACKAGE_OPENCV3_LIB_IMGPROC
 	select BR2_PACKAGE_OPENCV3_LIB_ML
 	help
@@ -155,12 +156,18 @@ config BR2_PACKAGE_OPENCV3_LIB_PHOTO
 
 config BR2_PACKAGE_OPENCV3_LIB_PYTHON
 	bool "python"
-	depends on BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3
+	depends on BR2_PACKAGE_PYTHON3
 	depends on BR2_PACKAGE_PYTHON_NUMPY_ARCH_SUPPORTS
+	depends on BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_MUSL # python-numpy
 	select BR2_PACKAGE_PYTHON_NUMPY
 	help
 	  Include opencv_python module into the OpenCV build.  No
 	  python example is installed.
+
+comment "python support needs glibc or musl"
+	depends on BR2_PACKAGE_PYTHON3
+	depends on BR2_PACKAGE_PYTHON_NUMPY_ARCH_SUPPORTS
+	depends on !(BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_MUSL)
 
 config BR2_PACKAGE_OPENCV3_LIB_SHAPE
 	bool "shape"
@@ -244,27 +251,6 @@ config BR2_PACKAGE_OPENCV3_WITH_FFMPEG
 	help
 	  Use ffmpeg from the target system.
 
-choice
-	prompt "gstreamer support"
-	help
-	  OpenCV prefers gstreamer-1 over gstreamer-0.10.
-
-config BR2_PACKAGE_OPENCV3_WITHOUT_GSTREAMER
-	bool "none"
-
-config BR2_PACKAGE_OPENCV3_WITH_GSTREAMER
-	bool "gstreamer-0.10"
-	depends on BR2_USE_MMU # gstreamer -> libglib2
-	depends on BR2_USE_WCHAR # gstreamer -> libglib2
-	depends on BR2_TOOLCHAIN_HAS_THREADS # gstreamer -> libglib2
-	select BR2_PACKAGE_GSTREAMER
-	select BR2_PACKAGE_GST_PLUGINS_BASE
-	select BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_APP
-
-comment "gstreamer-0.10 support needs a toolchain w/ wchar, threads"
-	depends on BR2_USE_MMU
-	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
-
 config BR2_PACKAGE_OPENCV3_WITH_GSTREAMER1
 	bool "gstreamer-1.x"
 	depends on BR2_USE_MMU # gstreamer1 -> libglib2
@@ -273,12 +259,12 @@ config BR2_PACKAGE_OPENCV3_WITH_GSTREAMER1
 	select BR2_PACKAGE_GSTREAMER1
 	select BR2_PACKAGE_GST1_PLUGINS_BASE
 	select BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_APP
+	help
+	  Enable gstreamer support.
 
-comment "gstreamer-1.x support needs a toolchain w/ wchar, threads"
+comment "gstreamer support needs a toolchain w/ wchar, threads"
 	depends on BR2_USE_MMU
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
-
-endchoice
 
 config BR2_PACKAGE_OPENCV3_WITH_JASPER
 	bool "jpeg2000 support"
@@ -301,6 +287,18 @@ config BR2_PACKAGE_OPENCV3_WITH_PNG
 	select BR2_PACKAGE_LIBPNG
 	help
 	  Use shared libpng from the target system.
+
+config BR2_PACKAGE_OPENCV3_WITH_PROTOBUF
+	bool "protobuf support"
+	depends on BR2_PACKAGE_PROTOBUF_ARCH_SUPPORTS # protobuf
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # protobuf
+	select BR2_PACKAGE_PROTOBUF
+	help
+	  Use shared protobuf from the target system.
+
+comment "protobuf support needs a toolchain w/ gcc >= 4.8"
+	depends on BR2_PACKAGE_PROTOBUF_ARCH_SUPPORTS
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
 
 config BR2_PACKAGE_OPENCV3_WITH_TIFF
 	bool "tiff support"

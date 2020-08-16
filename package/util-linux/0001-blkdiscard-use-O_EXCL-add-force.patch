@@ -1,0 +1,86 @@
+From 34fed3ff1740aded9c2aae6b5d67a4eb696f738e Mon Sep 17 00:00:00 2001
+From: Karel Zak <kzak@redhat.com>
+Date: Thu, 9 Jan 2020 11:03:51 +0100
+Subject: [PATCH] blkdiscard: use O_EXCL, add --force
+
+Let's make it more robust and safe. O_EXCL is an elegant way how to avoid
+unwanted discard on mounted device.
+
+Addresses: https://github.com/karelzak/util-linux/issues/915
+Signed-off-by: Karel Zak <kzak@redhat.com>
+Signed-off-by: Carlos Santos <unixmania@gmail.com>
+---
+ sys-utils/blkdiscard.8 |  5 +++++
+ sys-utils/blkdiscard.c | 11 ++++++++---
+ 2 files changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/sys-utils/blkdiscard.8 b/sys-utils/blkdiscard.8
+index 1f3a32be9..98c6f36a9 100644
+--- a/sys-utils/blkdiscard.8
++++ b/sys-utils/blkdiscard.8
+@@ -36,6 +36,11 @@ MiB (=1024*1024), and so on for GiB, TiB, PiB, EiB, ZiB and YiB (the "iB" is
+ optional, e.g., "K" has the same meaning as "KiB") or the suffixes
+ KB (=1000), MB (=1000*1000), and so on for GB, TB, PB, EB, ZB and YB.
+ .TP
++.BR \-f , " \-\-force"
++Disable all checking.  Since v2.36 the block device is open in exclusive mode (O_EXCL)
++by default to avoid collision with mounted filesystem or another kernel subsystem.
++The force option disables the exclusive access mode.
++.TP
+ .BR \-o , " \-\-offset \fIoffset"
+ Byte offset into the device from which to start discarding.  The provided value
+ will be aligned to the device sector size.  The default value is zero.
+diff --git a/sys-utils/blkdiscard.c b/sys-utils/blkdiscard.c
+index f9ba5e468..589974f9c 100644
+--- a/sys-utils/blkdiscard.c
++++ b/sys-utils/blkdiscard.c
+@@ -88,6 +88,7 @@ static void __attribute__((__noreturn__)) usage(void)
+ 	fputs(_("Discard the content of sectors on a device.\n"), out);
+ 
+ 	fputs(USAGE_OPTIONS, out);
++	fputs(_(" -f, --force         disable all checking\n"), out);
+ 	fputs(_(" -o, --offset <num>  offset in bytes to discard from\n"), out);
+ 	fputs(_(" -l, --length <num>  length of bytes to discard from the offset\n"), out);
+ 	fputs(_(" -p, --step <num>    size of the discard iterations within the offset\n"), out);
+@@ -106,7 +107,7 @@ static void __attribute__((__noreturn__)) usage(void)
+ int main(int argc, char **argv)
+ {
+ 	char *path;
+-	int c, fd, verbose = 0, secsize;
++	int c, fd, verbose = 0, secsize, force = 0;
+ 	uint64_t end, blksize, step, range[2], stats[2];
+ 	struct stat sb;
+ 	struct timeval now, last;
+@@ -116,6 +117,7 @@ int main(int argc, char **argv)
+ 	    { "help",      no_argument,       NULL, 'h' },
+ 	    { "version",   no_argument,       NULL, 'V' },
+ 	    { "offset",    required_argument, NULL, 'o' },
++	    { "force",     no_argument,       NULL, 'f' },
+ 	    { "length",    required_argument, NULL, 'l' },
+ 	    { "step",      required_argument, NULL, 'p' },
+ 	    { "secure",    no_argument,       NULL, 's' },
+@@ -133,8 +135,11 @@ int main(int argc, char **argv)
+ 	range[1] = ULLONG_MAX;
+ 	step = 0;
+ 
+-	while ((c = getopt_long(argc, argv, "hVsvo:l:p:z", longopts, NULL)) != -1) {
++	while ((c = getopt_long(argc, argv, "hfVsvo:l:p:z", longopts, NULL)) != -1) {
+ 		switch(c) {
++		case 'f':
++			force = 1;
++			break;
+ 		case 'l':
+ 			range[1] = strtosize_or_err(optarg,
+ 					_("failed to parse length"));
+@@ -176,7 +181,7 @@ int main(int argc, char **argv)
+ 		errtryhelp(EXIT_FAILURE);
+ 	}
+ 
+-	fd = open(path, O_WRONLY);
++	fd = open(path, O_WRONLY | (force ? 0 : O_EXCL));
+ 	if (fd < 0)
+ 		err(EXIT_FAILURE, _("cannot open %s"), path);
+ 
+-- 
+2.18.2
+

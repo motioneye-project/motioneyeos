@@ -1,0 +1,86 @@
+From 3aef207f90e937d4931daf6d411e092f76d82e66 Mon Sep 17 00:00:00 2001
+From: Young Xiao <YangX92@hotmail.com>
+Date: Sat, 16 Mar 2019 20:09:59 +0800
+Subject: [PATCH] bmp_read_rle4_data(): avoid potential infinite loop
+
+[Retrieved from:
+https://github.com/uclouvain/openjpeg/commit/3aef207f90e937d4931daf6d411e092f76d82e66]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ src/bin/jp2/convertbmp.c | 32 ++++++++++++++++++++++++++------
+ 1 file changed, 26 insertions(+), 6 deletions(-)
+
+diff --git a/src/bin/jp2/convertbmp.c b/src/bin/jp2/convertbmp.c
+index ec34f535b..2fc4e9bc4 100644
+--- a/src/bin/jp2/convertbmp.c
++++ b/src/bin/jp2/convertbmp.c
+@@ -632,12 +632,18 @@ static OPJ_BOOL bmp_read_rle4_data(FILE* IN, OPJ_UINT8* pData,
+     while (y < height) {
+         int c = getc(IN);
+         if (c == EOF) {
+-            break;
++            return OPJ_FALSE;
+         }
+ 
+         if (c) { /* encoded mode */
+-            int j;
+-            OPJ_UINT8 c1 = (OPJ_UINT8)getc(IN);
++            int j, c1_int;
++            OPJ_UINT8 c1;
++
++            c1_int = getc(IN);
++            if (c1_int == EOF) {
++                return OPJ_FALSE;
++            }
++            c1 = (OPJ_UINT8)c1_int;
+ 
+             for (j = 0; (j < c) && (x < width) &&
+                     ((OPJ_SIZE_T)pix < (OPJ_SIZE_T)beyond); j++, x++, pix++) {
+@@ -647,7 +653,7 @@ static OPJ_BOOL bmp_read_rle4_data(FILE* IN, OPJ_UINT8* pData,
+         } else { /* absolute mode */
+             c = getc(IN);
+             if (c == EOF) {
+-                break;
++                return OPJ_FALSE;
+             }
+ 
+             if (c == 0x00) { /* EOL */
+@@ -658,8 +664,14 @@ static OPJ_BOOL bmp_read_rle4_data(FILE* IN, OPJ_UINT8* pData,
+                 break;
+             } else if (c == 0x02) { /* MOVE by dxdy */
+                 c = getc(IN);
++                if (c == EOF) {
++                    return OPJ_FALSE;
++                }
+                 x += (OPJ_UINT32)c;
+                 c = getc(IN);
++                if (c == EOF) {
++                    return OPJ_FALSE;
++                }
+                 y += (OPJ_UINT32)c;
+                 pix = pData + y * stride + x;
+             } else { /* 03 .. 255 : absolute mode */
+@@ -669,13 +681,21 @@ static OPJ_BOOL bmp_read_rle4_data(FILE* IN, OPJ_UINT8* pData,
+                 for (j = 0; (j < c) && (x < width) &&
+                         ((OPJ_SIZE_T)pix < (OPJ_SIZE_T)beyond); j++, x++, pix++) {
+                     if ((j & 1) == 0) {
+-                        c1 = (OPJ_UINT8)getc(IN);
++                        int c1_int;
++                        c1_int = getc(IN);
++                        if (c1_int == EOF) {
++                            return OPJ_FALSE;
++                        }
++                        c1 = (OPJ_UINT8)c1_int;
+                     }
+                     *pix = (OPJ_UINT8)((j & 1) ? (c1 & 0x0fU) : ((c1 >> 4) & 0x0fU));
+                     written++;
+                 }
+                 if (((c & 3) == 1) || ((c & 3) == 2)) { /* skip padding byte */
+-                    getc(IN);
++                    c = getc(IN);
++                    if (c == EOF) {
++                        return OPJ_FALSE;
++                    }
+                 }
+             }
+         }

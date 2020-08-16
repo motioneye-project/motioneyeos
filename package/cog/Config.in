@@ -1,0 +1,53 @@
+comment "cog needs wpewebkit and a toolchain w/ threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_PACKAGE_WPEWEBKIT || !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_COG
+	bool "cog"
+	depends on BR2_PACKAGE_WPEWEBKIT
+	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus
+	depends on BR2_USE_MMU # dbus
+	select BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_WAYLAND
+	help
+	  Single "window" launcher for the WebKit WPE port, and
+	  helper library for implementing WPE launcher. It does
+	  not provide any chrome, and is suitable to be used
+	  as a Web application container.
+
+	  https://github.com/Igalia/cog
+
+if BR2_PACKAGE_COG
+
+config BR2_PACKAGE_COG_PROGRAMS_HOME_URI
+	string "home uri"
+	default "https://wpewebkit.org"
+	help
+	  Default URI to open when "cog" is launched. If an empty
+	  string is used, there is no default and the URI to open
+	  must be always specified in the command line.
+
+config BR2_PACKAGE_COG_PLATFORM_FDO
+	bool "FreeDesktop.org backend"
+	default y
+	select BR2_PACKAGE_LIBXKBCOMMON
+	select BR2_PACKAGE_WAYLAND_PROTOCOLS
+	help
+	  Enable the FreeDesktop.org backend. Cog will interface with
+	  a compositor over the Wayland protocol.
+
+config BR2_PACKAGE_COG_PLATFORM_DRM
+	bool "DRM backend"
+	depends on BR2_PACKAGE_HAS_UDEV # libinput
+	depends on BR2_PACKAGE_MESA3D_OPENGL_EGL # gbm
+	select BR2_PACKAGE_LIBDRM
+	select BR2_PACKAGE_LIBINPUT
+	help
+	  Enable the DRM platform backend. Cog will interface directly
+	  with video drivers that support kernel mode-setting (KMS)
+	  via the DRM user-space API.
+
+comment "DRM platform needs mesa3d w/ EGL driver and GBM"
+	depends on !BR2_PACKAGE_MESA3D_OPENGL_EGL
+
+endif

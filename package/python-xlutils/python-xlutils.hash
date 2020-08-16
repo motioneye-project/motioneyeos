@@ -2,3 +2,5 @@
 md5	7a6a339ddaacabce244341582ee61353  xlutils-2.0.0.tar.gz
 # sha256 calculated by scanpypi
 sha256	7e0e2c233bd185fecf5e2bd3f4e9469ca4a3bd87da64c82cfe5b2af27e7f9e54  xlutils-2.0.0.tar.gz
+# Locally computed
+sha256  28907976ee86414cc720fafc966563b16eeb6a6aeb1da5f5ed40bac3a8808bcf  xlutils/license.txt

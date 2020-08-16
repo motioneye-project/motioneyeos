@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/sqliteschema/json
+md5	175afa008a628f6dc32392a72d4c6b74  sqliteschema-0.16.2.tar.gz
+sha256	023a443abdc12796928c04441fabbbe12e1fe8608f562b4650ae1f9a19504139  sqliteschema-0.16.2.tar.gz
+# Locally computed sha256 checksums
+sha256	7588265082eed5e9f4afd5090c57e610b740ec547b16aaaab739ba07c5eefb15  LICENSE

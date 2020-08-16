@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MSGPACK_VERSION = 3.1.1
+MSGPACK_VERSION = 3.2.1
 MSGPACK_SITE = $(call github,msgpack,msgpack-c,cpp-$(MSGPACK_VERSION))
 MSGPACK_LICENSE = BSL-1.0
 MSGPACK_LICENSE_FILES = COPYING LICENSE_1_0.txt

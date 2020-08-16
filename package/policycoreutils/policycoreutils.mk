@@ -4,12 +4,13 @@
 #
 ################################################################################
 
-POLICYCOREUTILS_VERSION = 2.8
-POLICYCOREUTILS_SITE = https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20180524
+POLICYCOREUTILS_VERSION = 3.0
+POLICYCOREUTILS_SITE = https://github.com/SELinuxProject/selinux/releases/download/20191204
 POLICYCOREUTILS_LICENSE = GPL-2.0
 POLICYCOREUTILS_LICENSE_FILES = COPYING
 
-POLICYCOREUTILS_DEPENDENCIES = libsemanage libcap-ng
+POLICYCOREUTILS_DEPENDENCIES = libsemanage libcap-ng $(TARGET_NLS_DEPENDENCIES)
+POLICYCOREUTILS_MAKE_OPTS = LDLIBS=$(TARGET_NLS_LIBS)
 
 ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
 POLICYCOREUTILS_DEPENDENCIES += linux-pam
@@ -36,8 +37,7 @@ endif
 POLICYCOREUTILS_MAKE_OPTS += \
 	$(TARGET_CONFIGURE_OPTS) \
 	CFLAGS="$(TARGET_CFLAGS) -U_FILE_OFFSET_BITS" \
-	CPPFLAGS="$(TARGET_CPPFLAGS) -U_FILE_OFFSET_BITS" \
-	ARCH="$(BR2_ARCH)"
+	CPPFLAGS="$(TARGET_CPPFLAGS) -U_FILE_OFFSET_BITS"
 
 POLICYCOREUTILS_MAKE_DIRS = \
 	load_policy newrole run_init \
@@ -60,34 +60,19 @@ define POLICYCOREUTILS_INSTALL_TARGET_CMDS
 	)
 endef
 
-HOST_POLICYCOREUTILS_DEPENDENCIES = \
-	host-libsemanage host-dbus-glib host-setools
+HOST_POLICYCOREUTILS_DEPENDENCIES = host-libsemanage
 
 # Undefining _FILE_OFFSET_BITS here because of a "bug" with glibc fts.h
 # large file support.
 # See https://bugzilla.redhat.com/show_bug.cgi?id=574992 for more information
-# We need to pass DESTDIR at build time because it's used by
-# policycoreutils build system to find headers and libraries.
 # We also need to pass PREFIX because it defaults to $(DESTDIR)/usr
 HOST_POLICYCOREUTILS_MAKE_OPTS = \
 	$(HOST_CONFIGURE_OPTS) \
 	CFLAGS="$(HOST_CFLAGS) -U_FILE_OFFSET_BITS" \
 	CPPFLAGS="$(HOST_CPPFLAGS) -U_FILE_OFFSET_BITS" \
-	PYTHON="$(HOST_DIR)/bin/python" \
-	PYTHON_INSTALL_ARGS="$(HOST_PKG_PYTHON_DISTUTILS_INSTALL_OPTS)" \
-	ARCH="$(HOSTARCH)" \
-	DESTDIR=$(HOST_DIR) \
-	PREFIX=$(HOST_DIR)
-
-ifeq ($(BR2_PACKAGE_PYTHON3),y)
-HOST_POLICYCOREUTILS_DEPENDENCIES += host-python3
-HOST_POLICYCOREUTILS_MAKE_OPTS += \
-	PYLIBVER="python$(PYTHON3_VERSION_MAJOR)"
-else
-HOST_POLICYCOREUTILS_DEPENDENCIES += host-python
-HOST_POLICYCOREUTILS_MAKE_OPTS += \
-	PYLIBVER="python$(PYTHON_VERSION_MAJOR)"
-endif
+	PREFIX=$(HOST_DIR) \
+	ETCDIR=$(HOST_DIR)/etc \
+	SBINDIR=$(HOST_DIR)/sbin
 
 # Note: We are only building the programs required by the refpolicy build
 HOST_POLICYCOREUTILS_MAKE_DIRS = \

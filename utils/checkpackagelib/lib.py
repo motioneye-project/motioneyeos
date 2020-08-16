@@ -52,3 +52,17 @@ class TrailingSpace(_CheckFunction):
             return ["{}:{}: line contains trailing whitespace"
                     .format(self.filename, lineno),
                     text]
+
+
+class Utf8Characters(_CheckFunction):
+    def is_ascii(self, s):
+        try:
+            return all(ord(c) < 128 for c in s)
+        except TypeError:
+            return False
+
+    def check_line(self, lineno, text):
+        if not self.is_ascii(text):
+            return ["{}:{}: line contains UTF-8 characters"
+                    .format(self.filename, lineno),
+                    text]

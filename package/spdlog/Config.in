@@ -1,0 +1,14 @@
+config BR2_PACKAGE_SPDLOG
+	bool "spdlog"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_WCHAR # fmt
+	select BR2_PACKAGE_FMT
+	help
+	  Very fast, header only, C++ logging library.
+
+	  https://github.com/gabime/spdlog
+
+comment "spdlog needs a toolchain w/ C++, threads, wchar"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS \
+		|| !BR2_USE_WCHAR

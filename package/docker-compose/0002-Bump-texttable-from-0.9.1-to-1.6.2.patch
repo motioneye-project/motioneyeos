@@ -1,0 +1,41 @@
+From e55dd65ba42a17ba4b017b42f14f7ee647efe64f Mon Sep 17 00:00:00 2001
+From: Ulysses Souza <ulysses.souza@docker.com>
+Date: Mon, 8 Jul 2019 14:52:30 +0200
+Subject: [PATCH] Bump texttable from 0.9.1 to 1.6.2
+
+Signed-off-by: Ulysses Souza <ulysses.souza@docker.com>
+(cherry picked from commit 0bfa1c34f054d86674434770d4d6340e02508e52)
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ requirements.txt | 2 +-
+ setup.py         | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/requirements.txt b/requirements.txt
+index 6007ee3f..d868fdeb 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -19,6 +19,6 @@ PySocks==1.6.7
+ PyYAML==4.2b1
+ requests==2.20.0
+ six==1.10.0
+-texttable==0.9.1
++texttable==1.6.2
+ urllib3==1.21.1; python_version == '3.3'
+ websocket-client==0.56.0
+diff --git a/setup.py b/setup.py
+index 61447801..c9e4729d 100644
+--- a/setup.py
++++ b/setup.py
+@@ -34,7 +34,7 @@ install_requires = [
+     'docopt >= 0.6.1, < 1',
+     'PyYAML >= 3.10, < 5',
+     'requests >= 2.20.0, < 3',
+-    'texttable >= 0.9.0, < 1',
++    'texttable >= 0.9.0, < 2',
+     'websocket-client >= 0.32.0, < 1',
+     'docker[ssh] >= 3.7.0, < 5',
+     'dockerpty >= 0.4.1, < 1',
+-- 
+2.20.1
+

@@ -1,0 +1,38 @@
+config BR2_PACKAGE_UNBOUND
+	bool "unbound"
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_EXPAT
+	select BR2_PACKAGE_LIBEVENT
+	select BR2_PACKAGE_OPENSSL
+	help
+	  Unbound is a validating, recursive, and caching DNS resolver.
+	  It supports DNSSEC, QNAME minimisation, DNS-over-TLS and
+	  DNSCrypt.
+
+	  https://www.unbound.net
+
+if BR2_PACKAGE_UNBOUND
+config BR2_PACKAGE_UNBOUND_DNSCRYPT
+	bool "enable DNSCrypt"
+	select BR2_PACKAGE_LIBSODIUM
+	help
+	  DNSCrypt wraps unmodified DNS queries between a client and
+	  a DNS resolver. Default port used is 443 and like with
+	  normal unencrypted DNS, it uses UDP first and falling back
+	  to TCP if response too large.
+
+	  There is also DNS-over-TLS, a TCP only version
+	  of proposed standard for DNS encryption (RFC 7858).
+	  Default port for DNS-over-TLS is 853 and Unbound has
+	  built-in support for it.
+
+	  https://tools.ietf.org/html/rfc7858
+
+	  Note: Neither DNSCrypt or DNS-over-TLS encrypt the SNI.
+	  Here is some suggestions how to handle SNI encryption:
+
+	  https://tools.ietf.org/html/draft-ietf-tls-sni-encryption-00
+endif
+
+comment "unbound needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

@@ -44,17 +44,21 @@ config BR2_PACKAGE_SCONESERVER_MYSQL
 
 config BR2_PACKAGE_SCONESERVER_BLUETOOTH
 	bool "bluetooth"
-	depends on BR2_USE_WCHAR # bluez->libglib2
-	depends on BR2_USE_MMU # bluez->dbus
-	depends on BR2_TOOLCHAIN_HAS_THREADS # bluez->dbus, bluez->libglib2
-	depends on !BR2_STATIC_LIBS # bluez_utils
-	select BR2_PACKAGE_BLUEZ_UTILS
+	depends on BR2_USE_WCHAR # bluez5_utils -> libglib2
+	depends on BR2_USE_MMU # bluez5_utils -> dbus
+	depends on BR2_TOOLCHAIN_HAS_THREADS # bluez5_utils -> dbus, libglib2
+	depends on !BR2_STATIC_LIBS # bluez5_utils
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4 # bluez5_utils
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # bluez5_utils
+	select BR2_PACKAGE_BLUEZ5_UTILS
 	help
 	  Bluetooth module for Sconeserver
 
-comment "bluetooth support needs a toolchain w/ wchar, threads, dynamic library"
+comment "bluetooth support needs a toolchain w/ wchar, threads, dynamic library, headers >= 3.4"
 	depends on BR2_USE_MMU
-	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
+		BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4
 
 config BR2_PACKAGE_SCONESERVER_RSS
 	bool "rss"

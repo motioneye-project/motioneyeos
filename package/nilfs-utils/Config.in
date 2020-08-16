@@ -9,7 +9,7 @@ config BR2_PACKAGE_NILFS_UTILS
 	help
 	  Tools for creating and managing NILFS2 filesystems.
 
-	  https://github.com/nilfs-dev/nilfs-utils
+	  https://nilfs.sourceforge.io
 
 comment "nilfs-utils needs a toolchain w/ threads"
 	depends on BR2_USE_MMU

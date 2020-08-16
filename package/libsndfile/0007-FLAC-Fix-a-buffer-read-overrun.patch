@@ -1,0 +1,68 @@
+From fd0484aba8e51d16af1e3a880f9b8b857b385eb3 Mon Sep 17 00:00:00 2001
+From: Erik de Castro Lopo <erikd@mega-nerd.com>
+Date: Wed, 12 Apr 2017 19:45:30 +1000
+Subject: [PATCH] FLAC: Fix a buffer read overrun
+
+Buffer read overrun occurs when reading a FLAC file that switches
+from 2 channels to one channel mid-stream. Only option is to
+abort the read.
+
+Closes: https://github.com/erikd/libsndfile/issues/230
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/erikd/libsndfile/commit/fd0484aba8e51d16af1e3a880f9b8b857b385eb3]
+---
+ src/common.h  |  1 +
+ src/flac.c    | 13 +++++++++++++
+ src/sndfile.c |  1 +
+ 3 files changed, 15 insertions(+)
+
+diff --git a/src/common.h b/src/common.h
+index 0bd810c3..e2669b6a 100644
+--- a/src/common.h
++++ b/src/common.h
+@@ -725,6 +725,7 @@ enum
+ 	SFE_FLAC_INIT_DECODER,
+ 	SFE_FLAC_LOST_SYNC,
+ 	SFE_FLAC_BAD_SAMPLE_RATE,
++	SFE_FLAC_CHANNEL_COUNT_CHANGED,
+ 	SFE_FLAC_UNKOWN_ERROR,
+ 
+ 	SFE_WVE_NOT_WVE,
+diff --git a/src/flac.c b/src/flac.c
+index 84de0e26..986a7b8f 100644
+--- a/src/flac.c
++++ b/src/flac.c
+@@ -434,6 +434,19 @@ sf_flac_meta_callback (const FLAC__StreamDecoder * UNUSED (decoder), const FLAC_
+ 
+ 	switch (metadata->type)
+ 	{	case FLAC__METADATA_TYPE_STREAMINFO :
++			if (psf->sf.channels > 0 && psf->sf.channels != (int) metadata->data.stream_info.channels)
++			{	psf_log_printf (psf, "Error: FLAC stream changed from %d to %d channels\n"
++									"Nothing to be but to error out.\n" ,
++									psf->sf.channels, metadata->data.stream_info.channels) ;
++				psf->error = SFE_FLAC_CHANNEL_COUNT_CHANGED ;
++				return ;
++				} ;
++
++			if (psf->sf.channels > 0 && psf->sf.samplerate != (int) metadata->data.stream_info.sample_rate)
++			{	psf_log_printf (psf, "Warning: FLAC stream changed sample rates from %d to %d.\n"
++									"Carrying on as if nothing happened.",
++									psf->sf.samplerate, metadata->data.stream_info.sample_rate) ;
++				} ;
+ 			psf->sf.channels = metadata->data.stream_info.channels ;
+ 			psf->sf.samplerate = metadata->data.stream_info.sample_rate ;
+ 			psf->sf.frames = metadata->data.stream_info.total_samples ;
+diff --git a/src/sndfile.c b/src/sndfile.c
+index 41875610..e2a87be8 100644
+--- a/src/sndfile.c
++++ b/src/sndfile.c
+@@ -245,6 +245,7 @@ ErrorStruct SndfileErrors [] =
+ 	{	SFE_FLAC_INIT_DECODER	, "Error : problem with initialization of the flac decoder." },
+ 	{	SFE_FLAC_LOST_SYNC		, "Error : flac decoder lost sync." },
+ 	{	SFE_FLAC_BAD_SAMPLE_RATE, "Error : flac does not support this sample rate." },
++	{	SFE_FLAC_CHANNEL_COUNT_CHANGED, "Error : flac channel changed mid stream." },
+ 	{	SFE_FLAC_UNKOWN_ERROR	, "Error : unknown error in flac decoder." },
+ 
+ 	{	SFE_WVE_NOT_WVE			, "Error : not a WVE file." },

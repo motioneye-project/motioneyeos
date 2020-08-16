@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-EFL_VERSION = 1.21.1
+EFL_VERSION = 1.22.3
 EFL_SOURCE = efl-$(EFL_VERSION).tar.xz
 EFL_SITE = http://download.enlightenment.org/rel/libs/efl
 EFL_LICENSE = BSD-2-Clause, LGPL-2.1+, GPL-2.0+, FTL, MIT
@@ -257,6 +257,8 @@ EFL_CONF_OPTS += --disable-image-loader-webp
 endif
 
 ifeq ($(BR2_PACKAGE_POPPLER),y)
+# poppler needs c++11
+EFL_CONF_ENV += CXXFLAGS="$(TARGET_CXXFLAGS) -std=c++11"
 EFL_DEPENDENCIES += poppler
 EFL_CONF_OPTS += --enable-poppler
 else

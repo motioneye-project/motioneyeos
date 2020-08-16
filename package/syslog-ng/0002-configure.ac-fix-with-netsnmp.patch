@@ -1,0 +1,49 @@
+From bc327e4deb44f6b7a380a85d0b344647ea162ea9 Mon Sep 17 00:00:00 2001
+From: Thomas De Schampheleire <thomas.de_schampheleire@nokia.com>
+Date: Mon, 16 Mar 2020 15:41:03 +0100
+Subject: [PATCH] configure.ac: fix --with-net-snmp
+
+The option '--with-net-snmp' did not work, because later checks were using
+the variable '$with_netsnmp' rather than '$with_net_snmp'.
+
+There are two possible solutions:
+- make the option '--with-netsnmp'
+- change the internal variables
+
+Opt for the second option so the user-visible options remain the same.
+
+Signed-off-by: Thomas De Schampheleire <thomas.de_schampheleire@nokia.com>
+Upstream-status: backport
+---
+ configure.ac | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 75901bd98..6e8462c37 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -151,7 +151,7 @@ AC_ARG_WITH(libnet,
+ AC_ARG_WITH(net-snmp,
+    [  --with-net-snmp=path      use path to net-snmp-config script],
+    ,
+-   [with_netsnmp=""])
++   [with_net_snmp=""])
+ 
+ AC_ARG_WITH(pidfile-dir,
+    [  --with-pidfile-dir=path   Use path as the directory for storing pidfiles],
+@@ -1104,10 +1104,10 @@ dnl afsnmp module & net-snmp headers/libraries
+ dnl ***************************************************************************
+ AC_MSG_CHECKING(whether to enable snmp destination driver)
+ 
+-if test "x$with_netsnmp" = "x"; then
++if test "x$with_net_snmp" = "x"; then
+    NETSNMP_CONFIG="`which net-snmp-config`"
+ else
+-   NETSNMP_CONFIG="$with_netsnmp/net-snmp-config"
++   NETSNMP_CONFIG="$with_net_snmp/net-snmp-config"
+ fi
+ 
+ if test "x$enable_afsnmp" = "xyes"; then
+-- 
+2.24.1
+

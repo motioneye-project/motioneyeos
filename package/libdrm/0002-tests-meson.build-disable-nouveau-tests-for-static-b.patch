@@ -1,0 +1,43 @@
+From c9036706b9f724f09ac6288f82b53f2e76264ec7 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Mon, 25 Nov 2019 15:59:15 +0100
+Subject: [PATCH] tests/meson.build: disable nouveau tests for static build
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+Notes:
+
+  - the existing test/check for static build in meson.build does not
+    catch this case because e.g. the buildroot toolchain
+    br-arm-full-static-2019.05.1 provides an empty libdl.a
+
+  169 # Among others FreeBSD does not have a separate dl library.
+  170 if not cc.has_function('dlsym')
+  171   dep_dl = cc.find_library('dl', required : with_nouveau)
+  172 else
+  173   dep_dl = []
+  174 endif
+---
+ tests/meson.build | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/tests/meson.build b/tests/meson.build
+index 6c8ddd9..f7cb5f0 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -44,8 +44,11 @@ endif
+ if with_etnaviv
+   subdir('etnaviv')
+ endif
++lib_type = get_option('default_library')
+ if with_nouveau
+-  subdir('nouveau')
++  if lib_type != 'static'
++    subdir('nouveau')
++  endif
+ endif
+ 
+ drmsl = executable(
+-- 
+2.24.0
+

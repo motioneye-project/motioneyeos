@@ -1,5 +1,5 @@
-# md5 from https://pypi.python.org/pypi/decorator/json, sha256 locally calculated
-md5 73644c8f0bd4983d1b6a34b49adec0ae decorator-4.0.11.tar.gz
-sha256 953d6bf082b100f43229cf547f4f97f97e970f5ad645ee7601d55ff87afdfe76 decorator-4.0.11.tar.gz
+# md5, sha256 from https://pypi.org/pypi/decorator/json
+md5	933981f288c4230816b5beee8d40e6ea decorator-4.4.1.tar.gz
+sha256	54c38050039232e1db4ad7375cfce6748d7b41c29e95a081c8a6d2c30364a2ce decorator-4.4.1.tar.gz
 # Locally computed sha256 checksums
-sha256 c9fbbd46d5af040b2b26db2f693034c95de8e9faaaf1cd68af358b092a56d454  LICENSE.txt
+sha256	fd11660cabf0532082c45706862fafc294907ec7f8e217818240a4999806782e  LICENSE.txt

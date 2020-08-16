@@ -1,4 +1,5 @@
 # From http://pwhois.org/lft/
-md5 746dc08f2e20d0e0240f28873b3bb244  lft-3.79.tar.gz
+md5 31b15aabc619707427a73657512560f8  lft-3.8.tar.gz
 # Locally calculated
-sha256 08e5c7973551b529c850bffbc7152c4e5f0bcb1f07ebbb39151a7dc9a3bf9de0  lft-3.79.tar.gz
+sha256 10f427e77b0f8207817329bd8ef0310078434612620073369264d15e6f97e990  lft-3.8.tar.gz
+sha256 e3b7634630e6800eccca6ecafb5d40153d4f8f7a20e2b2399bf3c0ea92f44614  COPYING

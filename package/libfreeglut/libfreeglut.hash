@@ -1,5 +1,6 @@
-# From http://sourceforge.net/projects/freeglut/files/freeglut/3.0.0/
-sha1	fca52242f9344627a30f11487ee42002e6b0dacd	freeglut-3.0.0.tar.gz
-
-# Hash for license file:
+# From http://sourceforge.net/projects/freeglut/files/freeglut/3.2.1/
+md5 cd5c670c1086358598a6d4a9d166949d  freeglut-3.2.1.tar.gz
+sha1 7a62e0d2caad92ff745bc5037592b2753f0b2f20  freeglut-3.2.1.tar.gz
+# Locally computed
+sha256 d4000e02102acaf259998c870e25214739d1f16f67f99cb35e4f46841399da68  freeglut-3.2.1.tar.gz
 sha256	b6593d5ec4c113a274abb85b10e8615895cb0ddb89f7912af5fe5aa8df38a275	COPYING

@@ -1,0 +1,12 @@
+config BR2_PACKAGE_DACAPO
+	bool "dacapo"
+	depends on BR2_PACKAGE_OPENJDK
+	help
+	  The DaCapo benchmark suite is intended as a tool for Java
+	  benchmarking by the programming language, memory
+	  management and computer architecture communities.
+
+	  http://dacapobench.org/
+
+comment "dacapo needs OpenJDK"
+	depends on !BR2_PACKAGE_OPENJDK

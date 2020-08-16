@@ -1,2 +1,4 @@
 # From http://repository.timesys.com/buildsources/e/elftosb/elftosb-10.12.01/elftosb-10.12.01.tar.gz.md5sum
 md5	e8005d606c1e0bb3507c82f6eceb3056	elftosb-10.12.01.tar.gz
+# locally computed
+sha256  c861c25936b7bc0cf180023d540f2b0d0f5892edd27fd00efef4b6234c1df27a  COPYING

@@ -1,3 +1,4 @@
 # md5 from https://pypi.python.org/pypi/mutagen/json, sha256 locally computed
-md5 af52956a1b8976accf402f3104b95a84 mutagen-1.36.2.tar.gz
-sha256 86fe98e941ca305be8ee6bdc6bb0e4e9c473bf9fb69a838fe5bf2fc6124fbcc7 mutagen-1.36.2.tar.gz
+md5 3729218f974c3a79ee9972ffa5ca5d12 mutagen-1.42.0.tar.gz
+sha256 bb61e2456f59a9a4a259fbc08def6d01ba45a42da8eeaa97d00633b0ec5de71c mutagen-1.42.0.tar.gz
+sha256 8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643 COPYING

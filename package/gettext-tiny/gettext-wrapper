@@ -1,0 +1,24 @@
+#!/bin/sh
+#
+# Thanks to "Yann E. MORIN" <yann.morin.1998@free.fr>
+# for this gettext replacement.
+
+while [ ${#} -ne 0 ]; do
+    case "${1}" in
+        (-h)              printf "no help\n"; return 0;;
+        (-V)              printf "0.0.0\n"; return 0;;
+        (-d|--domain)     shift 2;;
+        (-d*|--domain=*)  shift 1;;
+        (-e|-E|-n)        shift 1;;
+        (-s)              shift 1;;  # Ignore?
+        (-*)              printf "invalid option '%s'\n" "${1}" >&2; return 1;;
+        (*)               break;;
+    esac
+done
+
+case ${#} in
+    (0)   printf "missing arguments\n" >&2; return 1;;
+    (1)   printf "%s" "${1}";;
+    (2)   printf "%s" "${2}";;
+    (*)   printf "too many arguments\n" >&2; return 1;;
+esac

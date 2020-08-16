@@ -8,4 +8,4 @@ config BR2_PACKAGE_AESPIPE
 	  It can be used to encrypt and decrypt loop-AES compatible
 	  encrypted disk images.
 
-	  http://koti.tnnet.fi/jari.ruusu/linux/
+	  http://loop-aes.sourceforge.net/

@@ -1,0 +1,43 @@
+From 10707f437f2fc3632067c6a0efa4432f7ebaf362 Mon Sep 17 00:00:00 2001
+From: Sebastian Dröge <sebastian@centricular.com>
+Date: Fri, 13 Dec 2019 10:46:20 +0200
+Subject: [PATCH] backport of "fix build with Python 3.8 by also checking for
+ python-3.X-embed.pc"
+
+Since Python 3.8 the normal checks don't include the Python libraries
+anymore and linking of the gst-python module would fail.
+
+See also https://github.com/mesonbuild/meson/issues/5629
+
+Fixes https://gitlab.freedesktop.org/gstreamer/gst-python/issues/28
+
+Upstream commit: 22f28155d86e27c4134de4ed2861264003fcfd23
+
+Signed-off-by: Sebastian Dröge <sebastian@centricular.com>
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+---
+ meson.build | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/meson.build b/meson.build
+index 744b7ce..492af1a 100644
+--- a/meson.build
++++ b/meson.build
+@@ -25,6 +25,14 @@ pygobject_dep = dependency('pygobject-3.0', fallback: ['pygobject', 'pygobject_d
+ pymod = import('python')
+ python = pymod.find_installation(get_option('python'))
+ python_dep = python.dependency(required : true)
++pythonver = python.language_version()
++
++# Workaround for https://github.com/mesonbuild/meson/issues/5629
++# https://gitlab.freedesktop.org/gstreamer/gst-python/issues/28
++python_dep = dependency('python-@0@-embed'.format(pythonver), version: '>=3', required: false)
++if not python_dep.found()
++  python_dep = python.dependency(required : true)
++endif
+ 
+ python_abi_flags = python.get_variable('ABIFLAGS', '')
+ pylib_loc = get_option('libpython-dir')
+-- 
+2.24.1
+

@@ -4,4 +4,4 @@ config BR2_PACKAGE_IFENSLAVE
 	help
 	  Configure network interfaces for parallel routing (bonding)
 
-	  http://anonscm.debian.org/cgit/collab-maint/ifenslave.git
+	  https://salsa.debian.org/debian/ifenslave

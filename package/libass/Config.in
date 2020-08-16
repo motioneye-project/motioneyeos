@@ -6,4 +6,4 @@ config BR2_PACKAGE_LIBASS
 	  libass is a portable subtitle renderer for the ASS/SSA
 	  (Advanced Substation Alpha/Substation Alpha) subtitle format
 
-	  http://code.google.com/p/libass/
+	  https://github.com/libass/libass

@@ -3,10 +3,12 @@ config BR2_PACKAGE_LIBVNCSERVER
 	depends on BR2_USE_MMU # VNCommand.c uses fork()
 	# binutils issue (bad expression)
 	depends on !BR2_nios2
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_LZO
 	help
 	  libvncserver is a VNC server/client library.
 
-	  http://libvncserver.sourceforge.net/
+	  https://libvnc.github.io/
 
 if BR2_PACKAGE_LIBVNCSERVER
 
@@ -21,3 +23,8 @@ config BR2_PACKAGE_LIBVNCSERVER_TIGHTPNG
 	  http://wiki.qemu.org/VNC_Tight_PNG
 
 endif
+
+comment "libvncserver needs a toolchain w/ dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_nios
+	depends on BR2_STATIC_LIBS

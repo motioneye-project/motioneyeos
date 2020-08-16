@@ -1,2 +1,4 @@
-# Locally calculated
-sha256 b035b2da1d493b00a5ee7a5b750f96929de87b610643939fbe382902774626fc  python-itsdangerous-0.24.tar.gz
+# md5, sha256 from https://pypi.org/pypi/itsdangerous/json
+md5	9b7f5afa7f1e3acfb7786eeca3d99307  itsdangerous-1.1.0.tar.gz
+sha256	321b033d07f2a4136d3ec762eac9f16a10ccd60f53c0c91af90217ace7ba1f19  itsdangerous-1.1.0.tar.gz
+sha256	feb28bfa348d816b0e7dbaeddf18499ee7e8007c67813db8d6ab37c65e046cd4  LICENSE.rst

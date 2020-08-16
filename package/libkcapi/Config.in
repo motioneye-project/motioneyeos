@@ -8,6 +8,9 @@ config BR2_PACKAGE_LIBKCAPI
 
 if BR2_PACKAGE_LIBKCAPI
 
+config BR2_PACKAGE_LIBKCAPI_ENCAPP
+	bool "build enc application"
+
 config BR2_PACKAGE_LIBKCAPI_HASHER
 	bool "build hasher application"
 	depends on !BR2_STATIC_LIBS # dlfcn.h

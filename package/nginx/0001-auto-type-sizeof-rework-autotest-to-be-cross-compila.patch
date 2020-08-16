@@ -15,7 +15,7 @@ Refresh for 1.8.0.
 Signed-off-by: Danomi Manchego <danomimanchego123@gmail.com>
 [martin@barkynet.com: Updated for 1.10.0]
 Signed-off-by: Martin Bark <martin@barkynet.com>
-Signed-off-by: Adam Duskett <Adamduskett@outlook.com>
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
 Refresh for 1.12.0
 ---
  auto/types/sizeof | 37 ++++++++++++++++++++++++++++---------

@@ -38,4 +38,26 @@ _svn() {
 
 _svn export ${verbose} "${@}" "'${uri}@${rev}'" "'${basename}'"
 
-tar czf "${output}" "${basename}"
+# Get the date of the revision, to generate reproducible archives.
+# The output format is YYYY-MM-DDTHH:MM:SS.mmmuuuZ (i.e. always in the
+# UTC timezone), which we can feed as-is to the --mtime option for tar.
+# In case there is a redirection (e.g. http -> https), just keep the
+# last line (svn outputs everything on stdout)
+date="$( _svn info --show-item last-changed-date "'${uri}@${rev}'" |tail -n 1 )"
+
+# Generate the archive, sort with the C locale so that it is reproducible.
+# We do not want the .svn dir; we keep other .svn files, in case they are the
+# only files in their directory.
+find "${basename}" -not -type d \
+       -and -not -path "./.svn/*" >"${output}.list"
+LC_ALL=C sort <"${output}.list" >"${output}.list.sorted"
+
+# Create GNU-format tarballs, since that's the format of the tarballs on
+# sources.buildroot.org and used in the *.hash files
+tar cf - --transform="s#^\./#${basename}/#" \
+         --numeric-owner --owner=0 --group=0 --mtime="${date}" --format=gnu \
+         -T "${output}.list.sorted" >"${output}.tar"
+gzip -6 -n <"${output}.tar" >"${output}"
+
+rm -f "${output}.list"
+rm -f "${output}.list.sorted"

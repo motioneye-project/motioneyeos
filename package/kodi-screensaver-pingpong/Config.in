@@ -4,7 +4,7 @@ config BR2_PACKAGE_KODI_SCREENSAVER_PINGPONG
 	help
 	  Ping-pong screensaver for Kodi
 
-	  https://github.com/notspiff/screensaver.pingpong
+	  https://github.com/xbmc/screensaver.pingpong
 
 comment "kodi-screensaver-pingpong needs OpenGL"
 	depends on !BR2_PACKAGE_HAS_LIBGL

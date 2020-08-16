@@ -1,0 +1,12 @@
+config BR2_PACKAGE_MBUFFER
+	bool "mbuffer"
+	depends on !BR2_STATIC_LIBS # dlopen()
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  mbuffer is a tool for buffering data streams with a large set
+	  of unique features.
+
+	  http://www.maier-komor.de/mbuffer.html
+
+comment "mbuffer needs a toolchain w/ dynamic library, threads"
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS

@@ -4,33 +4,54 @@
 #
 ################################################################################
 
-BLUEZ_ALSA_VERSION = v1.3.1
-BLUEZ_ALSA_SITE = $(call github,Arkq,bluez-alsa,$(BLUEZ_ALSA_VERSION))
+BLUEZ_ALSA_VERSION = 2.1.0
+BLUEZ_ALSA_SITE = $(call github,Arkq,bluez-alsa,v$(BLUEZ_ALSA_VERSION))
 BLUEZ_ALSA_LICENSE = MIT
-BLUEZ_ALSA_LICENSE_FILES = LICENSE.txt
+BLUEZ_ALSA_LICENSE_FILES = LICENSE
 BLUEZ_ALSA_DEPENDENCIES = alsa-lib bluez5_utils libglib2 sbc host-pkgconf
 
 # git repo, no configure
 BLUEZ_ALSA_AUTORECONF = YES
 
-# Autoreconf requires an existing m4 directory
-define BLUEZ_ALSA_MKDIR_M4
-	mkdir -p $(@D)/m4
-endef
-BLUEZ_ALSA_POST_PATCH_HOOKS += BLUEZ_ALSA_MKDIR_M4
-
 BLUEZ_ALSA_CONF_OPTS = \
 	--enable-aplay \
 	--disable-debug-time \
-	--disable-pcm-test \
 	--with-alsaplugindir=/usr/lib/alsa-lib \
-	--with-alsadatadir=/usr/share/alsa
+	--with-alsaconfdir=/etc/alsa/conf.d
 
 ifeq ($(BR2_PACKAGE_FDK_AAC),y)
 BLUEZ_ALSA_DEPENDENCIES += fdk-aac
 BLUEZ_ALSA_CONF_OPTS += --enable-aac
 else
 BLUEZ_ALSA_CONF_OPTS += --disable-aac
+endif
+
+ifeq ($(BR2_PACKAGE_LAME),y)
+BLUEZ_ALSA_DEPENDENCIES += lame
+BLUEZ_ALSA_CONF_OPTS += --enable-mp3lame
+else
+BLUEZ_ALSA_CONF_OPTS += --disable-mp3lame
+endif
+
+ifeq ($(BR2_PACKAGE_MPG123),y)
+BLUEZ_ALSA_DEPENDENCIES += mpg123
+BLUEZ_ALSA_CONF_OPTS += --enable-mpg123
+else
+BLUEZ_ALSA_CONF_OPTS += --disable-mpg123
+endif
+
+# no build dependency, disables internal HFP in favor of oFonos HFP profile
+ifeq ($(BR2_PACKAGE_OFONO),y)
+BLUEZ_ALSA_CONF_OPTS += --enable-ofono
+else
+BLUEZ_ALSA_CONF_OPTS += --disable-ofono
+endif
+
+# no build dependency, enables integration with UPower D-Bus service
+ifeq ($(BR2_PACKAGE_UPOWER),y)
+BLUEZ_ALSA_CONF_OPTS += --enable-upower
+else
+BLUEZ_ALSA_CONF_OPTS += --disable-upower
 endif
 
 ifeq ($(BR2_PACKAGE_BLUEZ_ALSA_HCITOP),y)

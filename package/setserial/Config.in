@@ -4,3 +4,5 @@ config BR2_PACKAGE_SETSERIAL
 	depends on BR2_USE_MMU
 	help
 	  Setserial : configuration of serial ports
+
+	  http://setserial.sourceforge.net/

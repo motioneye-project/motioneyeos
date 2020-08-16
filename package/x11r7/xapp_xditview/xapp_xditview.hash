@@ -1,2 +1,7 @@
 # From http://lists.x.org/archives/xorg-announce/2015-April/002570.html
-sha256	307f8df1bc3e90a7fba74dfe16840891c365abc027fbd556027eb057e5d1ff73	xditview-1.0.4.tar.bz2
+md5 3a909116a3b2abe3845215cf49e09fa5  xditview-1.0.5.tar.bz2
+sha1 f06f65bca31168c86bcebd7f92dbbda08817a5cc  xditview-1.0.5.tar.bz2
+sha256 eecb1ed51ab4edc7f454476d1248cfb7799a17c5679b3dd834e8b4658331c04b  xditview-1.0.5.tar.bz2
+sha512 e20c903f38394b496111267e142d84d11e69a3b89f91869652d1f2ee5c997a13f90bfa2966651b42cd3979a330b348a6e397cc6a74c45b1f3f91643e7c06765d  xditview-1.0.5.tar.bz2
+# Locally computed
+sha256 023d879308a49249181f78bbb567e93c45138ad847fe969d191e4802e7a1a005  COPYING

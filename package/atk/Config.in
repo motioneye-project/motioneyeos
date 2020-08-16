@@ -7,6 +7,8 @@ config BR2_PACKAGE_ATK
 	help
 	  The ATK accessibility toolkit, needed to build GTK+-2.x.
 
+	  https://gitlab.gnome.org/GNOME/atk
+
 comment "atk needs a toolchain w/ wchar, threads"
 	depends on BR2_USE_MMU
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

@@ -1,0 +1,16 @@
+config BR2_PACKAGE_FLUID_SOUNDFONT
+	bool "fluid-soundfont"
+	help
+	  FluidR3 is the third release of Frank Wen's pro-quality
+	  GM/GS soundfont.  The soundfont has lots of excellent
+	  samples, including all the GM instruments along side with
+	  the GS instruments that are recycled and reprogrammed
+	  versions of the GM presets.
+
+	  This package contains Fluid General Midi (GM) soundfont in
+	  soundfont 2.0 (.sf2) format.
+
+	  This soundfont can be used with the FluidSynth real-time
+	  software synthesizer.
+
+	  http://www.hammersound.net

@@ -98,15 +98,6 @@ static char *predef_args[] = {
 #if defined(BR_MIPS_TARGET_BIG_ENDIAN) || defined(BR_ARC_TARGET_BIG_ENDIAN)
 	"-EB",
 #endif
-#ifdef BR_SSP_REGULAR
-	"-fstack-protector",
-#endif
-#ifdef BR_SSP_STRONG
-	"-fstack-protector-strong",
-#endif
-#ifdef BR_SSP_ALL
-	"-fstack-protector-all",
-#endif
 #ifdef BR_ADDITIONAL_CFLAGS
 	BR_ADDITIONAL_CFLAGS
 #endif
@@ -186,6 +177,7 @@ static void check_unsafe_path(const char *arg,
 	}
 }
 
+#ifdef BR_NEED_SOURCE_DATE_EPOCH
 /* Returns false if SOURCE_DATE_EPOCH was not defined in the environment.
  *
  * Returns true if SOURCE_DATE_EPOCH is in the environment and represent
@@ -239,6 +231,15 @@ bool parse_source_date_epoch_from_env(void)
 	}
 	return true;
 }
+#else
+bool parse_source_date_epoch_from_env(void)
+{
+	/* The compiler is recent enough to handle SOURCE_DATE_EPOCH itself
+	 * so we do not need to do anything here.
+	 */
+	return false;
+}
+#endif
 
 int main(int argc, char **argv)
 {
@@ -249,7 +250,24 @@ int main(int argc, char **argv)
 	char *env_debug;
 	char *paranoid_wrapper;
 	int paranoid;
-	int ret, i, count = 0, debug, found_shared = 0;
+	int ret, i, count = 0, debug = 0, found_shared = 0;
+
+	/* Debug the wrapper to see arguments it was called with.
+	 * If environment variable BR2_DEBUG_WRAPPER is:
+	 * unset, empty, or 0: do not trace
+	 * set to 1          : trace all arguments on a single line
+	 * set to 2          : trace one argument per line
+	 */
+	if ((env_debug = getenv("BR2_DEBUG_WRAPPER"))) {
+		debug = atoi(env_debug);
+	}
+	if (debug > 0) {
+		fprintf(stderr, "Toolchain wrapper was called with:");
+		for (i = 0; i < argc; i++)
+			fprintf(stderr, "%s'%s'",
+				(debug == 2) ? "\n    " : " ", argv[i]);
+		fprintf(stderr, "\n");
+	}
 
 	/* Calculate the relative paths */
 	basename = strrchr(progpath, '/');
@@ -376,7 +394,7 @@ int main(int argc, char **argv)
 		*cur++ = "-Wno-builtin-macro-redefined";
 	}
 
-#ifdef BR2_RELRO_FULL
+#ifdef BR2_PIC_PIE
 	/* Patterned after Fedora/Gentoo hardening approaches.
 	 * https://fedoraproject.org/wiki/Changes/Harden_All_Packages
 	 * https://wiki.gentoo.org/wiki/Hardened/Toolchain#Position_Independent_Executables_.28PIEs.29
@@ -426,7 +444,7 @@ int main(int argc, char **argv)
 		/* Both args below can be set at compile/link time
 		 * and are ignored correctly when not used
 		 */
-		if(i == argc)
+		if (i == argc)
 			*cur++ = "-fPIE";
 
 		if (!found_shared)
@@ -492,29 +510,21 @@ int main(int argc, char **argv)
 		exec_args++;
 #endif
 
-	/* Debug the wrapper to see actual arguments passed to
-	 * the compiler:
-	 * unset, empty, or 0: do not trace
-	 * set to 1          : trace all arguments on a single line
-	 * set to 2          : trace one argument per line
-	 */
-	if ((env_debug = getenv("BR2_DEBUG_WRAPPER"))) {
-		debug = atoi(env_debug);
-		if (debug > 0) {
-			fprintf(stderr, "Toolchain wrapper executing:");
+	/* Debug the wrapper to see final arguments passed to the real compiler. */
+	if (debug > 0) {
+		fprintf(stderr, "Toolchain wrapper executing:");
 #ifdef BR_CCACHE_HASH
-			fprintf(stderr, "%sCCACHE_COMPILERCHECK='string:" BR_CCACHE_HASH "'",
-				(debug == 2) ? "\n    " : " ");
+		fprintf(stderr, "%sCCACHE_COMPILERCHECK='string:" BR_CCACHE_HASH "'",
+			(debug == 2) ? "\n    " : " ");
 #endif
 #ifdef BR_CCACHE_BASEDIR
-			fprintf(stderr, "%sCCACHE_BASEDIR='" BR_CCACHE_BASEDIR "'",
-				(debug == 2) ? "\n    " : " ");
+		fprintf(stderr, "%sCCACHE_BASEDIR='" BR_CCACHE_BASEDIR "'",
+			(debug == 2) ? "\n    " : " ");
 #endif
-			for (i = 0; exec_args[i]; i++)
-				fprintf(stderr, "%s'%s'",
-					(debug == 2) ? "\n    " : " ", exec_args[i]);
-			fprintf(stderr, "\n");
-		}
+		for (i = 0; exec_args[i]; i++)
+			fprintf(stderr, "%s'%s'",
+				(debug == 2) ? "\n    " : " ", exec_args[i]);
+		fprintf(stderr, "\n");
 	}
 
 #ifdef BR_CCACHE_HASH

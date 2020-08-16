@@ -1,0 +1,47 @@
+From 1babf63444b7b7f3c84e2561fbdecd5fd5a0e36f Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Tue, 24 Mar 2020 09:06:29 +0100
+Subject: [PATCH] src/evemu.c: fix build with kernels < 4.16
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Commit 30973c0b fixed the build with kernels >= 4.16 but as a side
+effect, build with kernels < 4.16 is now failing on:
+
+evemu.c:892:18: error: ‘struct input_event’ has no member named ‘input_event_usec’
+   tv.tv_usec = ev->input_event_usec;
+                  ^~
+
+Fix this error by defining input_event_sec and input_event_usec if
+needed
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://gitlab.freedesktop.org/libevdev/evemu/-/commit/1babf63444b7b7f3c84e2561fbdecd5fd5a0e36f]
+---
+ src/evemu.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/src/evemu.c b/src/evemu.c
+index 42dbe1d..2f457c1 100644
+--- a/src/evemu.c
++++ b/src/evemu.c
+@@ -63,6 +63,14 @@
+ 
+ #define SYSCALL(call) while (((call) == -1) && (errno == EINTR))
+ 
++#ifndef input_event_sec
++#define input_event_sec time.tv_sec
++#endif
++
++#ifndef input_event_usec
++#define input_event_usec time.tv_usec
++#endif
++
+ enum error_level {
+ 	INFO,
+ 	WARNING,
+-- 
+2.24.1
+

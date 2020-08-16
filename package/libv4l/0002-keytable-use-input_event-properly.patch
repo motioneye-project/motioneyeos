@@ -1,0 +1,36 @@
+From a84fc5d02ffd7119b3e38b72339f5760991d14da Mon Sep 17 00:00:00 2001
+From: Rosen Penev <rosenp@gmail.com>
+Date: Mon, 30 Mar 2020 14:24:34 -0700
+Subject: [PATCH] keytable: use input_event properly
+
+It does not use time_t under musl when time_t is 64-bit. The struct has
+compatibility defines. Instead of using time_t directly, use those
+defines.
+
+Fixes compilation under musl 1.2.0 under 32-bit OSes.
+
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Signed-off-by: Sean Young <sean@mess.org>
+
+[Upstream: https://git.linuxtv.org/v4l-utils.git/patch/?id=38f4ce74275ae4625463f7eec78764715a0b6246]
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ utils/keytable/keytable.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/utils/keytable/keytable.c b/utils/keytable/keytable.c
+index 6cb0217..318c064 100644
+--- a/utils/keytable/keytable.c
++++ b/utils/keytable/keytable.c
+@@ -1533,7 +1533,7 @@ static void test_event(struct rc_device *rc_dev, int fd)
+ 
+ 		for (i = 0; i < rd / sizeof(struct input_event); i++) {
+ 			printf(_("%ld.%06ld: event type %s(0x%02x)"),
+-				ev[i].time.tv_sec, ev[i].time.tv_usec,
++				ev[i].input_event_sec, ev[i].input_event_usec,
+ 				get_event_name(events_type, ev[i].type), ev[i].type);
+ 
+ 			switch (ev[i].type) {
+-- 
+2.26.2
+

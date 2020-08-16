@@ -1,0 +1,16 @@
+config BR2_PACKAGE_TINYPROXY
+	bool "tinyproxy"
+	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # fork()
+	help
+	  Tinyproxy is a small, efficient HTTP/SSL proxy daemon released
+	  under the GNU General Public License. Tinyproxy is very
+	  useful in a small network setting, where a larger proxy would
+	  be too resource intensive.
+
+	  https://tinyproxy.github.io
+
+comment "tinyproxy needs a toolchain w/ threads, wchar"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR
+	depends on BR2_USE_MMU

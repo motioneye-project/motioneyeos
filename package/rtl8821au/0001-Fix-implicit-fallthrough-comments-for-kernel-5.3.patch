@@ -1,0 +1,28 @@
+From f41695e4069404639690d98c7aadfe72117965a6 Mon Sep 17 00:00:00 2001
+From: Jesper Skov <jb1811@jyskebank.dk>
+Date: Fri, 25 Oct 2019 10:05:41 +0200
+Subject: [PATCH] Fix implicit fallthrough comments for kernel 5.3
+
+[Upstram: https://github.com/abperiasamy/rtl8812AU_8821AU_linux/commit/e8a30a4c5a80efbbd5b1dbfe11b22916df4492f9.patch]
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ core/rtw_mlme_ext.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/core/rtw_mlme_ext.c b/core/rtw_mlme_ext.c
+index 24565ea..380f507 100644
+--- a/core/rtw_mlme_ext.c
++++ b/core/rtw_mlme_ext.c
+@@ -758,7 +758,9 @@ void mgt_dispatcher(_adapter *padapter, union recv_frame *precv_frame)
+ 		else
+ 			ptable->func = &OnAuthClient;
+ 	//pass through
++	//fallthrough
+ 	case WIFI_ASSOCREQ:
++	//fallthrough
+ 	case WIFI_REASSOCREQ:
+ 		_mgt_dispatcher(padapter, ptable, precv_frame);
+ #ifdef CONFIG_HOSTAPD_MLME
+-- 
+2.26.0
+

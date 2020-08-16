@@ -1,8 +1,0 @@
-config BR2_PACKAGE_PYTHON_PYCRYPTO
-	bool "python-pycrypto"
-	select BR2_PACKAGE_GMP
-	help
-	  PyCrypto is a collection of cryptographic algorithms and
-	  protocols, implemented for use from Python.
-
-	  http://www.pycrypto.org/

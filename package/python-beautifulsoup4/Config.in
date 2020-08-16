@@ -1,5 +1,6 @@
 config BR2_PACKAGE_PYTHON_BEAUTIFULSOUP4
 	bool "python-beautifulsoup4"
+	select BR2_PACKAGE_PYTHON_SOUPSIEVE # runtime
 	help
 	  Beautiful Soup is a Python library for pulling data out of
 	  HTML and XML files. It works with your favorite parser to

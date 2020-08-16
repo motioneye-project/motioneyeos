@@ -7,3 +7,5 @@ config BR2_PACKAGE_HICOLOR_ICON_THEME
 	  standard directory structure for storing icons of third-party
 	  applications (i.e. the ones not available in usual icon
 	  themes).
+
+	  https://www.freedesktop.org/wiki/Software/icon-theme/

@@ -1,3 +1,8 @@
-# From http://sourceforge.net/projects/omniorb/files/omniORB/omniORB-4.2.2/
-sha1 0c682542290cabb22878b3ef492de3e85c4b4281  omniORB-4.2.2.tar.bz2
-md5 cc6b2a65a2b1c1b3d44b3ccbaf92e104  omniORB-4.2.2.tar.bz2
+# From https://sourceforge.net/projects/omniorb/files/omniORB/omniORB-4.2.4/
+sha1 a6f3c8e96fc09c4ef8d75bd495bbc5256a4773ee  omniORB-4.2.4.tar.bz2
+md5 de961e8aa29f3eed95ea40a94c1cccdf  omniORB-4.2.4.tar.bz2
+
+# Locally generated
+sha256	28c01cd0df76c1e81524ca369dc9e6e75f57dc70f30688c99c67926e4bdc7a6f  omniORB-4.2.4.tar.bz2
+sha256	126647a6ee062fe46f8f3766965dc62e031c0a31238a347e4bc07aab2ac1e2a7  COPYING
+sha256	eaf5b13ffd5355da7c0b83074e4b798152ff7086c95c4f3045122a06e2673eb9  COPYING.LIB

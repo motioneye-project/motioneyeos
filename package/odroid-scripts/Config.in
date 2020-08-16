@@ -1,9 +1,0 @@
-config BR2_PACKAGE_ODROID_SCRIPTS
-	bool "odroid-scripts"
-	depends on BR2_aarch64 || BR2_arm || BR2_armeb
-	select BR2_PACKAGE_FBSET # runtime
-	select BR2_PACKAGE_BUSYBOX_SHOW_OTHERS # needed for fbset
-	help
-	  Install the scripts for the odroidc2 based systems.
-
-	  https://github.com/mdrjr/c2_bootini

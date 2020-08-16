@@ -1,0 +1,27 @@
+From 2bc7cf0beb6b8a124c1c7360c4fb5279e8763f07 Mon Sep 17 00:00:00 2001
+From: Sebastiano Merlino <electrictwister2000@gmail.com>
+Date: Sat, 8 Jun 2019 15:36:06 -0700
+Subject: [PATCH] Fix lib expectations in libhttpserver.pc.in
+
+Signed-off-by: Stephan Hoffmann <stephan.hoffmann@ext.grandcentrix.net>
+---
+Patch status: upstream commit 458d16b922304006fe418897044e14
+
+ libhttpserver.pc.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/libhttpserver.pc.in b/libhttpserver.pc.in
+index 36355ee..55f7c0e 100644
+--- a/libhttpserver.pc.in
++++ b/libhttpserver.pc.in
+@@ -8,6 +8,6 @@ Description: A C++ library for creating an embedded Rest HTTP server
+ Version: @VERSION@
+ Requires: libmicrohttpd >= 0.9.37
+ Conflicts:
+-Libs: -L${libdir} -lmicrohttpd
++Libs: -L${libdir} -lhttpserver
+ Libs.private: @LHT_LIBDEPS@
+ Cflags: -I${includedir} -I${includedir}/httpserver
+-- 
+2.17.1
+

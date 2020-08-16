@@ -1,0 +1,43 @@
+From 2b23a1313f501423aecbe4ad4a988a9f6f832f1f Mon Sep 17 00:00:00 2001
+From: Patrick Havelange <patrick.havelange@essensium.com>
+Date: Tue, 22 Oct 2019 12:29:54 +0200
+Subject: [PATCH 1/1] syscall_wrappers: rename internal memfd_create to
+ memfd_create_lxc
+
+In case the internal memfd_create has to be used, make sure we don't
+clash with the already existing memfd_create function from glibc.
+
+This can happen if this glibc function is a stub. In this case, at
+./configure time, the test for this function will return false, however
+the declaration of that function is still available. This leads to
+compilation errors.
+
+Signed-off-by: Patrick Havelange <patrick.havelange@essensium.com>
+---
+ src/lxc/syscall_wrappers.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/lxc/syscall_wrappers.h b/src/lxc/syscall_wrappers.h
+index 42d94db..bddf01b 100644
+--- a/src/lxc/syscall_wrappers.h
++++ b/src/lxc/syscall_wrappers.h
+@@ -59,7 +59,7 @@ static inline long __keyctl(int cmd, unsigned long arg2, unsigned long arg3,
+ #endif
+ 
+ #ifndef HAVE_MEMFD_CREATE
+-static inline int memfd_create(const char *name, unsigned int flags) {
++static inline int memfd_create_lxc(const char *name, unsigned int flags) {
+ 	#ifndef __NR_memfd_create
+ 		#if defined __i386__
+ 			#define __NR_memfd_create 356
+@@ -98,6 +98,7 @@ static inline int memfd_create(const char *name, unsigned int flags) {
+ 	return -1;
+ 	#endif
+ }
++#define memfd_create memfd_create_lxc
+ #else
+ extern int memfd_create(const char *name, unsigned int flags);
+ #endif
+-- 
+2.20.1
+

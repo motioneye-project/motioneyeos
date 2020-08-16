@@ -1,0 +1,35 @@
+From cf1b20f3d881a1cfbf8cae1f615f45a5a4fbb3b4 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Wed, 22 Apr 2020 18:35:55 +0200
+Subject: [PATCH] fuzz/Makefile.am: do not force static
+
+Don't force static when linking corpus2arry to libtasn1 otherwise the
+build will fail if libtasn1 has been built only as a shared library:
+
+  CCLD     corpus2array
+/home/fabrice/buildroot/output/host/lib/gcc/arm-buildroot-linux-musleabihf/8.4.0/../../../../arm-buildroot-linux-musleabihf/bin/ld: attempted static link of dynamic object `../lib/.libs/libtasn1.so'
+collect2: error: ld returned 1 exit status
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status:
+https://gitlab.com/gnutls/libtasn1/-/merge_requests/61]
+---
+ fuzz/Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fuzz/Makefile.am b/fuzz/Makefile.am
+index c6310d1..1fb7152 100644
+--- a/fuzz/Makefile.am
++++ b/fuzz/Makefile.am
+@@ -26,7 +26,7 @@ AM_CFLAGS = $(WERROR_CFLAGS) $(WARN_CFLAGS) $(CODE_COVERAGE_CFLAGS)
+ AM_CPPFLAGS = -I$(top_builddir)/lib/includes -I$(top_srcdir)/lib/includes -I$(srcdir) \
+  -I$(top_builddir)/lib/gl -I$(top_srcdir)/lib/gl -DSRCDIR=\"$(abs_srcdir)\" \
+  $(CODE_COVERAGE_CPPFLAGS)
+-AM_LDFLAGS = -no-install -static
++AM_LDFLAGS = -no-install
+ 
+ LDADD = ../lib/gl/libgnu.la ../lib/libtasn1.la $(FUZZ_LIBS) $(CODE_COVERAGE_LIBS)
+ 
+-- 
+2.25.1
+

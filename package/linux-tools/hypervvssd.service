@@ -1,0 +1,11 @@
+[Unit]
+Description=HyperV VSS daemon
+After=syslog.target
+ConditionVirtualization=microsoft
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/hypervvssd -n
+
+[Install]
+WantedBy=multi-user.target

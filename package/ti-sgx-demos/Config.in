@@ -6,4 +6,4 @@ config BR2_PACKAGE_TI_SGX_DEMOS
 	  Technologies are availabe as binaries only.  The binaries
 	  are compiled for the TI SGX implementation.
 
-	  http://git.ti.com/graphics/img-pvr-sdk
+	  https://git.ti.com/cgit/graphics/img-pvr-sdk

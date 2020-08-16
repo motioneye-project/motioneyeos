@@ -38,7 +38,8 @@ class Emulator(object):
 
         qemu_cmd = ["qemu-system-{}".format(qemu_arch),
                     "-serial", "stdio",
-                    "-display", "none"]
+                    "-display", "none",
+                    "-m", "256"]
 
         if options:
             qemu_cmd += options
@@ -60,8 +61,12 @@ class Emulator(object):
                     qemu_cmd += ["-M", "vexpress-a9"]
                 elif arch == "armv5":
                     kernel = infra.download(self.downloaddir,
-                                            "kernel-versatile")
+                                            "kernel-versatile-4.19")
+                    dtb = infra.download(self.downloaddir,
+                                         "versatile-pb-4.19.dtb")
+                    qemu_cmd += ["-dtb", dtb]
                     qemu_cmd += ["-M", "versatilepb"]
+                    qemu_cmd += ["-device", "virtio-rng-pci"]
 
             qemu_cmd += ["-kernel", kernel]
 
@@ -71,6 +76,7 @@ class Emulator(object):
         self.logfile.write("> starting qemu with '%s'\n" % " ".join(qemu_cmd))
         self.qemu = pexpect.spawn(qemu_cmd[0], qemu_cmd[1:],
                                   timeout=5 * self.timeout_multiplier,
+                                  encoding='utf-8',
                                   env={"QEMU_AUDIO_DRV": "none"})
         # We want only stdout into the log to avoid double echo
         self.qemu.logfile_read = self.logfile

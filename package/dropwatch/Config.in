@@ -1,17 +1,14 @@
 config BR2_PACKAGE_DROPWATCH
 	bool "dropwatch"
-	depends on !BR2_nios2 # binutils
-	depends on BR2_USE_WCHAR # binutils
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libnl
-	select BR2_PACKAGE_BINUTILS
 	select BR2_PACKAGE_READLINE
 	select BR2_PACKAGE_LIBNL
+	select BR2_PACKAGE_LIBPCAP
 	help
 	  Dropwatch is an interactive utility for monitoring and
 	  recording packets that are dropped by the kernel
 
-	  http://git.infradead.org/users/nhorman/dropwatch.git
+	  https://github.com/nhorman/dropwatch
 
-comment "dropwatch needs a toolchain w/ threads, wchar"
-	depends on !BR2_nios2
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR
+comment "dropwatch needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

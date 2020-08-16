@@ -1,0 +1,4 @@
+# sha256 from https://pypi.org/project/matplotlib/#files
+sha256	e1d33589e32f482d0a7d1957bf473d43341115d40d33f578dad44432e47df7b7  matplotlib-3.0.3.tar.gz
+# Locally computed sha256 checksums
+sha256	5a1a81ea301728c8bba2933da832c0cd62229daf20893a024ab3d53244468dbc  LICENSE/LICENSE

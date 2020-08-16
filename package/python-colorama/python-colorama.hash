@@ -1,0 +1,4 @@
+# sha256 from https://pypi.org/pypi/colorama/json
+sha256  e96da0d330793e2cb9485e9ddfd918d456036c7149416295932478192f4436a1  colorama-0.4.3.tar.gz
+# Locally computed sha256 checksums
+sha256	cac35c02686e5d04a5a7140bfb3b36e73aed496656e891102e428886d7930318  LICENSE.txt

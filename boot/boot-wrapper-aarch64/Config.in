@@ -38,4 +38,9 @@ config BR2_TARGET_BOOT_WRAPPER_AARCH64_PSCI
 	  Boot secondary SMP cores using PSCI firmware calls. If
 	  disabled, the spin-table method is used instead.
 
+config BR2_TARGET_BOOT_WRAPPER_AARCH64_GICV3
+	bool "Enable GICv3 instead of GICv2"
+	help
+	  Boot using GICv3 instead of GICv2.
+
 endif

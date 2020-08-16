@@ -9,8 +9,8 @@ config BR2_PACKAGE_SQLITE
 
 if BR2_PACKAGE_SQLITE
 
-config BR2_PACKAGE_SQLITE_STAT3
-	bool "Additional query optimizations (stat3)"
+config BR2_PACKAGE_SQLITE_STAT4
+	bool "Additional query optimizations (stat4)"
 	help
 	  Adds additional logic to the ANALYZE command and to the
 	  query planner that can help SQLite to choose a better query

@@ -1,0 +1,33 @@
+From eb9ded1206f18f2c319157337edea2533a40bea6 Mon Sep 17 00:00:00 2001
+From: "Stephen F. Booth" <me@sbooth.org>
+Date: Sun, 23 Jul 2017 10:11:09 -0400
+Subject: [PATCH] Don't assume TDRC is an instance of TextIdentificationFrame
+
+If TDRC is encrypted, FrameFactory::createFrame() returns UnknownFrame
+which causes problems in rebuildAggregateFrames() when it is assumed
+that TDRC is a TextIdentificationFrame
+[Retrieved from:
+https://github.com/taglib/taglib/pull/831/commits/eb9ded1206f18f2c319157337edea2533a40bea6]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ taglib/mpeg/id3v2/id3v2framefactory.cpp | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/taglib/mpeg/id3v2/id3v2framefactory.cpp b/taglib/mpeg/id3v2/id3v2framefactory.cpp
+index 759a9b7be..9347ab869 100644
+--- a/taglib/mpeg/id3v2/id3v2framefactory.cpp
++++ b/taglib/mpeg/id3v2/id3v2framefactory.cpp
+@@ -334,10 +334,11 @@ void FrameFactory::rebuildAggregateFrames(ID3v2::Tag *tag) const
+      tag->frameList("TDAT").size() == 1)
+   {
+     TextIdentificationFrame *tdrc =
+-      static_cast<TextIdentificationFrame *>(tag->frameList("TDRC").front());
++      dynamic_cast<TextIdentificationFrame *>(tag->frameList("TDRC").front());
+     UnknownFrame *tdat = static_cast<UnknownFrame *>(tag->frameList("TDAT").front());
+ 
+-    if(tdrc->fieldList().size() == 1 &&
++    if(tdrc &&
++       tdrc->fieldList().size() == 1 &&
+        tdrc->fieldList().front().size() == 4 &&
+        tdat->data().size() >= 5)
+     {

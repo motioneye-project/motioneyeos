@@ -5,7 +5,7 @@ config BR2_PACKAGE_MP4V2
 	  The MP4v2 library provides functions to read, create, and
 	  modify mp4 files.
 
-	  https://code.google.com/p/mp4v2/
+	  https://github.com/TechSmith/mp4v2/
 
 if BR2_PACKAGE_MP4V2
 

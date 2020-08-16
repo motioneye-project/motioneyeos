@@ -16,7 +16,7 @@ LIBXMLRPC_MAKE = $(MAKE1)
 
 # Using autoconf, not automake, so we cannot use AUTORECONF = YES.
 define LIBXMLRPC_RUN_AUTOCONF
-	cd $(@D); $(HOST_DIR)/bin/autoconf
+	cd $(@D); $(AUTOCONF)
 endef
 
 LIBXMLRPC_PRE_CONFIGURE_HOOKS += LIBXMLRPC_RUN_AUTOCONF
@@ -37,6 +37,13 @@ LIBXMLRPC_MAKE_OPTS = \
 
 ifeq ($(BR2_STATIC_LIBS),y)
 LIBXMLRPC_STATIC_OPTS = SHARED_LIB_TYPE=NONE MUST_BUILD_SHLIB=N
+endif
+
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+LIBXMLRPC_DEPENDENCIES += host-pkgconf openssl
+LIBXMLRPC_CONF_OPTS += --enable-abyss-openssl
+else
+LIBXMLRPC_CONF_OPTS += --disable-abyss-openssl
 endif
 
 LIBXMLRPC_MAKE_OPTS += $(LIBXMLRPC_STATIC_OPTS)

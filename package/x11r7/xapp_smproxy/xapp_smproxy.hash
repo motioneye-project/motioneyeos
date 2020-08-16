@@ -1,2 +1,4 @@
 # From http://lists.x.org/archives/xorg-announce/2015-April/002564.html
-sha256	6cf19155a2752237f36dbf8bc4184465ea190d2652f887faccb4e2a6ebf77266	smproxy-1.0.6.tar.bz2
+sha256  6cf19155a2752237f36dbf8bc4184465ea190d2652f887faccb4e2a6ebf77266  smproxy-1.0.6.tar.bz2
+# Locally computed
+sha256  92dce6d8a1fcc0c6b5e56dc44e431e7f73bfa2ed5e83295662aa314067a671d8  COPYING

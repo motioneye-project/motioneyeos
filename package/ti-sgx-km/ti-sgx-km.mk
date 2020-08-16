@@ -4,30 +4,23 @@
 #
 ################################################################################
 
-# This correpsonds to SDK 02.00.00.00
-TI_SGX_KM_VERSION = 2b7523d07a13ab704a24a7664749551f4a13ed32
-TI_SGX_KM_SITE = git://git.ti.com/graphics/omap5-sgx-ddk-linux.git
+# This correpsonds to SDK 06.00.00.07
+TI_SGX_KM_VERSION = 4519ed3b83d1d72207ddc2874c7eb5e5a7f20d8d
+TI_SGX_KM_SITE = http://git.ti.com/git/graphics/omap5-sgx-ddk-linux.git
+TI_SGX_KM_SITE_METHOD = git
 TI_SGX_KM_LICENSE = GPL-2.0
-TI_SGX_KM_LICENSE_FILES = GPL-COPYING
+TI_SGX_KM_LICENSE_FILES = eurasia_km/GPL-COPYING
 
 TI_SGX_KM_DEPENDENCIES = linux
 
 TI_SGX_KM_MAKE_OPTS = \
 	$(LINUX_MAKE_FLAGS) \
 	KERNELDIR=$(LINUX_DIR) \
-	PVR_NULLDRM=1
+	TARGET_PRODUCT=$(TI_SGX_KM_PLATFORM_NAME)
 
-ifeq ($(BR2_PACKAGE_TI_SGX_KM_AM335X),y)
-TI_SGX_KM_PLATFORM_NAME = omap335x
-else ifeq ($(BR2_PACKAGE_TI_SGX_KM_AM437X),y)
-TI_SGX_KM_PLATFORM_NAME = omap437x
-else ifeq ($(BR2_PACKAGE_TI_SGX_KM_AM4430),y)
-TI_SGX_KM_PLATFORM_NAME = omap4430
-else ifeq ($(BR2_PACKAGE_TI_SGX_KM_5430),y)
-TI_SGX_KM_PLATFORM_NAME = omap5430
-endif
+TI_SGX_KM_PLATFORM_NAME = ti335x
 
-TI_SGX_KM_SUBDIR = eurasia_km/eurasiacon/build/linux2/$(TI_SGX_KM_PLATFORM_NAME)_linux
+TI_SGX_KM_SUBDIR = eurasia_km/eurasiacon/build/linux2/omap_linux
 
 define TI_SGX_KM_BUILD_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) $(TI_SGX_KM_MAKE_OPTS) \

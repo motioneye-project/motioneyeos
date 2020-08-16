@@ -1,0 +1,17 @@
+config BR2_PACKAGE_EXFATPROGS
+	bool "exfatprogs"
+	depends on BR2_USE_WCHAR
+	help
+	  exFAT filesystem userspace utilities.
+
+	  This is the set of tools that works together with the exfat
+	  driver in the official Linux kernel (merged in Linux 5.7).
+
+	  If you're using the FUSE-based exfat support (from
+	  package/exfat), you must use the corresponding user-space
+	  programs in package/exfat-utils.
+
+	  https://github.com/exfatprogs/exfatprogs
+
+comment "exfatprogs needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR

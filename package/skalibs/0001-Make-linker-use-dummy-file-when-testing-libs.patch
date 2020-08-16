@@ -1,0 +1,44 @@
+From ca69c0d48e65acadccfe65e3adf16c34a744627b Mon Sep 17 00:00:00 2001
+From: Eric Le Bihan <eric.le.bihan.dev@free.fr>
+Date: Tue, 10 Oct 2017 19:51:34 +0200
+Subject: [PATCH] Make linker use dummy file when testing libs
+
+For some architectures, like Xtensa or HPPA, ld from binutils requires
+the output file to be a regular file, as mentioned in a bug report on
+the mailing list [1].
+
+So, use a dummy file as output file for ld in trylibs(), instead of
+/dev/null.
+
+[1] https://sourceware.org/bugzilla/show_bug.cgi?id=19526
+
+Signed-off-by: Eric Le Bihan <eric.le.bihan.dev@free.fr>
+---
+ configure | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/configure b/configure
+index 54d755b..64a061a 100755
+--- a/configure
++++ b/configure
+@@ -230,7 +230,7 @@ trylibs () {
+   echo "Checking whether system has $2..." >&3
+   shift 2
+   if $CC_AUTO $CPPFLAGS_AUTO $CPPFLAGS $CPPFLAGS_POST $CFLAGS_AUTO $CFLAGS $CFLAGS_POST -c -o try$name.o src/sysdeps/try$name.c 2>/dev/null ; then
+-    until $CC_AUTO $CFLAGS_AUTO $CFLAGS $CFLAGS_POST $LDFLAGS_AUTO $LDFLAGS $LDFLAGS_POST -o /dev/null try$name.o $args 2>/dev/null ; do
++    until $CC_AUTO $CPPFLAGS_AUTO $CPPFLAGS $CPPFLAGS_POST $CFLAGS_AUTO $CFLAGS $CFLAGS_POST -o try$name try$name.o $args 2>/dev/null ; do
+       if test -z "$*" ; then
+         rm -f try$name.o
+         echo
+@@ -246,7 +246,7 @@ trylibs () {
+     else
+       echo "  ... yes, with$args" >&3
+     fi
+-    rm -f try$name.o
++    rm -f try$name.o try$name
+     return 0
+   else
+     echo
+-- 
+2.17.2
+

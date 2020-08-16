@@ -5,21 +5,21 @@ config BR2_PACKAGE_GDB_ARCH_SUPPORTS
 	depends on !BR2_microblaze
 	depends on !BR2_nios2
 	depends on !BR2_or1k
+	depends on !BR2_nds32
 
 comment "gdb/gdbserver needs a toolchain w/ threads, threads debug"
 	depends on BR2_PACKAGE_GDB_ARCH_SUPPORTS
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_TOOLCHAIN_HAS_THREADS_DEBUG
 
 comment "gdb/gdbserver >= 8.x needs a toolchain w/ C++, gcc >= 4.8"
-	depends on BR2_PACKAGE_GDB_NEEDS_CXX11
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
 
 config BR2_PACKAGE_GDB
 	bool "gdb"
 	depends on BR2_TOOLCHAIN_HAS_THREADS && BR2_TOOLCHAIN_HAS_THREADS_DEBUG
 	depends on BR2_PACKAGE_GDB_ARCH_SUPPORTS
-	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 || !BR2_PACKAGE_GDB_NEEDS_CXX11
-	depends on BR2_INSTALL_LIBSTDCPP || !BR2_PACKAGE_GDB_NEEDS_CXX11
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+	depends on BR2_INSTALL_LIBSTDCPP
 	# no gdbserver on riscv
 	select BR2_PACKAGE_GDB_DEBUGGER if BR2_riscv
 	# When the external toolchain gdbserver is copied to the
@@ -49,6 +49,11 @@ config BR2_PACKAGE_GDB_SERVER
 	bool "gdbserver"
 	depends on !BR2_TOOLCHAIN_EXTERNAL_GDB_SERVER_COPY
 	depends on !BR2_riscv
+	# Simultaneous build of gdbserver and full gdb is not possible
+	# with arc-2019.09. This bug comes from upstream GDB. So
+	# simultaneous usage of full gdb and gdbserver is temporaly
+	# disabled for ARC until a fix becomes available.
+	depends on !(BR2_arc && BR2_PACKAGE_GDB_DEBUGGER)
 	help
 	  Build the gdbserver stub to run on the target.
 	  A full gdb is needed to debug the progam.
@@ -57,6 +62,7 @@ config BR2_PACKAGE_GDB_DEBUGGER
 	bool "full debugger"
 	depends on BR2_USE_WCHAR
 	depends on !BR2_sh
+	depends on !BR2_csky
 	select BR2_PACKAGE_NCURSES
 
 comment "full gdb on target needs a toolchain w/ wchar"

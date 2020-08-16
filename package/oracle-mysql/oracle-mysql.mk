@@ -9,7 +9,7 @@ ORACLE_MYSQL_VERSION = $(ORACLE_MYSQL_VERSION_MAJOR).73
 ORACLE_MYSQL_SOURCE = mysql-$(ORACLE_MYSQL_VERSION).tar.gz
 ORACLE_MYSQL_SITE = http://dev.mysql.com/get/Downloads/MySQL-$(ORACLE_MYSQL_VERSION_MAJOR)
 ORACLE_MYSQL_INSTALL_STAGING = YES
-ORACLE_MYSQL_DEPENDENCIES = readline ncurses
+ORACLE_MYSQL_DEPENDENCIES = ncurses
 ORACLE_MYSQL_AUTORECONF = YES
 ORACLE_MYSQL_LICENSE = GPL-2.0
 ORACLE_MYSQL_LICENSE_FILES = README COPYING
@@ -33,7 +33,7 @@ ORACLE_MYSQL_CONF_OPTS = \
 	--without-docs \
 	--without-man \
 	--without-libedit \
-	--without-readline \
+	--with-readline \
 	--with-low-memory \
 	--enable-thread-safe-client \
 	--with-unix-socket-path=$(MYSQL_SOCKET) \
@@ -68,6 +68,9 @@ endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 ORACLE_MYSQL_DEPENDENCIES += zlib
+ORACLE_MYSQL_CONF_OPTS += --with-zlib-dir=$(STAGING_DIR)/usr
+else
+ORACLE_MYSQL_CONF_OPTS += --without-zlib-dir
 endif
 
 ifeq ($(BR2_PACKAGE_ORACLE_MYSQL_SERVER),y)
@@ -116,9 +119,6 @@ endef
 define ORACLE_MYSQL_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 $(ORACLE_MYSQL_PKGDIR)/mysqld.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/mysqld.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/mysqld.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/mysqld.service
 endef
 
 else

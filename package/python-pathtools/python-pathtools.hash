@@ -2,3 +2,5 @@
 md5	9a1af5c605768ea5804b03b734ff0f82  pathtools-0.1.2.tar.gz
 # sha256 calculated by scanpypi
 sha256	7c35c5421a39bb82e58018febd90e3b6e5db34c5443aaaf742b3f33d4655f1c0  pathtools-0.1.2.tar.gz
+# Locally computed
+sha256  b52d83fba08f61bd1e603fee1b44cbc7ead9fcb512a5ceb8c53fec90ba415ac4  LICENSE

@@ -1,0 +1,35 @@
+From 8d0d42542e2cb7a56d645fbe4d0ef436e38bcefa Mon Sep 17 00:00:00 2001
+From: Frank Denis <github@pureftpd.org>
+Date: Tue, 18 Feb 2020 18:36:58 +0100
+Subject: [PATCH] diraliases: always set the tail of the list to NULL
+
+Spotted and reported by Antonio Norales from GitHub Security Labs.
+Thanks!
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/jedisct1/pure-ftpd/commit/8d0d42542e2cb7a56d645fbe4d0ef436e38bcefa]
+---
+ src/diraliases.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/diraliases.c b/src/diraliases.c
+index 4002a36..fb70273 100644
+--- a/src/diraliases.c
++++ b/src/diraliases.c
+@@ -93,7 +93,6 @@ int init_aliases(void)
+                 (tail->dir = strdup(dir)) == NULL) {
+                 die_mem();
+             }
+-            tail->next = NULL;
+         } else {
+             DirAlias *curr;
+ 
+@@ -105,6 +104,7 @@ int init_aliases(void)
+             tail->next = curr;
+             tail = curr;
+         }
++        tail->next = NULL;
+     }
+     fclose(fp);
+     aliases_up++;

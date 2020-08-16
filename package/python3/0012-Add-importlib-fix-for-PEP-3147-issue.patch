@@ -1,4 +1,4 @@
-From 9db508467be41bc35f06c0076c855b99a1519d24 Mon Sep 17 00:00:00 2001
+From c50b8e7fb9b2e61d4d195a055cd1bbf993cc455f Mon Sep 17 00:00:00 2001
 From: Christophe Vu-Brugier <cvubrugier@fastmail.fm>
 Date: Wed, 22 Feb 2017 16:48:49 -0800
 Subject: [PATCH] Add importlib fix for PEP 3147 issue
@@ -21,14 +21,14 @@ Signed-off-by: Christophe Vu-Brugier <cvubrugier@fastmail.fm>
 [ Andrey Smirnov: ported to Python 3.6 ]
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- Lib/importlib/_bootstrap_external.py | 38 +++++-------------------------------
- 1 file changed, 5 insertions(+), 33 deletions(-)
+ Lib/importlib/_bootstrap_external.py | 44 ++++------------------------
+ 1 file changed, 5 insertions(+), 39 deletions(-)
 
 diff --git a/Lib/importlib/_bootstrap_external.py b/Lib/importlib/_bootstrap_external.py
-index 9feec50842..3550013d58 100644
+index b8ac482994..db034f605a 100644
 --- a/Lib/importlib/_bootstrap_external.py
 +++ b/Lib/importlib/_bootstrap_external.py
-@@ -283,8 +283,6 @@ def cache_from_source(path, debug_override=None, *, optimization=None):
+@@ -306,8 +306,6 @@ def cache_from_source(path, debug_override=None, *, optimization=None):
      a True value is the same as setting 'optimization' to the empty string
      while a False value is equivalent to setting 'optimization' to '1'.
  
@@ -37,7 +37,7 @@ index 9feec50842..3550013d58 100644
      """
      if debug_override is not None:
          _warnings.warn('the debug_override parameter is deprecated; use '
-@@ -296,10 +294,7 @@ def cache_from_source(path, debug_override=None, *, optimization=None):
+@@ -319,10 +317,7 @@ def cache_from_source(path, debug_override=None, *, optimization=None):
      path = _os.fspath(path)
      head, tail = _path_split(path)
      base, sep, rest = tail.rpartition('.')
@@ -49,12 +49,12 @@ index 9feec50842..3550013d58 100644
      if optimization is None:
          if sys.flags.optimize == 0:
              optimization = ''
-@@ -310,40 +305,17 @@ def cache_from_source(path, debug_override=None, *, optimization=None):
-         if not optimization.isalnum():
-             raise ValueError('{!r} is not alphanumeric'.format(optimization))
-         almost_filename = '{}.{}{}'.format(almost_filename, _OPT, optimization)
--    return _path_join(head, _PYCACHE, almost_filename + BYTECODE_SUFFIXES[0])
-+    return _path_join(head, almost_filename + BYTECODE_SUFFIXES[0])
+@@ -359,46 +354,17 @@ def cache_from_source(path, debug_override=None, *, optimization=None):
+             head.lstrip(path_separators),
+             filename,
+         )
+-    return _path_join(head, _PYCACHE, filename)
++    return _path_join(head, filename)
  
  
  def source_from_cache(path):
@@ -71,23 +71,29 @@ index 9feec50842..3550013d58 100644
 -        raise NotImplementedError('sys.implementation.cache_tag is None')
 -    path = _os.fspath(path)
 -    head, pycache_filename = _path_split(path)
--    head, pycache = _path_split(head)
--    if pycache != _PYCACHE:
--        raise ValueError('{} not bottom-level directory in '
--                         '{!r}'.format(_PYCACHE, path))
+-    found_in_pycache_prefix = False
+-    if sys.pycache_prefix is not None:
+-        stripped_path = sys.pycache_prefix.rstrip(path_separators)
+-        if head.startswith(stripped_path + path_sep):
+-            head = head[len(stripped_path):]
+-            found_in_pycache_prefix = True
+-    if not found_in_pycache_prefix:
+-        head, pycache = _path_split(head)
+-        if pycache != _PYCACHE:
+-            raise ValueError(f'{_PYCACHE} not bottom-level directory in '
+-                             f'{path!r}')
 -    dot_count = pycache_filename.count('.')
 -    if dot_count not in {2, 3}:
--        raise ValueError('expected only 2 or 3 dots in '
--                         '{!r}'.format(pycache_filename))
+-        raise ValueError(f'expected only 2 or 3 dots in {pycache_filename!r}')
 -    elif dot_count == 3:
 -        optimization = pycache_filename.rsplit('.', 2)[-2]
 -        if not optimization.startswith(_OPT):
 -            raise ValueError("optimization portion of filename does not start "
--                             "with {!r}".format(_OPT))
+-                             f"with {_OPT!r}")
 -        opt_level = optimization[len(_OPT):]
 -        if not opt_level.isalnum():
--            raise ValueError("optimization level {!r} is not an alphanumeric "
--                             "value".format(optimization))
+-            raise ValueError(f"optimization level {optimization!r} is not an "
+-                             "alphanumeric value")
 -    base_filename = pycache_filename.partition('.')[0]
 +    head, filename = _path_split(path)
 +    base_filename = filename.partition('.')[0]
@@ -95,5 +101,5 @@ index 9feec50842..3550013d58 100644
  
  
 -- 
-2.13.5
+2.20.1
 

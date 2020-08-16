@@ -6,4 +6,4 @@ config BR2_PACKAGE_WSAPI
 	help
 	  API that abstracts the web server from Lua web applications.
 
-	  http://www.keplerproject.org/wsapi
+	  https://keplerproject.github.io/wsapi/

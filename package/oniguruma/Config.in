@@ -1,0 +1,9 @@
+config BR2_PACKAGE_ONIGURUMA
+	bool "oniguruma"
+	help
+	  Oniguruma is a modern and flexible regular expressions
+	  library. It encompasses features from different regular
+	  expression implementations that traditionally exist in
+	  different languages.
+
+	  https://github.com/kkos/oniguruma

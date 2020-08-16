@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/soupsieve/json
+md5	43d8ea20c58494446aa65ba5cc6320fe  soupsieve-1.9.4.tar.gz
+sha256	605f89ad5fdbfefe30cdc293303665eff2d188865d4dbe4eb510bba1edfbfce3  soupsieve-1.9.4.tar.gz
+# Locally computed sha256 checksums
+sha256	0eee19bf360e5f7a8180e2f6d613d716f7115a456f670e3d8bb35c45a0db1838  LICENSE.md

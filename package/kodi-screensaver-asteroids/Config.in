@@ -1,10 +1,11 @@
 config BR2_PACKAGE_KODI_SCREENSAVER_ASTEROIDS
 	bool "kodi-screensaver-asteroids"
 	depends on BR2_PACKAGE_HAS_LIBGL
+	select BR2_PACKAGE_GLM
 	help
 	  Asteroids screensaver for Kodi
 
-	  https://github.com/notspiff/screensaver.asteroids
+	  https://github.com/xbmc/screensaver.asteroids
 
 comment "kodi-screensaver-asteroids needs OpenGL"
 	depends on !BR2_PACKAGE_HAS_LIBGL

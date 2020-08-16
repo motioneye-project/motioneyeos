@@ -1,0 +1,9 @@
+# From https://github.com/AdoptOpenJDK/openjdk14-binaries/releases
+sha256  9ddf9b35996fbd784a53fff3e0d59920a7d5acf1a82d4c8d70906957ac146cd1  OpenJDK14U-jdk_x64_linux_hotspot_14.0.1_7.tar.gz
+
+# From https://github.com/AdoptOpenJDK/openjdk11-binaries/releases
+sha256  ee60304d782c9d5654bf1a6b3f38c683921c1711045e1db94525a51b7024a2ca  OpenJDK11U-jdk_x64_linux_hotspot_11.0.7_10.tar.gz
+
+# Locally calculated
+sha256  4b9abebc4338048a7c2dc184e9f800deb349366bdf28eb23c2677a77b4c87726  legal/java.prefs/LICENSE
+sha256  a44eb7b5caf5534c6ef536b21edb40b4d6babf91bf97d9d45596868618b2c6fb  legal/java.prefs/ASSEMBLY_EXCEPTION

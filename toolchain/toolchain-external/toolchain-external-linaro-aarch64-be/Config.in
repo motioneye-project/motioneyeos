@@ -10,6 +10,7 @@ config BR2_TOOLCHAIN_EXTERNAL_LINARO_AARCH64_BE
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_10
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_7
 	select BR2_TOOLCHAIN_HAS_FORTRAN
+	select BR2_TOOLCHAIN_HAS_OPENMP
 	help
 	  Toolchain for the AArch64 Big Endian architecture, from
 	  http://www.linaro.org/engineering/armv8/

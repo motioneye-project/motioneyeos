@@ -1,0 +1,27 @@
+From f0adb08424e624aeee340291343281256b7a98e8 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Sat, 7 Mar 2020 12:23:09 +0100
+Subject: [PATCH] tests/amdgpu: needs atomic_ops
+
+[Upstream: https://gitlab.freedesktop.org/mesa/drm/-/merge_requests/50]
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ tests/amdgpu/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+index 1726cb43..4dfa5c83 100644
+--- a/tests/amdgpu/meson.build
++++ b/tests/amdgpu/meson.build
+@@ -26,7 +26,7 @@ if dep_cunit.found()
+       'vce_tests.c', 'uvd_enc_tests.c', 'vcn_tests.c', 'deadlock_tests.c',
+       'vm_tests.c', 'ras_tests.c', 'syncobj_tests.c',
+     ),
+-    dependencies : [dep_cunit, dep_threads],
++    dependencies : [dep_cunit, dep_threads, dep_atomic_ops],
+     include_directories : [inc_root, inc_drm, include_directories('../../amdgpu')],
+     link_with : [libdrm, libdrm_amdgpu],
+     install : with_install_tests,
+-- 
+2.25.1
+

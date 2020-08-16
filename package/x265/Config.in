@@ -11,7 +11,7 @@ config BR2_PACKAGE_X265
 	  General Public License (GPL) 2 license or a commercial
 	  license, similar to the x264 project.
 
-	  http://x265.org
+	  https://bitbucket.org/multicoreware/x265/wiki/Home
 
 if BR2_PACKAGE_X265
 

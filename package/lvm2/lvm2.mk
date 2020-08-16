@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LVM2_VERSION = 2.02.183
+LVM2_VERSION = 2.02.185
 LVM2_SOURCE = LVM2.$(LVM2_VERSION).tgz
 LVM2_SITE = ftp://sources.redhat.com/pub/lvm2
 LVM2_INSTALL_STAGING = YES
@@ -28,12 +28,14 @@ LVM2_DEPENDENCIES += host-pkgconf libaio
 # take into account the toolchain passed at configure time.
 LVM2_MAKE_ENV = $(TARGET_CONFIGURE_OPTS)
 
-ifeq ($(BR2_PACKAGE_READLINE),y)
-LVM2_DEPENDENCIES += readline
-else
-# v2.02.44: disable readline usage, or binaries are linked against provider
-# of "tgetent" (=> ncurses) even if it's not used..
+# package/readline is GPL-3.0+, so not license compatible
 LVM2_CONF_OPTS += --disable-readline
+
+LVM2_INSTALL_STAGING_OPTS = DESTDIR=$(STAGING_DIR)
+LVM2_INSTALL_TARGET_OPTS = DESTDIR=$(TARGET_DIR)
+
+ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
+LVM2_CONF_OPTS += --enable-udev_rules
 endif
 
 ifeq ($(BR2_PACKAGE_LIBSELINUX),y)
@@ -45,14 +47,27 @@ endif
 
 ifeq ($(BR2_PACKAGE_LVM2_STANDARD_INSTALL),)
 LVM2_MAKE_OPTS = device-mapper
-LVM2_INSTALL_STAGING_OPTS = DESTDIR=$(STAGING_DIR) install_device-mapper
-LVM2_INSTALL_TARGET_OPTS = DESTDIR=$(TARGET_DIR) install_device-mapper
+LVM2_INSTALL_STAGING_OPTS += install_device-mapper
+LVM2_INSTALL_TARGET_OPTS += install_device-mapper
+else
+LVM2_INSTALL_STAGING_OPTS += install
+LVM2_INSTALL_TARGET_OPTS += install
 endif
 
 ifeq ($(BR2_PACKAGE_LVM2_APP_LIBRARY),y)
 LVM2_CONF_OPTS += --enable-applib
 else
 LVM2_CONF_OPTS += --disable-applib
+endif
+
+ifeq ($(BR2_PACKAGE_LVM2_LVMETAD),y)
+LVM2_CONF_OPTS += --enable-lvmetad
+else
+LVM2_CONF_OPTS += --disable-lvmetad
+endif
+
+ifeq ($(BR2_INIT_SYSTEMD),y)
+LVM2_INSTALL_TARGET_OPTS += install_systemd_units install_systemd_generators
 endif
 
 ifeq ($(BR2_TOOLCHAIN_SUPPORTS_PIE),)

@@ -4,14 +4,14 @@
 #
 ################################################################################
 
-MPV_VERSION = 0.27.2
+MPV_VERSION = 0.29.1
 MPV_SITE = https://github.com/mpv-player/mpv/archive
 MPV_SOURCE = v$(MPV_VERSION).tar.gz
 MPV_DEPENDENCIES = \
 	host-pkgconf ffmpeg zlib \
 	$(if $(BR2_PACKAGE_LIBICONV),libiconv)
 MPV_LICENSE = GPL-2.0+
-MPV_LICENSE_FILES = LICENSE
+MPV_LICENSE_FILES = LICENSE.GPL
 
 MPV_NEEDS_EXTERNAL_WAF = YES
 
@@ -23,14 +23,12 @@ MPV_CONF_OPTS = \
 	--disable-cocoa \
 	--disable-coreaudio \
 	--disable-cuda-hwaccel \
-	--disable-libv4l2 \
 	--disable-opensles \
 	--disable-rsound \
 	--disable-rubberband \
 	--disable-uchardet \
 	--disable-vapoursynth \
 	--disable-vapoursynth-lazy \
-	--disable-vdpau \
 	--disable-mali-fbdev
 
 # ALSA support requires pcm+mixer
@@ -130,6 +128,24 @@ else
 MPV_CONF_OPTS += --disable-drm
 endif
 
+# libv4l
+ifeq ($(BR2_PACKAGE_LIBV4L),y)
+MPV_CONF_OPTS += \
+	--enable-libv4l2 \
+	--enable-tv
+MPV_DEPENDENCIES += libv4l
+else
+MPV_CONF_OPTS += --disable-libv4l2
+endif
+
+# libvdpau
+ifeq ($(BR2_PACKAGE_LIBVDPAU),y)
+MPV_CONF_OPTS += --enable-vdpau
+MPV_DEPENDENCIES += libvdpau
+else
+MPV_CONF_OPTS += --disable-vdpau
+endif
+
 # LUA support, only for lua51/lua52/luajit
 # This enables the controller (OSD) together with libass
 ifeq ($(BR2_PACKAGE_LUA_5_1)$(BR2_PACKAGE_LUAJIT),y)
@@ -164,16 +180,12 @@ MPV_CONF_OPTS += --disable-libsmbclient
 endif
 
 # SDL support
-# Both can't be used at the same time, prefer newer API
-# It also requires 64-bit sync intrinsics
+# Sdl2 requires 64-bit sync intrinsics
 ifeq ($(BR2_TOOLCHAIN_HAS_SYNC_8)$(BR2_PACKAGE_SDL2),yy)
-MPV_CONF_OPTS += --enable-sdl2 --disable-sdl1
+MPV_CONF_OPTS += --enable-sdl2
 MPV_DEPENDENCIES += sdl2
-else ifeq ($(BR2_TOOLCHAIN_HAS_SYNC_8)$(BR2_PACKAGE_SDL),yy)
-MPV_CONF_OPTS += --enable-sdl1 --disable-sdl2
-MPV_DEPENDENCIES += sdl
 else
-MPV_CONF_OPTS += --disable-sdl1 --disable-sdl2
+MPV_CONF_OPTS += --disable-sdl2
 endif
 
 # Raspberry Pi support
@@ -201,7 +213,7 @@ endif
 # wayland support
 ifeq ($(BR2_PACKAGE_WAYLAND),y)
 MPV_CONF_OPTS += --enable-wayland
-MPV_DEPENDENCIES += libxkbcommon wayland
+MPV_DEPENDENCIES += libxkbcommon wayland wayland-protocols
 else
 MPV_CONF_OPTS += --disable-wayland
 endif

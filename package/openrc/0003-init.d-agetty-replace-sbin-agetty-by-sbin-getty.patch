@@ -1,0 +1,33 @@
+From b39ab180358ed451eae9df900f49a72ef1eb7442 Mon Sep 17 00:00:00 2001
+From: Carlos Santos <unixmania@gmail.com>
+Date: Sun, 1 Mar 2020 09:04:48 -0300
+Subject: [PATCH] init.d/agetty: replace /sbin/agetty by /sbin/getty
+
+In Buildroot getty is provided by BusyBox or util-linux (agetty). Both
+create a /sbin/getty symlink pointing to the actual program, so make the
+agetty service use that path instead of /sbin/agetty.
+
+The patch is required because it's not possible to override the command
+by means of a configuration file.
+
+Signed-off-by: Carlos Santos <unixmania@gmail.com>
+---
+ init.d/agetty.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/init.d/agetty.in b/init.d/agetty.in
+index e4866f7a..e1864628 100644
+--- a/init.d/agetty.in
++++ b/init.d/agetty.in
+@@ -14,7 +14,7 @@ supervisor=supervise-daemon
+ port="${RC_SVCNAME#*.}"
+ respawn_period="${respawn_period:-60}"
+ term_type="${term_type:-linux}"
+-command=/sbin/agetty
++command=/sbin/getty
+ command_args_foreground="${agetty_options} ${port} ${baud} ${term_type}"
+ pidfile="/run/${RC_SVCNAME}.pid"
+ 
+-- 
+2.18.2
+

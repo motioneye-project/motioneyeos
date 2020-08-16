@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/pycli/json, sha256 locally computed
+# md5 from https://pypi.python.org/pypi/pycli/json
 md5 89c487e7c8068ce05d63394d2ae7ebad pyCLI-2.0.3.tar.gz
-sha256 bc53e6c5db031ae1c05d131641f153d22a201c5e82cc8c9324a945752efbb622 pyCLI-2.0.3.tar.gz
+# Locally computed
+sha256  bc53e6c5db031ae1c05d131641f153d22a201c5e82cc8c9324a945752efbb622  pyCLI-2.0.3.tar.gz
+sha256  591490b2ef462a4ad2be1aae5dd47738cb17e191c82d3ba38c3ae906d288e6ba  lib/cli/__init__.py

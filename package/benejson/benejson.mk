@@ -9,7 +9,7 @@ BENEJSON_SITE = $(call github,codehero,benejson,$(BENEJSON_VERSION))
 BENEJSON_LICENSE = MIT
 BENEJSON_LICENSE_FILES = LICENSE
 BENEJSON_INSTALL_STAGING = YES
-BENEJSON_DEPENDENCIES = host-scons
+BENEJSON_DEPENDENCIES = host-python3 host-scons
 
 # wchar support needs to be manually disabled
 ifeq ($(BR2_USE_WCHAR),)
@@ -41,7 +41,7 @@ endif # Shared enabled
 define BENEJSON_BUILD_CMDS
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) CROSS=$(TARGET_CROSS) \
-		$(SCONS) $(BENEJSON_SCONS_TARGETS))
+		$(HOST_DIR)/bin/python3 $(SCONS) $(BENEJSON_SCONS_TARGETS))
 endef
 
 define BENEJSON_INSTALL_STAGING_CMDS

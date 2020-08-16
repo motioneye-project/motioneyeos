@@ -1,0 +1,28 @@
+From 9e0f11a4981737f98bac93a22b6f2ff1a3887b63 Mon Sep 17 00:00:00 2001
+From: Adam Duskett <Aduskett@gmail.com>
+Date: Tue, 9 Apr 2019 13:03:51 -0400
+Subject: [PATCH] Add '-Wno-format-nonliteral' to compiler arguments.
+
+This warning is a false positive on older versions of gcc.
+See https://gitlab.gnome.org/GNOME/glib/issues/1744 for more details.
+
+Signed-off-by: Adam Duskett <Aduskett@gmail.com>
+---
+ meson.build | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/meson.build b/meson.build
+index 3c615b7..7cae4e8 100644
+--- a/meson.build
++++ b/meson.build
+@@ -372,6 +372,7 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
+     '-Wno-cast-function-type',
++    '-Wno-format-nonliteral',
+     # Due to function casts through (void*) we cannot support -Wpedantic:
+     # https://wiki.gnome.org/Projects/GLib/CompilerRequirements#Function_pointer_conversions.
+     '-Wno-pedantic',
+     '-Werror=declaration-after-statement',
+     '-Werror=format=2',
+-- 
+2.20.1
+

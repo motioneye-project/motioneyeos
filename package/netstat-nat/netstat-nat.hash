@@ -1,2 +1,3 @@
 # Locally calculated
-sha256	e945faa283a49f33af15de915a949c9273a230fc17154925364c547adab676ca	netstat-nat-1.4.10.tar.gz
+sha256  e945faa283a49f33af15de915a949c9273a230fc17154925364c547adab676ca  netstat-nat-1.4.10.tar.gz
+sha256  91df39d1816bfb17a4dda2d3d2c83b1f6f2d38d53e53e41e8f97ad5ac46a0cad  COPYING

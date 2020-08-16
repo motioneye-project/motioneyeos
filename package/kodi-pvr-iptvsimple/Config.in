@@ -1,6 +1,7 @@
 config BR2_PACKAGE_KODI_PVR_IPTVSIMPLE
 	bool "kodi-pvr-iptvsimple"
 	select BR2_PACKAGE_KODI_PLATFORM
+	select BR2_PACKAGE_RAPIDXML
 	help
 	  IPTV Live TV and Radio PVR client addon for Kodi
 

@@ -1,0 +1,219 @@
+From 553702980ae89c83f2d6e254d62cf82e204956d0 Mon Sep 17 00:00:00 2001
+From: "Christoph M. Becker" <cmbecker69@gmx.de>
+Date: Thu, 17 Jan 2019 11:54:55 +0100
+Subject: [PATCH] Fix #492: Potential double-free in gdImage*Ptr()
+
+Whenever `gdImage*Ptr()` calls `gdImage*Ctx()` and the latter fails, we
+must not call `gdDPExtractData()`; otherwise a double-free would
+happen.  Since `gdImage*Ctx()` are void functions, and we can't change
+that for BC reasons, we're introducing static helpers which are used
+internally.
+
+We're adding a regression test for `gdImageJpegPtr()`, but not for
+`gdImageGifPtr()` and `gdImageWbmpPtr()` since we don't know how to
+trigger failure of the respective `gdImage*Ctx()` calls.
+
+This potential security issue has been reported by Solmaz Salimi (aka.
+Rooney).
+
+CVE-2019-6978
+
+[Peter: drop tests]
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ src/gd_gif_out.c                  | 18 +++++++++++++++---
+ src/gd_jpeg.c                     | 20 ++++++++++++++++----
+ src/gd_wbmp.c                     | 21 ++++++++++++++++++---
+ 3 files changed, 84 insertions(+), 11 deletions(-)
+
+diff --git a/src/gd_gif_out.c b/src/gd_gif_out.c
+index 298a581..d5a9534 100644
+--- a/src/gd_gif_out.c
++++ b/src/gd_gif_out.c
+@@ -99,6 +99,7 @@ static void char_init(GifCtx *ctx);
+ static void char_out(int c, GifCtx *ctx);
+ static void flush_char(GifCtx *ctx);
+ 
++static int _gdImageGifCtx(gdImagePtr im, gdIOCtxPtr out);
+ 
+ 
+ 
+@@ -131,8 +132,11 @@ BGD_DECLARE(void *) gdImageGifPtr(gdImagePtr im, int *size)
+ 	void *rv;
+ 	gdIOCtx *out = gdNewDynamicCtx(2048, NULL);
+ 	if (out == NULL) return NULL;
+-	gdImageGifCtx(im, out);
+-	rv = gdDPExtractData(out, size);
++	if (!_gdImageGifCtx(im, out)) {
++		rv = gdDPExtractData(out, size);
++	} else {
++		rv = NULL;
++	}
+ 	out->gd_free(out);
+ 	return rv;
+ }
+@@ -220,6 +224,12 @@ BGD_DECLARE(void) gdImageGif(gdImagePtr im, FILE *outFile)
+ 
+ */
+ BGD_DECLARE(void) gdImageGifCtx(gdImagePtr im, gdIOCtxPtr out)
++{
++	_gdImageGifCtx(im, out);
++}
++
++/* returns 0 on success, 1 on failure */
++static int _gdImageGifCtx(gdImagePtr im, gdIOCtxPtr out)
+ {
+ 	gdImagePtr pim = 0, tim = im;
+ 	int interlace, BitsPerPixel;
+@@ -231,7 +241,7 @@ BGD_DECLARE(void) gdImageGifCtx(gdImagePtr im, gdIOCtxPtr out)
+ 		based temporary image. */
+ 		pim = gdImageCreatePaletteFromTrueColor(im, 1, 256);
+ 		if(!pim) {
+-			return;
++			return 1;
+ 		}
+ 		tim = pim;
+ 	}
+@@ -247,6 +257,8 @@ BGD_DECLARE(void) gdImageGifCtx(gdImagePtr im, gdIOCtxPtr out)
+ 		/* Destroy palette based temporary image. */
+ 		gdImageDestroy(	pim);
+ 	}
++
++	return 0;
+ }
+ 
+ 
+diff --git a/src/gd_jpeg.c b/src/gd_jpeg.c
+index fc05842..96ef430 100644
+--- a/src/gd_jpeg.c
++++ b/src/gd_jpeg.c
+@@ -117,6 +117,8 @@ static void fatal_jpeg_error(j_common_ptr cinfo)
+ 	exit(99);
+ }
+ 
++static int _gdImageJpegCtx(gdImagePtr im, gdIOCtx *outfile, int quality);
++
+ /*
+  * Write IM to OUTFILE as a JFIF-formatted JPEG image, using quality
+  * QUALITY.  If QUALITY is in the range 0-100, increasing values
+@@ -231,8 +233,11 @@ BGD_DECLARE(void *) gdImageJpegPtr(gdImagePtr im, int *size, int quality)
+ 	void *rv;
+ 	gdIOCtx *out = gdNewDynamicCtx(2048, NULL);
+ 	if (out == NULL) return NULL;
+-	gdImageJpegCtx(im, out, quality);
+-	rv = gdDPExtractData(out, size);
++	if (!_gdImageJpegCtx(im, out, quality)) {
++		rv = gdDPExtractData(out, size);
++	} else {
++		rv = NULL;
++	}
+ 	out->gd_free(out);
+ 	return rv;
+ }
+@@ -253,6 +258,12 @@ void jpeg_gdIOCtx_dest(j_compress_ptr cinfo, gdIOCtx *outfile);
+ 
+ */
+ BGD_DECLARE(void) gdImageJpegCtx(gdImagePtr im, gdIOCtx *outfile, int quality)
++{
++	_gdImageJpegCtx(im, outfile, quality);
++}
++
++/* returns 0 on success, 1 on failure */
++static int _gdImageJpegCtx(gdImagePtr im, gdIOCtx *outfile, int quality)
+ {
+ 	struct jpeg_compress_struct cinfo;
+ 	struct jpeg_error_mgr jerr;
+@@ -287,7 +298,7 @@ BGD_DECLARE(void) gdImageJpegCtx(gdImagePtr im, gdIOCtx *outfile, int quality)
+ 		if(row) {
+ 			gdFree(row);
+ 		}
+-		return;
++		return 1;
+ 	}
+ 
+ 	cinfo.err->emit_message = jpeg_emit_message;
+@@ -328,7 +339,7 @@ BGD_DECLARE(void) gdImageJpegCtx(gdImagePtr im, gdIOCtx *outfile, int quality)
+ 	if(row == 0) {
+ 		gd_error("gd-jpeg: error: unable to allocate JPEG row structure: gdCalloc returns NULL\n");
+ 		jpeg_destroy_compress(&cinfo);
+-		return;
++		return 1;
+ 	}
+ 
+ 	rowptr[0] = row;
+@@ -405,6 +416,7 @@ BGD_DECLARE(void) gdImageJpegCtx(gdImagePtr im, gdIOCtx *outfile, int quality)
+ 	jpeg_finish_compress(&cinfo);
+ 	jpeg_destroy_compress(&cinfo);
+ 	gdFree(row);
++	return 0;
+ }
+ 
+ 
+diff --git a/src/gd_wbmp.c b/src/gd_wbmp.c
+index f19a1c9..a49bdbe 100644
+--- a/src/gd_wbmp.c
++++ b/src/gd_wbmp.c
+@@ -88,6 +88,8 @@ int gd_getin(void *in)
+ 	return (gdGetC((gdIOCtx *)in));
+ }
+ 
++static int _gdImageWBMPCtx(gdImagePtr image, int fg, gdIOCtx *out);
++
+ /*
+ 	Function: gdImageWBMPCtx
+ 
+@@ -100,6 +102,12 @@ int gd_getin(void *in)
+ 		out   - the stream where to write
+ */
+ BGD_DECLARE(void) gdImageWBMPCtx(gdImagePtr image, int fg, gdIOCtx *out)
++{
++	_gdImageWBMPCtx(image, fg, out);
++}
++
++/* returns 0 on success, 1 on failure */
++static int _gdImageWBMPCtx(gdImagePtr image, int fg, gdIOCtx *out)
+ {
+ 	int x, y, pos;
+ 	Wbmp *wbmp;
+@@ -107,7 +115,7 @@ BGD_DECLARE(void) gdImageWBMPCtx(gdImagePtr image, int fg, gdIOCtx *out)
+ 	/* create the WBMP */
+ 	if((wbmp = createwbmp(gdImageSX(image), gdImageSY(image), WBMP_WHITE)) == NULL) {
+ 		gd_error("Could not create WBMP\n");
+-		return;
++		return 1;
+ 	}
+ 
+ 	/* fill up the WBMP structure */
+@@ -123,11 +131,15 @@ BGD_DECLARE(void) gdImageWBMPCtx(gdImagePtr image, int fg, gdIOCtx *out)
+ 
+ 	/* write the WBMP to a gd file descriptor */
+ 	if(writewbmp(wbmp, &gd_putout, out)) {
++		freewbmp(wbmp);
+ 		gd_error("Could not save WBMP\n");
++		return 1;
+ 	}
+ 
+ 	/* des submitted this bugfix: gdFree the memory. */
+ 	freewbmp(wbmp);
++
++	return 0;
+ }
+ 
+ /*
+@@ -271,8 +283,11 @@ BGD_DECLARE(void *) gdImageWBMPPtr(gdImagePtr im, int *size, int fg)
+ 	void *rv;
+ 	gdIOCtx *out = gdNewDynamicCtx(2048, NULL);
+ 	if (out == NULL) return NULL;
+-	gdImageWBMPCtx(im, fg, out);
+-	rv = gdDPExtractData(out, size);
++	if (!_gdImageWBMPCtx(im, fg, out)) {
++		rv = gdDPExtractData(out, size);
++	} else {
++		rv = NULL;
++	}
+ 	out->gd_free(out);
+ 	return rv;
+ }
+-- 
+2.20.1
+

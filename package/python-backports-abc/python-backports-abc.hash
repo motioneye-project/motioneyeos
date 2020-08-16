@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/backports_abc/json, sha256 locally computed
+# md5 from https://pypi.python.org/pypi/backports_abc/json
 md5 7d1936ec183a3586290adf60f6f96764 backports_abc-0.5.tar.gz
-sha256 033be54514a03e255df75c5aee8f9e672f663f93abb723444caec8fe43437bde backports_abc-0.5.tar.gz
+# Locally computed
+sha256  033be54514a03e255df75c5aee8f9e672f663f93abb723444caec8fe43437bde  backports_abc-0.5.tar.gz
+sha256  0a4f3b38055f50f047a42521568fa6ddb9a5976c2884f6ae138796d0f71150ca  LICENSE

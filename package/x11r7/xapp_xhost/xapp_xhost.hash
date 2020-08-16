@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2015-April/002576.html
-sha256	93e619ee15471f576cfb30c663e18f5bc70aca577a63d2c2c03f006a7837c29a	xhost-1.0.7.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2019-February/002950.html
+md5 a48c72954ae6665e0616f6653636da8c  xhost-1.0.8.tar.bz2
+sha1 971670858a464d4f8eeb6f4e182f9fcd94149790  xhost-1.0.8.tar.bz2
+sha256 a2dc3c579e13674947395ef8ccc1b3763f89012a216c2cc6277096489aadc396  xhost-1.0.8.tar.bz2
+sha512 55581f9bc45a70a73b13fe718ca83c4cb0a6116d26addc0f07659ebeb5bf7d2379e84cab5a1702ae77a298a66f42ae03f41ddc7d5acd61c6f18448e58ad7cb6b  xhost-1.0.8.tar.bz2
+# Locally computed
+sha256 7e69bed6fcfff05ecf454d7e4b29cd265172385833f1978f04b638f92f2cfecf  COPYING

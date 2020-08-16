@@ -11,18 +11,13 @@ OPENOCD_LICENSE = GPL-2.0+
 OPENOCD_LICENSE_FILES = COPYING
 # 0002-configure-enable-build-on-uclinux.patch patches configure.ac
 OPENOCD_AUTORECONF = YES
-
-# The bundled jimtcl really wants to find a existing $CXX, so feed it
-# false when we do not have one.
-OPENOCD_CONF_ENV = \
-	$(if $(BR2_INSTALL_LIBSTDCPP),,CXX=false) \
-	CFLAGS="$(TARGET_CFLAGS) -std=gnu99"
+OPENOCD_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) -std=gnu99"
 
 OPENOCD_CONF_OPTS = \
 	--oldincludedir=$(STAGING_DIR)/usr/include \
 	--includedir=$(STAGING_DIR)/usr/include \
 	--disable-doxygen-html \
-	--with-jim-shared=no \
+	--disable-internal-jimtcl \
 	--disable-shared \
 	--enable-dummy \
 	--disable-werror
@@ -32,6 +27,7 @@ OPENOCD_CONF_OPTS = \
 
 OPENOCD_DEPENDENCIES = \
 	host-pkgconf \
+	jimtcl \
 	$(if $(BR2_PACKAGE_LIBFTDI1),libftdi1) \
 	$(if $(BR2_PACKAGE_LIBUSB),libusb) \
 	$(if $(BR2_PACKAGE_LIBUSB_COMPAT),libusb-compat) \
@@ -101,12 +97,12 @@ HOST_OPENOCD_CONF_OPTS = \
 	--oldincludedir=$(HOST_DIR)/include \
 	--includedir=$(HOST_DIR)/include \
 	--disable-doxygen-html \
-	--with-jim-shared=no \
+	--disable-internal-jimtcl \
 	--disable-shared \
 	--enable-dummy \
 	--disable-werror
 
-HOST_OPENOCD_DEPENDENCIES = host-libftdi host-libusb host-libusb-compat
+HOST_OPENOCD_DEPENDENCIES = host-jimtcl host-libftdi host-libusb host-libusb-compat
 
 # Avoid documentation rebuild. On PowerPC64(le), we patch the
 # configure script. Due to this, the version.texi files gets

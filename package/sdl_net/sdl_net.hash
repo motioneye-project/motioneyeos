@@ -1,2 +1,3 @@
 # Locally calculated
-sha256	5f4a7a8bb884f793c278ac3f3713be41980c5eedccecff0260411347714facb4	SDL_net-1.2.8.tar.gz
+sha256  5f4a7a8bb884f793c278ac3f3713be41980c5eedccecff0260411347714facb4  SDL_net-1.2.8.tar.gz
+sha256  e542f822a6cd82deccf82cf0f50192917b0158d725a6bc6348ab1ccdd890ecbe  COPYING

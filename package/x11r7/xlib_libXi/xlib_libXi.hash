@@ -1,2 +1,7 @@
-# From https://lists.x.org/archives/xorg-announce/2017-January/002768.html
-sha256 c2e6b8ff84f9448386c1b5510a5cf5a16d788f76db018194dacdc200180faf45  libXi-1.7.9.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2019-June/002999.html
+md5 62c4af0839072024b4b1c8cbe84216c7  libXi-1.7.10.tar.bz2
+sha1 79052e50ea07ce2431f8988a60553d9091d46207  libXi-1.7.10.tar.bz2
+sha256 36a30d8f6383a72e7ce060298b4b181fd298bc3a135c8e201b7ca847f5f81061  libXi-1.7.10.tar.bz2
+sha512 591f0860bf5904897587c4990d6c852f3729a212d1ef390362d41242440e078221877c31db2232d5cc81727fe97f4e194b077f7de917e251e60641bbd06ee218  libXi-1.7.10.tar.bz2
+# Locally computed
+sha256 9392174bc86e291369fd2f61f3ed325962735a5f5c585ce8d7ebd365e2a5639f  COPYING

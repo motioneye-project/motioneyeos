@@ -1,0 +1,41 @@
+From 0ff75628845d3c86974c31b50ecd60c0b0144c6d Mon Sep 17 00:00:00 2001
+From: Titouan Christophe <titouan.christophe@railnova.eu>
+Date: Tue, 4 Feb 2020 13:44:27 +0100
+Subject: [PATCH] Fix mixed tabs/spaces in protolib wscript
+
+This fixes the following error when using waf in Python3:
+    TabError: inconsistent use of tabs and spaces in indentation
+
+The upstream file has since diverged, but with similar issues.
+[Upstream status: https://github.com/USNavalResearchLaboratory/protolib/pull/6]
+
+Signed-off-by: Titouan Christophe <titouan.christophe@railnova.eu>
+---
+ protolib/wscript | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/protolib/wscript b/protolib/wscript
+index 155a660..97dda93 100644
+--- a/protolib/wscript
++++ b/protolib/wscript
+@@ -120,7 +120,7 @@ def configure(ctx):
+     # Compiler-specific flags
+     if ctx.options.debug:
+         #ctx.env.DEFINES_BUILD_PROTOLIB += ['PROTO_DEBUG', 'DEBUG', '_DEBUG']
+-		ctx.env.DEFINES_BUILD_PROTOLIB += ['PROTO_DEBUG', 'DEBUG']
++        ctx.env.DEFINES_BUILD_PROTOLIB += ['PROTO_DEBUG', 'DEBUG']
+     else:
+         ctx.env.DEFINES_BUILD_PROTOLIB += ['NDEBUG', "PROTO_DEBUG"]
+ 
+@@ -139,7 +139,7 @@ def configure(ctx):
+             ctx.env.CFLAGS += ['/Od', '/RTC1', '/ZI']
+         else:
+             ctx.env.CXXFLAGS += ['/Ox', '/DNDEBUG']
+-        	#ctx.env.CXXFLAGS += ['/Ox', '/DNDEBUG', '/DWINVER=0x0501']
++            #ctx.env.CXXFLAGS += ['/Ox', '/DNDEBUG', '/DWINVER=0x0501']
+         ctx.env.CFLAGS
+ 
+ def build(ctx):
+-- 
+2.24.1
+

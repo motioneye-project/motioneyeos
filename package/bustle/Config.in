@@ -18,7 +18,7 @@ config BR2_PACKAGE_BUSTLE
 	  This only installs the command line bustle-pcap tool, not
 	  the graphical viewer.
 
-	  http://www.willthompson.co.uk/bustle/
+	  https://gitlab.freedesktop.org/bustle/bustle/
 
 comment "bustle needs a toolchain w/ wchar, threads"
 	depends on BR2_USE_MMU

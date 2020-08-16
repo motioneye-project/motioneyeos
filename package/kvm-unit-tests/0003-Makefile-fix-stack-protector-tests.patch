@@ -1,0 +1,36 @@
+From 9bf9155804652c0b3a94af9723c79b6de430187b Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Mon, 24 Feb 2020 00:04:06 +0100
+Subject: [PATCH] Makefile: fix stack-protector tests
+
+Rename fnostack_protector into fno_stack_protector and
+fnostack_protector_all into fnostack_protector_all otherwise build will
+fail if -fstack-protector is passed by the toolchain
+
+Fixes:
+ - http://autobuild.buildroot.org/results/ad689b08173548af21dd1fb0e827fd561de6dfef
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: sent to kvm@vger.kernel.org]
+---
+ Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 767b6c6..754ed65 100644
+--- a/Makefile
++++ b/Makefile
+@@ -55,8 +55,8 @@ COMMON_CFLAGS += -Wignored-qualifiers -Werror
+ 
+ frame-pointer-flag=-f$(if $(KEEP_FRAME_POINTER),no-,)omit-frame-pointer
+ fomit_frame_pointer := $(call cc-option, $(frame-pointer-flag), "")
+-fnostack_protector := $(call cc-option, -fno-stack-protector, "")
+-fnostack_protector_all := $(call cc-option, -fno-stack-protector-all, "")
++fno_stack_protector := $(call cc-option, -fno-stack-protector, "")
++fno_stack_protector_all := $(call cc-option, -fno-stack-protector-all, "")
+ wno_frame_address := $(call cc-option, -Wno-frame-address, "")
+ fno_pic := $(call cc-option, -fno-pic, "")
+ no_pie := $(call cc-option, -no-pie, "")
+-- 
+2.25.0
+

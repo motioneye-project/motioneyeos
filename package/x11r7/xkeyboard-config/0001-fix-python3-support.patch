@@ -1,0 +1,37 @@
+From c847c834cce190c5c835a454bfe548195da9fa53 Mon Sep 17 00:00:00 2001
+From: MilhouseVH <milhouseVH.github@nmacleod.com>
+Date: Sun, 16 Feb 2020 09:41:43 +0000
+Subject: [PATCH] fix python3 support
+
+https://gitlab.freedesktop.org/xkeyboard-config/xkeyboard-config/issues/197
+[Retrieved from:
+https://gitlab.freedesktop.org/xkeyboard-config/xkeyboard-config/-/commit/c847c834cce190c5c835a454bfe548195da9fa53]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ rules/compat/map-variants.py | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/rules/compat/map-variants.py b/rules/compat/map-variants.py
+index ebbfec9..979ba43 100755
+--- a/rules/compat/map-variants.py
++++ b/rules/compat/map-variants.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python3
++#!/usr/bin/env python3
+ 
+ import argparse
+ import re
+@@ -12,8 +12,8 @@ class Layout(object):
+             assert variant is None
+             # parse a layout(variant) string
+             match = re.match(r'([^(]+)\(([^)]+)\)', layout)
+-            self.layout = match[1]
+-            self.variant = match[2]
++            self.layout = match.groups()[0]
++            self.variant = match.groups()[1]
+ 
+     def __str__(self):
+         if self.variant:
+-- 
+2.24.1
+

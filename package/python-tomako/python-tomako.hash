@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/tomako/json, sha256 locally computed
+# md5 from https://pypi.python.org/pypi/tomako/json
 md5	a2e9e99be4ddf2263ed441ddc3dfcf96  tomako-0.1.0.post1.tar.gz
+# Locally computed
 sha256	2d8ec113199408eb16ec00361aac6f10b716925779b6331083f304d01dafd150  tomako-0.1.0.post1.tar.gz
+sha256  2b55167354e331f089d5f7a9a9ef4149b0baa95abd6860b6390a04001e1f2bb8  LICENSE

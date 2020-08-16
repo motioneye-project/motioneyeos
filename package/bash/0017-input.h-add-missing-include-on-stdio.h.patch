@@ -1,0 +1,38 @@
+From 4fa85c85b9a76afd3b19ed75bf17ccd2940f1f55 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sun, 16 Feb 2020 16:18:48 +0100
+Subject: [PATCH] input.h: add missing include on stdio.h
+
+This will fix the following build failure on uclibc:
+
+test -n "/usr/lfs/hdd_v1/rc-buildroot-test/scripts/instance-2/output/host/bin/arm-linux-ranlib" && /usr/lfs/hdd_v1/rc-buildroot-test/scripts/instance-2/output/host/bin/arm-linux-ranlib libsh.a
+In file included from ./exec.def:71:
+../input.h:76:3: error: unknown type name 'FILE'
+   FILE *file;
+   ^~~~
+
+Fixes:
+ - http://autobuild.buildroot.org/results/bfca306868df54c567215c45c8cdac838d02f567
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://savannah.gnu.org/support/?110196]
+---
+ input.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/input.h b/input.h
+index 6aef1269..08b0fdea 100644
+--- a/input.h
++++ b/input.h
+@@ -21,6 +21,8 @@
+ #if !defined (_INPUT_H_)
+ #define _INPUT_H_
+ 
++#include <stdio.h>
++
+ #include "stdc.h"
+ 
+ /* Function pointers can be declared as (Function *)foo. */
+-- 
+2.24.1
+

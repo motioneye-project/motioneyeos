@@ -1,8 +1,8 @@
 config BR2_PACKAGE_PYTHON_MARKDOWN
 	bool "python-markdown"
+	depends on BR2_PACKAGE_PYTHON3
 	# runtime dependency on Python's xml module
-	select BR2_PACKAGE_PYTHON_PYEXPAT if BR2_PACKAGE_PYTHON
-	select BR2_PACKAGE_PYTHON3_PYEXPAT if BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYTHON3_PYEXPAT
 	help
 	  This is a Python implementation of John Gruber's Markdown
 

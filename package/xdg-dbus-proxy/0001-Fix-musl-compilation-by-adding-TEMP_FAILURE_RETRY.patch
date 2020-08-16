@@ -1,0 +1,36 @@
+From 645c45f0334bb1d6e31b5927cece5e446f129cbb Mon Sep 17 00:00:00 2001
+From: Danilo Spinella <danyspin97@protonmail.com>
+Date: Sat, 7 Dec 2019 00:05:21 +0100
+Subject: [PATCH] Fix musl compilation by adding TEMP_FAILURE_RETRY
+
+Fetch from: https://github.com/flatpak/xdg-dbus-proxy/pull/13
+Upstream-Status: Accepted
+Signed-off-by: Adrian Perez de Castro <aperez@igalia.com>
+
+---
+ dbus-proxy.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/dbus-proxy.c b/dbus-proxy.c
+index 163df21..4b07931 100644
+--- a/dbus-proxy.c
++++ b/dbus-proxy.c
+@@ -30,6 +30,15 @@
+ #include <errno.h>
+ 
+ #include "flatpak-proxy.h"
++// Taken from glibc unistd.h
++#ifndef TEMP_FAILURE_RETRY
++# define TEMP_FAILURE_RETRY(expression) \
++  (__extension__                                                              \
++    ({ long int __result;                                                     \
++       do __result = (long int) (expression);                                 \
++       while (__result == -1L && errno == EINTR);                             \
++       __result; }))
++#endif
+ 
+ static const char *argv0;
+ static GList *proxies;
+-- 
+2.24.1
+

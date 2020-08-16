@@ -12,3 +12,22 @@ config BR2_PACKAGE_PYTHON_TWISTED
 	  Python.
 
 	  https://twistedmatrix.com/trac/
+
+if BR2_PACKAGE_PYTHON_TWISTED
+
+config BR2_PACKAGE_PYTHON_TWISTED_HTTP2
+	bool "HTTP2 support"
+	select BR2_PACKAGE_PYTHON_H2 # runtime
+	select BR2_PACKAGE_PYTHON_PRIORITY # runtime
+
+config BR2_PACKAGE_PYTHON_TWISTED_TLS
+	bool "TLS support"
+	depends on BR2_INSTALL_LIBSTDCPP # python-{pyopenssl,service-identity}
+	select BR2_PACKAGE_PYTHON_IDNA # runtime
+	select BR2_PACKAGE_PYTHON_PYOPENSSL # runtime
+	select BR2_PACKAGE_PYTHON_SERVICE_IDENTITY # runtime
+
+comment "TLS support needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
+
+endif

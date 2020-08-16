@@ -1,3 +1,6 @@
-# md5 from https://pypi.python.org/pypi/meld3/json, sha256 locally computed
-md5     3ccc78cd79cffd63a751ad7684c02c91  meld3-1.0.2.tar.gz
-sha256  f7b754a0fde7a4429b2ebe49409db240b5699385a572501bb0d5627d299f9558  meld3-1.0.2.tar.gz
+# md5, sha256 from https://pypi.org/pypi/meld3/json
+md5	56fff5d6599efeefc81cf2d3b8cf6b4e  meld3-2.0.0.tar.gz
+sha256	1efda676264490db2e30bfb81b27a918cc6d9c2de6d609491aa43410b9537eb9  meld3-2.0.0.tar.gz
+# Locally computed sha256 checksums
+sha256	5fe11cd858707131b6ec1338b5c2cd68dd1fdb875e3ec967149bc6fea858ecec  LICENSE.txt
+sha256	2422945b49554688d529e1f8d4ac6e0ab77a817e8889158e1e56cf963ecf5c4d  COPYRIGHT.txt

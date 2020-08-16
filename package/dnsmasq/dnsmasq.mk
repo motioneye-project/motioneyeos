@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DNSMASQ_VERSION = 2.79
+DNSMASQ_VERSION = 2.81
 DNSMASQ_SOURCE = dnsmasq-$(DNSMASQ_VERSION).tar.xz
 DNSMASQ_SITE = http://thekelleys.org.uk/dnsmasq
 DNSMASQ_MAKE_ENV = $(TARGET_MAKE_ENV) CC="$(TARGET_CC)"
@@ -34,8 +34,13 @@ DNSMASQ_COPTS += -DNO_TFTP
 endif
 
 ifeq ($(BR2_PACKAGE_DNSMASQ_IDN),y)
+ifeq ($(BR2_PACKAGE_LIBIDN2),y)
+DNSMASQ_DEPENDENCIES += libidn2
+DNSMASQ_COPTS += -DHAVE_LIBIDN2
+else
 DNSMASQ_DEPENDENCIES += libidn
 DNSMASQ_COPTS += -DHAVE_IDN
+endif
 endif
 
 ifeq ($(BR2_PACKAGE_DNSMASQ_CONNTRACK),y)
@@ -65,6 +70,11 @@ define DNSMASQ_INSTALL_DBUS
 	$(INSTALL) -m 0644 -D $(@D)/dbus/dnsmasq.conf \
 		$(TARGET_DIR)/etc/dbus-1/system.d/dnsmasq.conf
 endef
+endif
+
+ifeq ($(BR2_PACKAGE_UBUS),y)
+DNSMASQ_DEPENDENCIES += ubus
+DNSMASQ_COPTS += -DHAVE_UBUS
 endif
 
 define DNSMASQ_FIX_PKGCONFIG

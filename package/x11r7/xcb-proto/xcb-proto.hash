@@ -1,7 +1,5 @@
-# From https://lists.x.org/archives/xorg-announce/2018-March/002852.html
-md5 abe9aa4886138150bbc04ae4f29b90e3  xcb-proto-1.13.tar.bz2
-sha1 f7fa35ab59af18cecadbe83fe705281dcfd82ffd  xcb-proto-1.13.tar.bz2
-sha256 7b98721e669be80284e9bbfeab02d2d0d54cd11172b72271e47a2fe875e2bde1  xcb-proto-1.13.tar.bz2
-sha512 002aa2aa0ad503977e03419c6f136f1e3aa8c787916830ce6d6be8f81ca99edc1d8fc5f71ce8c592b490cc767bf6567695f0bafe55fe3f743076bcddbaac07f7  xcb-proto-1.13.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2020-February/003038.html
+sha256 186a3ceb26f9b4a015f5a44dcc814c93033a5fc39684f36f1ecc79834416a605  xcb-proto-1.14.tar.xz
+sha512 de66d568163b6da2be9d6c59984f3afa3acd119a781378638045fd68018665ef5c9af98f024e9962ba3eb7c7a4d85c27ba70ffafceb2324ccc6940f34de16690  xcb-proto-1.14.tar.xz
 # Locally computed
 sha256 c5ffbfeaa501071ceeb97b7de2c0d703fdaa35de01c0fb6cbac1c28453a3e9fd  COPYING

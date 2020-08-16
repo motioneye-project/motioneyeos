@@ -1,0 +1,110 @@
+From 30973c0bc053b2198cafb1899a0843688d5bb541 Mon Sep 17 00:00:00 2001
+From: Deepa Dinamani <deepa.kernel@gmail.com>
+Date: Mon, 15 Jan 2018 17:18:49 -0800
+Subject: [PATCH] evemu: Update struct input_event
+
+The struct input_event is not y2038 safe.
+Update the struct according to the kernel patch:
+https://lkml.org/lkml/2018/1/6/324
+
+Signed-off-by: Deepa Dinamani <deepa.kernel@gmail.com>
+Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+[Retrieved from:
+https://gitlab.freedesktop.org/libevdev/evemu/-/commit/30973c0bc053b2198cafb1899a0843688d5bb541]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ src/evemu.c | 35 +++++++++++++++++++++++------------
+ 1 file changed, 23 insertions(+), 12 deletions(-)
+
+diff --git a/src/evemu.c b/src/evemu.c
+index a8a949b..c7ff561 100644
+--- a/src/evemu.c
++++ b/src/evemu.c
+@@ -771,7 +771,7 @@ int evemu_write_event(FILE *fp, const struct input_event *ev)
+ {
+ 	int rc;
+ 	rc = fprintf(fp, "E: %lu.%06u %04x %04x %04d	",
+-		     ev->time.tv_sec, (unsigned)ev->time.tv_usec,
++		     ev->input_event_sec, (unsigned)ev->input_event_usec,
+ 		     ev->type, ev->code, ev->value);
+ 	rc += write_event_desc(fp, ev);
+ 	return rc;
+@@ -800,13 +800,19 @@ int evemu_record(FILE *fp, int fd, int ms)
+ 		if (ret < 0)
+ 			return ret;
+ 		if (ret == sizeof(ev)) {
++			struct timeval tv;
+ 			long time;
+ 
++			tv.tv_sec = ev.input_event_sec;
++			tv.tv_usec = ev.input_event_usec;
++
+ 			if (offset == 0)
+-				offset = time_to_long(&ev.time) - 1;
++				offset = time_to_long(&tv) - 1;
+ 
+-			time = time_to_long(&ev.time);
+-			ev.time = long_to_time(time - offset);
++			time = time_to_long(&tv);
++			tv = long_to_time(time - offset);
++			ev.input_event_sec = tv.tv_sec;
++			ev.input_event_usec = tv.tv_usec;
+ 			evemu_write_event(fp, &ev);
+ 			fflush(fp);
+ 		}
+@@ -839,8 +845,8 @@ int evemu_read_event(FILE *fp, struct input_event *ev)
+ 		return -1;
+ 	}
+ 
+-	ev->time.tv_sec = sec;
+-	ev->time.tv_usec = usec;
++	ev->input_event_sec = sec;
++	ev->input_event_usec = usec;
+ 	ev->type = type;
+ 	ev->code = code;
+ 	ev->value = value;
+@@ -852,8 +858,8 @@ out:
+ 
+ int evemu_create_event(struct input_event *ev, int type, int code, int value)
+ {
+-	ev->time.tv_sec = 0;
+-	ev->time.tv_usec = 0;
++	ev->input_event_sec = 0;
++	ev->input_event_usec = 0;
+ 	ev->type = type;
+ 	ev->code = code;
+ 	ev->value = value;
+@@ -873,6 +879,7 @@ static inline unsigned long us2s(unsigned long us)
+ int evemu_read_event_realtime(FILE *fp, struct input_event *ev,
+ 			      struct timeval *evtime)
+ {
++	struct timeval tv;
+ 	unsigned long usec;
+ 	const unsigned long ERROR_MARGIN = 150; /* µs */
+ 	int ret;
+@@ -882,14 +889,18 @@ int evemu_read_event_realtime(FILE *fp, struct input_event *ev,
+ 		return ret;
+ 
+ 	if (evtime) {
+-		if (evtime->tv_sec == 0 && evtime->tv_usec == 0)
+-			*evtime = ev->time;
+-		usec = time_to_long(&ev->time) - time_to_long(evtime);
++		if (evtime->tv_sec == 0 && evtime->tv_usec == 0) {
++			evtime->tv_sec = ev->input_event_sec;
++			evtime->tv_usec = ev->input_event_usec;
++		}
++		tv.tv_sec = ev->input_event_sec;
++		tv.tv_usec = ev->input_event_usec;
++		usec = time_to_long(&tv) - time_to_long(evtime);
+ 		if (usec > ERROR_MARGIN * 2) {
+ 			if (usec > s2us(10))
+ 				error(INFO, "Sleeping for %lds.\n", us2s(usec));
+ 			usleep(usec - ERROR_MARGIN);
+-			*evtime = ev->time;
++			*evtime = tv;
+ 		}
+ 	}
+ 
+-- 
+2.24.1
+

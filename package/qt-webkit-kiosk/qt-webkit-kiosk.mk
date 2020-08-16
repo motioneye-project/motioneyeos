@@ -11,13 +11,7 @@ QT_WEBKIT_KIOSK_DEPENDENCIES = qt5webkit qt5multimedia
 QT_WEBKIT_KIOSK_LICENSE = LGPL-3.0
 QT_WEBKIT_KIOSK_LICENSE_FILES = doc/lgpl.html
 
-define QT_WEBKIT_KIOSK_CONFIGURE_CMDS
-	(cd $(@D); $(TARGET_MAKE_ENV) $(QT5_QMAKE) PREFIX=/usr)
-endef
-
-define QT_WEBKIT_KIOSK_BUILD_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)
-endef
+QT_WEBKIT_KIOSK_CONF_OPTS = PREFIX=/usr
 
 define QT_WEBKIT_KIOSK_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)/src -f Makefile.qt-webkit-kiosk \
@@ -29,4 +23,4 @@ define QT_WEBKIT_KIOSK_INSTALL_TARGET_CMDS
 		$(if $(BR2_PACKAGE_QT_WEBKIT_KIOSK_SOUNDS),install_sound)
 endef
 
-$(eval $(generic-package))
+$(eval $(qmake-package))

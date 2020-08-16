@@ -3,3 +3,5 @@ config BR2_PACKAGE_MATCHBOX_LIB
 	select BR2_PACKAGE_XLIB_LIBXEXT
 	help
 	  Matchbox common functionality library.
+
+	  http://git.yoctoproject.org/cgit/cgit.cgi/libmatchbox

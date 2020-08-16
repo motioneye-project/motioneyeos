@@ -1,0 +1,18 @@
+Link libfcgi against the math library.
+
+Signed-off-by: Thomas Claveirole <thomas.claveirole@green-communications.fr>
+[Louis: rebase on top of 2.4.2]
+Signed-off-by: Louis Rannou <louis.rannou@smile.fr>
+
+Index: b/libfcgi/Makefile.am
+===================================================================
+--- a/libfcgi/Makefile.am
++++ b/libfcgi/Makefile.am
+@@ -18,4 +18,5 @@
+                      os_@SYSTEM@.c
+ libfcgi_la_CC      = @PTHREAD_CC@
+ libfcgi_la_CFLAGS  = @PTHREAD_CFLAGS@
++libfcgi_la_LIBADD  = -lm
+ libfcgi_la_LDFLAGS = @EXTRA_LIBS@ -no-undefined
+
+ libfcgi___la_SOURCES = $(INCLUDE_FILES)       \

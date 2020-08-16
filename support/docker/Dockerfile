@@ -39,6 +39,9 @@ RUN apt-get install -y --no-install-recommends \
         python-flake8 \
         python-nose2 \
         python-pexpect \
+        python3 \
+        python3-nose2 \
+        python3-pexpect \
         qemu-system-arm \
         qemu-system-x86 \
         rsync \

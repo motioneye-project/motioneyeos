@@ -1,0 +1,49 @@
+makefile: fix compilation and installation
+
+This was originally taken from:
+https://sources.debian.org/data/main/liba/libavl/0.3.5-4/debian/patches/fix-makefile
+
+Unfortunately, the URL does not end in ".patch", therefore we cannot
+use it in the FOO_PATCH variable directly.
+
+Signed-off-by: Michael Walle <michael@walle.cc>
+
+--- a/GNUmakefile
++++ b/GNUmakefile
+@@ -6,7 +6,8 @@
+ LDCONFIG ?= /sbin/ldconfig
+ 
+ # Some suggestions: (-mcpu= generates i386 compatible code)
+-CFLAGS ?= -O2 -fomit-frame-pointer -pipe -mcpu=i686 -w
++CFLAGS ?= -O2 -pipe -Wall -Werror
++CFLAGS += -fPIC
+ #CFLAGS = -O2 -fomit-frame-pointer -pipe -march=i586 -Wall -g
+ #CFLAGS = -O6 -fomit-frame-pointer -pipe -march=i586 -Wall -ansi -pedantic
+ #CFLAGS = -O6 -fomit-frame-pointer -pipe -march=i686 -Wall -ansi -pedantic
+@@ -34,20 +35,21 @@
+ 	$(CC) $(LDFLAGS) $^ -o $@ $(LIBS)
+ 
+ $(LIBRARY): avl.o
+-	$(CC) -nostdlib -shared -Wl,-soname,libavl.so.1 $^ -o $@ -lc
++	$(CC) $(LDFLAGS) -shared -Wl,-soname,libavl.so.1 $^ -o $@ -lc
+ 
+ clean:
+ 	$(RM) *.o $(PROGRAMS) libavl.*
+ 
+ install: all
+ 	$(INSTALL) -d $(DESTDIR)$(libdir)
+-	$(INSTALL) avl.h $(DESTDIR)$(includedir)
+-	$(INSTALL) $(LIBRARIES) $(DESTDIR)$(libdir)
+-	for i in $(LIBRARIES); do\
++	$(INSTALL) -d $(DESTDIR)$(includedir)
++	$(INSTALL) -m 644 avl.h $(DESTDIR)$(includedir)
++	$(INSTALL) -m 644 $(LIBRARY) $(DESTDIR)$(libdir)
++	for i in $(LIBRARY); do\
+ 		$(LN) -sf $$i $(DESTDIR)$(libdir)/$${i%.*};\
+ 		$(LN) -sf $${i%.*} $(DESTDIR)$(libdir)/$${i%.*.*};\
+ 	done
+-	-$(LDCONFIG)
++	#-$(LDCONFIG)
+ 
+ .PHONY: clean install all
+ .PRECIOUS: %.h %.c

@@ -1,0 +1,12 @@
+config BR2_PACKAGE_PYTHON_SNAPPY
+	bool "python-snappy"
+	depends on BR2_INSTALL_LIBSTDCPP # snappy
+	select BR2_PACKAGE_SNAPPY
+	help
+	  Python library for the snappy compression library from
+	  Google.
+
+	  http://github.com/andrix/python-snappy
+
+comment "python-snappy needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP

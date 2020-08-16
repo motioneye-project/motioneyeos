@@ -1,0 +1,195 @@
+From e5f31446166de7212213c62a019945afb8e197ef Mon Sep 17 00:00:00 2001
+From: Karel Zak <kzak@redhat.com>
+Date: Tue, 14 Jan 2020 11:43:24 +0100
+Subject: [PATCH] libfdisk: add fdisk_set_disklabel_id_from_string()
+
+We have fdisk_set_disklabel_id(), but it's old ask-API based function.
+It's not comfortable if you want to avoid dialog or template.
+
+Addresses: https://github.com/karelzak/util-linux/issues/916
+Signed-off-by: Karel Zak <kzak@redhat.com>
+Signed-off-by: Carlos Santos <unixmania@gmail.com>
+---
+ libfdisk/docs/libfdisk-sections.txt |  1 +
+ libfdisk/src/dos.c                  | 29 ++++++++++++++++++-----------
+ libfdisk/src/fdiskP.h               |  2 +-
+ libfdisk/src/gpt.c                  | 18 ++++++++++--------
+ libfdisk/src/label.c                | 19 ++++++++++++++++++-
+ libfdisk/src/libfdisk.h.in          |  1 +
+ libfdisk/src/libfdisk.sym           |  3 +++
+ 7 files changed, 52 insertions(+), 21 deletions(-)
+
+diff --git a/libfdisk/docs/libfdisk-sections.txt b/libfdisk/docs/libfdisk-sections.txt
+index f148da527..6675c1100 100644
+--- a/libfdisk/docs/libfdisk-sections.txt
++++ b/libfdisk/docs/libfdisk-sections.txt
+@@ -81,6 +81,7 @@ fdisk_list_disklabel
+ fdisk_locate_disklabel
+ fdisk_reorder_partitions
+ fdisk_set_disklabel_id
++fdisk_set_disklabel_id_from_string
+ fdisk_set_partition_type
+ fdisk_toggle_partition_flag
+ fdisk_verify_disklabel
+diff --git a/libfdisk/src/dos.c b/libfdisk/src/dos.c
+index 53713ec5f..98314dfa6 100644
+--- a/libfdisk/src/dos.c
++++ b/libfdisk/src/dos.c
+@@ -707,12 +707,12 @@ static int dos_create_disklabel(struct fdisk_context *cxt)
+ 	return 0;
+ }
+ 
+-static int dos_set_disklabel_id(struct fdisk_context *cxt)
++static int dos_set_disklabel_id(struct fdisk_context *cxt, const char *str)
+ {
+-	char *end = NULL, *str = NULL;
++	char *str0 = str;
+ 	unsigned int id, old;
+ 	struct fdisk_dos_label *l;
+-	int rc;
++	int rc = 0;
+ 
+ 	assert(cxt);
+ 	assert(cxt->label);
+@@ -722,18 +722,25 @@ static int dos_set_disklabel_id(struct fdisk_context *cxt)
+ 
+ 	l = self_label(cxt);
+ 	old = mbr_get_id(cxt->firstsector);
+-	rc = fdisk_ask_string(cxt,
++
++	if (!str)
++		rc = fdisk_ask_string(cxt,
+ 			_("Enter the new disk identifier"), &str);
+-	if (rc)
+-		return rc;
++	if (!rc) {
++		char *end = NULL;
+ 
+-	errno = 0;
+-	id = strtoul(str, &end, 0);
+-	if (errno || str == end || (end && *end)) {
+-		fdisk_warnx(cxt, _("Incorrect value."));
+-		return -EINVAL;
++		errno = 0;
++		id = strtoul(str, &end, 0);
++		if (errno || str == end || (end && *end)) {
++			fdisk_warnx(cxt, _("Incorrect value."));
++			rc = -EINVAL;
++		}
+ 	}
+ 
++	if (!str0)
++		free(str);
++	if (rc)
++		return -EINVAL;
+ 
+ 	mbr_set_id(cxt->firstsector, id);
+ 	l->non_pt_changed = 1;
+diff --git a/libfdisk/src/fdiskP.h b/libfdisk/src/fdiskP.h
+index fefebae2a..0487466e3 100644
+--- a/libfdisk/src/fdiskP.h
++++ b/libfdisk/src/fdiskP.h
+@@ -220,7 +220,7 @@ struct fdisk_label_operations {
+ 	/* get details from label */
+ 	int (*get_item)(struct fdisk_context *cxt, struct fdisk_labelitem *item);
+ 	/* set disk label ID */
+-	int (*set_id)(struct fdisk_context *cxt);
++	int (*set_id)(struct fdisk_context *cxt, const char *str);
+ 
+ 
+ 	/* new partition */
+diff --git a/libfdisk/src/gpt.c b/libfdisk/src/gpt.c
+index f50bb4441..9608053a2 100644
+--- a/libfdisk/src/gpt.c
++++ b/libfdisk/src/gpt.c
+@@ -2502,11 +2502,11 @@ done:
+ 	return rc;
+ }
+ 
+-static int gpt_set_disklabel_id(struct fdisk_context *cxt)
++static int gpt_set_disklabel_id(struct fdisk_context *cxt, const char *str)
+ {
+ 	struct fdisk_gpt_label *gpt;
+ 	struct gpt_guid uuid;
+-	char *str, *old, *new;
++	char *old, *new;
+ 	int rc;
+ 
+ 	assert(cxt);
+@@ -2514,12 +2514,14 @@ static int gpt_set_disklabel_id(struct fdisk_context *cxt)
+ 	assert(fdisk_is_label(cxt, GPT));
+ 
+ 	gpt = self_label(cxt);
+-	if (fdisk_ask_string(cxt,
+-			_("Enter new disk UUID (in 8-4-4-4-12 format)"), &str))
+-		return -EINVAL;
+-
+-	rc = string_to_guid(str, &uuid);
+-	free(str);
++	if (!str) {
++		if (fdisk_ask_string(cxt,
++				_("Enter new disk UUID (in 8-4-4-4-12 format)"), &str))
++			return -EINVAL;
++		rc = string_to_guid(str, &uuid);
++		free(str);
++	} else
++		rc = string_to_guid(str, &uuid);
+ 
+ 	if (rc) {
+ 		fdisk_warnx(cxt, _("Failed to parse your UUID."));
+diff --git a/libfdisk/src/label.c b/libfdisk/src/label.c
+index a18cdeaff..fd4555de2 100644
+--- a/libfdisk/src/label.c
++++ b/libfdisk/src/label.c
+@@ -481,7 +481,24 @@ int fdisk_set_disklabel_id(struct fdisk_context *cxt)
+ 		return -ENOSYS;
+ 
+ 	DBG(CXT, ul_debugobj(cxt, "setting %s disk ID", cxt->label->name));
+-	return cxt->label->op->set_id(cxt);
++	return cxt->label->op->set_id(cxt, NULL);
++}
++
++/**
++ * fdisk_set_disklabel_id_from_string
++ * @cxt: fdisk context
++ *
++ * Returns: 0 on success, otherwise, a corresponding error.
++ */
++int fdisk_set_disklabel_id_from_string(struct fdisk_context *cxt, const char *str)
++{
++	if (!cxt || !cxt->label || !str)
++		return -EINVAL;
++	if (!cxt->label->op->set_id)
++		return -ENOSYS;
++
++	DBG(CXT, ul_debugobj(cxt, "setting %s disk ID from '%s'", cxt->label->name, str));
++	return cxt->label->op->set_id(cxt, str);
+ }
+ 
+ /**
+diff --git a/libfdisk/src/libfdisk.h.in b/libfdisk/src/libfdisk.h.in
+index 0669c0a7c..2ba34dc0a 100644
+--- a/libfdisk/src/libfdisk.h.in
++++ b/libfdisk/src/libfdisk.h.in
+@@ -399,6 +399,7 @@ extern int fdisk_get_disklabel_item(struct fdisk_context *cxt, int id, struct fd
+ 
+ extern int fdisk_get_disklabel_id(struct fdisk_context *cxt, char **id);
+ extern int fdisk_set_disklabel_id(struct fdisk_context *cxt);
++extern int fdisk_set_disklabel_id_from_string(struct fdisk_context *cxt, const char *str);
+ 
+ extern int fdisk_get_partition(struct fdisk_context *cxt, size_t partno, struct fdisk_partition **pa);
+ extern int fdisk_set_partition(struct fdisk_context *cxt, size_t partno, struct fdisk_partition *pa);
+diff --git a/libfdisk/src/libfdisk.sym b/libfdisk/src/libfdisk.sym
+index 96fcadd71..eee2d6bda 100644
+--- a/libfdisk/src/libfdisk.sym
++++ b/libfdisk/src/libfdisk.sym
+@@ -308,3 +308,6 @@ FDISK_2.35 {
+ 	fdisk_script_set_table;
+ 	fdisk_assign_device_by_fd;
+ } FDISK_2.33;
++FDISK_2.36 {
++	fdisk_set_disklabel_id_from_string;
++} FDISK_2.35;
+-- 
+2.18.2
+

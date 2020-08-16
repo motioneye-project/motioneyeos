@@ -1,0 +1,54 @@
+From de870d7f9f36b3e68f280057851a4585a67ab219 Mon Sep 17 00:00:00 2001
+From: Sergei Trofimovich <slyfox@gentoo.org>
+Date: Tue, 14 Jan 2020 23:15:01 +0000
+Subject: [PATCH] ei_portio.h: avoid ODR violation of
+ 'ei_default_socket_callbacks'
+
+Noticed as a build failure against fresh gcc-master:
+
+```
+LD otp/lib/erl_interface/bin/x86_64-unknown-linux-gnu/erl_call
+ld: otp/lib/erl_interface/obj/x86_64-unknown-linux-gnu/libei.a(eirecv.o):otp/lib/erl_interface/src/misc/ei_portio.h:50: multiple definition of `ei_default_socket_callbacks'; otp/lib/erl_interface/obj/x86_64-unknown-linux-gnu/libei.a(ei_connect.o):otp/lib/erl_interface/src/misc/ei_portio.h:50: first defined here
+ld: otp/lib/erl_interface/obj/x86_64-unknown-linux-gnu/libei.a(send.o):otp/lib/erl_interface/src/misc/ei_portio.h:50: multiple definition of `ei_default_socket_callbacks'; otp/lib/erl_interface/obj/x86_64-unknown-linux-gnu/libei.a(ei_connect.o):otp/lib/erl_interface/src/misc/ei_portio.h:50: first defined here
+ld: otp/lib/erl_interface/obj/x86_64-unknown-linux-gnu/libei.a(send_reg.o):otp/lib/erl_interface/src/misc/ei_portio.h:50: multiple definition of `ei_default_socket_callbacks'; otp/lib/erl_interface/obj/x86_64-unknown-linux-gnu/libei.a(ei_connect.o):otp/lib/erl_interface/src/misc/ei_portio.h:50: first defined here
+ld: otp/lib/erl_interface/obj/x86_64-unknown-linux-gnu/libei.a(epmd_port.o):otp/lib/erl_interface/src/misc/ei_portio.h:50: multiple definition of `ei_default_socket_callbacks'; otp/lib/erl_interface/obj/x86_64-unknown-linux-gnu/libei.a(ei_connect.o):otp/lib/erl_interface/src/misc/ei_portio.h:50: first defined here
+ld: otp/lib/erl_interface/obj/x86_64-unknown-linux-gnu/libei.a(ei_portio.o):otp/lib/erl_interface/src/misc/ei_portio.h:50: multiple definition of `ei_default_socket_callbacks'; otp/lib/erl_interface/obj/x86_64-unknown-linux-gnu/libei.a(ei_connect.o):otp/lib/erl_interface/src/misc/ei_portio.h:50: first defined here
+collect2: error: ld returned 1 exit status
+make[3]: *** [x86_64-unknown-linux-gnu/Makefile:669: otp/lib/erl_interface/bin/x86_64-unknown-linux-gnu/erl_call] Error 1
+```
+
+The failure looks legitimate: `ei_default_socket_callbacks` is a
+struct defined in 'ei_portio.h' and in 'ei_portio.c'.
+
+The change flips 'ei_portio.h' definition to declaration.
+
+gcc-10 will change the default from -fcommon to fno-common:
+https://gcc.gnu.org/PR85678.
+
+The error also happens if CFLAGS=-fno-common passed explicitly.
+
+Signed-off-by: Sergei Trofimovich <slyfox@gentoo.org>
+
+Patch taken from upstream: https://github.com/erlang/otp/commit/de870d7f9f36b3e68f280057851a4585a67ab219
+Signed-off-by: Heiko Thiery <heiko.thiery@gmail.com>
+---
+ lib/erl_interface/src/misc/ei_portio.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/erl_interface/src/misc/ei_portio.h b/lib/erl_interface/src/misc/ei_portio.h
+index 84ebc5039a..5172d085b4 100644
+
+--- a/lib/erl_interface/src/misc/ei_portio.h
++++ b/lib/erl_interface/src/misc/ei_portio.h
+@@ -47,7 +47,7 @@ int ei_writev_fill_ctx_t__(ei_socket_callbacks *cbs, void *ctx, const struct iov
+ int ei_socket_callbacks_have_writev__(ei_socket_callbacks *cbs);
+ #endif
+ 
+-ei_socket_callbacks ei_default_socket_callbacks;
++extern ei_socket_callbacks ei_default_socket_callbacks;
+ 
+ #define EI_FD_AS_CTX__(FD)                                              \
+     ((void *) (long) (FD))
+-- 
+2.20.1
+

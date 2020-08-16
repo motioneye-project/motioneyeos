@@ -1,5 +1,7 @@
 config BR2_PACKAGE_PYTHON_HTML5LIB
 	bool "python-html5lib"
+	select BR2_PACKAGE_PYTHON_SIX # runtime
+	select BR2_PACKAGE_PYTHON_WEBENCODINGS # runtime
 	help
 	  HTML parser based on the WHATWG HTML specification.
 

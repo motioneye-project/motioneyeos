@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/couchdb/json, sha256 locally computed
-md5	2ed5ad2a477fd3cb472ed6dc5a381ff3  CouchDB-1.1.tar.gz
-sha256	9503ea413956c33b5e2af248235afb5e0f011f33f816a32e872f8ff9b0a0e710  CouchDB-1.1.tar.gz
+# md5, sha256 from https://pypi.org/pypi/couchdb/json
+md5	de40696472202d728cfca4279629e4ff  CouchDB-1.2.tar.gz
+sha256	1386a1a43f25bed3667e3b805222054940d674fa1967fa48e9d2012a18630ab7  CouchDB-1.2.tar.gz
+# Locally computed sha256 checksums
+sha256	c538da1ae16b6d75f6fa65852bb158dbf9e556b01681be5b692692906d244241  COPYING

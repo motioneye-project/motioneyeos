@@ -1,4 +1,4 @@
-From 9ab2b96c2ee679c6dcb387174be211db5d70fa97 Mon Sep 17 00:00:00 2001
+From 423a1b081f6b7198f6a921ca83043270ebbace1a Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Sun, 1 May 2016 15:35:32 +0200
 Subject: [PATCH] Avoid intentional syntax error
@@ -15,15 +15,15 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  1 file changed, 2 deletions(-)
 
 diff --git a/crossbar/worker/test/examples/syntaxerror.py b/crossbar/worker/test/examples/syntaxerror.py
-index a5947cc..585c995 100644
+index 7b88e088..cd7de901 100644
 --- a/crossbar/worker/test/examples/syntaxerror.py
 +++ b/crossbar/worker/test/examples/syntaxerror.py
-@@ -29,5 +29,3 @@
+@@ -27,5 +27,3 @@
+ #  with this program. If not, see <http://www.gnu.org/licenses/agpl-3.0.en.html>.
+ #
  #####################################################################################
- 
- from __future__ import absolute_import, division
 -
 -class # noqa
 -- 
-2.7.4
+2.20.1
 

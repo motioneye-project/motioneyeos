@@ -1,0 +1,37 @@
+From c60252ac2b636c4d99b766a574b9df0966151696 Mon Sep 17 00:00:00 2001
+From: Andreas Fritiofson <andreas.fritiofson@gmail.com>
+Date: Fri, 17 Apr 2020 13:49:28 +0200
+Subject: [PATCH] bitbang: Fix FTBFS with GCC 10
+
+GCC 10 defaults to -fno-common which breaks the sharing of bitbang_swd
+struct between bitbang drivers due to a missing extern.
+
+Change-Id: I2b4122f7939cec91a72284006748f99a23548324
+Signed-off-by: Andreas Fritiofson <andreas.fritiofson@gmail.com>
+Reviewed-on: http://openocd.zylin.com/5592
+Tested-by: jenkins
+Reviewed-by: Antonio Borneo <borneo.antonio@gmail.com>
+Reviewed-by: Jonathan McDowell <noodles-openocd@earth.li>
+
+Patch taken from upstream: https://github.com/ntfreak/openocd/commit/c60252ac2b636c4d99b766a574b9df0966151696
+Signed-off-by: Heiko Thiery <heiko.thiery@gmailcom>
+---
+ src/jtag/drivers/bitbang.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/jtag/drivers/bitbang.h b/src/jtag/drivers/bitbang.h
+index edb779ca..bbbc693d 100644
+--- a/src/jtag/drivers/bitbang.h
++++ b/src/jtag/drivers/bitbang.h
+@@ -56,7 +56,7 @@ struct bitbang_interface {
+ 	void (*swdio_drive)(bool on);
+ };
+ 
+-const struct swd_driver bitbang_swd;
++extern const struct swd_driver bitbang_swd;
+ 
+ extern bool swd_mode;
+ 
+-- 
+2.20.1
+

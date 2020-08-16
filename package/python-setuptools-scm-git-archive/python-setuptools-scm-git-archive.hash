@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/setuptools-scm-git-archive/json
+md5	1c9351fa5cebd12e76488737a7c78f2e  setuptools_scm_git_archive-1.1.tar.gz
+sha256	6026f61089b73fa1b5ee737e95314f41cb512609b393530385ed281d0b46c062  setuptools_scm_git_archive-1.1.tar.gz
+# Locally computed sha256 checksums
+sha256	89807acf2309bd285f033404ee78581602f3cd9b819a16ac2f0e5f60ff4a473e  LICENSE

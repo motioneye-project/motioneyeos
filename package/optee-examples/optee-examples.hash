@@ -1,0 +1,4 @@
+# From https://github.com/linaro-swg/optee_examples/archive/3.7.0.tar.gz
+sha256 6c5600871edc64dbdca08dfe40b3161bfb55a11e6004699957c6da8f67b2a475  optee-examples-3.7.0.tar.gz
+# Locally computed
+sha256 6f1ef8449cb82ae79d2155605f7985bdf0f08e7ab5007de9b4362e8bf28733b9  LICENSE

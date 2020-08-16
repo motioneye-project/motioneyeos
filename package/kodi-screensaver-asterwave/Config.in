@@ -6,7 +6,7 @@ config BR2_PACKAGE_KODI_SCREENSAVER_ASTERWAVE
 	help
 	  AsterWave screensaver for Kodi
 
-	  https://github.com/notspiff/screensaver.asterwave
+	  https://github.com/xbmc/screensaver.asterwave
 
 comment "kodi-screensaver-asterwave needs OpenGL"
 	depends on !BR2_PACKAGE_HAS_LIBGL

@@ -1,2 +1,4 @@
 # From http://lists.x.org/archives/xorg-announce/2014-June/002446.html
-sha256	c6e97e48fb1286d6394dddb1c1732f00227c70bd1bedb7d1acabefdd340bea5b	xcb-util-renderutil-0.3.9.tar.bz2
+sha256  c6e97e48fb1286d6394dddb1c1732f00227c70bd1bedb7d1acabefdd340bea5b  xcb-util-renderutil-0.3.9.tar.bz2
+# Locally computed
+sha256  271169dd66674e9c396697af0b4822d1c59ccd2342b7740864d667a02963068b  COPYING

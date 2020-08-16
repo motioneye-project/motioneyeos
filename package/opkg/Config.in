@@ -17,7 +17,7 @@ config BR2_PACKAGE_OPKG
 	  conforms to a subset of debian's policy manual regarding
 	  control files.
 
-	  http://code.google.com/p/opkg/
+	  https://code.google.com/archive/p/opkg/
 
 if BR2_PACKAGE_OPKG
 

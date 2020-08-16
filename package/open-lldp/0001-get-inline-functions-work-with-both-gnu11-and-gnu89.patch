@@ -1,0 +1,52 @@
+From e186ca9ebda181f62504a1922559ef3ddae5e3b6 Mon Sep 17 00:00:00 2001
+From: Laurent Charpentier <laurent_pubs@yahoo.com>
+Date: Mon, 15 Jan 2018 11:24:45 +0100
+Subject: [PATCH] get inline functions work with both gnu11 and gnu89
+
+After gcc upgraded to gcc5, and if the codes are compiled without optimization(-O0), and the below error will happen:
+
+./include/lldp_8021qaz.h:237:12: error: inline function 'ieee8021qaz_clif_cmd' declared but never defined [-Werror]
+ inline int ieee8021qaz_clif_cmd(void *data, struct sockaddr_un *from,
+            ^
+./include/lldp_8021qaz.h:222:13: error: inline function 'set_prio_map' declared but never defined [-Werror]
+ inline void set_prio_map(u32 *prio_map, u8 prio, int tc);
+             ^
+./include/lldp_8021qaz.h:221:12: error: inline function 'get_prio_map' declared but never defined [-Werror]
+ inline int get_prio_map(u32 prio_map, int tc);
+
+gcc5 defaults to -std=gnu11 instead of -std=gnu89, and it requires that exactly one C source file has the callable copy of the inline function.
+
+Signed-off-by: Laurent Charpentier <laurent_pubs@yahoo.com>
+[Fabrice: patch updated so it applies after
+https://github.com/intel/openlldp/commit/7ad7a2f2adc70d8e9213f8bf511bf3374d64b034]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ include/lldp_8021qaz.h | 6 ------
+ lldp_8021qaz.c         | 4 ++--
+ 2 files changed, 2 insertions(+), 8 deletions(-)
+
+diff --git a/lldp_8021qaz.c b/lldp_8021qaz.c
+index 094676d..f154317 100644
+--- a/lldp_8021qaz.c
++++ b/lldp_8021qaz.c
+@@ -396,7 +396,7 @@ static int read_cfg_file(char *ifname, struct lldp_agent *agent,
+ 	return 0;
+ }
+ 
+-inline int get_prio_map(u32 prio_map, int prio)
++static inline int get_prio_map(u32 prio_map, int prio)
+ {
+ 	if (prio > 7)
+ 		return 0;
+@@ -404,7 +404,7 @@ inline int get_prio_map(u32 prio_map, int prio)
+ 	return (prio_map >> (4 * (7-prio))) & 0xF;
+ }
+ 
+-inline void set_prio_map(u32 *prio_map, u8 prio, int tc)
++static inline void set_prio_map(u32 *prio_map, u8 prio, int tc)
+ {
+ 	u32 mask = ~(0xffffffff & (0xF << (4 * (7-prio))));
+ 	*prio_map &= mask;
+-- 
+2.14.3
+

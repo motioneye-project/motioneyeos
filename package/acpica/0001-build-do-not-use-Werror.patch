@@ -10,19 +10,21 @@ newer versions that introduce new warnings.
 Remove use of -Werror.
 
 [Vincent: tweak patch for 20170531 release]
+[Bernd: tweak patch for 20191018 release]
 
 Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 Signed-off-by: "Vicente Olivert Riera" <Vincent.Riera@imgtec.com>
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 ---
  generate/unix/Makefile.config |  1 -
- generate/unix/iasl/Makefile   | 12 ++++++------
- 2 files changed, 6 insertions(+), 7 deletions(-)
+ generate/unix/iasl/Makefile   | 16 ++++++++--------
+ 2 files changed, 8 insertions(+), 9 deletions(-)
 
 diff --git a/generate/unix/Makefile.config b/generate/unix/Makefile.config
-index 4d4f182..a7120e3 100644
+index c28e8a9b1..7064bed97 100644
 --- a/generate/unix/Makefile.config
 +++ b/generate/unix/Makefile.config
-@@ -194,7 +194,6 @@ CWARNINGFLAGS = \
+@@ -204,7 +204,6 @@ CWARNINGFLAGS = \
      -Wall\
      -Wbad-function-cast\
      -Wdeclaration-after-statement\
@@ -31,10 +33,10 @@ index 4d4f182..a7120e3 100644
      -Wmissing-declarations\
      -Wmissing-prototypes\
 diff --git a/generate/unix/iasl/Makefile b/generate/unix/iasl/Makefile
-index 156c23a..28ffc06 100644
+index 47ea73cab..2c756af79 100644
 --- a/generate/unix/iasl/Makefile
 +++ b/generate/unix/iasl/Makefile
-@@ -335,24 +335,24 @@ $(OBJDIR)/prparserparse.c $(OBJDIR)/prparser.y.h :       $(ASL_COMPILER)/prparse
+@@ -360,32 +360,32 @@ $(OBJDIR)/prparserparse.c $(OBJDIR)/prparser.y.h :       $(ASL_COMPILER)/prparse
  #
  $(OBJDIR)/aslcompilerlex.o :   $(OBJDIR)/aslcompilerlex.c
  	@echo "- " "Intermediate" $<
@@ -42,6 +44,16 @@ index 156c23a..28ffc06 100644
 +	@$(CC) -c $(CFLAGS) -Wall -o$@ $<
  
  $(OBJDIR)/aslcompilerparse.o : $(OBJDIR)/aslcompilerparse.c
+ 	@echo "- " "Intermediate" $<
+-	@$(CC) -c $(CFLAGS) -Wall -Werror -o$@ $<
++	@$(CC) -c $(CFLAGS) -Wall -o$@ $<
+ 
+ $(OBJDIR)/dtcompilerparserlex.o :      $(OBJDIR)/dtcompilerparserlex.c
+ 	@echo "- " "Intermediate" $<
+-	@$(CC) -c $(CFLAGS) -Wall -Werror -o$@ $<
++	@$(CC) -c $(CFLAGS) -Wall -o$@ $<
+ 
+ $(OBJDIR)/dtcompilerparserparse.o :    $(OBJDIR)/dtcompilerparserparse.c
  	@echo "- " "Intermediate" $<
 -	@$(CC) -c $(CFLAGS) -Wall -Werror -o$@ $<
 +	@$(CC) -c $(CFLAGS) -Wall -o$@ $<
@@ -65,3 +77,6 @@ index 156c23a..28ffc06 100644
  	@echo "- " "Intermediate" $<
 -	@$(CC) -c $(CFLAGS) -Wall -Werror -o$@ $<
 +	@$(CC) -c $(CFLAGS) -Wall -o$@ $<
+-- 
+2.20.1
+

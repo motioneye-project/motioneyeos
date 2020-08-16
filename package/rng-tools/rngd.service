@@ -3,7 +3,6 @@ Description=Hardware RNG Entropy Gatherer Daemon
 
 [Service]
 ExecStart=/usr/sbin/rngd -f $DAEMON_ARGS
-SuccessExitStatus=66
 EnvironmentFile=-/etc/default/rngd
 
 [Install]

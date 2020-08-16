@@ -1,0 +1,15 @@
+config BR2_PACKAGE_CPUBURN_ARM_ARCH_SUPPORTS
+	bool
+	default y if BR2_cortex_a7
+	default y if BR2_cortex_a8
+	default y if BR2_cortex_a9
+	default y if BR2_cortex_a53
+
+config BR2_PACKAGE_CPUBURN_ARM
+	bool "cpuburn-arm"
+	depends on BR2_PACKAGE_CPUBURN_ARM_ARCH_SUPPORTS
+	help
+	  Make ARM cores generate as much heat as possible. Supports
+	  Cortex A7/A8/A9/A53.
+
+	  https://github.com/ssvb/cpuburn-arm

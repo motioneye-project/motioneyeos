@@ -12,3 +12,4 @@ PYTHON_PLY_LICENSE = BSD-3-Clause
 PYTHON_PLY_LICENSE_FILES = README.md
 
 $(eval $(python-package))
+$(eval $(host-python-package))

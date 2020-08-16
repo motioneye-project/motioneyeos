@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_JANUS
+	bool "python-janus"
+	depends on BR2_PACKAGE_PYTHON3
+	help
+	  Mixed sync-async queue to interoperate between asyncio
+	  tasks and classic threads.
+
+	  https://github.com/aio-libs/janus/

@@ -1,0 +1,6 @@
+# Localy computed
+# Note: open2300's upstream svn tree is off-line, so this tarball is
+# served from s.b.o. instead, which actually makes it stable.
+sha256	f4239d2f16d52156586d06be38f06a3eb58168377e243a8de8720b66e33ddb8f  open2300-12.tar.gz
+
+sha256	91df39d1816bfb17a4dda2d3d2c83b1f6f2d38d53e53e41e8f97ad5ac46a0cad  COPYING

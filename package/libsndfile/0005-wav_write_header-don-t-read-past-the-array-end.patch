@@ -1,0 +1,33 @@
+From 6d7ce94c020cc720a6b28719d1a7879181790008 Mon Sep 17 00:00:00 2001
+From: Emilio Pozuelo Monfort <pochu27@gmail.com>
+Date: Tue, 5 Mar 2019 11:27:17 +0100
+Subject: [PATCH] wav_write_header: don't read past the array end
+
+If loop_count is bigger than the array, truncate it to the array
+length (and not to 32k).
+
+CVE-2019-3832
+[Retrieved from:
+https://github.com/erikd/libsndfile/commit/6d7ce94c020cc720a6b28719d1a7879181790008]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ src/wav.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/src/wav.c b/src/wav.c
+index 5c825f2a..104bd0a7 100644
+--- a/src/wav.c
++++ b/src/wav.c
+@@ -1146,8 +1146,10 @@ wav_write_header (SF_PRIVATE *psf, int calc_length)
+ 		psf_binheader_writef (psf, "44", BHW4 (0), BHW4 (0)) ; /* SMTPE format */
+ 		psf_binheader_writef (psf, "44", BHW4 (psf->instrument->loop_count), BHW4 (0)) ;
+ 
+-		/* Loop count is signed 16 bit number so we limit it range to something sensible. */
+-		psf->instrument->loop_count &= 0x7fff ;
++		/* Make sure we don't read past the loops array end. */
++		if (psf->instrument->loop_count > ARRAY_LEN (psf->instrument->loops))
++			psf->instrument->loop_count = ARRAY_LEN (psf->instrument->loops) ;
++
+ 		for (tmp = 0 ; tmp < psf->instrument->loop_count ; tmp++)
+ 		{	int type ;
+ 

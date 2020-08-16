@@ -479,6 +479,7 @@ use Fatal qw(open close);
 use Getopt::Long;
 use Pod::Usage;
 use File::Basename;
+use File::Path qw(make_path);
 use Module::CoreList;
 use HTTP::Tiny;
 use Safe;
@@ -487,9 +488,9 @@ use Digest::SHA qw(sha256_hex);
 use Text::Wrap;
 $Text::Wrap::columns = 62;
 
-# Below, 5.028 should be aligned with the version of perl actually
+# Below, 5.030 should be aligned with the version of perl actually
 # bundled in Buildroot:
-die <<"MSG" if $] < 5.028;
+die <<"MSG" if $] < 5.030;
 This script needs a host perl with the same major version as Buildroot target perl.
 
 Your current host perl is:
@@ -497,7 +498,7 @@ Your current host perl is:
     version $]
 
 You may install a local one by running:
-    perlbrew install perl-5.28.0
+    perlbrew install perl-5.30.0
 MSG
 
 my ($help, $man, $quiet, $force, $recommend, $test, $host);
@@ -565,7 +566,8 @@ sub find_license_files {
     my @license_files;
     foreach (split /\n/, $manifest) {
         next if m|/|;
-        push @license_files, $_ if m/(ARTISTIC|COPYING|COPYRIGHT|LICENSE)/i;
+        s|\s+.*$||;
+        push @license_files, $_ if m/(ARTISTIC|COPYING|COPYRIGHT|LICENSE|LICENCE)/i;
     }
     if (scalar @license_files == 0 && $manifest =~ m/(README)[\n\s]/i) {
         @license_files = ($1);
@@ -609,6 +611,9 @@ sub fetch {
     unless ($dist{$name} && !$top) {
         say qq{fetch ${name}} unless $quiet;
         my $result = $mcpan->release( distribution => $name );
+        my $main_module = $result->{main_module};
+        push @info, qq{[$name] $main_module is a core module}
+            if $top && Module::CoreList::is_core( $main_module, undef, $] );
         $dist{$name} = $result;
         $license_files{$name} = {};
         eval {
@@ -715,9 +720,10 @@ while (my ($distname, $dist) = each %dist) {
     my $mkname = $dirname . q{/} . $fsname . q{.mk};
     my $hashname = $dirname . q{/} . $fsname . q{.hash};
     my $brname = brname( $fsname );
-    my $testname = q{support/testing/tests/package/test_} . lc $brname . q{.py};
+    my $testdir = q{support/testing/tests/package};
+    my $testname = $testdir . q{/test_} . lc $brname . q{.py};
     unless (-d $dirname) {
-        mkdir $dirname;
+        make_path $dirname;
         $new_pkgs = 1;
     }
     if ($need_target{$distname} && ($force || !-f $cfgname)) {
@@ -794,15 +800,15 @@ while (my ($distname, $dist) = each %dist) {
         say qq{write ${hashname}} unless $quiet;
         open my $fh, q{>}, $hashname;
         say {$fh} qq{# retrieved by scancpan from ${mirror}/};
-        say {$fh} qq{md5    ${md5} ${filename}};
-        say {$fh} qq{sha256 ${sha256} ${filename}};
+        say {$fh} qq{md5  ${md5}  ${filename}};
+        say {$fh} qq{sha256  ${sha256}  ${filename}};
         my %license_files =  %{$license_files{$distname}};
         if (scalar keys %license_files) {
             say {$fh} q{};
             say {$fh} qq{# computed by scancpan};
             foreach my $license (sort keys %license_files) {
                 my $digest = $license_files{$license};
-                say {$fh} qq{sha256 ${digest} ${license}};
+                say {$fh} qq{sha256  ${digest}  ${license}};
             }
         }
         close $fh;
@@ -815,6 +821,7 @@ while (my ($distname, $dist) = each %dist) {
         my $mark = $is_xs{$distname} ? q{   XS} : q{};
         my @indirect = (get_indirect_dependencies( $distname ));
         say qq{write ${testname}} unless $quiet;
+        make_path $testdir unless -d $testdir;
         open my $fh, q{>}, $testname;
         say {$fh} qq{from tests.package.test_perl import TestPerlBase};
         say {$fh} qq{};
@@ -845,6 +852,14 @@ while (my ($distname, $dist) = each %dist) {
         say {$fh} qq{};
         say {$fh} qq{    def test_run(self):};
         say {$fh} qq{        self.login()};
+        foreach my $dep (sort grep { $is_xs{$_} } @indirect) {
+            $dep =~ s|-|::|g;
+            say {$fh} qq{        self.module_test("${dep}")};
+        }
+        foreach my $dep (sort grep { $is_xs{$_} } @{$deps_runtime{$distname}}) {
+            $dep =~ s|-|::|g;
+            say {$fh} qq{        self.module_test("${dep}")};
+        }
         say {$fh} qq{        self.module_test("${modname}")};
         close $fh;
     }
@@ -949,7 +964,7 @@ in order to work with the right CoreList data.
 
 =head1 LICENSE
 
-Copyright (C) 2013-2018 by Francois Perrad <francois.perrad@gadz.org>
+Copyright (C) 2013-2019 by Francois Perrad <francois.perrad@gadz.org>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

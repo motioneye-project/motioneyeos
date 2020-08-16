@@ -1,0 +1,14 @@
+config BR2_PACKAGE_PERL_LWP_PROTOCOL_HTTPS
+	bool "perl-lwp-protocol-https"
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_PERL_IO_SOCKET_SSL # runtime
+	select BR2_PACKAGE_PERL_MOZILLA_CA # runtime
+	select BR2_PACKAGE_PERL_NET_HTTP # runtime
+	select BR2_PACKAGE_PERL_LIBWWW_PERL # runtime
+	help
+	  Provide https support for LWP::UserAgent.
+
+	  https://metacpan.org/release/LWP-Protocol-https
+
+comment "perl-lwp-protocol-https needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

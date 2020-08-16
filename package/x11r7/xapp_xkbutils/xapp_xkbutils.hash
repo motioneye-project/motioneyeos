@@ -1,2 +1,4 @@
 # From http://lists.x.org/archives/xorg-announce/2013-February/002162.html
-sha256	d2a18ab90275e8bca028773c44264d2266dab70853db4321bdbc18da75148130	xkbutils-1.0.4.tar.bz2
+sha256  d2a18ab90275e8bca028773c44264d2266dab70853db4321bdbc18da75148130  xkbutils-1.0.4.tar.bz2
+# Locally computed
+sha256  3d67b53c085de6d475705b60855b9277afac5d4c4ec531d0ffd1ef0d00571594  COPYING

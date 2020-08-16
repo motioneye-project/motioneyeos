@@ -1,0 +1,45 @@
+From 2c4ae870ec086f2ddd21a47861a3709c36faac45 Mon Sep 17 00:00:00 2001
+From: Scott Gayou <github.scott@gmail.com>
+Date: Tue, 9 Oct 2018 18:46:55 -0500
+Subject: [PATCH] Fixed OOB read when loading invalid ogg flac file. (#868)
+ (#869)
+
+CVE-2018-11439 is caused by a failure to check the minimum length
+of a ogg flac header. This header is detailed in full at:
+https://xiph.org/flac/ogg_mapping.html. Added more strict checking
+for entire header.
+[Retrieved from:
+https://github.com/taglib/taglib/commit/2c4ae870ec086f2ddd21a47861a3709c36faac45]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ taglib/ogg/flac/oggflacfile.cpp | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/taglib/ogg/flac/oggflacfile.cpp b/taglib/ogg/flac/oggflacfile.cpp
+index 53d04508a..07ea9dccc 100644
+--- a/taglib/ogg/flac/oggflacfile.cpp
++++ b/taglib/ogg/flac/oggflacfile.cpp
+@@ -231,11 +231,21 @@ void Ogg::FLAC::File::scan()
+ 
+   if(!metadataHeader.startsWith("fLaC"))  {
+     // FLAC 1.1.2+
++    // See https://xiph.org/flac/ogg_mapping.html for the header specification.
++    if(metadataHeader.size() < 13)
++      return;
++
++    if(metadataHeader[0] != 0x7f)
++      return;
++
+     if(metadataHeader.mid(1, 4) != "FLAC")
+       return;
+ 
+-    if(metadataHeader[5] != 1)
+-      return; // not version 1
++    if(metadataHeader[5] != 1 && metadataHeader[6] != 0)
++      return; // not version 1.0
++
++    if(metadataHeader.mid(9, 4) != "fLaC")
++      return;
+ 
+     metadataHeader = metadataHeader.mid(13);
+   }

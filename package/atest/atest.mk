@@ -12,10 +12,4 @@ ATEST_DEPENDENCIES = host-pkgconf libev alsa-lib
 # Fetched from Github, with no configure script
 ATEST_AUTORECONF = YES
 
-# Autoreconf requires an existing m4 directory
-define ATEST_PATCH_M4
-	mkdir -p $(@D)/m4
-endef
-ATEST_POST_PATCH_HOOKS += ATEST_PATCH_M4
-
 $(eval $(autotools-package))

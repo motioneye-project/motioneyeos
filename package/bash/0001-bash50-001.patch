@@ -1,0 +1,170 @@
+From https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-001
+
+Signed-off-by: Pascal de Bruijn <p.debruijn@unilogic.nl>
+
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	5.0
+Patch-ID:	bash50-001
+
+Bug-Reported-by:	axel@freakout.de
+Bug-Reference-ID:	<201901082050.x08KoShS006731@bongo.freakout.de>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2019-01/msg00079.html
+
+Bug-Description:
+
+Under certain circumstances, the glob expansion code did not remove
+backslashes escaping characters in directory names (or portions of a
+pattern preceding a slash).
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-5.0/bashline.c	2018-11-27 13:20:16.000000000 -0500
+--- b/bashline.c	2019-01-16 16:06:03.000000000 -0500
+***************
+*** 232,235 ****
+--- 232,236 ----
+  static int bash_possible_command_completions __P((int, int));
+  
++ static int completion_glob_pattern __P((char *));
+  static char *glob_complete_word __P((const char *, int));
+  static int bash_glob_completion_internal __P((int));
+***************
+*** 1742,1746 ****
+    /* This could be a globbing pattern, so try to expand it using pathname
+       expansion. */
+!   if (!matches && glob_pattern_p (text))
+      {
+        matches = rl_completion_matches (text, glob_complete_word);
+--- 1743,1747 ----
+    /* This could be a globbing pattern, so try to expand it using pathname
+       expansion. */
+!   if (!matches && completion_glob_pattern ((char *)text))
+      {
+        matches = rl_completion_matches (text, glob_complete_word);
+***************
+*** 1851,1855 ****
+  	}
+  
+!       globpat = glob_pattern_p (hint_text);
+  
+        /* If this is an absolute program name, do not check it against
+--- 1852,1856 ----
+  	}
+  
+!       globpat = completion_glob_pattern ((char *)hint_text);
+  
+        /* If this is an absolute program name, do not check it against
+***************
+*** 3714,3717 ****
+--- 3715,3773 ----
+  }
+  
++ static int
++ completion_glob_pattern (string)
++      char *string;
++ {
++   register int c;
++   char *send;
++   int open;
++ 
++   DECLARE_MBSTATE;
++ 
++   open = 0;
++   send = string + strlen (string);
++ 
++   while (c = *string++)
++     {
++       switch (c)
++ 	{
++ 	case '?':
++ 	case '*':
++ 	  return (1);
++ 
++ 	case '[':
++ 	  open++;
++ 	  continue;
++ 
++ 	case ']':
++ 	  if (open)
++ 	    return (1);
++ 	  continue;
++ 
++ 	case '+':
++ 	case '@':
++ 	case '!':
++ 	  if (*string == '(')	/*)*/
++ 	    return (1);
++ 	  continue;
++ 
++ 	case '\\':
++ 	  if (*string == 0)
++ 	    return (0);	 	  
++ 	}
++ 
++       /* Advance one fewer byte than an entire multibyte character to
++ 	 account for the auto-increment in the loop above. */
++ #ifdef HANDLE_MULTIBYTE
++       string--;
++       ADVANCE_CHAR_P (string, send - string);
++       string++;
++ #else
++       ADVANCE_CHAR_P (string, send - string);
++ #endif
++     }
++   return (0);
++ }
++ 
+  static char *globtext;
+  static char *globorig;
+***************
+*** 3878,3882 ****
+      }      
+  
+!   if (t && glob_pattern_p (t) == 0)
+      rl_explicit_arg = 1;	/* XXX - force glob_complete_word to append `*' */
+    FREE (t);
+--- 3934,3938 ----
+      }      
+  
+!   if (t && completion_glob_pattern (t) == 0)
+      rl_explicit_arg = 1;	/* XXX - force glob_complete_word to append `*' */
+    FREE (t);
+*** ../bash-5.0/lib/glob/glob_loop.c	2018-12-31 13:35:15.000000000 -0500
+--- b/lib/glob/glob_loop.c	2019-01-09 09:44:36.000000000 -0500
+***************
+*** 55,59 ****
+  
+        case L('\\'):
+- #if 0
+  	/* Don't let the pattern end in a backslash (GMATCH returns no match
+  	   if the pattern ends in a backslash anyway), but otherwise return 1,
+--- 55,58 ----
+***************
+*** 61,69 ****
+  	   and it can be removed. */
+  	return (*p != L('\0'));
+- #else
+- 	/* The pattern may not end with a backslash. */
+- 	if (*p++ == L('\0'))
+- 	  return 0;
+- #endif
+        }
+  
+--- 60,63 ----
+*** ../bash-5.0/patchlevel.h	2016-06-22 14:51:03.000000000 -0400
+--- b/patchlevel.h	2016-10-01 11:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 0
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 1
+  
+  #endif /* _PATCHLEVEL_H_ */

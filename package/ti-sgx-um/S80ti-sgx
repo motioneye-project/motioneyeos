@@ -1,14 +1,56 @@
 #!/bin/sh
+
+pvrsrvkm_ko="/lib/modules/$(/bin/uname -r)/extra/pvrsrvkm.ko"
+
+pvr_loaded() {
+	/sbin/lsmod | /bin/grep -q '^\<pvrsrvkm\>'
+}
+
+pvr_load() {
+	/sbin/insmod "$pvrsrvkm_ko" > /dev/null 2>&1
+}
+
+start() {
+	printf 'Loading pvrsrvkm module: '
+	pvr_loaded || pvr_load
+	status=$?
+	if [ "$status" -eq 0 ]; then
+		printf 'Starting PowerVR services: '
+		/usr/bin/pvrsrvctl --start --no-module > /dev/null 2>&1
+		status=$?
+	fi
+	if [ "$status" -eq 0 ]; then
+		echo "OK"
+	else
+		echo "FAIL"
+	fi
+	return "$status"
+}
+
+stop() {
+	printf 'Starting PowerVR services: '
+	/usr/bin/pvrsrvctl --stop > /dev/null 2>&1
+	status=$?
+	if [ "$status" -eq 0 ]; then
+		echo "OK"
+	else
+		echo "FAIL"
+	fi
+	return "$status"
+}
+
+restart() {
+	stop
+	sleep 1
+	start
+}
+
 case "$1" in
-  start)
-	printf "Initializing SGX graphics driver "
-	/usr/bin/pvrsrvinit
-	[ $? = 0 ] && echo "OK" || echo "FAIL"
-  ;;
-  stop)
-  ;;
-  *)
-    echo "Usage: $0 {start|stop}"
-    exit 1
-  ;;
+	start|stop|restart)
+		"$1";;
+	reload)
+		restart;;
+	*)
+		echo "Usage: $0 {start|stop|restart|reload}"
+		exit 1
 esac

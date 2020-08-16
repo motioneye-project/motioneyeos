@@ -1,2 +1,4 @@
 # From http://www.x.org/archive/current/src/everything/CHECKSUMS
-sha256 824231e8dffe15299454e47259f29d98001c9cf8ad3d6b5171399e4d71705e79  font-screen-cyrillic-1.0.4.tar.bz2
+sha256  824231e8dffe15299454e47259f29d98001c9cf8ad3d6b5171399e4d71705e79  font-screen-cyrillic-1.0.4.tar.bz2
+# Locally computed
+sha256  5234cbcbdcc9865ce2b576b5f67e77e40ccdc1aa01e6528bea5a17784934b894  COPYING

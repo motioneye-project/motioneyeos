@@ -9,6 +9,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESCAPE_IMG_MIPS
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_7
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_6
 	select BR2_TOOLCHAIN_HAS_FORTRAN
+	select BR2_TOOLCHAIN_HAS_OPENMP
 	help
 	  Codescape IMG GNU Linux Toolchain 2018.09 for the MIPS
 	  architecture, from MIPS Tech LLC. It uses gcc 6.3.0,

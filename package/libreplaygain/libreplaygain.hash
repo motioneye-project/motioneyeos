@@ -1,4 +1,6 @@
 # From https://www.musepack.net/index.php?pg=src
 md5	e27b3b1249b7fbae92d656d9e3d26633	libreplaygain_r475.tar.gz
 # Calculated based on the hash above
-sha256	8258bf785547ac2cda43bb195e07522f0a3682f55abe97753c974609ec232482	libreplaygain_r475.tar.gz
+sha256  8258bf785547ac2cda43bb195e07522f0a3682f55abe97753c974609ec232482  libreplaygain_r475.tar.gz
+# Locally computed
+sha256  511e7b63ce6530b93932d19da3471a6672586339bc131b2699ad4e9b0ee6c9bb  src/gain_analysis.c

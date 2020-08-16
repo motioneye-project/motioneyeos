@@ -1,0 +1,31 @@
+From 0832208360aab69fbaec76225db67801840a33fe Mon Sep 17 00:00:00 2001
+From: Frank Vanbever <frank.vanbever@essensium.com>
+Date: Fri, 10 Jan 2020 11:14:43 +0100
+Subject: [PATCH] Fail when CANONICAL_HOST cannot be determined
+
+When the CANONICAL_HOST is unknown the configure script exits
+with exit code 0 even though no makefile was produced.
+
+Upstream: https://github.com/SpiderLabs/ModSecurity/pull/2235
+
+Signed-off-by: Frank Vanbever <frank.vanbever@essensium.com>
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 95e48843..5e6971f4 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -193,7 +193,7 @@ case $host in
+     ;;
+        *)
+     echo "Unknown CANONICAL_HOST $host"
+-    exit
++    exit 1
+     ;;
+ esac
+ 
+-- 
+2.20.1
+

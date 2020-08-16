@@ -1,0 +1,9 @@
+config BR2_PACKAGE_LIBHTP
+	bool "libhtp"
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	select BR2_PACKAGE_ZLIB
+	help
+	  LibHTP is a security-aware parser for the HTTP protocol and
+	  the related bits and pieces.
+
+	  https://github.com/OISF/libhtp

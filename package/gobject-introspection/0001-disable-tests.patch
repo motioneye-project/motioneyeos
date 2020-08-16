@@ -1,0 +1,34 @@
+From 473b4288d8f4e891d0d21f7b60ef8053c5cd7af9 Mon Sep 17 00:00:00 2001
+From: Adam Duskett <aduskett@gmail.com>
+Date: Mon, 3 Feb 2020 10:07:15 -0800
+Subject: [PATCH] disable tests
+
+If introspection data on the host is not built, meson throws the error:
+"Unknown variable "typelibs". Because tests are not required, removing
+the subdir tests alltogether fixes this issue.
+
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+---
+ meson.build | 6 ------
+ 1 file changed, 6 deletions(-)
+
+diff --git a/meson.build b/meson.build
+index eed4d6b..5058664 100644
+--- a/meson.build
++++ b/meson.build
+@@ -214,12 +214,6 @@ if get_option('build_introspection_data') == true
+ endif
+ subdir('docs')
+ 
+-# The tests will also run, which is not possible if they
+-# were built for a different architecture.
+-if not meson.is_cross_build()
+-    subdir('tests')
+-endif
+-
+ install_data('Makefile.introspection', install_dir: join_paths(get_option('datadir'), 'gobject-introspection-1.0'))
+ install_data('m4/introspection.m4', install_dir: join_paths(get_option('datadir'), 'aclocal'))
+ 
+-- 
+2.24.1
+

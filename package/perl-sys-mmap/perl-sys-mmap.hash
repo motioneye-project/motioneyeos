@@ -1,6 +1,6 @@
 # retrieved by scancpan from http://cpan.metacpan.org/
-md5    990c9106a88dc843035f7bcb109e6c0e Sys-Mmap-0.19.tar.gz
-sha256 09295e25cc9b0599d9009d19b2be89fcecaecc62ce594f873d7f70d7c10900fa Sys-Mmap-0.19.tar.gz
+md5    57172ce9b33c04de460b4e7ad68d2e9c Sys-Mmap-0.20.tar.gz
+sha256 1820ce2c89f1ab7357644f8db0f49f142f54526250fb1e235db10aa80f15e2cf Sys-Mmap-0.20.tar.gz
 
 # computed by scancpan
 sha256 4ac2afe465736476a06e52edcc78c72cfa0fa4d625916e58ab4f2af6c598709c Artistic

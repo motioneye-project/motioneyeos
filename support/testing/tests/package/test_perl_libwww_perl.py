@@ -36,6 +36,7 @@ class TestPerllibwwwperl(TestPerlBase):
         self.module_test("LWP::UserAgent")
         self.module_test("LWP::Authen::Basic")
         self.module_test("LWP::Authen::Digest")
+        self.module_test("HTML::Parser")
         self.module_test("HTTP::Message")
         self.module_test("HTTP::Daemon")
         self.module_test("WWW::RobotRules")

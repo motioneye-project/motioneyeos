@@ -66,14 +66,8 @@ endef
 define SANE_BACKENDS_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -m 0644 -D package/sane-backends/saned.socket \
 		$(TARGET_DIR)/usr/lib/systemd/system/saned.socket
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/socket.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/saned.socket \
-		$(TARGET_DIR)/etc/systemd/system/socket.target.wants/saned.socket
 	$(INSTALL) -m 0644 -D package/sane-backends/saned@.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/saned@.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/saned@.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/saned@.service
 endef
 
 $(eval $(autotools-package))

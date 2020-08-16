@@ -1,0 +1,139 @@
+From 65e27d545cb54ac63536a8b6e7d5def180ddb5b7 Mon Sep 17 00:00:00 2001
+From: Karel Zak <kzak@redhat.com>
+Date: Tue, 14 Jan 2020 11:50:46 +0100
+Subject: [PATCH] sfdisk: add --disk-id to change disk UUID/ID
+
+Addresses: https://github.com/karelzak/util-linux/issues/916
+Signed-off-by: Karel Zak <kzak@redhat.com>
+Signed-off-by: Carlos Santos <unixmania@gmail.com>
+---
+ disk-utils/sfdisk.8 |  5 +++++
+ disk-utils/sfdisk.c | 54 +++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 59 insertions(+)
+
+diff --git a/disk-utils/sfdisk.8 b/disk-utils/sfdisk.8
+index 3ff5dd4e6..9ee71e81a 100644
+--- a/disk-utils/sfdisk.8
++++ b/disk-utils/sfdisk.8
+@@ -152,6 +152,11 @@ or a GUID for GPT.  For backward compatibility the options \fB\-c\fR and
+ Change the GPT partition UUID.  If \fIuuid\fR is not specified,
+ then print the current partition UUID.
+ .TP
++.BR "\-\-disk\-id \fIdevice " [ \fIid ]
++Change the disk identifier.  If \fIid\fR is not specified,
++then print the current identifier.  The identifier is UUID for GPT
++or unsigned integer for MBR.
++.TP
+ .BR \-r , " \-\-reorder " \fIdevice
+ Renumber the partitions, ordering them by their start offset.
+ .TP
+diff --git a/disk-utils/sfdisk.c b/disk-utils/sfdisk.c
+index bb6e1c6df..0db797b2d 100644
+--- a/disk-utils/sfdisk.c
++++ b/disk-utils/sfdisk.c
+@@ -86,6 +86,7 @@ enum {
+ 	ACT_PARTUUID,
+ 	ACT_PARTLABEL,
+ 	ACT_PARTATTRS,
++	ACT_DISKID,
+ 	ACT_DELETE
+ };
+ 
+@@ -1327,6 +1328,46 @@ static int command_partattrs(struct sfdisk *sf, int argc, char **argv)
+ 	return write_changes(sf);
+ }
+ 
++/*
++ * sfdisk --disk-id <device> [<str>]
++ */
++static int command_diskid(struct sfdisk *sf, int argc, char **argv)
++{
++	const char *devname = NULL;
++	char *str = NULL;
++
++	if (!argc)
++		errx(EXIT_FAILURE, _("no disk device specified"));
++	devname = argv[0];
++
++	if (argc == 2)
++		str = argv[1];
++	else if (argc > 2)
++		errx(EXIT_FAILURE, _("unexpected arguments"));
++
++	if (fdisk_assign_device(sf->cxt, devname, !str) != 0)
++		err(EXIT_FAILURE, _("cannot open %s"), devname);
++
++	/* print */
++	if (!str) {
++		fdisk_get_disklabel_id(sf->cxt, &str);
++		if (str)
++			printf("%s\n", str);
++		free(str);
++		fdisk_deassign_device(sf->cxt, 1);
++		return 0;
++	}
++
++	/* change */
++	if (sf->backup)
++		backup_partition_table(sf, devname);
++
++	if (fdisk_set_disklabel_id_from_string(sf->cxt, str) != 0)
++		errx(EXIT_FAILURE, _("%s: failed to set disklabel ID"), devname);
++
++	return write_changes(sf);
++}
++
+ static void sfdisk_print_partition(struct sfdisk *sf, size_t n)
+ {
+ 	struct fdisk_partition *pa = NULL;
+@@ -1941,6 +1982,9 @@ static void __attribute__((__noreturn__)) usage(void)
+ 	fputs(_(" --part-uuid <dev> <part> [<uuid>] print or change partition uuid\n"), out);
+ 	fputs(_(" --part-attrs <dev> <part> [<str>] print or change partition attributes\n"), out);
+ 
++	fputs(USAGE_SEPARATOR, out);
++	fputs(_(" --disk-id <dev> [<str>]           print or change disk label ID (UUID)\n"), out);
++
+ 	fputs(USAGE_SEPARATOR, out);
+ 	fputs(_(" <dev>                     device (usually disk) path\n"), out);
+ 	fputs(_(" <part>                    partition number\n"), out);
+@@ -2007,6 +2051,7 @@ int main(int argc, char *argv[])
+ 		OPT_PARTLABEL,
+ 		OPT_PARTTYPE,
+ 		OPT_PARTATTRS,
++		OPT_DISKID,
+ 		OPT_BYTES,
+ 		OPT_COLOR,
+ 		OPT_MOVEDATA,
+@@ -2052,6 +2097,8 @@ int main(int argc, char *argv[])
+ 		{ "part-type",  no_argument,    NULL, OPT_PARTTYPE },
+ 		{ "part-attrs", no_argument,    NULL, OPT_PARTATTRS },
+ 
++		{ "disk-id",    no_argument,	NULL, OPT_DISKID },
++
+ 		{ "show-pt-geometry", no_argument, NULL, 'G' },		/* deprecated */
+ 		{ "unit",    required_argument, NULL, 'u' },		/* deprecated */
+ 		{ "Linux",   no_argument,       NULL, 'L' },		/* deprecated */
+@@ -2192,6 +2239,9 @@ int main(int argc, char *argv[])
+ 		case OPT_PARTATTRS:
+ 			sf->act = ACT_PARTATTRS;
+ 			break;
++		case OPT_DISKID:
++			sf->act = ACT_DISKID;
++			break;
+ 		case OPT_NOREREAD:
+ 			sf->noreread = 1;
+ 			break;
+@@ -2296,6 +2346,10 @@ int main(int argc, char *argv[])
+ 		rc = command_partattrs(sf, argc - optind, argv + optind);
+ 		break;
+ 
++	case ACT_DISKID:
++		rc = command_diskid(sf, argc - optind, argv + optind);
++		break;
++
+ 	case ACT_REORDER:
+ 		rc = command_reorder(sf, argc - optind, argv + optind);
+ 		break;
+-- 
+2.18.2
+

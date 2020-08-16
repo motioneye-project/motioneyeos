@@ -1,0 +1,37 @@
+From f71e0899439aaa0e6172243a0862bf8a72a241fc Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Mon, 28 Oct 2019 18:21:55 +0100
+Subject: [PATCH] src/symbolize.cc: fix build without dlfcn.h
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/google/glog/pull/475]
+---
+ src/symbolize.cc | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/src/symbolize.cc b/src/symbolize.cc
+index 1ffc607..ff027f2 100644
+--- a/src/symbolize.cc
++++ b/src/symbolize.cc
+@@ -110,7 +110,9 @@ _END_GOOGLE_NAMESPACE_
+ 
+ #if defined(__ELF__)
+ 
++#if defined(HAVE_DLFCN_H)
+ #include <dlfcn.h>
++#endif
+ #if defined(OS_OPENBSD)
+ #include <sys/exec_elf.h>
+ #else
+@@ -832,7 +834,7 @@ static ATTRIBUTE_NOINLINE bool SymbolizeAndDemangle(void *pc, char *out,
+ 
+ _END_GOOGLE_NAMESPACE_
+ 
+-#elif defined(OS_MACOSX) && defined(HAVE_DLADDR)
++#elif defined(OS_MACOSX) && defined(HAVE_DLADDR) && defined(HAVE_DLFCN_H)
+ 
+ #include <dlfcn.h>
+ #include <string.h>
+-- 
+2.23.0
+

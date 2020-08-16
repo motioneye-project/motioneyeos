@@ -8,4 +8,4 @@ config BR2_PACKAGE_PYTHON_CRC16
 	  or transmission. There are many variants of CRC and CRC16,
 	  in particular.
 
-	  http://pycrc16.googlecode.com/
+	  https://code.google.com/archive/p/pycrc16/

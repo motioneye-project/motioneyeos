@@ -1,3 +1,5 @@
-# Locally computed
-sha256  ab230bc4c90af4237abe790ebc6b171706a35971b886f1724d879c2f328a616b  python-ibmiotf-0.2.8.tar.gz
-sha256  d8288e11fc42988629f7c0b649fa007332dd0187b010d025feaf7b1925376e8d  LICENSE
+# md5, sha256 from https://pypi.org/pypi/ibmiotf/json
+md5	a103427c15b2bc96d72de5e58975638c  ibmiotf-0.4.0.tar.gz
+sha256	753a29858d48ebd89aff8b73c207028814714d8a004a3c19b436c9bbeaa65ce6  ibmiotf-0.4.0.tar.gz
+# Locally computed sha256 checksums
+sha256	2c153c48f67e56031036fc28d12f76238a5151494bdfc24b6b81ec734c387a2d  LICENSE

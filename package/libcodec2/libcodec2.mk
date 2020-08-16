@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-LIBCODEC2_VERSION = 0.7
-LIBCODEC2_SITE = https://freedv.com/wp-content/uploads/sites/8/2017/10
-LIBCODEC2_SOURCE = codec2-$(LIBCODEC2_VERSION).tar.xz
+LIBCODEC2_VERSION = 0.9.2
+LIBCODEC2_SITE = $(call github,drowe67,codec2,v$(LIBCODEC2_VERSION))
 LIBCODEC2_LICENSE = LGPL-2.1
 LIBCODEC2_LICENSE_FILES = COPYING
 LIBCODEC2_INSTALL_STAGING = YES

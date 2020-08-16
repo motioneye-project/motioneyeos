@@ -1,0 +1,6 @@
+config BR2_PACKAGE_HOST_EROFS_UTILS
+	bool "host erofs-utils"
+	help
+	  Userspace utilities for EROFS filesystem
+
+	  https://git.kernel.org/pub/scm/linux/kernel/git/xiang/erofs-utils.git

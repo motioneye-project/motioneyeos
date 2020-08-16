@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/bunch/json
+md5	0a829d64e95ed96defbcae2bf9061bb0  bunch-1.0.1.tar.gz
+sha256	50c77a0fc0cb372dfe48b5e11937d5f70e743adbf42683f3a6d2857645a76aaa  bunch-1.0.1.tar.gz
+# Locally computed sha256 checksums
+sha256	57ca95c92059c8380625192462979bd32994aae3fcdf902ff6eb1e467eeb0469  LICENSE.txt

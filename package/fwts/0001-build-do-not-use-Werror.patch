@@ -10,6 +10,8 @@ newer versions that introduce new warnings.
 Remove use of -Werror.
 
 Signed-off-by: Erico Nunes <nunes.erico@gmail.com>
+[Fabrice: updated for 19.09.00]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
 ---
  configure.ac              | 2 +-
  src/Makefile.am           | 2 +-
@@ -36,11 +38,11 @@ index 52c637dd..d9d73f1c 100644
  	`pkg-config --silence-errors --cflags json` \
  	`pkg-config --silence-errors --cflags json-c` \
  	-pthread `pkg-config --cflags glib-2.0 gio-2.0` \
--	-Wall -Werror -Wextra
-+	-Wall -Wextra
+-	-Wall -Werror -Wextra				\
++	-Wall -Wextra					\
+ 	-Wno-address-of-packed-member
  
  bin_PROGRAMS = fwts
- 
 diff --git a/src/lib/src/Makefile.am b/src/lib/src/Makefile.am
 index 54de7f44..e129ed16 100644
 --- a/src/lib/src/Makefile.am
@@ -49,11 +51,11 @@ index 54de7f44..e129ed16 100644
  	`pkg-config --silence-errors --cflags json-c`	\
  	`pkg-config --cflags glib-2.0 gio-2.0` 		\
  	-DDATAROOTDIR=\"$(datarootdir)\"		\
--	-Wall -Werror -Wextra
-+	-Wall -Wextra
+-	-Wall -Werror -Wextra				\
++	-Wall -Wextra					\
+ 	-Wno-address-of-packed-member
  
  pkglib_LTLIBRARIES = libfwts.la
- 
 diff --git a/src/utilities/Makefile.am b/src/utilities/Makefile.am
 index aa37de55..4d5297cc 100644
 --- a/src/utilities/Makefile.am

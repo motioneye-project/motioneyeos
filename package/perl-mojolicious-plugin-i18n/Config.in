@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PERL_MOJOLICIOUS_PLUGIN_I18N
+	bool "perl-mojolicious-plugin-i18n"
+	select BR2_PACKAGE_PERL_MOJOLICIOUS # runtime
+	help
+	  Internationalization Plugin for Mojolicious.
+
+	  https://metacpan.org/release/Mojolicious-Plugin-I18N

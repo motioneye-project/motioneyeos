@@ -1,0 +1,48 @@
+From bf1eafb07297711baf9320b1edcca8a3376f117d Mon Sep 17 00:00:00 2001
+From: Natanael Copa <ncopa@alpinelinux.org>
+Date: Wed, 18 Nov 2015 09:03:00 +0000
+Subject: [PATCH] Use configure test for struct timespec
+
+Use the configure script to test for struct time spec instead of trying
+to keep track of what platforms has it.
+
+Signed-off-by: Natanael Copa <ncopa@alpinelinux.org>
+[Retrieved from:
+http://cgit.openembedded.org/meta-openembedded/tree/meta-oe/recipes-support/open-vm-tools/open-vm-tools/0005-Use-configure-test-for-struct-timespec.patch?h=sumo]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ open-vm-tools/configure.ac           | 1 +
+ open-vm-tools/lib/include/hgfsUtil.h | 8 +-------
+ 2 files changed, 2 insertions(+), 7 deletions(-)
+
+Index: open-vm-tools/configure.ac
+===================================================================
+--- open-vm-tools.orig/configure.ac
++++ open-vm-tools/configure.ac
+@@ -1127,6 +1127,7 @@ AC_TYPE_OFF_T
+ AC_TYPE_PID_T
+ AC_TYPE_SIZE_T
+ AC_CHECK_MEMBERS([struct stat.st_rdev])
++AC_CHECK_MEMBERS([struct timespec.tv_sec],[],[],[[#include <time.h>]])
+ AC_HEADER_TIME
+ AC_STRUCT_TM
+ AC_C_VOLATILE
+Index: open-vm-tools/lib/include/hgfsUtil.h
+===================================================================
+--- open-vm-tools.orig/lib/include/hgfsUtil.h
++++ open-vm-tools/lib/include/hgfsUtil.h
+@@ -53,13 +53,7 @@
+ #      include <time.h>
+ #   endif
+ #   include "vm_basic_types.h"
+-#   if !defined _STRUCT_TIMESPEC &&   \
+-       !defined _TIMESPEC_DECLARED && \
+-       !defined __timespec_defined && \
+-       !defined sun && \
+-       !defined __FreeBSD__ && \
+-       !__APPLE__ && \
+-       !defined _WIN32
++#   if !defined HAVE_STRUCT_TIMESPEC_TV_SEC
+ struct timespec {
+    time_t tv_sec;
+    long   tv_nsec;

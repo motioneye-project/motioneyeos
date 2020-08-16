@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/project/lockfile/#copy-hash-modal-3c1db9ec-dd6e-4d06-8543-91094f428ac0
+md5	a6a1a82957a23afdf44cfdd039b65ff9  lockfile-0.12.2.tar.gz
+sha256	6aed02de03cba24efabcd600b30540140634fc06cfa603822d508d5361e9f799  lockfile-0.12.2.tar.gz
+# Locally computed sha256
+sha256 a26276d53dacb369641f31aa0fe37216028a0d93753f862ae206ce04f54b7b29 LICENSE

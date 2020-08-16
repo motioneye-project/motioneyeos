@@ -26,9 +26,6 @@ endef
 define NETPLUG_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 package/netplug/netplug.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/netplug.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/netplug.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/netplug.service
 endef
 
 $(eval $(generic-package))

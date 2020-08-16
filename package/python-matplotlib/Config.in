@@ -1,0 +1,30 @@
+config BR2_PACKAGE_PYTHON_MATPLOTLIB
+	bool "python-matplotlib"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_PACKAGE_PYTHON3
+	depends on BR2_PACKAGE_PYTHON_NUMPY_ARCH_SUPPORTS
+	depends on BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_MUSL # python-numpy
+	select BR2_PACKAGE_FREETYPE # runtime
+	select BR2_PACKAGE_LIBPNG # runtime
+	select BR2_PACKAGE_PYTHON_CYCLER
+	select BR2_PACKAGE_PYTHON_SETUPTOOLS # runtime
+	select BR2_PACKAGE_PYTHON_DATEUTIL # runtime
+	select BR2_PACKAGE_PYTHON_KIWISOLVER # runtime
+	select BR2_PACKAGE_PYTHON_NUMPY # runtime
+	select BR2_PACKAGE_PYTHON_PYPARSING # runtime
+	select BR2_PACKAGE_PYTHON3_ZLIB # runtime
+	select BR2_PACKAGE_ZLIB # runtime
+	help
+	  Matplotlib strives to produce publication quality 2D
+	  graphics for interactive graphing, scientific publishing,
+	  user interface development and web application servers
+	  targeting multiple user interfaces and hardcopy output
+	  formats.
+
+	  https://matplotlib.org/
+
+comment "python-matplotlib needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
+
+comment "python-matplotlib needs glibc or musl"
+	depends on !(BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_MUSL)

@@ -1,0 +1,72 @@
+From https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-008
+
+Signed-off-by: Pascal de Bruijn <p.debruijn@unilogic.nl>
+
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	5.0
+Patch-ID:	bash50-008
+
+Bug-Reported-by:	Michael Albinus <michael.albinus@gmx.de>
+Bug-Reference-ID:	<87bm36k3kz.fsf@gmx.de>
+Bug-Reference-URL:	https://lists.gnu.org/archive/html/bug-bash/2019-02/msg00111.html
+
+Bug-Description:
+
+When HISTSIZE is set to 0, history expansion can leave the history length
+set to an incorrect value, leading to subsequent attempts to access invalid
+memory.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-5.0-patched/bashhist.c	2018-07-05 22:41:14.000000000 -0400
+--- b/bashhist.c	2019-02-20 16:20:04.000000000 -0500
+***************
+*** 561,573 ****
+    if (!history_expansion_inhibited && history_expansion && history_expansion_p (line))
+      {
+        /* If we are expanding the second or later line of a multi-line
+  	 command, decrease history_length so references to history expansions
+  	 in these lines refer to the previous history entry and not the
+  	 current command. */
+        if (history_length > 0 && command_oriented_history && current_command_first_line_saved && current_command_line_count > 1)
+          history_length--;
+        expanded = history_expand (line, &history_value);
+        if (history_length >= 0 && command_oriented_history && current_command_first_line_saved && current_command_line_count > 1)
+!         history_length++;
+  
+        if (expanded)
+--- 561,576 ----
+    if (!history_expansion_inhibited && history_expansion && history_expansion_p (line))
+      {
++       int old_len;
++ 
+        /* If we are expanding the second or later line of a multi-line
+  	 command, decrease history_length so references to history expansions
+  	 in these lines refer to the previous history entry and not the
+  	 current command. */
++       old_len = history_length;
+        if (history_length > 0 && command_oriented_history && current_command_first_line_saved && current_command_line_count > 1)
+          history_length--;
+        expanded = history_expand (line, &history_value);
+        if (history_length >= 0 && command_oriented_history && current_command_first_line_saved && current_command_line_count > 1)
+!         history_length = old_len;
+  
+        if (expanded)
+
+*** ../bash-5.0/patchlevel.h	2016-06-22 14:51:03.000000000 -0400
+--- b/patchlevel.h	2016-10-01 11:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 7
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 8
+  
+  #endif /* _PATCHLEVEL_H_ */

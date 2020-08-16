@@ -1,11 +1,11 @@
 function load_activity(feedurl, divid) {
     let container = document.getElementById(divid);
     $.ajax({
-      url: "https://cors.io/?" + feedurl
+      url: "https://cors-anywhere.herokuapp.com/" + feedurl
     })
     .done(function(data){
         let x2js = new X2JS();
-        let result = x2js.xml_str2json(data);
+        let result = x2js.xml_str2json(data.documentElement.outerHTML);
         let loaded = 0;
         let nb_display = 8;
         if (result==null) return;

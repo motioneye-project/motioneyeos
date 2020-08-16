@@ -1,0 +1,36 @@
+From 21b4836ac9d6c6725590a925daa5d17eda9843e9 Mon Sep 17 00:00:00 2001
+From: Daniel Silverstone <dsilvers@digital-scurf.org>
+Date: Sat, 26 Apr 2014 16:24:54 +0100
+Subject: Hopefully silence warnings about inlines and non inlines calling one
+ another.
+
+[Retrieved from:
+https://source.netsurf-browser.org/libsvgtiny.git/commit/src?id=21b4836ac9d6c6725590a925daa5d17eda9843e9]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ src/colors.gperf | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/src/colors.gperf b/src/colors.gperf
+index 89152d2..96d5b9e 100644
+--- a/src/colors.gperf
++++ b/src/colors.gperf
+@@ -16,6 +16,15 @@
+ #include <string.h>
+ #include "svgtiny.h"
+ #include "svgtiny_internal.h"
++
++/* This unusual define shennanigan is to try and prevent the gperf
++ * generated function from being inlined.  This is pointless given
++ * it (a) is in a separate .c file and (b) has external linkage.
++ */
++#ifdef __inline
++#undef __inline
++#define __inline
++#endif
+ %}
+ 
+ struct svgtiny_named_color;
+-- 
+cgit v1.2.1
+

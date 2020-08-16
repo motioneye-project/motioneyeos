@@ -10,7 +10,7 @@ config BR2_PACKAGE_LIBXMLPP
 	help
 	  libxml++ is a C++ wrapper for the libxml XML parser library.
 
-	  http://libxmlplusplus.sourceforge.net/
+	  https://libxmlplusplus.github.io/libxmlplusplus/
 
 comment "libxml++ needs a toolchain w/ C++, wchar, threads, gcc >= 4.9"
 	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_9 || !BR2_USE_WCHAR \

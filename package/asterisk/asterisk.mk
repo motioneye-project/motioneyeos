@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ASTERISK_VERSION = 16.2.1
+ASTERISK_VERSION = 16.10.0
 # Use the github mirror: it's an official mirror maintained by Digium, and
 # provides tarballs, which the main Asterisk git tree (behind Gerrit) does not.
 ASTERISK_SITE = $(call github,asterisk,asterisk,$(ASTERISK_VERSION))
@@ -136,8 +136,8 @@ else
 ASTERISK_CONF_OPTS += --without-asound
 endif
 
-ifeq ($(BR2_PACKAGE_BLUEZ_UTILS),y)
-ASTERISK_DEPENDENCIES += bluez_utils
+ifeq ($(BR2_PACKAGE_BLUEZ5_UTILS),y)
+ASTERISK_DEPENDENCIES += bluez5_utils
 ASTERISK_CONF_OPTS += --with-bluetooth
 else
 ASTERISK_CONF_OPTS += --without-bluetooth

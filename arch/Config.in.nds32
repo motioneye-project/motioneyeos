@@ -1,0 +1,14 @@
+config BR2_ARCH
+	default "nds32le"
+
+config BR2_GCC_TARGET_ARCH
+	default "v3"
+
+config BR2_ENDIAN
+	default "LITTLE"
+
+config BR2_READELF_ARCH_NAME
+	default "Andes Technology compact code size embedded RISC processor family"
+
+# vim: ft=kconfig
+# -*- mode:kconfig; -*-

@@ -1,2 +1,4 @@
 # From http://lists.x.org/archives/xorg-announce/2015-April/002577.html
-sha256	2430a2e5302a4cb4a5530c1df8cb3721a149bbf8eb377a2898921a145197f96a	xkbevd-1.1.4.tar.bz2
+sha256  2430a2e5302a4cb4a5530c1df8cb3721a149bbf8eb377a2898921a145197f96a  xkbevd-1.1.4.tar.bz2
+# Locally computed
+sha256  38c6dbf8f88b1c920561ff3a4d1ffdb85c069c664f5f8b64a9adb477ef347b7c  COPYING

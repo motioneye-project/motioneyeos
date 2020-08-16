@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-CIRCUS_VERSION = 0.14.0
-CIRCUS_SITE = https://pypi.python.org/packages/68/41/02c6f5edea2df80b133a12753aee3e698e9130a5c878a9b0bffcf1e17e65
+CIRCUS_VERSION = 0.15.0
+CIRCUS_SITE = https://files.pythonhosted.org/packages/12/11/b72ee03c3d1fd09c39466954def2eae176d22a9fa5d9e6e8e6b90ee88f56
 CIRCUS_SETUP_TYPE = setuptools
 CIRCUS_LICENSE = Apache-2.0
 CIRCUS_LICENSE_FILES = LICENSE

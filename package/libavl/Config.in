@@ -1,0 +1,13 @@
+config BR2_PACKAGE_LIBAVL
+	bool "libavl"
+	depends on !BR2_STATIC_LIBS
+	help
+	  AVLTree is a small implementation of AVL trees for the C
+	  programming language.
+
+	  https://packages.debian.org/buster/libavl1
+
+	  This is not the GNU AVL library by Ben Pfaff.
+
+comment "libavl needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

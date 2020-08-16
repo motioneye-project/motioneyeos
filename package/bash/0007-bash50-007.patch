@@ -1,0 +1,66 @@
+From https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-007
+
+Signed-off-by: Pascal de Bruijn <p.debruijn@unilogic.nl>
+
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	5.0
+Patch-ID:	bash50-007
+
+Bug-Reported-by:	Grisha Levit <grishalevit@gmail.com>
+Bug-Reference-ID:	<CAMu=BroHapG1AS3xB5SQaCX2XKu=-E2Ob9uW6LNuHvd=YohrDw@mail.gmail.com>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2019-02/msg00067.html
+
+Bug-Description:
+
+Running `exec' when job control was disabled, even temporarily, but after it
+had been initialized, could leave the terminal in the wrong process group for
+the executed process.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-5.0-patched/jobs.c	2018-12-06 11:44:34.000000000 -0500
+--- b/jobs.c	2019-04-12 15:15:10.000000000 -0400
+***************
+*** 4838,4850 ****
+  {
+    if (job_control)
+!     {
+!       terminate_stopped_jobs ();
+  
+!       if (original_pgrp >= 0)
+! 	give_terminal_to (original_pgrp, 1);
+!     }
+  
+!   if (original_pgrp >= 0)
+!     setpgid (0, original_pgrp);
+  }
+  
+--- 4838,4848 ----
+  {
+    if (job_control)
+!     terminate_stopped_jobs ();
+  
+!   if (original_pgrp >= 0 && terminal_pgrp != original_pgrp)
+!     give_terminal_to (original_pgrp, 1);
+  
+!   if (original_pgrp >= 0 && setpgid (0, original_pgrp) == 0)
+!     shell_pgrp = original_pgrp;
+  }
+  
+*** ../bash-5.0/patchlevel.h	2016-06-22 14:51:03.000000000 -0400
+--- b/patchlevel.h	2016-10-01 11:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 6
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 7
+  
+  #endif /* _PATCHLEVEL_H_ */

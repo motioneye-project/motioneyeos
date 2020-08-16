@@ -1,2 +1,3 @@
 # Locally calculated
-sha256 b23b5f4e71139faa3bcb39e6bbcc76967fbaf308c4ee9d4f5bfbeceaa76cc5d3  flann-1.9.1.tar.gz
+sha256  b23b5f4e71139faa3bcb39e6bbcc76967fbaf308c4ee9d4f5bfbeceaa76cc5d3  flann-1.9.1.tar.gz
+sha256  3993f339cc56506c62aa1eb2fb76f240ee93b738d857832899c1e207b1dc069a  COPYING

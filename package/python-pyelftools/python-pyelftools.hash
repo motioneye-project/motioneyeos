@@ -1,4 +1,5 @@
-# From https://pypi.python.org/packages/ba/78/d4a186a2e38731286c99dc3e3ca8123b6f55cf2e28608e8daf2d84b65494/pyelftools-0.24.tar.gz#md5=c960d5fe0a9308d96ba38b4beec8ac8e
-md5 c960d5fe0a9308d96ba38b4beec8ac8e pyelftools-0.24.tar.gz
-# Locally calculated
-sha256 e9dd97d685a5b96b88a988dabadb88e5a539b64cd7d7927fac9a7368dc4c459c pyelftools-0.24.tar.gz
+# md5, sha256 from https://pypi.org/pypi/pyelftools/json
+md5	c5629b9a5d19c82107a946cce52eeec2  pyelftools-0.25.tar.gz
+sha256	89c6da6f56280c37a5ff33468591ba9a124e17d71fe42de971818cbff46c1b24  pyelftools-0.25.tar.gz
+# Locally computed sha256 checksums
+sha256	ae18bf4cb82f92af7547259177bc28bc48e4fc732518bcedfe690226288d3445  LICENSE

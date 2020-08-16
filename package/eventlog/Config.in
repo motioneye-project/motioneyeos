@@ -1,8 +1,0 @@
-config BR2_PACKAGE_EVENTLOG
-	bool "eventlog"
-	help
-	  eventlog is a library for creating structured events from
-	  applications, and is the workhorse behind syslog-ng's own
-	  messages.
-
-	  https://my.balabit.com/downloads/eventlog/

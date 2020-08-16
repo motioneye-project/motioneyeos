@@ -12,4 +12,4 @@ config BR2_PACKAGE_BIOSDEVNAME
 	  system or hardware changes that might otherwise alter the
 	  typical ethX naming.
 
-	  http://linux.dell.com/biosdevname/
+	  https://github.com/dell/biosdevname/

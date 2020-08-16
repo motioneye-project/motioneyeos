@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PYTHON_AIOZIPKIN
+	bool "python-aiozipkin"
+	depends on BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYTHON_AIOHTTP # runtime
+	help
+	  Distributed tracing instrumentation for asyncio application
+	  with zipkin.
+
+	  https://github.com/aio-libs/aiozipkin
