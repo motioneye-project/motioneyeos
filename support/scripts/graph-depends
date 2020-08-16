@@ -20,10 +20,10 @@
 #    configuration.
 #
 # Copyright (C) 2010-2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+# Copyright (C) 2019 Yann E. MORIN <yann.morin.1998@free.fr>
 
 import logging
 import sys
-import subprocess
 import argparse
 from fnmatch import fnmatch
 
@@ -34,63 +34,6 @@ MODE_FULL = 1   # draw full dependency graph for all selected packages
 MODE_PKG = 2    # draw dependency graph for a given package
 
 allpkgs = []
-
-
-# Execute the "make show-targets" command to get the list of the main
-# Buildroot PACKAGES and return it formatted as a Python list. This
-# list is used as the starting point for full dependency graphs
-def get_targets():
-    logging.info("Getting targets")
-    cmd = ["make", "-s", "--no-print-directory", "show-targets"]
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, universal_newlines=True)
-    output = p.communicate()[0].strip()
-    if p.returncode != 0:
-        return None
-    if output == '':
-        return []
-    return output.split(' ')
-
-
-# Recursive function that builds the tree of dependencies for a given
-# list of packages. The dependencies are built in a list called
-# 'dependencies', which contains tuples of the form (pkg1 ->
-# pkg2_on_which_pkg1_depends, pkg3 -> pkg4_on_which_pkg3_depends) and
-# the function finally returns this list.
-def get_all_depends(pkgs, get_depends_func):
-    dependencies = []
-
-    # Filter the packages for which we already have the dependencies
-    filtered_pkgs = []
-    for pkg in pkgs:
-        if pkg in allpkgs:
-            continue
-        filtered_pkgs.append(pkg)
-        allpkgs.append(pkg)
-
-    if len(filtered_pkgs) == 0:
-        return []
-
-    depends = get_depends_func(filtered_pkgs)
-
-    deps = set()
-    for pkg in filtered_pkgs:
-        pkg_deps = depends[pkg]
-
-        # This package has no dependency.
-        if pkg_deps == []:
-            continue
-
-        # Add dependencies to the list of dependencies
-        for dep in pkg_deps:
-            dependencies.append((pkg, dep))
-            deps.add(dep)
-
-    if len(deps) != 0:
-        newdeps = get_all_depends(deps, get_depends_func)
-        if newdeps is not None:
-            dependencies += newdeps
-
-    return dependencies
 
 
 # The Graphviz "dot" utility doesn't like dashes in node names. So for
@@ -172,13 +115,19 @@ def remove_transitive_deps(pkg, deps):
 
 # List of dependencies that all/many packages have, and that we want
 # to trim when generating the dependency graph.
-MANDATORY_DEPS = ['toolchain', 'skeleton']
+MANDATORY_DEPS = ['toolchain', 'skeleton', 'host-skeleton', 'host-tar', 'host-gzip', 'host-ccache']
 
 
 # This function removes the dependency on some 'mandatory' package, like the
 # 'toolchain' package, or the 'skeleton' package
 def remove_mandatory_deps(pkg, deps):
     return [p for p in deps[pkg] if p not in MANDATORY_DEPS]
+
+
+# This function returns all dependencies of pkg that are part of the
+# mandatory dependencies:
+def get_mandatory_deps(pkg, deps):
+    return [p for p in deps[pkg] if p in MANDATORY_DEPS]
 
 
 # This function will check that there is no loop in the dependency chain
@@ -210,10 +159,17 @@ def check_circular_deps(deps):
 
 # This functions trims down the dependency list of all packages.
 # It applies in sequence all the dependency-elimination methods.
-def remove_extra_deps(deps, rootpkg, transitive):
-    for pkg in list(deps.keys()):
-        if not pkg == rootpkg:
-            deps[pkg] = remove_mandatory_deps(pkg, deps)
+def remove_extra_deps(deps, rootpkg, transitive, arrow_dir):
+    # For the direct dependencies, find and eliminate mandatory
+    # deps, and add them to the root package. Don't do it for a
+    # reverse graph, because mandatory deps are only direct deps.
+    if arrow_dir == "forward":
+        for pkg in list(deps.keys()):
+            if not pkg == rootpkg:
+                for d in get_mandatory_deps(pkg, deps):
+                    if d not in deps[rootpkg]:
+                        deps[rootpkg].append(d)
+                deps[pkg] = remove_mandatory_deps(pkg, deps)
     for pkg in list(deps.keys()):
         if not transitive or pkg == rootpkg:
             deps[pkg] = remove_transitive_deps(pkg, deps)
@@ -221,7 +177,7 @@ def remove_extra_deps(deps, rootpkg, transitive):
 
 
 # Print the attributes of a node: label and fill-color
-def print_attrs(outfile, pkg, version, depth, colors):
+def print_attrs(outfile, pkg, pkg_type, pkg_version, depth, colors):
     name = pkg_node_name(pkg)
     if pkg == 'all':
         label = 'ALL'
@@ -230,13 +186,11 @@ def print_attrs(outfile, pkg, version, depth, colors):
     if depth == 0:
         color = colors[0]
     else:
-        if pkg.startswith('host') \
-                or pkg.startswith('toolchain') \
-                or pkg.startswith('rootfs'):
+        if pkg_type == "host":
             color = colors[2]
         else:
             color = colors[1]
-    if version == "virtual":
+    if pkg_version == "virtual":
         outfile.write("%s [label = <<I>%s</I>>]\n" % (name, label))
     else:
         outfile.write("%s [label = \"%s\"]\n" % (name, label))
@@ -247,13 +201,13 @@ done_deps = []
 
 
 # Print the dependency graph of a package
-def print_pkg_deps(outfile, dict_deps, dict_version, stop_list, exclude_list,
+def print_pkg_deps(outfile, dict_deps, dict_types, dict_versions, stop_list, exclude_list,
                    arrow_dir, draw_graph, depth, max_depth, pkg, colors):
     if pkg in done_deps:
         return
     done_deps.append(pkg)
     if draw_graph:
-        print_attrs(outfile, pkg, dict_version.get(pkg), depth, colors)
+        print_attrs(outfile, pkg, dict_types[pkg], dict_versions[pkg], depth, colors)
     elif depth != 0:
         outfile.write("%s " % pkg)
     if pkg not in dict_deps:
@@ -261,17 +215,15 @@ def print_pkg_deps(outfile, dict_deps, dict_version, stop_list, exclude_list,
     for p in stop_list:
         if fnmatch(pkg, p):
             return
-    if dict_version.get(pkg) == "virtual" and "virtual" in stop_list:
+    if dict_versions[pkg] == "virtual" and "virtual" in stop_list:
         return
-    if pkg.startswith("host-") and "host" in stop_list:
+    if dict_types[pkg] == "host" and "host" in stop_list:
         return
     if max_depth == 0 or depth < max_depth:
         for d in dict_deps[pkg]:
-            if dict_version.get(d) == "virtual" \
-               and "virtual" in exclude_list:
+            if dict_versions[d] == "virtual" and "virtual" in exclude_list:
                 continue
-            if d.startswith("host-") \
-               and "host" in exclude_list:
+            if dict_types[d] == "host" and "host" in exclude_list:
                 continue
             add = True
             for p in exclude_list:
@@ -281,7 +233,7 @@ def print_pkg_deps(outfile, dict_deps, dict_version, stop_list, exclude_list,
             if add:
                 if draw_graph:
                     outfile.write("%s -> %s [dir=%s]\n" % (pkg_node_name(pkg), pkg_node_name(d), arrow_dir))
-                print_pkg_deps(outfile, dict_deps, dict_version, stop_list, exclude_list,
+                print_pkg_deps(outfile, dict_deps, dict_types, dict_versions, stop_list, exclude_list,
                                arrow_dir, draw_graph, depth + 1, max_depth, d, colors)
 
 
@@ -302,6 +254,8 @@ def parse_args():
                         "'host' to stop on host packages.")
     parser.add_argument("--exclude", "-x", metavar="PACKAGE", dest="exclude_list", action="append",
                         help="Like --stop-on, but do not add PACKAGE to the graph.")
+    parser.add_argument("--exclude-mandatory", "-X", action="store_true",
+                        help="Like if -x was passed for all mandatory dependencies.")
     parser.add_argument("--colors", "-c", metavar="COLOR_LIST", dest="colors",
                         default="lightblue,grey,gainsboro",
                         help="Comma-separated list of the three colors to use" +
@@ -341,6 +295,7 @@ def main():
 
     if args.package is None:
         mode = MODE_FULL
+        rootpkg = 'all'
     else:
         mode = MODE_PKG
         rootpkg = args.package
@@ -355,14 +310,15 @@ def main():
     else:
         exclude_list = args.exclude_list
 
+    if args.exclude_mandatory:
+        exclude_list += MANDATORY_DEPS
+
     if args.direct:
-        get_depends_func = brpkgutil.get_depends
         arrow_dir = "forward"
     else:
         if mode == MODE_FULL:
             logging.error("--reverse needs a package")
             sys.exit(1)
-        get_depends_func = brpkgutil.get_rdepends
         arrow_dir = "back"
 
     draw_graph = not args.flat_list
@@ -375,46 +331,20 @@ def main():
         logging.error("Error: incorrect color list '%s'" % args.colors)
         sys.exit(1)
 
-    # In full mode, start with the result of get_targets() to get the main
-    # targets and then use get_all_depends() for all targets
-    if mode == MODE_FULL:
-        targets = get_targets()
-        dependencies = []
-        allpkgs.append('all')
-        filtered_targets = []
-        for tg in targets:
-            dependencies.append(('all', tg))
-            filtered_targets.append(tg)
-        deps = get_all_depends(filtered_targets, get_depends_func)
-        if deps is not None:
-            dependencies += deps
-        rootpkg = 'all'
-
-    # In pkg mode, start directly with get_all_depends() on the requested
-    # package
-    elif mode == MODE_PKG:
-        dependencies = get_all_depends([rootpkg], get_depends_func)
-
-    # Make the dependencies a dictionnary { 'pkg':[dep1, dep2, ...] }
-    dict_deps = {}
-    for dep in dependencies:
-        if dep[0] not in dict_deps:
-            dict_deps[dep[0]] = []
-        dict_deps[dep[0]].append(dep[1])
+    deps, rdeps, dict_types, dict_versions = brpkgutil.get_dependency_tree()
+    dict_deps = deps if args.direct else rdeps
 
     check_circular_deps(dict_deps)
     if check_only:
         sys.exit(0)
 
-    dict_deps = remove_extra_deps(dict_deps, rootpkg, args.transitive)
-    dict_version = brpkgutil.get_version([pkg for pkg in allpkgs
-                                          if pkg != "all" and not pkg.startswith("root")])
+    dict_deps = remove_extra_deps(dict_deps, rootpkg, args.transitive, arrow_dir)
 
     # Start printing the graph data
     if draw_graph:
         outfile.write("digraph G {\n")
 
-    print_pkg_deps(outfile, dict_deps, dict_version, stop_list, exclude_list,
+    print_pkg_deps(outfile, dict_deps, dict_types, dict_versions, stop_list, exclude_list,
                    arrow_dir, draw_graph, 0, args.depth, rootpkg, colors)
 
     if draw_graph:

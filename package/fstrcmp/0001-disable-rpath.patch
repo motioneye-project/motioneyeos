@@ -1,0 +1,25 @@
+Remove rpath from linking command
+
+Fixes build error:
+
+lib/.libs/libfstrcmp.so: undefined reference to `__ctype_b_loc@GLIBC_2.3'
+lib/.libs/libfstrcmp.so: undefined reference to `mbstowcs@GLIBC_2.2.5'
+lib/.libs/libfstrcmp.so: undefined reference to `printf@GLIBC_2.2.5'
+lib/.libs/libfstrcmp.so: undefined reference to `readlink@GLIBC_2.2.5'
+lib/.libs/libfstrcmp.so: undefined reference to `malloc@GLIBC_2.2.5'
+lib/.libs/libfstrcmp.so: undefined reference to `memcmp@GLIBC_2.2.5'
+lib/.libs/libfstrcmp.so: undefined reference to `wcslen@GLIBC_2.2.5'
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+--- fstrcmp-0.7.D001/Makefile.in.orig	2014-03-05 01:13:45.000000000 +0100
++++ fstrcmp-0.7.D001/Makefile.in	2019-04-07 13:55:07.817689231 +0200
+@@ -507,7 +507,7 @@
+ lib/libfstrcmp.la: $(lib_obj)
+ 	rm -f $@
+ 	$(LIBTOOL) --mode=link --tag=CC $(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) \
+-		-o $@ $(lib_obj) $(LIBS) -rpath $(libdir) -version-info 6:0:6
++		-o $@ $(lib_obj) $(LIBS) -version-info 6:0:6
+ 
+ #
+ # The install of the *.la file automatically causes "$(LIBTOOL) --mode=install"

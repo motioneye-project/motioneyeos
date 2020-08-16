@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/gitdb2/json
+md5	1a7ea3362e405f8a5634f7ee53636094  gitdb2-2.0.6.tar.gz
+sha256	1b6df1433567a51a4a9c1a5a0de977aa351a405cc56d7d35f3388bad1f630350  gitdb2-2.0.6.tar.gz
+# Locally computed sha256 checksums
+sha256	efd29f596a08e8857e68e7694a50bcda72839792da7c3f041bcbff5f18009239  LICENSE

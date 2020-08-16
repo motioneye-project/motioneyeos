@@ -1,0 +1,5 @@
+# From http://snapshot.debian.org/archive/debian/20160621T164030Z/pool/main/liba/libavl/libavl_0.3.5-4.dsc
+sha256	4497b9e22cdd61ae2fa893b9d5fd6213dc306726d7c4be08c29e173622dca8a0	libavl_0.3.5.orig.tar.gz
+
+# Locally computed
+sha256	767a9accfe3b110153b567983b98889469dfaae02899a632aeadbb81ad611293	COPYING

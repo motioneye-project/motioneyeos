@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-DSTAT_VERSION = 0.7.3
-DSTAT_SITE = $(call github,dagwieers,dstat,$(DSTAT_VERSION))
+DSTAT_VERSION = 0.7.4
+DSTAT_SITE = $(call github,dagwieers,dstat,v$(DSTAT_VERSION))
 DSTAT_LICENSE = GPL-2.0
 DSTAT_LICENSE_FILES = COPYING
 

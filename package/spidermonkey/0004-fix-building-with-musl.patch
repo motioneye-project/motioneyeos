@@ -1,0 +1,133 @@
+From 0c9e8f586ba52a9aef5ed298e8315b2598b8fb72 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Sat, 25 May 2019 16:54:45 -0700
+Subject: [PATCH] fix building with musl
+
+The MIPS specific header <sgidefs.h> is not provided by musl
+linux kernel headers provide <asm/sgidefs.h> which has same definitions
+
+Upstream-Status: Pending
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+---
+---
+ js/src/jsmath.cpp                                        | 2 +-
+ memory/build/Mutex.h                                     | 4 ++--
+ mozglue/misc/TimeStamp_darwin.cpp                        | 1 -
+ mozglue/misc/TimeStamp_posix.cpp                         | 1 -
+ nsprpub/pr/src/misc/prsystem.c                           | 1 -
+ third_party/python/psutil/psutil/_psutil_bsd.c           | 1 -
+ third_party/python/psutil/psutil/_psutil_osx.c           | 1 -
+ third_party/python/psutil/psutil/arch/osx/process_info.c | 1 -
+ 8 files changed, 3 insertions(+), 9 deletions(-)
+
+diff --git a/js/src/jsmath.cpp b/js/src/jsmath.cpp
+index a28968be..8facaa81 100644
+--- a/js/src/jsmath.cpp
++++ b/js/src/jsmath.cpp
+@@ -71,7 +71,7 @@
+ #elif defined(__s390__)
+ #define GETRANDOM_NR 349
+ #elif defined(__mips__)
+-#include <sgidefs.h>
++#include <asm/sgidefs.h>
+ #if _MIPS_SIM == _MIPS_SIM_ABI32
+ #define GETRANDOM_NR 4353
+ #elif _MIPS_SIM == _MIPS_SIM_ABI64
+diff --git a/memory/build/Mutex.h b/memory/build/Mutex.h
+index cb8b1e7d..7b9eb1de 100644
+--- a/memory/build/Mutex.h
++++ b/memory/build/Mutex.h
+@@ -42,7 +42,7 @@ struct Mutex {
+     if (pthread_mutexattr_init(&attr) != 0) {
+       return false;
+     }
+-    pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_ADAPTIVE_NP);
++    pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_STALLED);
+     if (pthread_mutex_init(&mMutex, &attr) != 0) {
+       pthread_mutexattr_destroy(&attr);
+       return false;
+@@ -102,7 +102,7 @@ typedef Mutex StaticMutex;
+ 
+ #if defined(XP_DARWIN)
+ #define STATIC_MUTEX_INIT OS_SPINLOCK_INIT
+-#elif defined(XP_LINUX) && !defined(ANDROID)
++#elif defined(XP_LINUX) && !defined(ANDROID) && defined(__GLIBC__)
+ #define STATIC_MUTEX_INIT PTHREAD_ADAPTIVE_MUTEX_INITIALIZER_NP
+ #else
+ #define STATIC_MUTEX_INIT PTHREAD_MUTEX_INITIALIZER
+diff --git a/mozglue/misc/TimeStamp_darwin.cpp b/mozglue/misc/TimeStamp_darwin.cpp
+index d2abe9a5..d065649c 100644
+--- a/mozglue/misc/TimeStamp_darwin.cpp
++++ b/mozglue/misc/TimeStamp_darwin.cpp
+@@ -19,7 +19,6 @@
+ 
+ #include <mach/mach_time.h>
+ #include <sys/time.h>
+-#include <sys/sysctl.h>
+ #include <time.h>
+ #include <unistd.h>
+ 
+diff --git a/mozglue/misc/TimeStamp_posix.cpp b/mozglue/misc/TimeStamp_posix.cpp
+index 86c7609a..a37bd93a 100644
+--- a/mozglue/misc/TimeStamp_posix.cpp
++++ b/mozglue/misc/TimeStamp_posix.cpp
+@@ -21,7 +21,6 @@
+ #if defined(__DragonFly__) || defined(__FreeBSD__) || defined(__NetBSD__) || \
+     defined(__OpenBSD__)
+ #include <sys/param.h>
+-#include <sys/sysctl.h>
+ #endif
+ 
+ #if defined(__DragonFly__) || defined(__FreeBSD__)
+diff --git a/nsprpub/pr/src/misc/prsystem.c b/nsprpub/pr/src/misc/prsystem.c
+index eba85fb0..54b57bb9 100644
+--- a/nsprpub/pr/src/misc/prsystem.c
++++ b/nsprpub/pr/src/misc/prsystem.c
+@@ -27,7 +27,6 @@
+     || defined(OPENBSD) || defined(DRAGONFLY) || defined(DARWIN)
+ #define _PR_HAVE_SYSCTL
+ #include <sys/param.h>
+-#include <sys/sysctl.h>
+ #endif
+ 
+ #if defined(DARWIN)
+diff --git a/third_party/python/psutil/psutil/_psutil_bsd.c b/third_party/python/psutil/psutil/_psutil_bsd.c
+index 9a2ed04b..9e0d34cb 100644
+--- a/third_party/python/psutil/psutil/_psutil_bsd.c
++++ b/third_party/python/psutil/psutil/_psutil_bsd.c
+@@ -29,7 +29,6 @@
+ #include <paths.h>
+ #include <sys/types.h>
+ #include <sys/param.h>
+-#include <sys/sysctl.h>
+ #include <sys/user.h>
+ #include <sys/proc.h>
+ #include <sys/file.h>
+diff --git a/third_party/python/psutil/psutil/_psutil_osx.c b/third_party/python/psutil/psutil/_psutil_osx.c
+index 55dd64ca..ec356339 100644
+--- a/third_party/python/psutil/psutil/_psutil_osx.c
++++ b/third_party/python/psutil/psutil/_psutil_osx.c
+@@ -13,7 +13,6 @@
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <utmpx.h>
+-#include <sys/sysctl.h>
+ #include <sys/vmmeter.h>
+ #include <libproc.h>
+ #include <sys/proc_info.h>
+diff --git a/third_party/python/psutil/psutil/arch/osx/process_info.c b/third_party/python/psutil/psutil/arch/osx/process_info.c
+index 40c79a2c..8de0dcbd 100644
+--- a/third_party/python/psutil/psutil/arch/osx/process_info.c
++++ b/third_party/python/psutil/psutil/arch/osx/process_info.c
+@@ -16,7 +16,6 @@
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <signal.h>
+-#include <sys/sysctl.h>
+ #include <libproc.h>
+ 
+ #include "process_info.h"
+-- 
+2.23.0

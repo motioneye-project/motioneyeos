@@ -23,20 +23,4 @@ config BR2_PACKAGE_PROVIDES_LIBGLES
 config BR2_PACKAGE_PROVIDES_LIBOPENMAX
 	default "nvidia-tegra23-binaries"
 
-config BR2_PACKAGE_NVIDIA_TEGRA23_BINARIES_GSTREAMER_PLUGINS
-	bool "GStreamer 0.10.x plugins"
-	depends on BR2_PACKAGE_GSTREAMER # Run-time only
-	select BR2_PACKAGE_XLIB_LIBXV
-	help
-	  GStreamer 0.10.x plugins
-
-config BR2_PACKAGE_NVIDIA_TEGRA23_BINARIES_NV_SAMPLE_APPS
-	bool "NVIDIA multimedia sample apps"
-	depends on BR2_PACKAGE_NVIDIA_TEGRA23_BINARIES_GSTREAMER_PLUGINS
-	help
-	  nvgstplayer and nvgstcapture multimedia test applications.
-
-comment "GStreamer 0.10.x plugins need GStreamer 0.10"
-	depends on !BR2_PACKAGE_GSTREAMER
-
 endif

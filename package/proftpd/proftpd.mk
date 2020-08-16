@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-PROFTPD_VERSION = 1.3.6
-PROFTPD_SITE = ftp://ftp.proftpd.org/distrib/source
+PROFTPD_VERSION = 1.3.6c
+PROFTPD_SITE = $(call github,proftpd,proftpd,v$(PROFTPD_VERSION))
 PROFTPD_LICENSE = GPL-2.0+
 PROFTPD_LICENSE_FILES = COPYING
 
@@ -24,6 +24,13 @@ PROFTPD_CONF_OPTS = \
 	--enable-shadow \
 	--with-gnu-ld \
 	--without-openssl-cmdline
+
+ifeq ($(BR2_PACKAGE_PROFTPD_MOD_CAP),y)
+PROFTPD_CONF_OPTS += --enable-cap
+PROFTPD_DEPENDENCIES += libcap
+else
+PROFTPD_CONF_OPTS += --disable-cap
+endif
 
 ifeq ($(BR2_PACKAGE_PROFTPD_MOD_REWRITE),y)
 PROFTPD_MODULES += mod_rewrite
@@ -51,6 +58,10 @@ endif
 ifeq ($(BR2_PACKAGE_PROFTPD_MOD_SQL_SQLITE),y)
 PROFTPD_MODULES += mod_sql_sqlite
 PROFTPD_DEPENDENCIES += sqlite
+endif
+
+ifeq ($(BR2_PACKAGE_PROFTPD_MOD_SFTP_SQL),y)
+PROFTPD_MODULES += mod_sftp_sql
 endif
 
 ifeq ($(BR2_PACKAGE_PROFTPD_MOD_QUOTATAB),y)
@@ -85,12 +96,6 @@ define PROFTPD_USE_LLU
 endef
 PROFTPD_PRE_CONFIGURE_HOOKS += PROFTPD_USE_LLU
 
-define PROFTPD_MAKENAMES
-	$(MAKE1) CC="$(HOSTCC)" CFLAGS="" LDFLAGS="" -C $(@D)/lib/libcap _makenames
-endef
-
-PROFTPD_POST_CONFIGURE_HOOKS = PROFTPD_MAKENAMES
-
 PROFTPD_MAKE = $(MAKE1)
 
 # install Perl based scripts in target
@@ -123,9 +128,6 @@ endef
 define PROFTPD_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 package/proftpd/proftpd.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/proftpd.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/proftpd.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/proftpd.service
 endef
 
 ifneq ($(BR2_PACKAGE_PROFTPD_BUFFER_SIZE),0)

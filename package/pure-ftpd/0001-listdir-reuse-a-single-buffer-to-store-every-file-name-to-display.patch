@@ -1,0 +1,70 @@
+From aea56f4bcb9948d456f3fae4d044fd3fa2e19706 Mon Sep 17 00:00:00 2001
+From: Frank Denis <github@pureftpd.org>
+Date: Mon, 30 Dec 2019 17:40:04 +0100
+Subject: [PATCH] listdir(): reuse a single buffer to store every file name to
+ display
+
+Allocating a new buffer for each entry is useless.
+
+And as these buffers are allocated on the stack, on systems with a
+small stack size, with many entries, the limit can easily be reached,
+causing a stack exhaustion and aborting the user session.
+
+Reported by Antonio Morales from the GitHub Security Lab team, thanks!
+[Retrieved from:
+https://github.com/jedisct1/pure-ftpd/commit/aea56f4bcb9948d456f3fae4d044fd3fa2e19706]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ src/ls.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
+
+diff --git a/src/ls.c b/src/ls.c
+index cf804c7..f8a588f 100644
+--- a/src/ls.c
++++ b/src/ls.c
+@@ -661,6 +661,8 @@ static void listdir(unsigned int depth, int f, void * const tls_fd,
+     char *names;
+     PureFileInfo *s;
+     PureFileInfo *r;
++    char *alloca_subdir;
++    size_t sizeof_subdir;
+     int d;
+ 
+     if (depth >= max_ls_depth || matches >= max_ls_files) {
+@@ -690,14 +692,12 @@ static void listdir(unsigned int depth, int f, void * const tls_fd,
+     }
+     outputfiles(f, tls_fd);
+     r = dir;
++    sizeof_subdir = PATH_MAX + 1U;
++    if ((alloca_subdir = ALLOCA(sizeof_subdir)) == NULL) {
++        goto toomany;
++    }
+     while (opt_R && r != s) {
+         if (r->name_offset != (size_t) -1 && !chdir(FI_NAME(r))) {
+-            char *alloca_subdir;
+-            const size_t sizeof_subdir = PATH_MAX + 1U;
+-
+-            if ((alloca_subdir = ALLOCA(sizeof_subdir)) == NULL) {
+-                goto toomany;
+-            }
+             if (SNCHECK(snprintf(alloca_subdir, sizeof_subdir, "%s/%s",
+                                  name, FI_NAME(r)), sizeof_subdir)) {
+                 goto nolist;
+@@ -706,8 +706,8 @@ static void listdir(unsigned int depth, int f, void * const tls_fd,
+             wrstr(f, tls_fd, alloca_subdir);
+             wrstr(f, tls_fd, ":\r\n\r\n");
+             listdir(depth + 1U, f, tls_fd, alloca_subdir);
++
+             nolist:
+-            ALLOCA_FREE(alloca_subdir);
+             if (matches >= max_ls_files) {
+                 goto toomany;
+             }
+@@ -720,6 +720,7 @@ static void listdir(unsigned int depth, int f, void * const tls_fd,
+         r++;
+     }
+     toomany:
++    ALLOCA_FREE(alloca_subdir);
+     free(names);
+     free(dir);
+     names = NULL;

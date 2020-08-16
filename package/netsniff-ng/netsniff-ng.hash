@@ -1,2 +1,5 @@
 # Locally calculated after checking signature
-sha256 4966821510079bb13722b9fbb4b7567e44b1b4c3e1b1e7ad95f417a89be5d795 netsniff-ng-0.6.5.tar.xz
+sha256  96d85f2d216abcf6ba0ff610809b62c3a6430e21cbdd7bfef48cd9bde074848f  netsniff-ng-0.6.7.tar.xz
+# Locally computed
+sha256  b353349ba51e0d4b59cf2f188f0c285296e154ce8c58954bc5e0dc0282a4db2d  README
+sha256  8f6d85366f3763557d6ddd0637988b9ba11edef354e3c9302fff4262a235c387  COPYING

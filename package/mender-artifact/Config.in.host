@@ -1,0 +1,18 @@
+config BR2_PACKAGE_HOST_MENDER_ARTIFACT
+	bool "host mender-artifact"
+	depends on BR2_PACKAGE_HOST_GO_HOST_ARCH_SUPPORTS
+	help
+	  The mender-artifact tool is a CLI implementation of the
+	  Mender artifacts library.
+
+	  A Mender artifact can be recognized by its .mender suffix.
+	  Mender artifacts can contain binaries, metadata, checksums,
+	  signatures and scripts that are used during a deployment.
+	  The artifact format acts as a wrapper, and uses the tar
+	  format to bundle several files into one.
+
+	  In its simplest form, an artifact contains just a rootfs
+	  image, along with its checksum, id and device type
+	  compatibility.
+
+	  https://github.com/mendersoftware/mender-artifact

@@ -1,0 +1,6 @@
+# md5, sha256 from https://pypi.org/pypi/greenlet/json
+md5	10fa304f673fc18b28fa6d8c6658cb80  greenlet-0.4.15.tar.gz
+sha256	9416443e219356e3c31f1f918a91badf2e37acf297e2fa13d24d1cc2380f8fbc  greenlet-0.4.15.tar.gz
+# Locally computed sha256 checksums
+sha256	bbde55d5456a1e912633ed3f66d1dbd9504e3e3dce4f4c2015043cdcbc56e697  LICENSE
+sha256  e5ff3c23c110e494cd7d736c10fd96d462457bafeca310840db6527298c7d46b  LICENSE.PSF

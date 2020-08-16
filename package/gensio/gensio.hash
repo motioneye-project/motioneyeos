@@ -1,0 +1,7 @@
+# From https://sourceforge.net/projects/ser2net/files/ser2net/
+md5  76466adbd15aae9d0af7207a921935b5  gensio-2.0.3.tar.gz
+sha1  da14b4903e8422745dd6193b41385ad2e1bd1fff  gensio-2.0.3.tar.gz
+# Locally computed:
+sha256  f19cfcef8187a01b0168931c2b80d065c8bba6004e06fab62745ca512374d706  gensio-2.0.3.tar.gz
+sha256  501f3108e6c03e5a0a5585ebaaa369171aead5319cd0a7a4dc1f66211c1f09f1  COPYING
+sha256  dcac7d447dd81ab96d28dce00a07a6486e623f7ded94e2a2a8e83312405cdf89  COPYING.LIB

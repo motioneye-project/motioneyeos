@@ -1,11 +1,6 @@
-comment "qt5virtualkeyboard needs an OpenGL-capable backend"
-	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE
-	depends on !BR2_PACKAGE_QT5_GL_AVAILABLE
-
 config BR2_PACKAGE_QT5VIRTUALKEYBOARD
 	bool "qt5virtualkeyboard"
 	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE # qt5declarative
-	depends on BR2_PACKAGE_QT5_GL_AVAILABLE || BR2_PACKAGE_QT5_VERSION_LATEST # qt5declarative/quick
 	select BR2_PACKAGE_QT5DECLARATIVE
 	select BR2_PACKAGE_QT5DECLARATIVE_QUICK
 	select BR2_PACKAGE_QT5SVG
@@ -13,6 +8,8 @@ config BR2_PACKAGE_QT5VIRTUALKEYBOARD
 	  Qt Virtual Keyboard is a virtual keyboard framework that
 	  consists of a C++ backend supporting custom input methods as
 	  well as a UI frontend implemented in QML.
+
+	  https://doc.qt.io/qt-5/qtvirtualkeyboard-index.html
 
 if BR2_PACKAGE_QT5VIRTUALKEYBOARD
 

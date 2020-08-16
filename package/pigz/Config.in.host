@@ -1,0 +1,9 @@
+config BR2_PACKAGE_HOST_PIGZ
+	bool "host pigz"
+	help
+	  pigz, which stands for parallel implementation of gzip, is a
+	  fully functional replacement for gzip that exploits multiple
+	  processors and multiple cores to the hilt when compressing
+	  data.
+
+	  http://www.zlib.net/pigz/

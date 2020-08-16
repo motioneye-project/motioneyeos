@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-BANDWIDTHD_VERSION = v2.0.1-auto-r11
-BANDWIDTHD_SITE = $(call github,nroach44,bandwidthd,$(BANDWIDTHD_VERSION))
+BANDWIDTHD_VERSION = 2.0.1-auto-r11
+BANDWIDTHD_SITE = $(call github,nroach44,bandwidthd,v$(BANDWIDTHD_VERSION))
 
 # Specified as "any version of the GPL that is current as of your
 # download" by upstream.
@@ -34,11 +34,6 @@ endif
 define BANDWIDTHD_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 package/bandwidthd/bandwidthd.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/bandwidthd.service
-
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-
-	ln -sf /usr/lib/systemd/system/bandwidthd.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/bandwidthd.service
 endef
 
 $(eval $(autotools-package))

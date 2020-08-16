@@ -6,3 +6,5 @@ config BR2_PACKAGE_TFTPD
 	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	help
 	  HPA's Trivial File Transfer Protocol (tftp) server.
+
+	  https://git.kernel.org/pub/scm/network/tftp/tftp-hpa.git

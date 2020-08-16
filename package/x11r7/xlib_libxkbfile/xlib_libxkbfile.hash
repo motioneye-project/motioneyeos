@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2015-April/002592.html
-sha256	51817e0530961975d9513b773960b4edd275f7d5c72293d5a151ed4f42aeb16a	libxkbfile-1.0.9.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2019-March/002977.html
+md5 dd7e1e946def674e78c0efbc5c7d5b3b  libxkbfile-1.1.0.tar.bz2
+sha1 487f314b6dbc17e93d0fe1e3741392156a9ca895  libxkbfile-1.1.0.tar.bz2
+sha256 758dbdaa20add2db4902df0b1b7c936564b7376c02a0acd1f2a331bd334b38c7  libxkbfile-1.1.0.tar.bz2
+sha512 1c6a57564e916ccdc3df3c49b9f3589f701df0cec55112c12ddc35ac3ed556608c28fe98e5ba0ac1962e9a65ed1e90eb7e6169b564951bf55a7cf3499b745826  libxkbfile-1.1.0.tar.bz2
+# Locally computed
+sha256 e1b3fdad8037ab3f986ef9caaa7c8da47d8d55875e680c7d6011f6c07363ea7c  COPYING

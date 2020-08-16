@@ -28,6 +28,8 @@ NB: http://www.gnu.org/software/autoconf-archive/
 
 [Upstream commit: https://github.com/dajhorn/SoftEtherVPN/commit/c5e5d7e93c6f3302adf5821c29c4efdb7630e418]
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[Fabrice: update for 4.30-9700-beta]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
 ---
  Makefile.am                    |  21 ++
  autotools/ax_check_openssl.m4  | 124 ++++++++++
@@ -1502,12 +1504,12 @@ index 00000000..4a3fc2ba
 -echo '---------------------------------------------------------------------'
 -echo 'SoftEther VPN for Unix'
 -echo
--echo 'Copyright (c) SoftEther VPN Project at University of Tsukuba, Japan.'
--echo 'Copyright (c) Daiyuu Nobori. All Rights Reserved.'
+-echo 'Copyright (c) Daiyuu Nobori.'
+-echo 'Copyright (c) SoftEther VPN Project, University of Tsukuba, Japan.'
+-echo 'Copyright (c) SoftEther Corporation.'
+-echo 'Copyright (c) all contributors on SoftEther VPN project in GitHub.'
 -echo
--echo 'This program is free software; you can redistribute it and/or'
--echo 'modify it under the terms of the GNU General Public License'
--echo 'version 2 as published by the Free Software Foundation.'
+-echo 'License: The Apache License, Version 2.0'
 -echo
 -echo 'Read and understand README.TXT, LICENSE.TXT and WARNING.TXT before use.'
 -echo '---------------------------------------------------------------------'

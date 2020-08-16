@@ -1,20 +1,38 @@
 #!/bin/sh
 #
-# Start mdev....
+# Run the mdev daemon
 #
 
-case "$1" in
-  start)
-	echo "Starting mdev..."
-	echo /sbin/mdev >/proc/sys/kernel/hotplug
-	/sbin/mdev -s
+DAEMON="mdev"
+PIDFILE="/var/run/$DAEMON.pid"
+
+
+start() {
+	echo -n "Starting $DAEMON... "
+	start-stop-daemon -S -b -m -p $PIDFILE -x /sbin/mdev -- -df
+	[ $? -eq 0 ] && echo "OK" || echo "ERROR"
+
 	# coldplug modules
-	find /sys/ -name modalias -print0 | xargs -0 sort -u | tr '\n' '\0' | \
-	    xargs -0 modprobe -abq
-	;;
-  stop)
-	;;
-  restart|reload)
+	find /sys/ -name modalias -print0 | \
+		xargs -0 sort -u | \
+		tr '\n' '\0' | \
+		xargs -0 modprobe -abq
+}
+
+stop() {
+	echo -n "Stopping $DAEMON... "
+	start-stop-daemon -K -p $PIDFILE
+	[ $? -eq 0 ] && echo "OK" || echo "ERROR"
+}
+
+restart() {
+	stop
+	start
+}
+
+case "$1" in
+  start|stop|restart)
+	"$1"
 	;;
   *)
 	echo "Usage: $0 {start|stop|restart}"

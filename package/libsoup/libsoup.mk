@@ -16,6 +16,13 @@ LIBSOUP_CONF_OPTS = --disable-glibtest --enable-vala=no --with-gssapi=no
 LIBSOUP_DEPENDENCIES = host-pkgconf host-libglib2 \
 	libglib2 libxml2 sqlite host-intltool
 
+ifeq ($(BR2_PACKAGE_GOBJECT_INTROSPECTION),y)
+LIBSOUP_CONF_OPTS += --with-introspection
+LIBSOUP_DEPENDENCIES += gobject-introspection
+else
+LIBSOUP_CONF_OPTS += --without-introspection
+endif
+
 ifeq ($(BR2_PACKAGE_LIBSOUP_GNOME),y)
 LIBSOUP_CONF_OPTS += --with-gnome
 else

@@ -1,0 +1,68 @@
+From https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-012
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	5.0
+Patch-ID:	bash50-012
+
+Bug-Reported-by:	lessbug@qq.com
+Bug-Reference-ID:	<tencent_6AA531D9A5CC4121D86BD5CDA2E0DA98C605@qq.com>
+Bug-Reference-URL:
+
+Bug-Description:
+
+When using previous-history to go back beyond the beginning of the history list,
+it's possible to move to an incorrect partial line.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-5.0-patched/lib/readline/misc.c	2017-07-07 17:30:12.000000000 -0400
+--- b/lib/readline/misc.c	2019-05-16 11:43:46.000000000 -0400
+***************
+*** 577,580 ****
+--- 590,594 ----
+  {
+    HIST_ENTRY *old_temp, *temp;
++   int had_saved_line;
+  
+    if (count < 0)
+***************
+*** 589,592 ****
+--- 603,607 ----
+  
+    /* If we don't have a line saved, then save this one. */
++   had_saved_line = _rl_saved_line_for_history != 0;
+    rl_maybe_save_line ();
+  
+***************
+*** 612,616 ****
+    if (temp == 0)
+      {
+!       rl_maybe_unsave_line ();
+        rl_ding ();
+      }
+--- 627,632 ----
+    if (temp == 0)
+      {
+!       if (had_saved_line == 0)
+!         _rl_free_saved_history_line ();
+        rl_ding ();
+      }
+*** ../bash-5.0/patchlevel.h	2016-06-22 14:51:03.000000000 -0400
+--- b/patchlevel.h	2016-10-01 11:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 11
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 12
+  
+  #endif /* _PATCHLEVEL_H_ */

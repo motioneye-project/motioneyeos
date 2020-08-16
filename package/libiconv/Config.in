@@ -5,3 +5,25 @@ config BR2_PACKAGE_LIBICONV
 	  unicode conversion library
 
 	  http://ftp.gnu.org/pub/gnu/libiconv
+
+if BR2_PACKAGE_LIBICONV
+
+config BR2_PACKAGE_LIBICONV_EXTRA_ENCODINGS
+	bool "extra encodings"
+	help
+	  Provide support for a few extra encodings:
+
+	  European languages
+	    CP{437,737,775,852,853,855,857,858,860,861,863,865,869,1125}
+	  Semitic languages
+	    CP864
+	  Japanese
+	    EUC-JISX0213, Shift_JISX0213, ISO-2022-JP-3
+	  Chinese
+	    BIG5-2003 (experimental)
+	  Turkmen
+	    TDS565
+	  Platform specifics
+	    ATARIST, RISCOS-LATIN1
+
+endif

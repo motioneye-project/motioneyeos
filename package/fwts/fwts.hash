@@ -1,2 +1,5 @@
 # Hash from: http://fwts.ubuntu.com/release/SHA256SUMS
-sha256 7fcdcf3acecfb92510fcb2faef3ab0db66f639bf3f068cf77a4e0aebba036f93 fwts-V18.09.00.tar.gz
+sha256 91075982d067deef86d2830d622c27ed5f5c0b04dfd712902343a67fee753bfd fwts-V19.09.00.tar.gz
+
+# Hash for license file
+sha256 9cfdcde669bcdbd2eb640dca6ed3f9b5ae381d100ac208f9dca6e12e61ad639c debian/copyright

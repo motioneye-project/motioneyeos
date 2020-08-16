@@ -1,0 +1,8 @@
+config BR2_PACKAGE_ERLANG_JOSE
+	bool "erlang-jose"
+	select BR2_PACKAGE_ERLANG_BASE64URL
+	help
+	  JSON Object Signing and Encryption (JOSE) for Erlang and
+	  Elixir.
+
+	  https://github.com/potatosalad/erlang-jose

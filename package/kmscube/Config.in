@@ -6,4 +6,4 @@ config BR2_PACKAGE_KMSCUBE
 	help
 	  kmscube is an application to test kms/drm drivers.
 
-	  https://cgit.freedesktop.org/mesa/kmscube/
+	  https://gitlab.freedesktop.org/mesa/kmscube

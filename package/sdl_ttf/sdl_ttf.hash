@@ -1,2 +1,3 @@
 # Locally calculated
-sha256	724cd895ecf4da319a3ef164892b72078bd92632a5d812111261cde248ebcdb7	SDL_ttf-2.0.11.tar.gz
+sha256  724cd895ecf4da319a3ef164892b72078bd92632a5d812111261cde248ebcdb7  SDL_ttf-2.0.11.tar.gz
+sha256  b609721d3d4ac67facaf86f068c8b311b6c5f6cef89b6d84268aa38b7867ab7b  COPYING

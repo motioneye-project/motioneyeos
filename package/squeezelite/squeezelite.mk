@@ -4,12 +4,18 @@
 #
 ################################################################################
 
-SQUEEZELITE_VERSION = v1.8
-SQUEEZELITE_SITE = $(call github,robadenshi,squeezelite,$(SQUEEZELITE_VERSION))
+SQUEEZELITE_VERSION = 71c012ad9ba102feb95823b7b9dc17e5305689c7
+SQUEEZELITE_SITE = $(call github,ralph-irving,squeezelite,$(SQUEEZELITE_VERSION))
 SQUEEZELITE_LICENSE = GPL-3.0
 SQUEEZELITE_LICENSE_FILES = LICENSE.txt
-SQUEEZELITE_DEPENDENCIES = alsa-lib flac libmad libvorbis faad2 mpg123
+SQUEEZELITE_DEPENDENCIES = alsa-lib flac libmad libvorbis mpg123
 SQUEEZELITE_MAKE_OPTS = -DLINKALL
+
+ifeq ($(BR2_PACKAGE_FAAD2),y)
+SQUEEZELITE_DEPENDENCIES += faad2
+else
+SQUEEZELITE_MAKE_OPTS += -DNO_FAAD
+endif
 
 ifeq ($(BR2_PACKAGE_SQUEEZELITE_FFMPEG),y)
 SQUEEZELITE_DEPENDENCIES += ffmpeg
@@ -18,6 +24,11 @@ endif
 
 ifeq ($(BR2_PACKAGE_SQUEEZELITE_DSD),y)
 SQUEEZELITE_MAKE_OPTS += -DDSD
+endif
+
+ifeq ($(BR2_PACKAGE_SQUEEZELITE_LIRC),y)
+SQUEEZELITE_DEPENDENCIES += lirc-tools
+SQUEEZELITE_MAKE_OPTS += -DIR
 endif
 
 ifeq ($(BR2_PACKAGE_SQUEEZELITE_RESAMPLE),y)

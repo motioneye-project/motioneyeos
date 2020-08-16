@@ -1,0 +1,96 @@
+From 471702ac4a57878a06e8167f063274cf413e548d Mon Sep 17 00:00:00 2001
+From: Max Filippov <jcmvbkbc@gmail.com>
+Date: Mon, 8 Apr 2019 13:47:18 -0700
+Subject: [PATCH] xtensa: gas: put .literal_position at section start
+
+Provide literal position at the beginning of each section for literal
+space reserved by relaxations when text-section-literals or
+auto-litpools options are used. Remove code that adds fill frag to the
+literal section for every .literal_position directive to avoid creation
+of empty literal sections.
+
+Fix auto-litpools tests that got literal pool address changes.
+
+gas/
+2019-04-11  Max Filippov  <jcmvbkbc@gmail.com>
+
+	* config/tc-xtensa.c (xtensa_is_init_fini): Add declaration.
+	(xtensa_mark_literal_pool_location): Don't add fill frag to literal
+	section that records literal pool location.
+	(md_begin): Call xtensa_mark_literal_pool_location when text
+	section literals or auto litpools are used.
+	(xtensa_elf_section_change_hook): Call
+	xtensa_mark_literal_pool_location when text section literals or
+	auto litpools are used, there's no literal pool location defined
+	for the current section and it's not .init or .fini.
+
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+---
+ gas/config/tc-xtensa.c                          | 22 +++++++++-------------
+ 1 file changed, 9 insertions(+), 13 deletions(-)
+
+diff --git a/gas/config/tc-xtensa.c b/gas/config/tc-xtensa.c
+index 0cc06361cf6f..6a80e76fed8c 100644
+--- a/gas/config/tc-xtensa.c
++++ b/gas/config/tc-xtensa.c
+@@ -497,6 +497,7 @@ static fixS *xg_append_jump (fragS *fragP, symbolS *sym, offsetT offset);
+ static void xtensa_maybe_create_literal_pool_frag (bfd_boolean, bfd_boolean);
+ static bfd_boolean auto_litpools = FALSE;
+ static int auto_litpool_limit = 0;
++static bfd_boolean xtensa_is_init_fini (segT seg);
+ 
+ /* Alignment Functions.  */
+ 
+@@ -4797,7 +4798,6 @@ xtensa_mark_literal_pool_location (void)
+ {
+   /* Any labels pointing to the current location need
+      to be adjusted to after the literal pool.  */
+-  emit_state s;
+   fragS *pool_location;
+ 
+   if (use_literal_section)
+@@ -4818,19 +4818,7 @@ xtensa_mark_literal_pool_location (void)
+ 		RELAX_LITERAL_POOL_END, NULL, 0, NULL);
+   xtensa_set_frag_assembly_state (frag_now);
+ 
+-  /* Now put a frag into the literal pool that points to this location.  */
+   set_literal_pool_location (now_seg, pool_location);
+-  xtensa_switch_to_non_abs_literal_fragment (&s);
+-  frag_align (2, 0, 0);
+-  record_alignment (now_seg, 2);
+-
+-  /* Close whatever frag is there.  */
+-  frag_variant (rs_fill, 0, 0, 0, NULL, 0, NULL);
+-  xtensa_set_frag_assembly_state (frag_now);
+-  frag_now->tc_frag_data.literal_frag = pool_location;
+-  frag_variant (rs_fill, 0, 0, 0, NULL, 0, NULL);
+-  xtensa_restore_emit_state (&s);
+-  xtensa_set_frag_assembly_state (frag_now);
+ }
+ 
+ 
+@@ -5334,6 +5322,9 @@ md_begin (void)
+   /* Set up the assembly state.  */
+   if (!frag_now->tc_frag_data.is_assembly_state_set)
+     xtensa_set_frag_assembly_state (frag_now);
++
++  if (!use_literal_section)
++    xtensa_mark_literal_pool_location ();
+ }
+ 
+ 
+@@ -5933,6 +5924,11 @@ xtensa_elf_section_change_hook (void)
+   /* Set up the assembly state.  */
+   if (!frag_now->tc_frag_data.is_assembly_state_set)
+     xtensa_set_frag_assembly_state (frag_now);
++
++  if (!use_literal_section
++      && seg_info (now_seg)->tc_segment_info_data.literal_pool_loc == NULL
++      && !xtensa_is_init_fini (now_seg))
++    xtensa_mark_literal_pool_location ();
+ }
+ 
+ 
+-- 
+2.11.0
+

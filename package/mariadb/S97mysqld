@@ -5,7 +5,9 @@
 
 MYSQL_LIB="/var/lib/mysql"
 MYSQL_RUN="/run/mysql"
-MYSQL_PID="$MYSQL_RUN/mysqld.pid"
+MYSQL_PIDFILE="$MYSQL_RUN/mysqld.pid"
+MYSQL_LOG="/var/log/mysql"
+MYSQL_LOGFILE="$MYSQL_LOG/mysqld.log"
 MYSQL_BIN="/usr/bin"
 
 wait_for_ready() {
@@ -21,14 +23,17 @@ wait_for_ready() {
 }
 
 start() {
-	if [ `ls -1 $MYSQL_LIB | wc -l` = 0 ] ; then
+	# stderr is redirected to prevent a warning
+	# if mysql lib directory doesn't exist
+	if [ `ls -1 $MYSQL_LIB 2> /dev/null | wc -l` = 0 ] ; then
 		printf "Creating mysql system tables ... "
-		$MYSQL_BIN/mysql_install_db --basedir=/usr --user=mysql \
+		$MYSQL_BIN/mysql_install_db --basedir=/usr \
 			--datadir=$MYSQL_LIB > /dev/null 2>&1
 		if [ $? != 0 ]; then
 			echo "FAIL"
 			exit 1
 		fi
+		chown -R mysql:mysql $MYSQL_LIB
 		echo "OK"
 	fi
 
@@ -36,19 +41,22 @@ start() {
 	# so create a subdirectory for mysql.
 	install -d -o mysql -g root -m 0755 $MYSQL_RUN
 
+	# Also create logging directory as user mysql.
+	install -d -o mysql -g root -m 0755 $MYSQL_LOG
+
 	# We don't use start-stop-daemon because mysqld has its own
 	# wrapper script.
 	printf "Starting mysql ... "
-	$MYSQL_BIN/mysqld_safe --pid-file=$MYSQL_PID --user=mysql \
-		> /dev/null 2>&1 &
+	$MYSQL_BIN/mysqld_safe --pid-file=$MYSQL_PIDFILE --user=mysql \
+		--log-error=$MYSQL_LOGFILE > /dev/null 2>&1 &
 	wait_for_ready
 	[ $? = 0 ] && echo "OK" || echo "FAIL"
 }
 
 stop() {
 	printf "Stopping mysql ... "
-	if [ -f $MYSQL_PID ]; then
-		kill `cat $MYSQL_PID` > /dev/null 2>&1
+	if [ -f $MYSQL_PIDFILE ]; then
+		kill `cat $MYSQL_PIDFILE` > /dev/null 2>&1
 		[ $? = 0 ] && echo "OK" || echo "FAIL"
 	else
 		echo "FAIL"

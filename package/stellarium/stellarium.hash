@@ -1,0 +1,6 @@
+# From https://github.com/Stellarium/stellarium/releases
+md5  19422ba4800fbede0a71a723cf3df10f  stellarium-0.20.1.tar.gz
+sha1  20d89ff8e26bb8cef71796d138176be2602e6327   stellarium-0.20.0.tar.gz
+sha256  154e7bd9d4b914a99c40eab86d05b78e43040d657844ee665ebb2aa55a9e920c  stellarium-0.20.0.tar.gz
+# Locally computed
+sha256  3aeeb5bb98bf7041ab82cffe15efa28ac58ee2bdf162b71301f5c192be631259  COPYING

@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_NESTED_DICT
+	bool "python-nested-dict"
+	help
+	  Python dictionary with automatic and arbitrary levels of
+	  nestedness.
+
+	  http://pypi.python.org/pypi/nested_dict

@@ -1,11 +1,7 @@
 config BR2_PACKAGE_ASSIMP
 	bool "assimp"
-	# All gcc versions affected by
-	# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=71124, that
-	# cause an infinite loop in gcc when building this package.
-	depends on !BR2_microblaze
 	depends on BR2_INSTALL_LIBSTDCPP
-	select BR2_PACKAGE_ZLIB
+	depends on BR2_USE_WCHAR
 	help
 	  Open Asset Import Library (assimp) is a portable Open Source
 	  library to import various well-known 3D model formats in a
@@ -15,6 +11,5 @@ config BR2_PACKAGE_ASSIMP
 
 	  http://www.assimp.org
 
-comment "assimp needs a toolchain w/ C++"
-	depends on !BR2_microblaze
-	depends on !BR2_INSTALL_LIBSTDCPP
+comment "assimp needs a toolchain w/ C++, wchar"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR

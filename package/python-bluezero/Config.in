@@ -1,0 +1,11 @@
+config BR2_PACKAGE_PYTHON_BLUEZERO
+	bool "python-bluezero"
+	help
+	  Python library for Bluetooth Low Energy (BLE) on Linux.
+
+	  For central.py, peripheral.py and broadcaster.py you need
+	  to enable the dbus-python and the bluez5-utils package.
+	  For observer.py, you need to enable the python-aioblescan
+	  package.
+
+	  https://github.com/ukBaz/python-bluezero

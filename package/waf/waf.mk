@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-WAF_VERSION = 1.9.5
+WAF_VERSION = 2.0.20
 WAF_SOURCE = waf-$(WAF_VERSION)
 WAF_SITE = https://waf.io
 

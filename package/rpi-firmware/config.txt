@@ -4,6 +4,11 @@
 # See http://buildroot.org/manual.html#rootfs-custom
 # and http://elinux.org/RPiconfig for a description of config.txt syntax
 
+# We always use the same names, the real used variant is selected by
+# BR2_PACKAGE_RPI_FIRMWARE_{DEFAULT,X,CD} choice
+start_file=start.elf
+fixup_file=fixup.dat
+
 kernel=zImage
 
 # To use an external initramfs file

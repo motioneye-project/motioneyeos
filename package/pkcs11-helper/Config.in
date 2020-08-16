@@ -1,0 +1,23 @@
+config BR2_PACKAGE_PKCS11_HELPER
+	bool "pkcs11-helper"
+	depends on !BR2_STATIC_LIBS # dlfcn.h
+	help
+	  pkcs11-helper is a library that simplifies the interaction
+	  with PKCS#11 providers for end-user applications.
+
+	  pkcs11-helper allows using multiple PKCS#11 providers at the
+	  same time, enumerating available token certificates, or
+	  selecting a certificate directly by serialized id, handling
+	  card removal and card insert events, handling card re-insert
+	  to a different slot, supporting session expiration and much
+	  more all using a simple API.
+
+	  pkcs11-helper is not designed to manage card content, since
+	  object attributes are usually vendor specific, and 99% of
+	  application need to access existing objects in order to
+	  perform signature and decryption.
+
+	  https://github.com/OpenSC/pkcs11-helper
+
+comment "pkcs11-helper needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-IOZONE_VERSION = 3_483
+IOZONE_VERSION = 3_489
 IOZONE_SOURCE = iozone$(IOZONE_VERSION).tar
 IOZONE_SITE = http://www.iozone.org/src/current
 IOZONE_LICENSE = IOzone license (NO DERIVED WORKS ALLOWED)
@@ -25,6 +25,8 @@ endef
 define IOZONE_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 755 $(@D)/src/current/iozone \
 		$(TARGET_DIR)/usr/bin/iozone
+	$(INSTALL) -D -m 755 $(@D)/src/current/fileop \
+		$(TARGET_DIR)/usr/bin/fileop
 endef
 
 $(eval $(generic-package))

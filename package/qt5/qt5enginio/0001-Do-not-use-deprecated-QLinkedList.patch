@@ -1,0 +1,39 @@
+From ca81a62bb3f8ce67d564631bb8d4e11619acf430 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Fri, 3 Apr 2020 19:59:47 +0200
+Subject: [PATCH] Do not use deprecated QLinkedList
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Do not use (internally already by QT_NO_LINKED_LIST) deprecated QLinkeList,
+use QList instead.
+
+Fixes:
+
+  ../../include/Enginio/1.6.3/Enginio/private/../../../../../src/enginio_client/enginioclient_p.h:293:5: error: ‘QLinkedList’ does not name a type
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ src/enginio_client/enginioclient_p.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/enginio_client/enginioclient_p.h b/src/enginio_client/enginioclient_p.h
+index 6b5dc53..f3fe68e 100644
+--- a/src/enginio_client/enginioclient_p.h
++++ b/src/enginio_client/enginioclient_p.h
+@@ -290,7 +290,11 @@ public:
+     QByteArray _backendId;
+     EnginioIdentity *_identity;
+ 
++#if defined(QT_NO_LINKED_LIST)
++    QList<QMetaObject::Connection> _connections;
++#else
+     QLinkedList<QMetaObject::Connection> _connections;
++#endif
+     QVarLengthArray<QMetaObject::Connection, 4> _identityConnections;
+     QUrl _serviceUrl;
+     QSharedPointer<QNetworkAccessManager> _networkManager;
+-- 
+2.26.0
+

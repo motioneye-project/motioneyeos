@@ -2,7 +2,6 @@ config BR2_PACKAGE_PYTHON_PATHLIB2
 	bool "python-pathlib2"
 	depends on BR2_PACKAGE_PYTHON
 	select BR2_PACKAGE_PYTHON_SIX # runtime
-	select BR2_PACKAGE_PYTHON_SCANDIR # runtime
 	help
 	  Object-oriented filesystem paths.
 

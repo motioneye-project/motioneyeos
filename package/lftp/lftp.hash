@@ -1,7 +1,7 @@
-# From http://lftp.yar.ru/ftp/lftp-4.8.4.md5sum
-md5 b75c43797e817529d486be640232d708  lftp-4.8.4.tar.xz
+# From http://lftp.yar.ru/ftp/lftp-4.9.1.md5sum
+md5 3da57b1960b1416e89a532c54a67a936  lftp-4.9.1.tar.xz
 # Locally calculated after checking gpg signature
-sha256 4ebc271e9e5cea84a683375a0f7e91086e5dac90c5d51bb3f169f75386107a62  lftp-4.8.4.tar.xz
+sha256 5969fcaefd102955dd882f3bcd8962198bc537224749ed92f206f415207a024b  lftp-4.9.1.tar.xz
 
 # Hash for license file:
 sha256 8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903  COPYING

@@ -1,3 +1,3 @@
 # Locally calculated
-sha256 c3cab055964d554e4fd85067fe3e9eb45c9915cebcf537e97fafaa245376bce1  protobuf-cpp-3.6.0.tar.gz
-sha256 6e5e117324afd944dcf67f36cf329843bc1a92229a8cd9bb573d7a83130fea7d  LICENSE
+sha256  ba4bbc3e6b58d2ccfe406e616576ef48710a2aae205f463618025fc691549cfe  protobuf-cpp-3.11.4.tar.gz
+sha256  6e5e117324afd944dcf67f36cf329843bc1a92229a8cd9bb573d7a83130fea7d  LICENSE

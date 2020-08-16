@@ -1,0 +1,24 @@
+config BR2_PACKAGE_GETTEXT_GNU
+	bool
+	depends on BR2_USE_WCHAR
+	select BR2_PACKAGE_HAS_GETTEXT
+	help
+	  The GNU `gettext' utilities are a set of tools that provide a
+	  framework to help other GNU packages produce multi-lingual
+	  messages.
+
+	  Only the libintl library will be installed in the
+	  target. The full gettext suite, including tools, will be
+	  installed in the staging directory.
+
+	  http://www.gnu.org/software/gettext/
+
+if BR2_PACKAGE_GETTEXT_GNU
+
+config BR2_PACKAGE_PROVIDES_GETTEXT
+	default "gettext-gnu"
+
+endif
+
+config BR2_PACKAGE_PROVIDES_HOST_GETTEXT
+	default "host-gettext-gnu" if BR2_SYSTEM_ENABLE_NLS

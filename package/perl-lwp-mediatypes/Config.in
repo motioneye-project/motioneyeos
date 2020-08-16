@@ -3,4 +3,4 @@ config BR2_PACKAGE_PERL_LWP_MEDIATYPES
 	help
 	  guess media type for a file or a URL.
 
-	  https://metacpan.org/release/LWP-MediaTypes
+	  https://github.com/libwww-perl/lwp-mediatypes

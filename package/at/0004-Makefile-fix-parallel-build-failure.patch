@@ -1,0 +1,41 @@
+From 3ace0b57e2aacb784c01a3c7694c6c92461937ff Mon Sep 17 00:00:00 2001
+From: Giulio Benetti <giulio.benetti@benettiengineering.com>
+Date: Thu, 20 Feb 2020 22:00:11 +0100
+Subject: [PATCH] Makefile: fix parallel build failure
+
+At the moment parallel build fails due to 2 causes:
+1) parsetime.l tries to include incomplete y.tab.h, since y.tab.h is the
+result of yacc -d parsetime.y
+2) when compiling y.tab.c, y.tab.c itself is not complete, since it is
+the result of yacc -d parsetime.y
+
+So fix it by:
+1) making parsetime.l to wait for y.tab.h to be created by yacc
+2) waiting for y.tab.c and y.tab.h to be created before compile them
+
+Signed-off-by: Giulio Benetti <giulio.benetti@benettiengineering.com>
+---
+ Makefile.in | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/Makefile.in b/Makefile.in
+index 4c11913..57c3a0c 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -83,6 +83,8 @@ y.tab.c y.tab.h: parsetime.y
+ lex.yy.c: parsetime.l
+ 	$(LEX) -i parsetime.l
+ 
++parsetime.l: y.tab.h
++
+ atd.service: atd.service.in
+ 	cat $< | sed -e 's![@]sbindir[@]!$(sbindir)!g' | sed -e 's![@]atjobdir[@]!$(atjobdir)!g' > $@
+ 
+@@ -173,3 +175,4 @@ perm.o: perm.c config.h privs.h at.h
+ posixtm.o: posixtm.c posixtm.h
+ daemon.o: daemon.c config.h daemon.h privs.h
+ getloadavg.o: getloadavg.c config.h getloadavg.h
++y.tab.o: y.tab.c y.tab.h
+-- 
+2.20.1
+

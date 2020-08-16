@@ -1,0 +1,103 @@
+From 903a79a1efff18fc7cc50db09a3fe5d768adc9a8 Mon 19 Mar 2018 09:58:06 +0100
+From: André Bargull <andrebargull@gmail.com>
+Date: Wed, 8 Nov 2017 03:23:41 -0800
+Subject: always use the equivalent year to determine the time zone offset and
+ name
+
+Fixes: https://bugzilla.mozilla.org/show_bug.cgi?id=1415202
+
+Upsream-status: Applied
+See: https://hg.mozilla.org/mozilla-central/rev/ce9f1466ec78
+
+Reviewed-by: Jeff Walden
+Signed-off-by: André Bargull <andrebargull@gmail.com>
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+---
+ js/src/jsdate.cpp  | 11 +++++++----
+ js/src/vm/Time.cpp | 14 ++++----------
+ js/src/vm/Time.h   |  2 +-
+ 3 files changed, 12 insertions(+), 15 deletions(-)
+
+diff --git a/js/src/jsdate.cpp b/js/src/jsdate.cpp
+index 07af3d18c865..ff8fd6c3763c 100644
+--- a/js/src/jsdate.cpp
++++ b/js/src/jsdate.cpp
+@@ -2353,12 +2353,15 @@ static PRMJTime ToPRMJTime(double localTime, double utcTime) {
+ static size_t FormatTime(char* buf, int buflen, const char* fmt, double utcTime,
+                          double localTime) {
+   PRMJTime prtm = ToPRMJTime(localTime, utcTime);
+-  int eqivalentYear = IsRepresentableAsTime32(utcTime)
+-                          ? prtm.tm_year
+-                          : EquivalentYearForDST(prtm.tm_year);
++  // If an equivalent year was used to compute the date/time components, use
++  // the same equivalent year to determine the time zone name and offset in
++  // PRMJ_FormatTime(...).
++  int timeZoneYear = IsRepresentableAsTime32(utcTime)
++                     ? prtm.tm_year
++                     : EquivalentYearForDST(prtm.tm_year);
+   int offsetInSeconds = (int)floor((localTime - utcTime) / msPerSecond);
+
+-  return PRMJ_FormatTime(buf, buflen, fmt, &prtm, eqivalentYear,
++  return PRMJ_FormatTime(buf, buflen, fmt, &prtm, timeZoneYear,
+                          offsetInSeconds);
+ }
+
+diff --git a/js/src/vm/Time.cpp b/js/src/vm/Time.cpp
+index f59977f0d0e9..5ee4794b3e83 100644
+--- a/js/src/vm/Time.cpp
++++ b/js/src/vm/Time.cpp
+@@ -247,7 +247,7 @@ static void PRMJ_InvalidParameterHandler(const wchar_t* expression,
+
+ /* Format a time value into a buffer. Same semantics as strftime() */
+ size_t PRMJ_FormatTime(char* buf, int buflen, const char* fmt,
+-                       const PRMJTime* prtm, int equivalentYear,
++                       const PRMJTime* prtm, int timeZoneYear,
+                        int offsetInSeconds) {
+   size_t result = 0;
+ #if defined(XP_UNIX) || defined(XP_WIN)
+@@ -280,7 +280,8 @@ size_t PRMJ_FormatTime(char* buf, int buflen, const char* fmt,
+      * Fill out |td| to the time represented by |prtm|, leaving the
+      * timezone fields zeroed out. localtime_r will then fill in the
+      * timezone fields for that local time according to the system's
+-     * timezone parameters.
++     * timezone parameters. Use |timeZoneYear| for the year to ensure the
++     * time zone name matches the time zone offset used by the caller.
+      */
+     struct tm td;
+     memset(&td, 0, sizeof(td));
+@@ -290,19 +291,12 @@ size_t PRMJ_FormatTime(char* buf, int buflen, const char* fmt,
+     td.tm_mday = prtm->tm_mday;
+     td.tm_mon = prtm->tm_mon;
+     td.tm_wday = prtm->tm_wday;
+-    td.tm_year = prtm->tm_year - 1900;
++    td.tm_year = timeZoneYear - 1900;
+     td.tm_yday = prtm->tm_yday;
+     td.tm_isdst = prtm->tm_isdst;
+
+     time_t t = mktime(&td);
+
+-    // If |prtm| cannot be represented in |time_t| the year is probably
+-    // out of range, try again with the DST equivalent year.
+-    if (t == static_cast<time_t>(-1)) {
+-      td.tm_year = equivalentYear - 1900;
+-      t = mktime(&td);
+-    }
+-
+     // If either mktime or localtime_r failed, fill in the fallback time
+     // zone offset |offsetInSeconds| and set the time zone identifier to
+     // the empty string.
+diff --git a/js/src/vm/Time.h b/js/src/vm/Time.h
+index 3a51d869c922..37b7faeec028 100644
+--- a/js/src/vm/Time.h
++++ b/js/src/vm/Time.h
+@@ -49,7 +49,7 @@ inline void PRMJ_NowShutdown() {}
+
+ /* Format a time value into a buffer. Same semantics as strftime() */
+ extern size_t PRMJ_FormatTime(char* buf, int buflen, const char* fmt,
+-                              const PRMJTime* tm, int equivalentYear,
++                              const PRMJTime* tm, int timeZoneYear,
+                               int offsetInSeconds);
+
+ /**
+--
+2.23.0

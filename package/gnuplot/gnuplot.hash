@@ -1,5 +1,6 @@
-# From https://sourceforge.net/projects/gnuplot/files/gnuplot/5.0.6/
-md5 8ec46520a86a61163a701b00404faf1a  gnuplot-5.0.6.tar.gz
-sha1 f7b8948166b22e5bd658d5cf7579716f4821dba0  gnuplot-5.0.6.tar.gz
+# From https://sourceforge.net/projects/gnuplot/files/gnuplot/5.2.8/
+md5 2df8767c7399bee57a96296d46b4d5fb  gnuplot-5.2.8.tar.gz
+sha1 dc018b1e0a31b770d4635958badff13498babc4d  gnuplot-5.2.8.tar.gz
 # Locally computed
-sha256 5bbe4713e555c2e103b7d4ffd45fca69551fff09cf5c3f9cb17428aaacc9b460  gnuplot-5.0.6.tar.gz
+sha256  60a6764ccf404a1668c140f11cc1f699290ab70daa1151bb58fed6139a28ac37  gnuplot-5.2.8.tar.gz
+sha256  895928ec0735cca1c8cec42656c7e314a065d0242813bb8693c0c1bf61fd4e4d  Copyright

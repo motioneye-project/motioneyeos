@@ -4,13 +4,13 @@
 #
 ################################################################################
 
-LIBV4L_VERSION = 1.16.6
+LIBV4L_VERSION = 1.18.0
 LIBV4L_SOURCE = v4l-utils-$(LIBV4L_VERSION).tar.bz2
 LIBV4L_SITE = https://linuxtv.org/downloads/v4l-utils
 LIBV4L_INSTALL_STAGING = YES
 LIBV4L_DEPENDENCIES = host-pkgconf
 LIBV4L_CONF_OPTS = --disable-doxygen-doc --disable-qvidcap
-# We're patching contrib/test/Makefile.am
+# needed to get utils/qv4l link flags right
 LIBV4L_AUTORECONF = YES
 # add host-gettext for AM_ICONV macro
 LIBV4L_DEPENDENCIES += host-gettext
@@ -70,9 +70,7 @@ LIBV4L_CONF_ENV += \
 	ac_cv_prog_RCC=$(HOST_DIR)/bin/rcc \
 	ac_cv_prog_UIC=$(HOST_DIR)/bin/uic
 # qt5 needs c++11 (since qt-5.7)
-ifeq ($(BR2_PACKAGE_QT5_VERSION_LATEST),y)
 LIBV4L_CONF_ENV += CXXFLAGS="$(TARGET_CXXFLAGS) -std=c++11"
-endif
 else
 LIBV4L_CONF_OPTS += --disable-qv4l2
 endif

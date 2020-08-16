@@ -8,4 +8,4 @@ config BR2_PACKAGE_COPAS
 	  servers. But it also features timers and client support for
 	  http(s), ftp and smtp requests.
 
-	  http://www.keplerproject.org/copas/
+	  http://keplerproject.github.io/copas/

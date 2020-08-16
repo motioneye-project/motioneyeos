@@ -1,6 +1,6 @@
 config BR2_PACKAGE_PYTHON_INIPARSE
 	bool "python-iniparse"
-	depends on BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_PYTHON_SIX # runtime
 	help
 	  iniparse is an INI parser for Python which is API compatible
 	  with the standard library's ConfigParser, preserves

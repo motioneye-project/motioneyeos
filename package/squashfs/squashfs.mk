@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-SQUASHFS_VERSION = e38956b92f738518c29734399629e7cdb33072d3
-SQUASHFS_SITE = https://git.kernel.org/pub/scm/fs/squashfs/squashfs-tools.git
-SQUASHFS_SITE_METHOD = git
+SQUASHFS_VERSION = 4.4
+SQUASHFS_SITE = $(call github,plougher,squashfs-tools,$(SQUASHFS_VERSION))
 SQUASHFS_LICENSE = GPL-2.0+
 SQUASHFS_LICENSE_FILES = COPYING
 SQUASHFS_MAKE_ARGS = XATTR_SUPPORT=1

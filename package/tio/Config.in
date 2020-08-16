@@ -1,0 +1,8 @@
+config BR2_PACKAGE_TIO
+	bool "tio"
+	help
+	  "tio" is a simple TTY terminal application which features a
+	  straightforward commandline interface to easily connect to
+	  TTY devices for basic input/output.
+
+	  https://tio.github.io/

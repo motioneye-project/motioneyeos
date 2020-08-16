@@ -1,0 +1,38 @@
+From 85c33f89df8607ace0707e1360ff0f79f3e8f5f3 Mon Sep 17 00:00:00 2001
+From: Andy Walsh <andy.walsh44+github@gmail.com>
+Date: Wed, 6 Nov 2019 19:28:30 +0100
+Subject: [PATCH] Fix unistd.h include
+
+Fixes build error
+
+source4/heimdal/lib/asn1/asn1_err.c:47:23: error: 'link' redeclared as different kind of symbol
+ static struct et_list link = { 0, 0 };
+
+Downloaded from
+https://github.com/Andy2244/openwrt-extra/blob/samba-4.10/samba4/patches/006-samba-4-10-musl_rm_unistd_incl.patch
+
+Upstream bug report: https://bugzilla.samba.org/show_bug.cgi?id=13856
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ lib/replace/replace.h | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/lib/replace/replace.h b/lib/replace/replace.h
+index 1658465866e..e6768c4ae51 100644
+--- a/lib/replace/replace.h
++++ b/lib/replace/replace.h
+@@ -168,10 +168,6 @@
+ #include <bsd/unistd.h>
+ #endif
+ 
+-#ifdef HAVE_UNISTD_H
+-#include <unistd.h>
+-#endif
+-
+ #ifdef HAVE_STRING_H
+ #include <string.h>
+ #endif
+-- 
+2.20.1
+

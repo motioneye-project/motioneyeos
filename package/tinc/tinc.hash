@@ -1,4 +1,4 @@
 # Locally calculated after checking pgp signature
-sha256  18c83b147cc3e2133a7ac2543eeb014d52070de01c7474287d3ccecc9b16895e tinc-1.0.35.tar.gz
-sha256  3a112fd37b47d624e89b130d0e158bb8d14ec5bc9ecf5f18b448d2c07626e43d COPYING
+sha256  40f73bb3facc480effe0e771442a706ff0488edea7a5f2505d4ccb2aa8163108 tinc-1.0.36.tar.gz
+sha256  3b37ffbf3459f2aceeef169aa65ee8b111ac1f8ba24a2a1b90b079678a9c7faa COPYING
 sha256  9bf76a8aa304d807df20bf3d221c21d259764be63e39b58f299b80ba3ac14b5b COPYING.README

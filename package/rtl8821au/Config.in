@@ -7,4 +7,4 @@ config BR2_PACKAGE_RTL8821AU
 	help
 	  rtl8821au wifi driver
 
-	  https://github.com/paralin/rtl8821au
+	  https://github.com/abperiasamy/rtl8812AU_8821AU_linux

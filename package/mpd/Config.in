@@ -5,11 +5,10 @@ menuconfig BR2_PACKAGE_MPD
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU # fork
 	depends on BR2_TOOLCHAIN_HAS_ATOMIC
-	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_9 # C++14
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_6 # C++14
 	depends on !BR2_TOOLCHAIN_HAS_GCC_BUG_64735 # exception_ptr
 	select BR2_PACKAGE_BOOST
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
-	select BR2_PACKAGE_MPD_TREMOR if !(BR2_PACKAGE_MPD_MAD || BR2_PACKAGE_MPD_MPG123 || BR2_PACKAGE_MPD_VORBIS || BR2_PACKAGE_MPD_WAVPACK || BR2_PACKAGE_MPD_FLAC || BR2_PACKAGE_MPD_MUSEPACK || BR2_PACKAGE_MPD_FFMPEG)
 	help
 	  MPD is a flexible, powerful, server-side application
 	  for playing music. Through plugins and libraries
@@ -34,6 +33,31 @@ config BR2_PACKAGE_MPD_SQLITE
 	help
 	  Enable sqlite database support.
 	  If you don't use sqlite it will use an ASCII database.
+
+comment "Commercial services"
+
+config BR2_PACKAGE_MPD_QOBUZ
+	bool "qobuz"
+	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS
+	select BR2_PACKAGE_MPD_CURL
+	select BR2_PACKAGE_LIBGCRYPT
+	select BR2_PACKAGE_YAJL
+	help
+	  Play songs from the commercial streaming service Qobuz.
+
+config BR2_PACKAGE_MPD_SOUNDCLOUD
+	bool "soundcloud"
+	select BR2_PACKAGE_MPD_CURL
+	select BR2_PACKAGE_YAJL
+	help
+	  Enable soundcloud.com playlist support.
+
+config BR2_PACKAGE_MPD_TIDAL
+	bool "tidal"
+	select BR2_PACKAGE_MPD_CURL
+	select BR2_PACKAGE_YAJL
+	help
+	  Play songs from the commercial streaming service TIDAL.
 
 comment "Converter plugins"
 
@@ -133,6 +157,7 @@ config BR2_PACKAGE_MPD_OPUS
 
 config BR2_PACKAGE_MPD_TREMOR
 	bool "tremor"
+	depends on !BR2_PACKAGE_MPD_VORBIS
 	select BR2_PACKAGE_LIBOGG
 	select BR2_PACKAGE_TREMOR
 	help
@@ -216,12 +241,6 @@ config BR2_PACKAGE_MPD_LIBSMBCLIENT
 	select BR2_PACKAGE_SAMBA4
 	help
 	  Enable Samba support.
-
-config BR2_PACKAGE_MPD_SOUNDCLOUD
-	bool "soundcloud"
-	select BR2_PACKAGE_YAJL
-	help
-	  Enable soundcloud.com playlist support.
 
 comment "Output plugins"
 
@@ -332,16 +351,17 @@ config BR2_PACKAGE_MPD_UPNP
 	bool "UPnP"
 	select BR2_PACKAGE_EXPAT
 	select BR2_PACKAGE_LIBUPNP18 if !BR2_PACKAGE_LIBUPNP
+	select BR2_PACKAGE_MPD_CURL
 	help
 	  Enable MPD UPnP client support.
 
 endif
 
-comment "mpd needs a toolchain w/ C++, threads, wchar, gcc >= 4.9"
+comment "mpd needs a toolchain w/ C++, threads, wchar, gcc >= 6"
 	depends on BR2_USE_MMU
 	depends on BR2_TOOLCHAIN_HAS_ATOMIC
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || \
-		!BR2_TOOLCHAIN_HAS_THREADS || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+		!BR2_TOOLCHAIN_HAS_THREADS || !BR2_TOOLCHAIN_GCC_AT_LEAST_6
 
 comment "mpd needs a toolchain not affected by GCC bug 64735"
 	depends on BR2_TOOLCHAIN_HAS_GCC_BUG_64735

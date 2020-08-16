@@ -1,0 +1,185 @@
+From bf4ee955cde7a27a8fd988a7985064f19d2a10fe Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Tue, 26 May 2020 20:16:44 +0200
+Subject: [PATCH] examples: fix parallel install
+
+Installing qt5declarative examples on fast/multicore machines sometimes
+fails with a variation of the following error messages:
+
+  - Cannot touch [...]/chapter5-listproperties/app.qml: No such file or directory
+  - Error copying [...]/chapter2-methods/app.qml: Destination file exists
+
+Fix it by using OTHER_FILES instead of a seperate qml files install target.
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ .../extending-qml/chapter1-basics/chapter1-basics.pro     | 8 +++-----
+ .../extending-qml/chapter2-methods/chapter2-methods.pro   | 8 +++-----
+ .../extending-qml/chapter3-bindings/chapter3-bindings.pro | 8 +++-----
+ .../chapter4-customPropertyTypes.pro                      | 8 +++-----
+ .../chapter5-listproperties/chapter5-listproperties.pro   | 8 +++-----
+ examples/qmltest/qmltest/qmltest.pro                      | 7 ++++---
+ examples/quick/imageprovider/imageprovider.pro            | 7 ++++---
+ .../quick/imageresponseprovider/imageresponseprovider.pro | 7 ++++---
+ .../quick/scenegraph/simplematerial/simplematerial.pro    | 6 +++---
+ 9 files changed, 30 insertions(+), 37 deletions(-)
+
+diff --git a/examples/qml/tutorials/extending-qml/chapter1-basics/chapter1-basics.pro b/examples/qml/tutorials/extending-qml/chapter1-basics/chapter1-basics.pro
+index 9911e024..127d4092 100644
+--- a/examples/qml/tutorials/extending-qml/chapter1-basics/chapter1-basics.pro
++++ b/examples/qml/tutorials/extending-qml/chapter1-basics/chapter1-basics.pro
+@@ -6,10 +6,8 @@ SOURCES += piechart.cpp \
+ 
+ RESOURCES += chapter1-basics.qrc
+ 
+-DESTPATH = $$[QT_INSTALL_EXAMPLES]/qml/tutorials/extending-qml/chapter1-basics
+-target.path = $$DESTPATH
++target.path = $$[QT_INSTALL_EXAMPLES]/qml/tutorials/extending-qml/chapter1-basics
+ 
+-qml.files = *.qml
+-qml.path = $$DESTPATH
++OTHER_FILES += *.qml
+ 
+-INSTALLS += target qml
++INSTALLS += target
+diff --git a/examples/qml/tutorials/extending-qml/chapter2-methods/chapter2-methods.pro b/examples/qml/tutorials/extending-qml/chapter2-methods/chapter2-methods.pro
+index 7fd850ce..cba5c39b 100644
+--- a/examples/qml/tutorials/extending-qml/chapter2-methods/chapter2-methods.pro
++++ b/examples/qml/tutorials/extending-qml/chapter2-methods/chapter2-methods.pro
+@@ -6,10 +6,8 @@ SOURCES += piechart.cpp \
+ 
+ RESOURCES += chapter2-methods.qrc
+ 
+-DESTPATH = $$[QT_INSTALL_EXAMPLES]/qml/tutorials/extending-qml/chapter2-methods
+-target.path = $$DESTPATH
++target.path = $$[QT_INSTALL_EXAMPLES]/qml/tutorials/extending-qml/chapter2-methods
+ 
+-qml.files = *.qml
+-qml.path = $$DESTPATH
++OTHER_FILES += *.qml
+ 
+-INSTALLS += target qml
++INSTALLS += target
+diff --git a/examples/qml/tutorials/extending-qml/chapter3-bindings/chapter3-bindings.pro b/examples/qml/tutorials/extending-qml/chapter3-bindings/chapter3-bindings.pro
+index 1ae83f71..7d959e3f 100644
+--- a/examples/qml/tutorials/extending-qml/chapter3-bindings/chapter3-bindings.pro
++++ b/examples/qml/tutorials/extending-qml/chapter3-bindings/chapter3-bindings.pro
+@@ -6,10 +6,8 @@ SOURCES += piechart.cpp \
+ 
+ RESOURCES += chapter3-bindings.qrc
+ 
+-DESTPATH = $$[QT_INSTALL_EXAMPLES]/qml/tutorials/extending-qml/chapter3-bindings
+-target.path = $$DESTPATH
++target.path = $$[QT_INSTALL_EXAMPLES]/qml/tutorials/extending-qml/chapter3-bindings
+ 
+-qml.files = *.qml
+-qml.path = $$DESTPATH
++OTHER_FILES += *.qml
+ 
+-INSTALLS += target qml
++INSTALLS += target
+diff --git a/examples/qml/tutorials/extending-qml/chapter4-customPropertyTypes/chapter4-customPropertyTypes.pro b/examples/qml/tutorials/extending-qml/chapter4-customPropertyTypes/chapter4-customPropertyTypes.pro
+index 12dfbd62..e17a59be 100644
+--- a/examples/qml/tutorials/extending-qml/chapter4-customPropertyTypes/chapter4-customPropertyTypes.pro
++++ b/examples/qml/tutorials/extending-qml/chapter4-customPropertyTypes/chapter4-customPropertyTypes.pro
+@@ -8,10 +8,8 @@ SOURCES += piechart.cpp \
+ 
+ RESOURCES += chapter4-customPropertyTypes.qrc
+ 
+-DESTPATH = $$[QT_INSTALL_EXAMPLES]/qml/tutorials/extending-qml/chapter4-customPropertyTypes
+-target.path = $$DESTPATH
++target.path = $$[QT_INSTALL_EXAMPLES]/qml/tutorials/extending-qml/chapter4-customPropertyTypes
+ 
+-qml.files = *.qml
+-qml.path = $$DESTPATH
++OTHER_FILES += *.qml
+ 
+-INSTALLS += target qml
++INSTALLS += target
+diff --git a/examples/qml/tutorials/extending-qml/chapter5-listproperties/chapter5-listproperties.pro b/examples/qml/tutorials/extending-qml/chapter5-listproperties/chapter5-listproperties.pro
+index 67d1cd35..dd0f11d8 100644
+--- a/examples/qml/tutorials/extending-qml/chapter5-listproperties/chapter5-listproperties.pro
++++ b/examples/qml/tutorials/extending-qml/chapter5-listproperties/chapter5-listproperties.pro
+@@ -8,10 +8,8 @@ SOURCES += piechart.cpp \
+ 
+ RESOURCES += chapter5-listproperties.qrc
+ 
+-DESTPATH = $$[QT_INSTALL_EXAMPLES]/qml/tutorials/extending-qml/chapter5-listproperties
+-target.path = $$DESTPATH
++target.path = $$[QT_INSTALL_EXAMPLES]/qml/tutorials/extending-qml/chapter5-listproperties
+ 
+-qml.files = *.qml
+-qml.path = $$DESTPATH
++OTHER_FILES += *.qml
+ 
+-INSTALLS += target qml
++INSTALLS += target
+diff --git a/examples/qmltest/qmltest/qmltest.pro b/examples/qmltest/qmltest/qmltest.pro
+index b5893c5a..bade497d 100644
+--- a/examples/qmltest/qmltest/qmltest.pro
++++ b/examples/qmltest/qmltest/qmltest.pro
+@@ -19,8 +19,9 @@ QT += qml qmltest
+ macx: CONFIG -= app_bundle
+ 
+ target.path = $$[QT_INSTALL_EXAMPLES]/qmltest/qmltest
+-qml.files = tst_basic.qml tst_item.qml
+-qml.path = $$[QT_INSTALL_EXAMPLES]/qmltest/qmltest
+-INSTALLS += target qml
++
++OTHER_FILES += tst_basic.qml tst_item.qml
++
++INSTALLS += target
+ 
+ }
+diff --git a/examples/quick/imageprovider/imageprovider.pro b/examples/quick/imageprovider/imageprovider.pro
+index e54469b0..05938079 100644
+--- a/examples/quick/imageprovider/imageprovider.pro
++++ b/examples/quick/imageprovider/imageprovider.pro
+@@ -10,8 +10,9 @@ SOURCES += imageprovider.cpp
+ EXAMPLE_FILES = imageprovider-example.qml
+ 
+ target.path = $$[QT_INSTALL_EXAMPLES]/quick/imageprovider/ImageProviderCore
+-qml.files = ImageProviderCore/qmldir
+-qml.path = $$[QT_INSTALL_EXAMPLES]/quick/imageprovider/ImageProviderCore
+-INSTALLS = target qml
++
++OTHER_FILES += ImageProviderCore/qmldir
++
++INSTALLS = target
+ 
+ CONFIG += install_ok  # Do not cargo-cult this!
+diff --git a/examples/quick/imageresponseprovider/imageresponseprovider.pro b/examples/quick/imageresponseprovider/imageresponseprovider.pro
+index 8be4dbb6..678a6756 100644
+--- a/examples/quick/imageresponseprovider/imageresponseprovider.pro
++++ b/examples/quick/imageresponseprovider/imageresponseprovider.pro
+@@ -10,8 +10,9 @@ SOURCES += imageresponseprovider.cpp
+ EXAMPLE_FILES = imageresponseprovider-example.qml
+ 
+ target.path = $$[QT_INSTALL_EXAMPLES]/quick/imageresponseprovider/ImageResponseProviderCore
+-qml.files = ImageResponseProviderCore/qmldir
+-qml.path = $$[QT_INSTALL_EXAMPLES]/quick/imageresponseprovider/ImageResponseProviderCore
+-INSTALLS = target qml
++
++OTHER_FILES += ImageResponseProviderCore/qmldir
++
++INSTALLS = target
+ 
+ CONFIG += install_ok  # Do not cargo-cult this!
+diff --git a/examples/quick/scenegraph/simplematerial/simplematerial.pro b/examples/quick/scenegraph/simplematerial/simplematerial.pro
+index 6ae935f3..23a3b61f 100644
+--- a/examples/quick/scenegraph/simplematerial/simplematerial.pro
++++ b/examples/quick/scenegraph/simplematerial/simplematerial.pro
+@@ -6,7 +6,7 @@ SOURCES += \
+ RESOURCES += simplematerial.qrc
+ 
+ target.path = $$[QT_INSTALL_EXAMPLES]/quick/scenegraph/simplematerial
+-qml.files = main.qml
+-qml.path = $$[QT_INSTALL_EXAMPLES]/quick/scenegraph/simplematerial
+ 
+-INSTALLS += target qml
++OTHER_FILES += main.qml
++
++INSTALLS += target
+-- 
+2.26.2
+

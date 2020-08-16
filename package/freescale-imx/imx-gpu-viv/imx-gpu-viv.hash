@@ -1,2 +1,5 @@
-sha256	dddadd164bede4793409ccfb636324dd73862c33458db66a5860f126bada25dc  imx-gpu-viv-6.2.4.p1.2-aarch32.bin
-sha256	27ed3f58681cef18f87ea20946cc89b2cef4848006064303d20583e6ed7aeec7  imx-gpu-viv-6.2.4.p1.2-aarch64.bin
+# Locally calculated
+sha256	b5c94b56a9f7c84aa084603a6ca21b5f3941b400e4f6ee8558b58c9b9f1aab36  imx-gpu-viv-6.4.0.p1.0-aarch32.bin
+sha256	45852a5c3c61a9215a2ffb7387a6e1cce7ddac6f12513fc77459ad7e1f1b3a27  imx-gpu-viv-6.4.0.p1.0-aarch64.bin
+sha256	d55f024af2bfff714b90de596f6d0399124b999e8c18a86b13a3b507bae6f561  COPYING
+sha256	9665930f69c0b6f4a4c055d7fe2b8ee563e771efbc83892abb1955e61492cdf7  EULA

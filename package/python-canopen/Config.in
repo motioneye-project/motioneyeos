@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PYTHON_CANOPEN
+	bool "python-canopen"
+	select BR2_PACKAGE_PYTHON_CAN # runtime
+	help
+	  A Python implementation of the CANopen standard. The aim
+	  of the project is to support the most common parts of the
+	  CiA 301 standard in a Pythonic interface.
+
+	  https://github.com/christiansandberg/canopen

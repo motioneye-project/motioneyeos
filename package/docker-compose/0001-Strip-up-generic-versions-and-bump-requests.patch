@@ -1,0 +1,66 @@
+From 2bb1a267aba3ca5fe414d0f79192def668c18bab Mon Sep 17 00:00:00 2001
+From: Ulysses Souza <ulysses.souza@docker.com>
+Date: Tue, 2 Jul 2019 15:49:07 +0200
+Subject: [PATCH] Strip up generic versions and bump requests
+
+Replaces generic limitations with a next major value
+Bump the minimal `requests` to 2.20.0
+
+Signed-off-by: Ulysses Souza <ulysses.souza@docker.com>
+(cherry picked from commit ce5451c5b4a3b449ce703168d2a568b0a4d25ee6)
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ setup.py | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/setup.py b/setup.py
+index 8371cc75..61447801 100644
+--- a/setup.py
++++ b/setup.py
+@@ -31,31 +31,31 @@ def find_version(*file_paths):
+ 
+ install_requires = [
+     'cached-property >= 1.2.0, < 2',
+-    'docopt >= 0.6.1, < 0.7',
+-    'PyYAML >= 3.10, < 4.3',
+-    'requests >= 2.6.1, != 2.11.0, != 2.12.2, != 2.18.0, < 2.21',
+-    'texttable >= 0.9.0, < 0.10',
+-    'websocket-client >= 0.32.0, < 1.0',
+-    'docker[ssh] >= 3.7.0, < 4.0',
+-    'dockerpty >= 0.4.1, < 0.5',
++    'docopt >= 0.6.1, < 1',
++    'PyYAML >= 3.10, < 5',
++    'requests >= 2.20.0, < 3',
++    'texttable >= 0.9.0, < 1',
++    'websocket-client >= 0.32.0, < 1',
++    'docker[ssh] >= 3.7.0, < 5',
++    'dockerpty >= 0.4.1, < 1',
+     'six >= 1.3.0, < 2',
+     'jsonschema >= 2.5.1, < 3',
+ ]
+ 
+ 
+ tests_require = [
+-    'pytest',
++    'pytest < 6',
+ ]
+ 
+ 
+ if sys.version_info[:2] < (3, 4):
+-    tests_require.append('mock >= 1.0.1')
++    tests_require.append('mock >= 1.0.1, < 2')
+ 
+ extras_require = {
+     ':python_version < "3.4"': ['enum34 >= 1.0.4, < 2'],
+-    ':python_version < "3.5"': ['backports.ssl_match_hostname >= 3.5'],
+-    ':python_version < "3.3"': ['ipaddress >= 1.0.16'],
+-    ':sys_platform == "win32"': ['colorama >= 0.4, < 0.5'],
++    ':python_version < "3.5"': ['backports.ssl_match_hostname >= 3.5, < 4'],
++    ':python_version < "3.3"': ['ipaddress >= 1.0.16, < 2'],
++    ':sys_platform == "win32"': ['colorama >= 0.4, < 1'],
+     'socks': ['PySocks >= 1.5.6, != 1.5.7, < 2'],
+ }
+ 
+-- 
+2.20.1
+

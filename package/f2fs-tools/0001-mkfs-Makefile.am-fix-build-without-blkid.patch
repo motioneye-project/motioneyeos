@@ -1,0 +1,30 @@
+From 7727b6fe0897849d4fc8f75a48326e902f0ab8b2 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sun, 22 Sep 2019 10:06:35 +0200
+Subject: [PATCH] mkfs/Makefile.am: fix build without blkid
+
+Commit d56232bc1640e2a3ffc412faff42cd8e77dbb8dd hardcoded -lblkid in
+libf2fs_format_la_LDFLAGS which breaks the build with --without-blkid
+option so use ${libblkid_LIBS} instead
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ mkfs/Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mkfs/Makefile.am b/mkfs/Makefile.am
+index cae2f93..83e2389 100644
+--- a/mkfs/Makefile.am
++++ b/mkfs/Makefile.am
+@@ -12,7 +12,7 @@ lib_LTLIBRARIES = libf2fs_format.la
+ libf2fs_format_la_SOURCES = f2fs_format_main.c f2fs_format.c f2fs_format_utils.c
+ libf2fs_format_la_CFLAGS = -DWITH_BLKDISCARD
+ libf2fs_format_la_CPPFLAGS = -I$(top_srcdir)/include
+-libf2fs_format_la_LDFLAGS = -lblkid -luuid -L$(top_builddir)/lib -lf2fs \
++libf2fs_format_la_LDFLAGS = ${libblkid_LIBS} -luuid -L$(top_builddir)/lib -lf2fs \
+ 	-version-info $(FMT_CURRENT):$(FMT_REVISION):$(FMT_AGE)
+ 
+ install-exec-hook:
+-- 
+2.23.0
+

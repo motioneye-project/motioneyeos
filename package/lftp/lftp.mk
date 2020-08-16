@@ -4,19 +4,17 @@
 #
 ################################################################################
 
-LFTP_VERSION = 4.8.4
+LFTP_VERSION = 4.9.1
 LFTP_SOURCE = lftp-$(LFTP_VERSION).tar.xz
 LFTP_SITE = http://lftp.yar.ru/ftp
 LFTP_LICENSE = GPL-3.0+
 LFTP_LICENSE_FILES = COPYING
-# Needed so that our libtool patch applies properly, and for patch
-# 0001-fix-static-link-with-readline.patch.
-LFTP_AUTORECONF = YES
 LFTP_DEPENDENCIES = readline zlib host-pkgconf
 
 # Help lftp finding readline and zlib
 LFTP_CONF_OPTS = \
 	--with-readline=$(STAGING_DIR)/usr \
+	--with-readline-lib="`$(PKG_CONFIG_HOST_BINARY) --libs readline`" \
 	--with-zlib=$(STAGING_DIR)/usr
 
 ifneq ($(BR2_STATIC_LIBS),y)
@@ -25,6 +23,9 @@ endif
 
 ifeq ($(BR2_PACKAGE_EXPAT)$(BR2_PACKAGE_LFTP_PROTO_HTTP),yy)
 LFTP_DEPENDENCIES += expat
+LFTP_CONF_OPTS += --with-expat=$(STAGING_DIR)/usr
+else
+LFTP_CONF_OPTS += --without-expat
 endif
 
 ifeq ($(BR2_PACKAGE_GNUTLS),y)

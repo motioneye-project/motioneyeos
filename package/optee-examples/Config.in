@@ -1,0 +1,23 @@
+config BR2_PACKAGE_OPTEE_EXAMPLES
+	bool "optee-examples"
+	depends on BR2_TARGET_OPTEE_OS
+	depends on BR2_TOOLCHAIN_HAS_THREADS # optee-client
+	select BR2_PACKAGE_OPTEE_CLIENT
+	select BR2_TARGET_OPTEE_OS_SDK
+	help
+	  Enable the OP-TEE examples package that brings examples of
+	  implementation of OP-TEE non-secure client applications and
+	  secure trusted applications. OP-TEE examples is a
+	  component delivered by the OP-TEE project.
+
+	  Trusted application binary files are installed in the target
+	  directory /lib/optee_armtz as other trusted applications.
+	  At runtime OP-TEE OS can load trusted applications from this
+	  non-secure filesystem/directory into the secure world for
+	  execution.
+
+	  https://github.com/linaro-swg/optee_examples
+
+comment "optee-examples needs a toolchain w/ threads"
+	depends on BR2_TARGET_OPTEE_OS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

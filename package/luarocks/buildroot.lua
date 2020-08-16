@@ -10,15 +10,20 @@ local search = require("luarocks.search")
 local download = require("luarocks.download")
 local fetch = require("luarocks.fetch")
 
-buildroot.help_summary = "generate buildroot package files of a rock."
-buildroot.help_arguments = "rockname [brname]"
-buildroot.help = [[
+function buildroot.add_to_parser(parser)
+   local cmd = parser:command("buildroot", [[
 This addon generates Buildroot package files of a rock.
 First argument is the name of a rock, the second argument is optional
 and needed when Buildroot uses another name (usually prefixed by lua-).
 Files are generated with the source content of the rock and more
 especially the rockspec. So, the rock is downloaded and unpacked.
-]]
+]], util.see_also())
+      :summary("generate buildroot package files of a rock.")
+
+   cmd:argument("rockname", "the name of a rock to be fetched and unpacked.")
+   cmd:argument("brname", "the name used by Buildroot.")
+      :args("?")
+end
 
 local function brname (name)
    return name:upper():gsub('-', '_')
@@ -47,6 +52,46 @@ local function wrap (txt, max)
    end
    lines[#lines+1] = line
    return lines
+end
+
+local function has_c_files (rockspec)
+   for _, mod in pairs(rockspec.build.modules or {}) do
+      if type(mod) == 'string' then
+         if mod:match'%.c$' then
+            return true
+         end
+      elseif type(mod) == 'table' then
+         local sources = mod.sources
+         if type(sources) == 'string' and sources:match'%.c$' then
+            return true
+         end
+         for _, src in ipairs(sources or mod) do
+            if src:match'%.c$' then
+               return true
+            end
+         end
+      end
+   end
+   return false
+end
+
+local function get_main_modules (rockspec)
+   local t = {}
+   for name in pairs(rockspec.build.modules or {}) do
+      if not name:match('%.') then
+         t[#t+1] = name
+      end
+   end
+   if #t == 0 then
+      for name in pairs(rockspec.build.modules or {}) do
+         t[#t+1] = name
+      end
+   end
+   if #t == 0 then
+      t[#t+1] = rockspec.package:gsub('%-', '')
+   end
+   table.sort(t)
+   return t
 end
 
 local function get_external_dependencies (rockspec)
@@ -228,18 +273,53 @@ local function generate_hash (rockspec, lcname, rock_file, licenses, digest)
    f:close()
 end
 
---- Driver function for the "buildroot" command.
--- @param rockname string: the name of a rock to be fetched and unpacked.
--- @param brname string: the name used by Buildroot (optional)
--- @return boolean: true if successful
-function buildroot.command(flags, rockname, fsname)
-   if type(rockname) ~= 'string' then
-      return nil, "Argument missing. "..util.see_help('buildroot')
+local function generate_test (rockspec, lcname)
+   local ucname = brname(lcname)
+   local classname = rockspec.package:gsub('%-', ''):gsub('%.', '')
+   classname = classname:sub(1, 1):upper() .. classname:sub(2)
+   local modnames = get_main_modules(rockspec)
+   local fname = 'support/testing/tests/package/test_' .. ucname:lower() .. '.py'
+   local f = assert(io.open(fname, 'w'))
+   util.printout('write ' .. fname)
+   f:write('from tests.package.test_lua import TestLuaBase\n')
+   f:write('\n')
+   f:write('\n')
+   f:write('class TestLua' .. classname .. '(TestLuaBase):\n')
+   f:write('    config = TestLuaBase.config + \\\n')
+   f:write('        """\n')
+   f:write('        BR2_PACKAGE_LUA=y\n')
+   f:write('        BR2_PACKAGE_' .. ucname .. '=y\n')
+   f:write('        """\n')
+   f:write('\n')
+   f:write('    def test_run(self):\n')
+   f:write('        self.login()\n')
+   for i = 1, #modnames do
+      f:write('        self.module_test("' .. modnames[i] .. '")\n')
    end
-   fsname = fsname or rockname
-   assert(type(fsname) == 'string')
+   f:write('\n')
+   f:write('\n')
+   f:write('class TestLuajit' .. classname .. '(TestLuaBase):\n')
+   f:write('    config = TestLuaBase.config + \\\n')
+   f:write('        """\n')
+   f:write('        BR2_PACKAGE_LUAJIT=y\n')
+   f:write('        BR2_PACKAGE_' .. ucname .. '=y\n')
+   f:write('        """\n')
+   f:write('\n')
+   f:write('    def test_run(self):\n')
+   f:write('        self.login()\n')
+   for i = 1, #modnames do
+      f:write('        self.module_test("' .. modnames[i] .. '")\n')
+   end
+   f:close()
+end
 
-   local query = queries.new(rockname:lower(), nil, false, 'src')
+--- Driver function for the "buildroot" command.
+-- @return boolean: true if successful
+function buildroot.command(args)
+   local rockname = assert(args.rockname)
+   local fsname = args.brname or rockname
+
+   local query = queries.new(rockname:lower(), nil, nil, false, 'src')
    local url, err = search.find_suitable_rock(query)
    if not url then
       return nil, "Could not find a result named " .. tostring(query) .. ": " .. err
@@ -319,6 +399,11 @@ function buildroot.command(flags, rockname, fsname)
    generate_config(rockspec, fsname:lower())
    generate_mk(rockspec, fsname:lower(), licenses)
    generate_hash(rockspec, fsname:lower(), rock_file, licenses, digest)
+   if has_c_files(rockspec) then
+      ok, err = fs.make_dir('support/testing/tests/package')
+      if not ok then return nil, err end
+      generate_test(rockspec, fsname:lower())
+   end
 
    return true
 end

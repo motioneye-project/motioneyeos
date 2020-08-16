@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/pathvalidate/json, sha256 locally computed
-md5	fa119fcdbc744dc3a9de11185437992c  pathvalidate-0.16.0.tar.gz
-sha256	81c665a16e41203dc7698caf4f7ee15b7da97e36368e30e76e76e968ce77f468  pathvalidate-0.16.0.tar.gz
+# md5, sha256 from https://pypi.org/pypi/pathvalidate/json
+md5	b0a8242d124a9e760ca2d084a4f8fa75  pathvalidate-0.29.0.tar.gz
+sha256	bf250828f40d94881df764950cffca14bb3fa83783d9f239125a6b5e23a5646e  pathvalidate-0.29.0.tar.gz
+# Locally computed sha256 checksums
+sha256	a93d75bcb0774e2990106380cadad6dcb2de193c55d435ffc56ba345a08b1dc2  LICENSE

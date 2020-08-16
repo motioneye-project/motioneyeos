@@ -1,0 +1,28 @@
+From a66459dd654489bf2c17e2828d5c314a4048be70 Mon Sep 17 00:00:00 2001
+From: Ryan Skraba <ryan@skraba.com>
+Date: Thu, 13 Feb 2020 09:57:02 +0100
+Subject: [PATCH] AVRO-2737: Fix pycodestyle regression.
+
+An erroneous import was added in the Avro 1.9.2 Python3 package.
+The issue has been fixed and released on pypi as version 1.9.2.1, but has
+not been published on the Apache download website, hence this patch.
+
+[Titouan: add detailed commit message]
+Signed-off-by: Titouan Christophe <titouan.christophe@railnova.eu>
+---
+ setup.py | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/setup.py b/setup.py
+index 20dd4e240..f6297bb1b 100755
+--- a/setup.py
++++ b/setup.py
+@@ -38,8 +38,6 @@
+ 
+ import setuptools
+ 
+-import pycodestyle
+-
+ _HERE = os.path.dirname(os.path.abspath(__file__))
+ _AVRO_DIR = os.path.join(_HERE, 'avro')
+ _VERSION_FILE_NAME = 'VERSION.txt'

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-UNSCD_VERSION = 0.52
+UNSCD_VERSION = 0.53
 UNSCD_SOURCE = nscd-$(UNSCD_VERSION).c
 UNSCD_SITE = http://busybox.net/~vda/unscd
 UNSCD_LICENSE = GPL-2.0

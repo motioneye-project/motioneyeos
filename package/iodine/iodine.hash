@@ -1,2 +1,4 @@
 # From http://code.kryo.se/iodine/
 md5	fdbf3b81cd69caf5230d76a8b039fd99	iodine-0.7.0.tar.gz
+# Locally computed
+sha256  f41a252b2218759aa351270b7ad9791bdd323836b940e35c0614837a5d24dcb7  README

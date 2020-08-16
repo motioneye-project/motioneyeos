@@ -1,0 +1,68 @@
+From aad6cdbcff0f5411a09ac524637fea62652786a3 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@gmail.com>
+Date: Fri, 8 May 2020 18:39:45 +0200
+Subject: [PATCH] mips: Do not include hi and lo in __SYSCALL_CLOBBERS for R6
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+From [1]
+"GCC 10 (PR 91233) won't silently allow registers that are not architecturally
+available to be present in the clobber list anymore, resulting in build failure
+for mips*r6 targets in form of:
+...
+.../sysdep.h:146:2: error: the register ‘lo’ cannot be clobbered in ‘asm’ for the current target
+  146 |  __asm__ volatile (      \
+      |  ^~~~~~~
+
+This is because base R6 ISA doesn't define hi and lo registers w/o DSP extension.
+This patch provides the alternative definitions of __SYSCALL_CLOBBERS for r6
+targets that won't include those registers."
+
+[1] https://sourceware.org/git/?p=glibc.git;a=commit;h=020b2a97bb15f807c0482f0faee2184ed05bcad8
+
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+Cc: Waldemar Brodkorb <wbx@openadk.org>
+---
+ libc/sysdeps/linux/mips/bits/syscalls.h | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
+
+diff --git a/libc/sysdeps/linux/mips/bits/syscalls.h b/libc/sysdeps/linux/mips/bits/syscalls.h
+index b8f80597e..13728ac55 100644
+--- a/libc/sysdeps/linux/mips/bits/syscalls.h
++++ b/libc/sysdeps/linux/mips/bits/syscalls.h
+@@ -270,8 +270,13 @@
+ 	_sys_result;							\
+ })
+ 
+-#define __SYSCALL_CLOBBERS "$1", "$3", "$8", "$9", "$10", "$11", "$12", "$13", \
+-	"$14", "$15", "$24", "$25", "hi", "lo", "memory"
++#if __mips_isa_rev >= 6
++# define __SYSCALL_CLOBBERS "$1", "$3", "$8", "$9", "$10", "$11", "$12", "$13", \
++	 "$14", "$15", "$24", "$25", "memory"
++#else
++# define __SYSCALL_CLOBBERS "$1", "$3", "$8", "$9", "$10", "$11", "$12", "$13", \
++	 "$14", "$15", "$24", "$25", "hi", "lo", "memory"
++#endif
+ 
+ #else /* N32 || N64 */
+ 
+@@ -327,8 +332,13 @@
+ 	_sys_result;							\
+ })
+ 
+-#define __SYSCALL_CLOBBERS "$1", "$3", "$10", "$11", "$12", "$13", \
+-	"$14", "$15", "$24", "$25", "hi", "lo", "memory"
++#if __mips_isa_rev >= 6
++# define __SYSCALL_CLOBBERS "$1", "$3", "$10", "$11", "$12", "$13", \
++	 "$14", "$15", "$24", "$25", "memory"
++#else
++# define __SYSCALL_CLOBBERS "$1", "$3", "$10", "$11", "$12", "$13", \
++	 "$14", "$15", "$24", "$25", "hi", "lo", "memory"
++#endif
+ 
+ #endif
+ 
+-- 
+2.25.4
+

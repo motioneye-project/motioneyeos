@@ -5,15 +5,19 @@
 ################################################################################
 
 ifeq ($(BR2_arc),y)
-GLIBC_VERSION =  arc-2018.09-release
+GLIBC_VERSION =  arc-2019.09-release
 GLIBC_SITE = $(call github,foss-for-synopsys-dwc-arc-processors,glibc,$(GLIBC_VERSION))
 else ifeq ($(BR2_RISCV_32),y)
-GLIBC_VERSION = 4e2943456e690d89f48e6e710757dd09404b0c9a
+GLIBC_VERSION = 06983fe52cfe8e4779035c27e8cc5d2caab31531
 GLIBC_SITE = $(call github,riscv,riscv-glibc,$(GLIBC_VERSION))
+else ifeq ($(BR2_csky),y)
+GLIBC_VERSION = 7630ed2fa60caea98f500e4a7a51b88f9bf1e176
+GLIBC_SITE = $(call github,c-sky,glibc,$(GLIBC_VERSION))
 else
 # Generate version string using:
-#   git describe --match 'glibc-*' --abbrev=40 origin/release/MAJOR.MINOR/master
-GLIBC_VERSION = glibc-2.28-94-g4aeff335ca19286ee2382d8eba794ae5fd49281a
+#   git describe --match 'glibc-*' --abbrev=40 origin/release/MAJOR.MINOR/master | cut -d '-' -f 2-
+# When updating the version, please also update localedef
+GLIBC_VERSION = 2.30-67-g4748829f86a458b76642f3e98b1d80f7b868e427
 # Upstream doesn't officially provide an https download link.
 # There is one (https://sourceware.org/git/glibc.git) but it's not reliable,
 # sometimes the connection times out. So use an unofficial github mirror.
@@ -32,7 +36,7 @@ GLIBC_ADD_TOOLCHAIN_DEPENDENCY = NO
 # Before glibc is configured, we must have the first stage
 # cross-compiler and the kernel headers
 GLIBC_DEPENDENCIES = host-gcc-initial linux-headers host-bison host-gawk \
-	$(BR2_MAKE_HOST_DEPENDENCY)
+	$(BR2_MAKE_HOST_DEPENDENCY) $(BR2_PYTHON3_HOST_DEPENDENCY)
 
 GLIBC_SUBDIR = build
 
@@ -71,9 +75,18 @@ endef
 endif
 
 GLIBC_CONF_ENV = \
-	ac_cv_path_BASH_SHELL=/bin/bash \
+	ac_cv_path_BASH_SHELL=/bin/$(if $(BR2_PACKAGE_BASH),bash,sh) \
 	libc_cv_forced_unwind=yes \
 	libc_cv_ssp=no
+
+# POSIX shell does not support localization, so remove the corresponding
+# syntax from ldd if bash is not selected.
+ifeq ($(BR2_PACKAGE_BASH),)
+define GLIBC_LDD_NO_BASH
+	$(SED) 's/$$"/"/g' $(@D)/elf/ldd.bash.in
+endef
+GLIBC_POST_PATCH_HOOKS += GLIBC_LDD_NO_BASH
+endif
 
 # Override the default library locations of /lib64/<abi> and
 # /usr/lib64/<abi>/ for RISC-V.
@@ -140,10 +153,24 @@ ifeq ($(BR2_PACKAGE_GDB),y)
 GLIBC_LIBS_LIB += libthread_db.so.*
 endif
 
+ifeq ($(BR2_PACKAGE_GLIBC_UTILS),y)
+GLIBC_TARGET_UTILS_USR_BIN = posix/getconf elf/ldd
+GLIBC_TARGET_UTILS_SBIN = elf/ldconfig
+ifeq ($(BR2_SYSTEM_ENABLE_NLS),y)
+GLIBC_TARGET_UTILS_USR_BIN += locale/locale
+endif
+endif
+
 define GLIBC_INSTALL_TARGET_CMDS
 	for libpattern in $(GLIBC_LIBS_LIB); do \
 		$(call copy_toolchain_lib_root,$$libpattern) ; \
 	done
+	$(foreach util,$(GLIBC_TARGET_UTILS_USR_BIN), \
+		$(INSTALL) -D -m 0755 $(@D)/build/$(util) $(TARGET_DIR)/usr/bin/$(notdir $(util))
+	)
+	$(foreach util,$(GLIBC_TARGET_UTILS_SBIN), \
+		$(INSTALL) -D -m 0755 $(@D)/build/$(util) $(TARGET_DIR)/sbin/$(notdir $(util))
+	)
 endef
 
 $(eval $(autotools-package))

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FFMPEG_VERSION = 4.2
+FFMPEG_VERSION = 4.2.3
 FFMPEG_SOURCE = ffmpeg-$(FFMPEG_VERSION).tar.xz
 FFMPEG_SITE = http://ffmpeg.org/releases
 FFMPEG_INSTALL_STAGING = YES
@@ -96,6 +96,17 @@ else
 FFMPEG_CONF_OPTS += --disable-ffprobe
 endif
 
+ifeq ($(BR2_PACKAGE_FFMPEG_XCBGRAB),y)
+FFMPEG_CONF_OPTS += \
+	--enable-libxcb \
+	--enable-libxcb-shape \
+	--enable-libxcb-shm \
+	--enable-libxcb-xfixes
+FFMPEG_DEPENDENCIES += libxcb
+else
+FFMPEG_CONF_OPTS += --disable-libxcb
+endif
+
 ifeq ($(BR2_PACKAGE_FFMPEG_POSTPROC),y)
 FFMPEG_CONF_OPTS += --enable-postproc
 else
@@ -135,7 +146,7 @@ endif
 
 ifneq ($(call qstrip,$(BR2_PACKAGE_FFMPEG_BSFS)),all)
 FFMPEG_CONF_OPTS += --disable-bsfs \
-	$(foreach x,$(call qstrip,$(BR2_PACKAGE_FFMPEG_BSFS)),--enable-bsfs=$(x))
+	$(foreach x,$(call qstrip,$(BR2_PACKAGE_FFMPEG_BSFS)),--enable-bsf=$(x))
 endif
 
 ifneq ($(call qstrip,$(BR2_PACKAGE_FFMPEG_PROTOCOLS)),all)
@@ -309,6 +320,13 @@ else
 FFMPEG_CONF_OPTS += --disable-libbluray
 endif
 
+ifeq ($(BR2_PACKAGE_INTEL_MEDIASDK),y)
+FFMPEG_CONF_OPTS += --enable-libmfx
+FFMPEG_DEPENDENCIES += intel-mediasdk
+else
+FFMPEG_CONF_OPTS += --disable-libmfx
+endif
+
 ifeq ($(BR2_PACKAGE_RTMPDUMP),y)
 FFMPEG_CONF_OPTS += --enable-librtmp
 FFMPEG_DEPENDENCIES += rtmpdump
@@ -394,6 +412,13 @@ FFMPEG_CONF_OPTS += --enable-libx265
 FFMPEG_DEPENDENCIES += x265
 else
 FFMPEG_CONF_OPTS += --disable-libx265
+endif
+
+ifeq ($(BR2_PACKAGE_DAV1D),y)
+FFMPEG_CONF_OPTS += --enable-libdav1d
+FFMPEG_DEPENDENCIES += dav1d
+else
+FFMPEG_CONF_OPTS += --disable-libdav1d
 endif
 
 ifeq ($(BR2_X86_CPU_HAS_MMX),y)
@@ -482,6 +507,11 @@ FFMPEG_CONF_OPTS += --disable-mipsfpu
 else
 FFMPEG_CONF_OPTS += --enable-mipsfpu
 endif
+
+# Fix build failure on "addi opcode not supported"
+ifeq ($(BR2_mips_32r6)$(BR2_mips_64r6),y)
+FFMPEG_CONF_OPTS += --disable-asm
+endif
 endif # MIPS
 
 ifeq ($(BR2_POWERPC_CPU_HAS_ALTIVEC),y)
@@ -511,6 +541,14 @@ else ifneq ($(GCC_TARGET_ARCH),)
 FFMPEG_CONF_OPTS += --cpu="$(GCC_TARGET_ARCH)"
 endif
 
+FFMPEG_CFLAGS = $(TARGET_CFLAGS)
+
+ifeq ($(BR2_TOOLCHAIN_HAS_GCC_BUG_85180),y)
+FFMPEG_CONF_OPTS += --disable-optimizations
+FFMPEG_CFLAGS += -O0
+endif
+
+FFMPEG_CONF_ENV += CFLAGS="$(FFMPEG_CFLAGS)"
 FFMPEG_CONF_OPTS += $(call qstrip,$(BR2_PACKAGE_FFMPEG_EXTRACONF))
 
 # Override FFMPEG_CONFIGURE_CMDS: FFmpeg does not support --target and others

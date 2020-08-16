@@ -23,6 +23,8 @@ This patch is similar to the patch used by the Yocto Project at
 http://git.yoctoproject.org/cgit.cgi/poky/plain/meta/recipes-support/shared-mime-info/shared-mime-info/install-data-hook.patch.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[Upstream status:
+https://gitlab.freedesktop.org/xdg/shared-mime-info/merge_requests/18]
 ---
  Makefile.am | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)

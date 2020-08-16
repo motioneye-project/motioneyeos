@@ -1,0 +1,31 @@
+From 5867fcad6e88af3d843bfa831648d84a53732d57 Mon Sep 17 00:00:00 2001
+From: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Date: Wed, 19 Dec 2018 17:17:13 +0100
+Subject: [PATCH] mv_ddr: mv_ddr4_training_leveling.c: uninitialized variable
+
+With GCC 8.2 uninitialized variables lead to a build error.
+
+Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: commit 5867fcad6e8
+
+ mv_ddr4_training_leveling.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mv_ddr4_training_leveling.c b/mv_ddr4_training_leveling.c
+index 144e21a03c01..cb95389f5466 100644
+--- a/mv_ddr4_training_leveling.c
++++ b/mv_ddr4_training_leveling.c
+@@ -368,7 +368,7 @@ static int mv_ddr4_dynamic_pb_wl_supp(u32 dev_num, enum mv_wl_supp_mode ecc_mode
+ 	u32 subphy_num = ddr3_tip_dev_attr_get(dev_num, MV_ATTR_OCTET_PER_INTERFACE);
+ 	u8 compare_result = 0;
+ 	u32 orig_phase;
+-	u32 rd_data, wr_data;
++	u32 rd_data, wr_data = 0;
+ 	u32 flag, step;
+ 	struct mv_ddr_topology_map *tm = mv_ddr_topology_map_get();
+ 	u32 ecc_phy_access_id;
+-- 
+2.20.1
+

@@ -1,5 +1,20 @@
+# netsurf mixes up host and target CFLAGS, so it isn't compatible with
+# architectures where we pass ABI specific compiler flags (TARGET_ABI)
+config BR2_PACKAGE_NETSURF_ARCH_SUPPORTS
+	bool
+	default y if !((BR2_arc && BR2_ARC_ATOMIC_EXT) || \
+		BR2_powerpc_8540 || BR2_powerpc_8548 || BR2_powerpc_e500mc || \
+		BR2_xtensa)
+
+comment "netsurf needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+	depends on BR2_PACKAGE_NETSURF_ARCH_SUPPORTS
+
 config BR2_PACKAGE_NETSURF
 	bool "netsurf"
+	# static linking support is broken beyond repair
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_PACKAGE_NETSURF_ARCH_SUPPORTS
 	select BR2_PACKAGE_EXPAT
 	select BR2_PACKAGE_JPEG
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE

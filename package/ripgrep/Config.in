@@ -1,0 +1,14 @@
+config BR2_PACKAGE_RIPGREP
+	bool "ripgrep"
+	depends on BR2_PACKAGE_HOST_RUSTC_TARGET_ARCH_SUPPORTS
+	select BR2_PACKAGE_HOST_CARGO
+	help
+	  ripgrep is a line-oriented search tool that
+	  recursively searches your current directory
+	  for a regex pattern while respecting your gitignore
+	  rules.
+
+	  ripgrep is similar to other popular search tools like
+	  The Silver Searcher, ack and grep.
+
+	  https://github.com/BurntSushi/ripgrep

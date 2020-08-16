@@ -11,4 +11,4 @@ config BR2_PACKAGE_TCPING
 	  desired port is reachable and then start connection
 	  establishment.
 
-	  http://linuxco.de/tcping/tcping.html
+	  https://github.com/mkirchner/tcping

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MROUTED_VERSION = 3.9.7
+MROUTED_VERSION = 3.9.8
 MROUTED_SITE = $(call github,troglobit,mrouted,$(MROUTED_VERSION))
 MROUTED_DEPENDENCIES = host-bison
 MROUTED_LICENSE = BSD-3-Clause

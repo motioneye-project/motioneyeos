@@ -1,6 +1,7 @@
 [Unit]
 Description=vmtoolsd for openvmtools
 After=syslog.target network.target
+ConditionVirtualization=vmware
 
 [Service]
 Type=forking

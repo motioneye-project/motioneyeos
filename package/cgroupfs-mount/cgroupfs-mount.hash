@@ -1,2 +1,3 @@
 # Locally calculated
-sha256 d6c8aff7af59c7d0082ee3018c97f73b0421e81a49bb28ad9f66a36da5cd6ec7  cgroupfs-mount-1.4.tar.gz
+sha256  d6c8aff7af59c7d0082ee3018c97f73b0421e81a49bb28ad9f66a36da5cd6ec7  cgroupfs-mount-1.4.tar.gz
+sha256  e52f47a650734f70c40c8fd9318f85e42777bf3fba7ff1dfb72f845bb417f7e6  debian/copyright

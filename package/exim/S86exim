@@ -3,11 +3,19 @@
 # Start/stop exim
 #
 
-PIDFILE=/var/lock/exim/exim-daemon.pid
+PIDFILE=/var/run/exim/exim.pid
 
 case "$1" in
   start)
 	echo "Starting exim..."
+	if [ ! -d /var/log/exim ]; then
+	  mkdir -p /var/log/exim
+	  chown exim:mail /var/log/exim
+	fi
+	if [ ! -d /var/run/exim ]; then
+	  mkdir -p /var/run/exim
+	  chown root:mail /var/run/exim
+	fi
 	start-stop-daemon -S -x exim -- -bd
 	;;
   stop)

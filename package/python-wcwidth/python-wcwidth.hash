@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/wcwidth/json, sha256 locally computed
-md5	b3b6a0a08f0c8a34d1de8cf44150a4ad	wcwidth-0.1.7.tar.gz
-sha256	3df37372226d6e63e1b1e1eda15c594bca98a22d33a23832a90998faa96bc65e	wcwidth-0.1.7.tar.gz
+# md5, sha256 from https://pypi.org/pypi/wcwidth/json
+md5  b32584cd6084b4a8c81df13a2a6b4351  wcwidth-0.1.9.tar.gz
+sha256  ee73862862a156bf77ff92b09034fc4825dd3af9cf81bc5b360668d425f3c5f1  wcwidth-0.1.9.tar.gz
+# Locally computed
+sha256  0eddcc52cd3ef5d30798b8d43a14d3f0f1dcf0a6e4c1d0f2e177c44ce85bb69c  LICENSE.txt

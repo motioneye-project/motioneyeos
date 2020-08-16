@@ -113,6 +113,13 @@ config BR2_TOOLCHAIN_SUPPORTS_VARIADIC_MI_THUNK
 	depends on !BR2_or1k
 	depends on !BR2_xtensa
 
+# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=63261. This bug no
+# longer exists in gcc 8.x.
+config BR2_TOOLCHAIN_HAS_GCC_BUG_63261
+	bool
+	default y if BR2_microblaze
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_8
+
 # Prior to gcc 7.x, exception_ptr, nested_exception and future from
 # libstdc++ would only be provided on architectures that support
 # always lock-free atomic ints. See
@@ -124,11 +131,18 @@ config BR2_TOOLCHAIN_HAS_GCC_BUG_64735
 	default y if !BR2_TOOLCHAIN_SUPPORTS_ALWAYS_LOCKFREE_ATOMIC_INTS && \
 		!BR2_TOOLCHAIN_GCC_AT_LEAST_7
 
+# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=68485. This bug still
+# exists in gcc 9.x
+config BR2_TOOLCHAIN_HAS_GCC_BUG_68485
+	bool
+	default y if BR2_microblaze
+
 # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85180. This bug no
 # longer exists in gcc 8.x.
 config BR2_TOOLCHAIN_HAS_GCC_BUG_85180
 	bool
 	default y if BR2_microblaze
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_8
 
 # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85862
 # An infinite loop exists in the find_base_term() logic of 6.x
@@ -137,6 +151,20 @@ config BR2_TOOLCHAIN_HAS_GCC_BUG_85862
 	bool
 	default y if BR2_microblaze
 	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_7
+
+# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90620
+# ICE: in do_output_reload, at reload1.c:7978 on microblaze.
+# It's still not fixed in gcc 9.x
+config BR2_TOOLCHAIN_HAS_GCC_BUG_90620
+	bool
+	default y if BR2_microblaze
+
+# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93847
+# ICE: compiler error: Segmentation fault on Nios II. This bug
+# no longer exists in gcc 9.x.
+config BR2_TOOLCHAIN_HAS_GCC_BUG_93847
+	bool
+	default y if BR2_nios2 && !BR2_TOOLCHAIN_GCC_AT_LEAST_9
 
 config BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	bool
@@ -148,6 +176,9 @@ config BR2_ENABLE_LOCALE
 	bool
 
 config BR2_INSTALL_LIBSTDCPP
+	bool
+
+config BR2_TOOLCHAIN_HAS_DLANG
 	bool
 
 config BR2_TOOLCHAIN_HAS_FORTRAN
@@ -165,7 +196,14 @@ config BR2_TOOLCHAIN_HAS_THREADS_NPTL
 config BR2_TOOLCHAIN_HAS_SSP
 	bool
 
+config BR2_TOOLCHAIN_HAS_SSP_STRONG
+	bool
+	default y if BR2_TOOLCHAIN_HAS_SSP && BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+
 config BR2_TOOLCHAIN_HAS_UCONTEXT
+	bool
+
+config BR2_TOOLCHAIN_HAS_OPENMP
 	bool
 
 config BR2_TOOLCHAIN_SUPPORTS_PIE
@@ -193,6 +231,20 @@ config BR2_TOOLCHAIN_GLIBC_GCONV_LIBS_LIST
 	    IBM850 ISO8859-15 UNICODE
 
 	  Note: the full set of gconv libs are ~8MiB (on ARM).
+
+config BR2_TOOLCHAIN_EXTRA_LIBS
+	string "Extra toolchain libraries to be copied to target"
+	default BR2_TOOLCHAIN_EXTRA_EXTERNAL_LIBS if BR2_TOOLCHAIN_EXTRA_EXTERNAL_LIBS != "" # legacy
+	depends on !BR2_STATIC_LIBS
+	help
+	  If your toolchain provides extra libraries that need to be
+	  copied to the target filesystem, enter them here, separated
+	  by spaces. The library should not include a suffix or any
+	  type of pre/post wildcard.
+
+	  Examples where this can be useful is for adding debug
+	  libraries to the target like the GCC libsanitizer.
+	  e.g. "libasan liblsan libtsan libubsan"
 
 # This boolean is true if the toolchain provides a built-in full
 # featured gettext implementation (glibc), and false if only a stub
@@ -397,10 +449,53 @@ config BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_20
 	bool
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_19
 
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_0
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_20
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_1
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_0
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_2
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_1
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_3
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_2
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_4
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_3
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_5
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_4
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_6
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_5
+	select BR2_TOOLCHAIN_HEADERS_LATEST
+
+# This should be selected by the latest version, above, to indicate that
+# Buildroot does not know of more recent headers than the ones selected.
+# This allows using toolchains with headers more recent than Buildroot
+# knows about, while still enforcing strict check for older headers.
+config BR2_TOOLCHAIN_HEADERS_LATEST
+	bool
+
 # This order guarantees that the highest version is set, as kconfig
 # stops affecting a value on the first matching default.
 config BR2_TOOLCHAIN_HEADERS_AT_LEAST
 	string
+	default "5.6"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_6
+	default "5.5"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_5
+	default "5.4"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_4
+	default "5.3"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_3
+	default "5.2"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_2
+	default "5.1"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_1
+	default "5.0"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_0
 	default "4.20" if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_20
 	default "4.19" if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_19
 	default "4.18" if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_18
@@ -487,10 +582,15 @@ config BR2_TOOLCHAIN_GCC_AT_LEAST_8
 	bool
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_7
 
+config BR2_TOOLCHAIN_GCC_AT_LEAST_9
+	bool
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_8
+
 # This order guarantees that the highest version is set, as kconfig
 # stops affecting a value on the first matching default.
 config BR2_TOOLCHAIN_GCC_AT_LEAST
 	string
+	default "9"	if BR2_TOOLCHAIN_GCC_AT_LEAST_9
 	default "8"	if BR2_TOOLCHAIN_GCC_AT_LEAST_8
 	default "7"	if BR2_TOOLCHAIN_GCC_AT_LEAST_7
 	default "6"	if BR2_TOOLCHAIN_GCC_AT_LEAST_6

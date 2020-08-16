@@ -1,7 +1,7 @@
-# From https://sourceforge.net/projects/mpg123/files/mpg123/1.25.10/
-sha1 604784ddbcfe282bffdc595d1d45c677c7cf381f  mpg123-1.25.10.tar.bz2
-md5 ea32caa61d41d8be797f0b04a1b43ad9  mpg123-1.25.10.tar.bz2
+# From https://sourceforge.net/projects/mpg123/files/mpg123/1.25.13/
+sha1 2b6428dc563c56fb1374191d1244c8ac928e4d89  mpg123-1.25.13.tar.bz2
+md5 294a6c30546504ec3d0deac2b2ea22be  mpg123-1.25.13.tar.bz2
 # Locally calculated
-sha256 6c1337aee2e4bf993299851c70b7db11faec785303cfca3a5c3eb5f329ba7023  mpg123-1.25.10.tar.bz2
+sha256 90306848359c793fd43b9906e52201df18775742dc3c81c06ab67a806509890a  mpg123-1.25.13.tar.bz2
 # License file
 sha256  f40e0dd86b27b52e429b693a87b3ca63ae0a98a4d142e77207aa6bdf1db7a295  COPYING

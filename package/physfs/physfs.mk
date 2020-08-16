@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PHYSFS_VERSION = 3.0.1
+PHYSFS_VERSION = 3.0.2
 PHYSFS_SOURCE = physfs-$(PHYSFS_VERSION).tar.bz2
 PHYSFS_SITE = https://icculus.org/physfs/downloads
 

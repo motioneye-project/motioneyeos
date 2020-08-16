@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TRINITY_VERSION = 1.8
+TRINITY_VERSION = 1.9
 TRINITY_SITE = http://codemonkey.org.uk/projects/trinity
 TRINITY_SOURCE = trinity-$(TRINITY_VERSION).tar.xz
 TRINITY_LICENSE = GPL-2.0

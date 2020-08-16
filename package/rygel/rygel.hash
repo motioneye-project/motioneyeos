@@ -1,6 +1,6 @@
-# Hash from: http://ftp.gnome.org/pub/gnome/sources/rygel/0.36/rygel-0.36.2.sha256sum:
-sha256	d332c76c76716de1e5085f0ca0c152174352efd652a80e5b94ec7df797f92244	rygel-0.36.2.tar.xz
+# Hash from: http://ftp.gnome.org/pub/gnome/sources/rygel/0.38/rygel-0.38.3.sha256sum:
+sha256  08c21a577f7bdad26446a75ffa32778b26842c3b1188165f0b19818559747d00  rygel-0.38.3.tar.xz
 
 # Locally calculated
-sha256	dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551	COPYING
-sha256	c7d881be8ae01162510e982a32001446c6d6d18a9cecc89cc41a28bd215a0262	COPYING.logo
+sha256  dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551  COPYING
+sha256  c7d881be8ae01162510e982a32001446c6d6d18a9cecc89cc41a28bd215a0262  COPYING.logo

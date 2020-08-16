@@ -8,6 +8,26 @@ RESOLV_CONF="/etc/resolv.conf"
 [ -e $RESOLV_CONF ] || touch $RESOLV_CONF
 [ -n "$broadcast" ] && BROADCAST="broadcast $broadcast"
 [ -n "$subnet" ] && NETMASK="netmask $subnet"
+# Handle stateful DHCPv6 like DHCPv4
+[ -n "$ipv6" ] && ip="$ipv6/128"
+
+if [ -z "${IF_WAIT_DELAY}" ]; then
+	IF_WAIT_DELAY=10
+fi
+
+wait_for_ipv6_default_route() {
+	printf "Waiting for IPv6 default route to appear"
+	while [ $IF_WAIT_DELAY -gt 0 ]; do
+		if [ -z "$(ip -6 route list | grep default)" ]; then
+			printf "\n"
+			return
+		fi
+		sleep 1
+		printf "."
+		: $((IF_WAIT_DELAY -= 1))
+	done
+	printf " timeout!\n"
+}
 
 case "$1" in
 	deconfig)
@@ -37,6 +57,9 @@ case "$1" in
 			/usr/sbin/avahi-autoipd -k $interface
 		fi
 		/sbin/ifconfig $interface $ip $BROADCAST $NETMASK
+		if [ -n "$ipv6" ] ; then
+			wait_for_ipv6_default_route
+		fi
 
 		if [ -n "$router" ] ; then
 			echo "deleting routers"
@@ -56,7 +79,7 @@ case "$1" in
 		cat $TMPFILE > $RESOLV_CONF
 		rm -f $TMPFILE
 
-		# prefer rfc3359 domain search list (option 119) if available
+		# prefer rfc3397 domain search list (option 119) if available
 		if [ -n "$search" ]; then
 			search_list=$search
 		elif [ -n "$domain" ]; then

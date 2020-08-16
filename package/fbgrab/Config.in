@@ -5,4 +5,4 @@ config BR2_PACKAGE_FBGRAB
 	  FBGrab is a framebuffer screenshot program, capturing the
 	  linux frambuffer and converting it to a png-picture.
 
-	  http://fbgrab.monells.se/
+	  https://github.com/GunnarMonell/fbgrab

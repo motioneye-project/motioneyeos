@@ -1,6 +1,8 @@
 config BR2_PACKAGE_PARTED
 	bool "parted"
+	depends on BR2_ENABLE_LOCALE
 	depends on BR2_USE_WCHAR
+	depends on !BR2_TOOLCHAIN_USES_UCLIBC
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	help
@@ -8,5 +10,6 @@ config BR2_PACKAGE_PARTED
 
 	  http://www.gnu.org/software/parted/
 
-comment "parted needs a toolchain w/ wchar"
-	depends on !BR2_USE_WCHAR
+comment "parted needs a glibc or musl toolchain w/ locale, wchar"
+	depends on BR2_TOOLCHAIN_USES_UCLIBC || \
+		!BR2_ENABLE_LOCALE || !BR2_USE_WCHAR

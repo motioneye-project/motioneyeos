@@ -1,7 +1,7 @@
 if BR2_TOOLCHAIN_EXTERNAL_ARM_AARCH64
 
 config BR2_TOOLCHAIN_EXTERNAL_PREFIX
-	default "aarch64-linux-gnu"
+	default "aarch64-none-linux-gnu"
 
 config BR2_PACKAGE_PROVIDES_TOOLCHAIN_EXTERNAL
 	default "toolchain-external-arm-aarch64"

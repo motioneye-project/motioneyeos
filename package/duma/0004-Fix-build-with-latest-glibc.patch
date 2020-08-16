@@ -1,0 +1,22 @@
+Fix build with latest glibc
+
+Fixes:
+ - http://autobuild.buildroot.net/results/c7de1a1d01edced2098a804ad87dcb67b5dc6832
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+
+diff -durN duma_2_5_15.orig/print.c duma_2_5_15/print.c
+--- duma_2_5_15.orig/print.c	2019-10-28 10:21:14.080149620 +0100
++++ duma_2_5_15/print.c	2019-10-28 10:22:01.256151561 +0100
+@@ -326,9 +326,9 @@
+   if(DUMA_OUTPUT_FILE != NULL)
+   {
+ #if defined(WIN32) && !defined(__CYGWIN__)
+-    fd = _open(DUMA_OUTPUT_FILE, _O_APPEND|_O_CREAT|_O_WRONLY);
++    fd = _open(DUMA_OUTPUT_FILE, _O_APPEND|_O_CREAT|_O_WRONLY, 0600);
+ #else
+-    fd = open(DUMA_OUTPUT_FILE, O_APPEND|O_CREAT|O_WRONLY);
++    fd = open(DUMA_OUTPUT_FILE, O_APPEND|O_CREAT|O_WRONLY, 0600);
+ #endif
+     if ( fd >= 0 )
+     {

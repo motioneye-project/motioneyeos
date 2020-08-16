@@ -1,0 +1,56 @@
+From d545d76cb3173cc98e1421604929248f2d882821 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Thu, 24 Oct 2019 18:48:47 +0200
+Subject: [PATCH] Makefile: add additional install targets
+
+Add install-includes, install-man, install-shared and install-static
+targets to allow the user to configure what must be installed
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status:
+https://github.com/smuellerDD/jitterentropy-library/pull/11]
+---
+ Makefile | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 2e78607..41bc4f7 100644
+--- a/Makefile
++++ b/Makefile
+@@ -57,19 +57,29 @@ scan: $(analyze_plists)
+ cppcheck:
+ 	cppcheck --force -q --enable=performance --enable=warning --enable=portability *.h *.c
+ 
+-install:
++install: install-man install-shared install-includes
++
++install-man:
+ 	install -d -m 0755 $(DESTDIR)$(PREFIX)/share/man/man3
+ 	install -m 644 doc/$(NAME).3 $(DESTDIR)$(PREFIX)/share/man/man3/
+ 	gzip -f -9 $(DESTDIR)$(PREFIX)/share/man/man3/$(NAME).3
++
++install-shared:
+ 	install -d -m 0755 $(DESTDIR)$(PREFIX)/$(LIBDIR)
+ 	$(INSTALL_STRIP) -m 0755 lib$(NAME).so.$(LIBVERSION) $(DESTDIR)$(PREFIX)/$(LIBDIR)/
+-	install -d -m 0755 $(DESTDIR)$(PREFIX)/$(INCDIR)
+-	install -m 0644 jitterentropy.h $(DESTDIR)$(PREFIX)/$(INCDIR)/
+-	install -m 0644 jitterentropy-base-user.h $(DESTDIR)$(PREFIX)/$(INCDIR)/
+ 	$(RM) $(DESTDIR)$(PREFIX)/$(LIBDIR)/lib$(NAME).so.$(LIBMAJOR)
+ 	ln -sf lib$(NAME).so.$(LIBVERSION) $(DESTDIR)$(PREFIX)/$(LIBDIR)/lib$(NAME).so.$(LIBMAJOR)
+ 	ln -sf lib$(NAME).so.$(LIBMAJOR) $(DESTDIR)$(PREFIX)/$(LIBDIR)/lib$(NAME).so
+ 
++install-includes:
++	install -d -m 0755 $(DESTDIR)$(PREFIX)/$(INCDIR)
++	install -m 0644 jitterentropy.h $(DESTDIR)$(PREFIX)/$(INCDIR)/
++	install -m 0644 jitterentropy-base-user.h $(DESTDIR)$(PREFIX)/$(INCDIR)/
++
++install-static:
++	install -d -m 0755 $(DESTDIR)$(PREFIX)/$(LIBDIR)
++	install -m 0755 lib$(NAME).a $(DESTDIR)$(PREFIX)/$(LIBDIR)/
++
+ clean:
+ 	@- $(RM) $(NAME)
+ 	@- $(RM) $(OBJS)
+-- 
+2.23.0
+

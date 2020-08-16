@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBKCAPI_VERSION = 1.1.4
+LIBKCAPI_VERSION = 1.1.5
 LIBKCAPI_SOURCE = libkcapi-$(LIBKCAPI_VERSION).tar.xz
 LIBKCAPI_SITE = http://www.chronox.de/libkcapi
 LIBKCAPI_AUTORECONF = YES
@@ -15,6 +15,12 @@ LIBKCAPI_CONF_ENV = \
 	ac_cv_path_DB2PDF="" \
 	ac_cv_path_DB2PS="" \
 	ac_cv_path_XMLTO=""
+
+ifeq ($(BR2_PACKAGE_LIBKCAPI_ENCAPP),y)
+LIBKCAPI_CONF_OPTS += --enable-kcapi-encapp
+else
+LIBKCAPI_CONF_OPTS += --disable-kcapi-encapp
+endif
 
 ifeq ($(BR2_PACKAGE_LIBKCAPI_HASHER),y)
 LIBKCAPI_CONF_OPTS += --enable-kcapi-hasher

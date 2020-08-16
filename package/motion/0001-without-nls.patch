@@ -25,7 +25,7 @@ index 6ee2554..42b1c36 100644
 -AC_CONFIG_MACRO_DIR([m4])
 -
 -AM_GNU_GETTEXT([external])
--AM_GNU_GETTEXT_VERSION([0.18])
+-AM_GNU_GETTEXT_VERSION([0.19])
  
  ##############################################################################
  ###  Check additional system headers

@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-GERBERA_VERSION = v1.3.0
-GERBERA_SITE = $(call github,gerbera,gerbera,$(GERBERA_VERSION))
+GERBERA_VERSION = 1.4.0
+GERBERA_SITE = $(call github,gerbera,gerbera,v$(GERBERA_VERSION))
 GERBERA_LICENSE = GPL-2.0
 GERBERA_LICENSE_FILES = LICENSE.md
 GERBERA_DEPENDENCIES = \
@@ -63,6 +63,13 @@ ifeq ($(BR2_PACKAGE_LIBICONV),y)
 GERBERA_DEPENDENCIES += libiconv
 endif
 
+ifeq ($(BR2_PACKAGE_LIBMATROSKA),y)
+GERBERA_DEPENDENCIES += libmatroska
+GERBERA_CONF_OPTS += -DWITH_MATROSKA=ON
+else
+GERBERA_CONF_OPTS += -DWITH_MATROSKA=OFF
+endif
+
 ifeq ($(BR2_PACKAGE_MYSQL),y)
 GERBERA_DEPENDENCIES += mysql
 GERBERA_CONF_OPTS += -DWITH_MYSQL=ON
@@ -102,13 +109,6 @@ endef
 define GERBERA_INSTALL_INIT_SYSV
 	$(INSTALL) -D -m 0755 package/gerbera/S99gerbera \
 		$(TARGET_DIR)/etc/init.d/S99gerbera
-endef
-
-# gerbera.service is installed by cmake in $(TARGET_DIR)/usr/lib/systemd/system
-define GERBERA_INSTALL_INIT_SYSTEMD
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/gerbera.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/gerbera.service
 endef
 
 $(eval $(cmake-package))

@@ -1,0 +1,6 @@
+config BR2_PACKAGE_ERLANG_BASE64URL
+	bool "erlang-base64url"
+	help
+	  URL safe base64-compatible codec.
+
+	  https://github.com/dvv/base64url

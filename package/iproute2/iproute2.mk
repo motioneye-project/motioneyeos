@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-IPROUTE2_VERSION = 4.19.0
+IPROUTE2_VERSION = 5.6.0
 IPROUTE2_SOURCE = iproute2-$(IPROUTE2_VERSION).tar.xz
 IPROUTE2_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/net/iproute2
 IPROUTE2_DEPENDENCIES = host-bison host-flex host-pkgconf \
@@ -14,6 +14,14 @@ IPROUTE2_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_PACKAGE_ELFUTILS),y)
 IPROUTE2_DEPENDENCIES += elfutils
+endif
+
+ifeq ($(BR2_PACKAGE_LIBCAP),y)
+IPROUTE2_DEPENDENCIES += libcap
+endif
+
+ifeq ($(BR2_PACKAGE_LIBSELINUX),y)
+IPROUTE2_DEPENDENCIES += libselinux
 endif
 
 ifeq ($(BR2_PACKAGE_IPTABLES)x$(BR2_STATIC_LIBS),yx)

@@ -1,2 +1,5 @@
 # From http://ftp.gnome.org/pub/gnome/sources/atkmm/2.24/atkmm-2.24.2.sha256sum
-sha256	ff95385759e2af23828d4056356f25376cfabc41e690ac1df055371537e458bd	atkmm-2.24.2.tar.xz
+sha256  ff95385759e2af23828d4056356f25376cfabc41e690ac1df055371537e458bd  atkmm-2.24.2.tar.xz
+# locally computed
+sha256  a9bdde5616ecdd1e980b44f360600ee8783b1f99b8cc83a2beb163a0a390e861  COPYING
+sha256  ab15fd526bd8dd18a9e77ebc139656bf4d33e97fc7238cd11bf60e2b9b8666c6  COPYING.tools

@@ -1,0 +1,30 @@
+From 705490763fcc052defa2d49a5c5200775cd12c54 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Wed, 4 Mar 2020 08:27:24 +0100
+Subject: [PATCH] c99_math: import isinf for uclibc based toolchains
+
+The same fix as for glibc >= 2.23 is needed for uclibc
+based toolchains.
+
+[Upstream suggested: https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/4042]
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ include/c99_math.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/c99_math.h b/include/c99_math.h
+index e906c26aa54..c8a73a2d2c7 100644
+--- a/include/c99_math.h
++++ b/include/c99_math.h
+@@ -190,7 +190,7 @@ fpclassify(double x)
+  * undefines those functions, which in glibc 2.23, are defined as macros rather
+  * than functions as in glibc 2.22.
+  */
+-#if __cplusplus >= 201103L && (__GLIBC__ > 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 23))
++#if __cplusplus >= 201103L && (__GLIBC__ > 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 23) || defined(__UCLIBC__))
+ #include <cmath>
+ 
+ using std::fpclassify;
+-- 
+2.25.1
+

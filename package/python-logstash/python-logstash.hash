@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/python-logstash/json
+md5	26fafa0ea306025fb7644d70cb38982a  python-logstash-0.4.6.tar.gz
+sha256	10943e5df83f592b4d61b63ad1afff855ccc8c9467f78718f0a59809ba1fe68c  python-logstash-0.4.6.tar.gz
+# Locally computed sha256 checksums
+sha256	fea6a5c634ac9d9e047151675adc197c16f45bfba3c26ab113f48fb9fa717fff  LICENSE

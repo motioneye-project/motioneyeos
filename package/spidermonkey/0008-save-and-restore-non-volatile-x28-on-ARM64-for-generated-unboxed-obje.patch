@@ -1,0 +1,66 @@
+From 903a79a1efff18fc7cc50db09a3fe5d768adc9a8 Mon 19 Mar 2018 09:58:06 +0100
+From: Lars T Hansen <lhansen@mozilla.com>
+Date: Fri, 23 Mar 2018 22:01:33 +0000
+Subject: [PATCH] save and restore non-volatile x28 on ARM64 for generated unboxed object constructor
+
+Fixes: https://bugzilla.mozilla.org/show_bug.cgi?id=1375074
+
+Upsream-status: Applied
+See: https://hg.mozilla.org/mozilla-central/rev/800abe66894d
+
+Signed-off-by: Lars T Hansen <lhansen@mozilla.com>
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+---
+ js/src/vm/UnboxedObject.cpp | 30 ++++++++++++++++++++++++++----
+ 1 file changed, 26 insertions(+), 4 deletions(-)
+
+diff --git a/js/src/vm/UnboxedObject.cpp b/js/src/vm/UnboxedObject.cpp
+index 35ca20d7405f..1c20a1093d13 100644
+--- a/js/src/vm/UnboxedObject.cpp
++++ b/js/src/vm/UnboxedObject.cpp
+@@ -86,9 +86,16 @@ static const uintptr_t CLEAR_CONSTRUCTOR_CODE_TOKEN = 0x1;
+ #endif
+
+ #ifdef JS_CODEGEN_ARM64
+-  // ARM64 communicates stack address via sp, but uses a pseudo-sp for
+-  // addressing.
+-  masm.initStackPtr();
++    // ARM64 communicates stack address via sp, but uses a pseudo-sp (PSP) for
++    // addressing.  The register we use for PSP may however also be used by
++    // calling code, and it is nonvolatile, so save it.  Do this as a special
++    // case first because the generic save/restore code needs the PSP to be
++    // initialized already.
++    MOZ_ASSERT(PseudoStackPointer64.Is(masm.GetStackPointer64()));
++    masm.Str(PseudoStackPointer64, vixl::MemOperand(sp, -16, vixl::PreIndex));
++
++    // Initialize the PSP from the SP.
++    masm.initStackPtr();
+ #endif
+
+   MOZ_ASSERT(propertiesReg.volatile_());
+@@ -239,7 +246,22 @@ static const uintptr_t CLEAR_CONSTRUCTOR_CODE_TOKEN = 0x1;
+   if (ScratchDoubleReg.volatile_()) masm.pop(ScratchDoubleReg);
+   masm.PopRegsInMask(savedNonVolatileRegisters);
+
+-  masm.abiret();
++#ifdef JS_CODEGEN_ARM64
++    // Now restore the value that was in the PSP register on entry, and return.
++
++    // Obtain the correct SP from the PSP.
++    masm.Mov(sp, PseudoStackPointer64);
++
++    // Restore the saved value of the PSP register, this value is whatever the
++    // caller had saved in it, not any actual SP value, and it must not be
++    // overwritten subsequently.
++    masm.Ldr(PseudoStackPointer64, vixl::MemOperand(sp, 16, vixl::PostIndex));
++
++    // Perform a plain Ret(), as abiret() will move SP <- PSP and that is wrong.
++    masm.Ret(vixl::lr);
++#else
++    masm.abiret();
++#endif
+
+   masm.bind(&failureStoreOther);
+
+--
+2.23.0

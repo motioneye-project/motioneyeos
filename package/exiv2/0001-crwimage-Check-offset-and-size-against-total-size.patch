@@ -1,0 +1,32 @@
+From b7890776c62398ca1005e8edc32786859d60fcf7 Mon Sep 17 00:00:00 2001
+From: Jens Georg <mail@jensge.org>
+Date: Sun, 6 Oct 2019 15:05:20 +0200
+Subject: [PATCH] crwimage: Check offset and size against total size
+
+Corrupted or specially crafted CRW images might exceed the overall
+buffersize.
+
+Fixes #1019
+
+(cherry picked from commit 683451567284005cd24e1ccb0a76ca401000968b)
+[Retrieved (and slightly updated to keep only the fix) from:
+https://github.com/Exiv2/exiv2/commit/50e9dd964a439da357798344ed1dd86edcadf0ec]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ src/crwimage_int.cpp | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/crwimage_int.cpp b/src/crwimage_int.cpp
+index 29311fdb7..c0d955350 100644
+--- a/src/crwimage_int.cpp
++++ b/src/crwimage_int.cpp
+@@ -268,6 +268,9 @@ namespace Exiv2 {
+ #ifdef EXIV2_DEBUG_MESSAGES
+         std::cout << "Reading directory 0x" << std::hex << tag() << "\n";
+ #endif
++        if (this->offset() + this->size() > size)
++            throw Error(kerOffsetOutOfRange);
++
+         readDirectory(pData + offset(), this->size(), byteOrder);
+ #ifdef EXIV2_DEBUG_MESSAGES
+         std::cout << "<---- 0x" << std::hex << tag() << "\n";

@@ -1,2 +1,7 @@
+# From https://sourceforge.net/p/fetchmail/mailman/message/36993086/
+sha256  511b60daabf7543a01de06af07c8772290c6807cd53c42a8504960e978f3abea  fetchmail-6.4.4.tar.xz
+# From https://sourceforge.net/projects/fetchmail/files/branch_6.4/
+sha1  2e049aadf84ba327d585c34240f926f0b32b4dcc  fetchmail-6.4.4.tar.xz
+md5  53d52179c8bf8e2f57489538b49bfda9  fetchmail-6.4.4.tar.xz
 # Locally computed:
-sha256  79b4c54cdbaf02c1a9a691d9948fcb1a77a1591a813e904283a8b614b757e850  fetchmail-6.3.26.tar.xz
+sha256  89d6efe79c78f965b256e007d6acc367fff982c59b6195fb6ec5895ea0fc9bd5  COPYING

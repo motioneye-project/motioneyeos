@@ -1,0 +1,12 @@
+[Unit]
+Description=Start psplash-systemd progress communication helper
+DefaultDependencies=no
+After=systemd-start.service
+Requires=psplash-start.service
+RequiresMountsFor=/run
+
+[Service]
+ExecStart=/usr/bin/psplash-systemd
+
+[Install]
+WantedBy=sysinit.target

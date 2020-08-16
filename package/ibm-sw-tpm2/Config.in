@@ -1,0 +1,17 @@
+config BR2_PACKAGE_IBM_SW_TPM2
+	bool "ibm-sw-tpm2"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_STATIC_LIBS # ibm-sw-tpm2
+	select BR2_PACKAGE_OPENSSL
+	# libressl is not supported
+	select BR2_PACKAGE_OPENSSL_FORCE_LIBOPENSSL
+	help
+	  This project is an implementation of the TCG TPM 2.0
+	  specification. It is based on the TPM specification Parts 3
+	  and 4 source code donated by Microsoft, with additional
+	  files to complete the implementation.
+
+	  https://sourceforge.net/projects/ibmswtpm2/
+
+comment "ibm-sw-tpm2 needs a toolchain w/ threads, dynamic library"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

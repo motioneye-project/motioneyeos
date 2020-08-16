@@ -3,3 +3,5 @@ config BR2_PACKAGE_MII_DIAG
 	help
 	  mii-diag allows you to manipulate the MII registers of
 	  network cards.
+
+	  https://launchpad.net/ubuntu/+source/mii-diag

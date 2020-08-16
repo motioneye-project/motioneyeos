@@ -1,7 +1,10 @@
 config BR2_PACKAGE_LIBURCU_ARCH_SUPPORTS
 	bool
 	default y
-	depends on BR2_arm || BR2_armeb || BR2_aarch64 || BR2_i386 || BR2_powerpc || BR2_x86_64
+	depends on BR2_arm || BR2_armeb || BR2_aarch64 || BR2_aarch64_be || \
+		BR2_i386 || BR2_mips || BR2_mips64 || BR2_mipsel || \
+		BR2_mips64el || BR2_nios2 || BR2_powerpc || BR2_powerpc64 || \
+		BR2_powerpc64le || BR2_riscv || BR2_sparc64 || BR2_x86_64
 	depends on BR2_USE_MMU # fork() in test
 
 config BR2_PACKAGE_LIBURCU

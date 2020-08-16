@@ -15,7 +15,7 @@ LIBUCI_DEPENDENCIES += lua
 LIBUCI_CONF_OPTS += -DBUILD_LUA=ON \
 	-DLUAPATH=/usr/lib/lua/5.1 \
 	-DLUA_CFLAGS=-I$(STAGING_DIR)/usr/include
-LIBUCI_LICENSE := $(LIBUCI_LICENSE), GPL-2.0 (lua bindings)
+LIBUCI_LICENSE += , GPL-2.0 (lua bindings)
 else
 LIBUCI_CONF_OPTS += -DBUILD_LUA=OFF
 endif

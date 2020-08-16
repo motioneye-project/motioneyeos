@@ -1,0 +1,29 @@
+From 45a8c51a20a518ed78c5ea1829a307c045f737be Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Fri, 27 Mar 2020 22:19:42 +0100
+Subject: [PATCH] configure.ac: fix --with-rtlsdr option
+
+Add missing ',' to allow the user to explicitly disable or enable rtlsdr
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/nhorman/rng-tools/pull/88]
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index ba796f8..1f55052 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -43,7 +43,7 @@ AC_ARG_WITH([pkcs11],
+ 
+ AC_ARG_WITH([rtlsdr],
+ 	AS_HELP_STRING([--without-rtlsdr],
+-		[Disable rtlsdr support. ])
++		[Disable rtlsdr support. ]),
+ 	[],
+ 	[with_rtlsdr=no]
+ )
+-- 
+2.25.1
+

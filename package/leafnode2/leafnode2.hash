@@ -1,2 +1,4 @@
 # Locally calculated
-sha256 34eba2cbbb871b724c8d5dd402d1c358aeb21ba426beb5658e155ed0d7461075  leafnode-2.0.0.alpha20140727b.tar.bz2
+sha256  34eba2cbbb871b724c8d5dd402d1c358aeb21ba426beb5658e155ed0d7461075  leafnode-2.0.0.alpha20140727b.tar.bz2
+sha256  59d37f745dc5a2d63a51dff344f4ad89f72e76f8c7b7d877f20880d838b1bec9  COPYING
+sha256  0c92246a9d3636e0aa6a244f6c481639b2e530fbbb25bc048ce7acd83e1fc5f6  COPYING.LGPL

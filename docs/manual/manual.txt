@@ -12,7 +12,7 @@ It is licensed under the GNU General Public License, version 2. Refer to the
 http://git.buildroot.org/buildroot/tree/COPYING?id={sys:git rev-parse HEAD}[COPYING]
 file in the Buildroot sources for the full text of this license.
 
-Copyright (C) 2004-2019 The Buildroot developers
+Copyright (C) 2004-2020 The Buildroot developers
 
 image::logo.png[]
 
@@ -65,6 +65,8 @@ include::debugging-buildroot.txt[]
 include::contribute.txt[]
 
 include::developers.txt[]
+
+include::release-engineering.txt[]
 
 = Appendix
 

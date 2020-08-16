@@ -27,10 +27,10 @@ endif
 # Generic optimisations
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
 FFTW_COMMON_CONF_OPTS += --enable-threads
-FFTW_COMMON_CONF_OPTS += $(if $(BR2_GCC_ENABLE_OPENMP),--without,--with)-combined-threads
+FFTW_COMMON_CONF_OPTS += $(if $(BR2_TOOLCHAIN_HAS_OPENMP),--without,--with)-combined-threads
 else
 FFTW_COMMON_CONF_OPTS += --disable-threads
 endif
-FFTW_COMMON_CONF_OPTS += $(if $(BR2_GCC_ENABLE_OPENMP),--enable,--disable)-openmp
+FFTW_COMMON_CONF_OPTS += $(if $(BR2_TOOLCHAIN_HAS_OPENMP),--enable,--disable)-openmp
 
 include $(sort $(wildcard package/fftw/*/*.mk))

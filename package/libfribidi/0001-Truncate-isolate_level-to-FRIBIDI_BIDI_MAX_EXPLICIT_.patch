@@ -1,0 +1,30 @@
+From 034c6e9a1d296286305f4cfd1e0072b879f52568 Mon Sep 17 00:00:00 2001
+From: Dov Grobgeld <dov.grobgeld@gmail.com>
+Date: Thu, 24 Oct 2019 09:37:29 +0300
+Subject: [PATCH] Truncate isolate_level to FRIBIDI_BIDI_MAX_EXPLICIT_LEVEL
+
+CVE-2019-18397
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ lib/fribidi-bidi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/lib/fribidi-bidi.c b/lib/fribidi-bidi.c
+index 6c84392..d384878 100644
+--- a/lib/fribidi-bidi.c
++++ b/lib/fribidi-bidi.c
+@@ -747,7 +747,9 @@ fribidi_get_par_embedding_levels_ex (
+             }
+ 
+ 	  RL_LEVEL (pp) = level;
+-          RL_ISOLATE_LEVEL (pp) = isolate_level++;
++          RL_ISOLATE_LEVEL (pp) = isolate_level;
++          if (isolate_level < FRIBIDI_BIDI_MAX_EXPLICIT_LEVEL-1)
++              isolate_level++;
+           base_level_per_iso_level[isolate_level] = new_level;
+ 
+ 	  if (!FRIBIDI_IS_NEUTRAL (override))
+-- 
+2.20.1
+

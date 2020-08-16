@@ -1,0 +1,10 @@
+config BR2_PACKAGE_PYTHON_SMMAP2
+	bool "python-smmap2"
+	help
+	  Smmap wraps an interface around mmap and tracks the mapped
+	  files as well as the amount of clients who use it. If the
+	  system runs out of resources, or if a memory limit is reached,
+	  it will automatically unload unused maps to allow continued
+	  operation.
+
+	  https://github.com/gitpython-developers/smmap

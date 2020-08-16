@@ -1,0 +1,39 @@
+From b9d010d2c07e07eeffa510f14ff833ecb10dc0c8 Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Mon, 24 Jun 2019 21:11:33 +0200
+Subject: [PATCH] include <limits.h>
+
+Needed after
+https://repo.or.cz/rtmpdump.git/commitdiff/c5f04a58fc2aeea6296ca7c44ee4734c18401aa3
+
+to fix
+
+rtmp.c: In function 'HTTP_read':
+rtmp.c:4459:26: error: 'INT_MAX' undeclared (first use in this function); did you mean 'INT8_MAX'?
+
+reported by buildroot autobuilders:
+http://autobuild.buildroot.net/?reason=rtmpdump-c5f04a58fc2aeea6296ca7c44ee4734c18401aa3
+
+Patch sent upstream by e-mail to author of
+https://repo.or.cz/rtmpdump.git/patch/c5f04a58fc2aeea6296ca7c44ee4734c18401aa3
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ librtmp/rtmp.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/librtmp/rtmp.h b/librtmp/rtmp.h
+index 6d7dd89..48d4fc3 100644
+--- a/librtmp/rtmp.h
++++ b/librtmp/rtmp.h
+@@ -32,6 +32,7 @@
+ #include <errno.h>
+ #include <stdint.h>
+ #include <stddef.h>
++#include <limits.h>
+ 
+ #include "amf.h"
+ 
+-- 
+2.20.1
+

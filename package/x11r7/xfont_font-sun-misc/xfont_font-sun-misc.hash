@@ -1,2 +1,4 @@
 # From http://www.x.org/archive/current/src/everything/CHECKSUMS
-sha256 481f4fcbbf7005658b080b3cf342c8c76de752e77f47958b2b383de73266d2e0 font-sun-misc-1.0.3.tar.bz2
+sha256  481f4fcbbf7005658b080b3cf342c8c76de752e77f47958b2b383de73266d2e0  font-sun-misc-1.0.3.tar.bz2
+# Locally computed
+sha256  dd6da1d39832ab2878c3304405c1c7883c6da292ffde262fca1785239534c40f  COPYING

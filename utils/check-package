@@ -33,6 +33,7 @@ def parse_args():
                         default="http://nightly.buildroot.org/",
                         help="default: %(default)s")
     parser.add_argument("--verbose", "-v", action="count", default=0)
+    parser.add_argument("--quiet", "-q", action="count", default=0)
 
     # Now the debug options in the order they are processed.
     parser.add_argument("--include-only", dest="include_list", action="append",
@@ -71,6 +72,10 @@ def get_lib_from_filename(fname):
         if DO_CHECK_INTREE.match(fname) is None:
             return None
         if DO_NOT_CHECK_INTREE.match(fname):
+            return None
+    else:
+        if os.path.basename(fname) == "external.mk" and \
+           os.path.exists(fname[:-2] + "desc"):
             return None
     if CONFIG_IN_FILENAME.search(fname):
         return checkpackagelib.lib_config
@@ -177,8 +182,10 @@ def __main__():
     # (e.g. counted by 'wc'), so for stats use stderr. Wait all warnings are
     # printed, for the case there are many of them, before printing stats.
     sys.stdout.flush()
-    print("{} lines processed".format(total_lines), file=sys.stderr)
-    print("{} warnings generated".format(total_warnings), file=sys.stderr)
+
+    if not flags.quiet:
+        print("{} lines processed".format(total_lines), file=sys.stderr)
+        print("{} warnings generated".format(total_warnings), file=sys.stderr)
 
     if total_warnings > 0:
         sys.exit(1)

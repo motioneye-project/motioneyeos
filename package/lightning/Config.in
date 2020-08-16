@@ -1,12 +1,12 @@
 comment "lightning needs a toolchain w/ dynamic library"
 	depends on BR2_sparc || BR2_i386 || BR2_x86_64 || BR2_mips || \
-		BR2_mipsel || BR2_arm || BR2_powerpc
+		BR2_mipsel || BR2_arm || BR2_powerpc || BR2_RISCV_64
 	depends on BR2_STATIC_LIBS
 
 config BR2_PACKAGE_LIGHTNING
 	bool "lightning"
 	depends on BR2_sparc || BR2_i386 || BR2_x86_64 || BR2_mips || \
-		BR2_mipsel || BR2_arm || BR2_powerpc
+		BR2_mipsel || BR2_arm || BR2_powerpc || BR2_RISCV_64
 	depends on !BR2_STATIC_LIBS
 	help
 	  GNU lightning is a library that generates

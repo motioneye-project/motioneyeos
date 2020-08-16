@@ -1,0 +1,10 @@
+config BR2_PACKAGE_GLI
+	bool "gli"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  OpenGL Image (GLI)
+
+	  http://gli.g-truc.net
+
+comment "gli needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP

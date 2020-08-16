@@ -1,2 +1,3 @@
 # locally computed hash
-sha256 81633274a9157c076e5e09b5addd81fbcef504b829fc801041cea50eea774bcd ux500-firmware_1.1.3-6linaro1.tar.gz
+sha256  81633274a9157c076e5e09b5addd81fbcef504b829fc801041cea50eea774bcd  ux500-firmware_1.1.3-6linaro1.tar.gz
+sha256  b5bbc3fb3ff2f8e165b3bf60b25702d8970b3d7fe88b1c883f20615d550a7cb2  license.txt

@@ -1,2 +1,5 @@
-# locally computed
-sha256  33a98fd44eb0b6dfa6790c0fcef4d7e73a5cc12a664ea3c30f4d3c2b95f5efc4  python-dpkt-1.8.r98.tar.gz
+# md5, sha256 from https://pypi.org/pypi/dpkt/json
+md5	b204a5434fe29749de539150e00e762e  dpkt-1.9.2.tar.gz
+sha256	52a92ecd5ca04d5bd852bb11cb2eac4bbe38b42a7c472e0d950eeb9f82a81e54  dpkt-1.9.2.tar.gz
+# Locally computed sha256 checksums
+sha256	4c5ffde575425591cbd51410219a6b98bbbb717e0c5784187e356653da8e5095  LICENSE

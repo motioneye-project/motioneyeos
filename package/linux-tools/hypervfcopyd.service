@@ -1,0 +1,11 @@
+[Unit]
+Description=HyperV FCopy daemon
+After=syslog.target
+ConditionVirtualization=microsoft
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/hypervfcopyd -n
+
+[Install]
+WantedBy=multi-user.target

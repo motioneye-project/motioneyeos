@@ -1,0 +1,38 @@
+From 6a8a510211515824ff20699d45f6d07a84f3c02e Mon Sep 17 00:00:00 2001
+From: Christian Brauner <christian.brauner@ubuntu.com>
+Date: Sun, 28 Jul 2019 23:13:26 +0200
+Subject: [PATCH] cgroups: initialize cpuset properly
+
+Closes #3108.
+Signed-off-by: Christian Brauner <christian.brauner@ubuntu.com>
+(cherry picked from commit b31d62b847a3ee013613795094cce4acc12345ef)
+Signed-off-by: Romain Naour <romain.naour@smile.fr>
+---
+ src/lxc/cgroups/cgfsng.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/src/lxc/cgroups/cgfsng.c b/src/lxc/cgroups/cgfsng.c
+index 87e12d2dd..7e691d7cc 100644
+--- a/src/lxc/cgroups/cgfsng.c
++++ b/src/lxc/cgroups/cgfsng.c
+@@ -496,12 +496,12 @@ static bool cg_legacy_filter_and_set_cpus(char *path, bool am_initialized)
+ 	}
+ 
+ 	if (!flipped_bit) {
+-		DEBUG("No isolated or offline cpus present in cpuset");
+-		return true;
++		cpulist = lxc_cpumask_to_cpulist(possmask, maxposs);
++		TRACE("No isolated or offline cpus present in cpuset");
++	} else {
++		cpulist = move_ptr(posscpus);
++		TRACE("Removed isolated or offline cpus from cpuset");
+ 	}
+-	DEBUG("Removed isolated or offline cpus from cpuset");
+-
+-	cpulist = lxc_cpumask_to_cpulist(possmask, maxposs);
+ 	if (!cpulist) {
+ 		ERROR("Failed to create cpu list");
+ 		return false;
+-- 
+2.24.1
+

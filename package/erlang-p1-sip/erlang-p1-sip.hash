@@ -1,2 +1,3 @@
 # Locally calculated
-sha256 be38cceff8e2207da24805b8e1c926cdf6d63ab116be12cd829f5a3a4e5e58ab erlang-p1-sip-1.0.26.tar.gz
+sha256 4c8dbba1dfcbb16a300fea5fd75f5ab2a145f011fa1ebff37e31e1672a9bc285 erlang-p1-sip-1.0.30.tar.gz
+sha256 6e68ca4488fcdacf80ea0a3f5a6a294d48c2d8dc9de520cc3d6b3f3c1bc12847 LICENSE.txt

@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-TESSERACT_OCR_VERSION = 4.0.0
+TESSERACT_OCR_VERSION = 4.1.1
 TESSERACT_OCR_DATA_VERSION = 4.0.0
 TESSERACT_OCR_SITE = $(call github,tesseract-ocr,tesseract,$(TESSERACT_OCR_VERSION))
 TESSERACT_OCR_LICENSE = Apache-2.0
-TESSERACT_OCR_LICENSE_FILES = COPYING
+TESSERACT_OCR_LICENSE_FILES = LICENSE
 
 # Source from github, no configure script provided
 TESSERACT_OCR_AUTORECONF = YES
@@ -52,13 +52,6 @@ endif
 TESSERACT_OCR_EXTRA_DOWNLOADS = \
 	$(addprefix https://github.com/tesseract-ocr/tessdata/raw/$(TESSERACT_OCR_DATA_VERSION)/,\
 		$(TESSERACT_OCR_DATA_FILES))
-
-define TESSERACT_OCR_PRECONFIGURE
-	# Autoreconf step fails due to missing m4 directory
-	mkdir -p $(@D)/m4
-endef
-
-TESSERACT_OCR_PRE_CONFIGURE_HOOKS += TESSERACT_OCR_PRECONFIGURE
 
 # Language data files installation
 define TESSERACT_OCR_INSTALL_LANG_DATA

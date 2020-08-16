@@ -1,0 +1,20 @@
+config BR2_PACKAGE_UVW
+	bool "uvw"
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # libuv
+	depends on BR2_USE_MMU # libuv
+	depends on !BR2_STATIC_LIBS # libuv
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # libuv
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_7 # C++17
+	select BR2_PACKAGE_LIBUV
+	help
+	  Header-only, event based, tiny and easy to use
+	  libuv wrapper in modern C++.
+
+	  https://github.com/skypjack/uvw
+
+comment "uvw needs a toolchain w/ NPTL, dynamic library, C++, gcc >= 7"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL || BR2_STATIC_LIBS || \
+		!BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_GCC_AT_LEAST_7
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4

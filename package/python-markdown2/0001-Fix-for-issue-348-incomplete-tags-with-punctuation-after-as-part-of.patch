@@ -1,0 +1,53 @@
+From 9144d0fc5d5249cc4d81287ee79091806e6dde52 Mon Sep 17 00:00:00 2001
+From: Gareth Simpson <gareth.simpson@zoodigital.com>
+Date: Fri, 1 May 2020 19:31:21 +0100
+Subject: [PATCH] Fix for issue 348 - incomplete tags with punctuation after as
+ part of the tag name are a source of XSS
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/trentm/python-markdown2/commit/9144d0fc5d5249cc4d81287ee79091806e6dde52]
+---
+ lib/markdown2.py                           | 2 +-
+ test/tm-cases/issue348_incomplete_tag.html | 1 +
+ test/tm-cases/issue348_incomplete_tag.opts | 1 +
+ test/tm-cases/issue348_incomplete_tag.text | 1 +
+ 4 files changed, 4 insertions(+), 1 deletion(-)
+ create mode 100644 test/tm-cases/issue348_incomplete_tag.html
+ create mode 100644 test/tm-cases/issue348_incomplete_tag.opts
+ create mode 100644 test/tm-cases/issue348_incomplete_tag.text
+
+diff --git a/lib/markdown2.py b/lib/markdown2.py
+index 3a5d5d9..636bf07 100755
+--- a/lib/markdown2.py
++++ b/lib/markdown2.py
+@@ -2164,7 +2164,7 @@ def _encode_amps_and_angles(self, text):
+         text = self._naked_gt_re.sub('&gt;', text)
+         return text
+ 
+-    _incomplete_tags_re = re.compile("<(/?\w+[\s/]+?)")
++    _incomplete_tags_re = re.compile("<(/?\w+?(?!://).?[\s/]+?)")
+ 
+     def _encode_incomplete_tags(self, text):
+         if self.safe_mode not in ("replace", "escape"):
+diff --git a/test/tm-cases/issue348_incomplete_tag.html b/test/tm-cases/issue348_incomplete_tag.html
+new file mode 100644
+index 0000000..46059cc
+--- /dev/null
++++ b/test/tm-cases/issue348_incomplete_tag.html
+@@ -0,0 +1 @@
++<p>&lt;lol@/ //id="pwn"//onclick="alert(1)"//<strong>abc</strong></p>
+diff --git a/test/tm-cases/issue348_incomplete_tag.opts b/test/tm-cases/issue348_incomplete_tag.opts
+new file mode 100644
+index 0000000..ad487c0
+--- /dev/null
++++ b/test/tm-cases/issue348_incomplete_tag.opts
+@@ -0,0 +1 @@
++{"safe_mode": "escape"}
+diff --git a/test/tm-cases/issue348_incomplete_tag.text b/test/tm-cases/issue348_incomplete_tag.text
+new file mode 100644
+index 0000000..bb4a0de
+--- /dev/null
++++ b/test/tm-cases/issue348_incomplete_tag.text
+@@ -0,0 +1 @@
++<lol@/ //id="pwn"//onclick="alert(1)"//**abc**

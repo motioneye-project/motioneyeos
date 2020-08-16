@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PYTHON_TXDBUS
+	bool "python-txdbus"
+	select BR2_PACKAGE_PYTHON_TWISTED # runtime
+	select BR2_PACKAGE_PYTHON_SIX # runtime
+	help
+	  A native Python implementation of the DBus protocol for
+	  Twisted applications.
+
+	  https://github.com/cocagne/txdbus

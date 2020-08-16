@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBPAGEKITE_VERSION = v0.91.171102
-LIBPAGEKITE_SITE = $(call github,pagekite,libpagekite,$(LIBPAGEKITE_VERSION))
+LIBPAGEKITE_VERSION = 0.91.190530
+LIBPAGEKITE_SITE = $(call github,pagekite,libpagekite,v$(LIBPAGEKITE_VERSION))
 
 # pkrelay is AGPL-3.0+ but is not built
 LIBPAGEKITE_LICENSE = Apache-2.0 or AGPL-3.0+
@@ -15,7 +15,6 @@ LIBPAGEKITE_DEPENDENCIES = host-pkgconf libev openssl
 LIBPAGEKITE_INSTALL_STAGING = YES
 
 # Sources from git, no configure included
-# 0001-configure.ac-fix-handling-of-with-os-libev.patch touches configure.ac
 LIBPAGEKITE_AUTORECONF = YES
 
 LIBPAGEKITE_CONF_OPTS = \

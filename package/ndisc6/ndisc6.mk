@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-NDISC6_VERSION = 1.0.3
+NDISC6_VERSION = 1.0.4
 NDISC6_SOURCE = ndisc6-$(NDISC6_VERSION).tar.bz2
 NDISC6_SITE = http://www.remlab.net/files/ndisc6
-NDISC6_CONF_ENV = CC="$(TARGET_CC) -std=gnu99" LIBS=$(TARGET_NLS_LIBS)
+NDISC6_CONF_ENV = CC="$(TARGET_CC) -std=c11" LIBS=$(TARGET_NLS_LIBS)
 NDISC6_CONF_OPTS = --disable-rpath --disable-suid-install
 NDISC6_LICENSE = GPL-2.0 or GPL-3.0
 NDISC6_LICENSE_FILES = COPYING

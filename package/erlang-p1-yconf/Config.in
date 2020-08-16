@@ -1,0 +1,5 @@
+config BR2_PACKAGE_ERLANG_P1_YCONF
+	bool "erlang-p1-yconf"
+	select BR2_PACKAGE_ERLANG_P1_YAML
+	help
+	  YAML configuration processor.

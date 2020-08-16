@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/ifaddr/json
+md5	cc1b7f0a587ef38491f07e50bf91d82e  ifaddr-0.1.6.tar.gz
+sha256	c19c64882a7ad51a394451dabcbbed72e98b5625ec1e79789924d5ea3e3ecb93  ifaddr-0.1.6.tar.gz
+# Locally calculated
+sha256	926c6fdac9ede91ae54c67066597466b04f9b4f956a24f9c77931e7765607b2c  setup.py

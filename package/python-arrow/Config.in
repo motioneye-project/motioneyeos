@@ -1,6 +1,8 @@
 config BR2_PACKAGE_PYTHON_ARROW
 	bool "python-arrow"
 	select BR2_PACKAGE_PYTHON_DATEUTIL # runtime
+	select BR2_PACKAGE_PYTHON_BACKPORTS_FUNCTOOLS_LRU_CACHE \
+	       if BR2_PACKAGE_PYTHON # runtime
 	help
 	  Better dates and times for Python.
 

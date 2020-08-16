@@ -1,3 +1,6 @@
 # From http://sourceforge.net/projects/sox/files/sox/14.4.2/
 md5	ba804bb1ce5c71dd484a102a5b27d0dd	sox-14.4.2.tar.bz2
 sha1	dc9668256b9d81ef25d672f14f12ec026b0b4087	sox-14.4.2.tar.bz2
+# Locally computed
+sha256  ab15fd526bd8dd18a9e77ebc139656bf4d33e97fc7238cd11bf60e2b9b8666c6  LICENSE.GPL
+sha256  5df07007198989c622f5d41de8d703e7bef3d0e79d62e24332ee739a452af62a  LICENSE.LGPL

@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-LIBCUEFILE_VERSION = r475
+LIBCUEFILE_VERSION = 475
 LIBCUEFILE_SITE = http://files.musepack.net/source
-LIBCUEFILE_SOURCE = libcuefile_$(LIBCUEFILE_VERSION).tar.gz
+LIBCUEFILE_SOURCE = libcuefile_r$(LIBCUEFILE_VERSION).tar.gz
 LIBCUEFILE_INSTALL_STAGING = YES
 LIBCUEFILE_LICENSE = GPL-2.0+
 LIBCUEFILE_LICENSE_FILES = COPYING

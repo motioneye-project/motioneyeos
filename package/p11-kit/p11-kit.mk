@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-P11_KIT_VERSION = 0.23.2
-P11_KIT_SITE = http://p11-glue.freedesktop.org/releases
+P11_KIT_VERSION = 0.23.16.1
+P11_KIT_SITE = https://github.com/p11-glue/p11-kit/releases/download/$(P11_KIT_VERSION)
 P11_KIT_DEPENDENCIES = host-pkgconf libffi libtasn1
 P11_KIT_INSTALL_STAGING = YES
 P11_KIT_CONF_OPTS = --disable-static

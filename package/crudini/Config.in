@@ -1,6 +1,6 @@
 config BR2_PACKAGE_CRUDINI
 	bool "crudini"
-	depends on BR2_PACKAGE_PYTHON
+	depends on BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3
 	select BR2_PACKAGE_PYTHON_INIPARSE # runtime
 	help
 	  A utility for handling ini files from the command line and

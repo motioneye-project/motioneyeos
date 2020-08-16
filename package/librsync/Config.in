@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBRSYNC
 	bool "librsync"
-	depends on !BR2_STATIC_LIBS
 	select BR2_PACKAGE_ZLIB
 	select BR2_PACKAGE_BZIP2
 	select BR2_PACKAGE_POPT
@@ -10,6 +9,3 @@ config BR2_PACKAGE_LIBRSYNC
 	  rsync utility and is used in rproxy.
 
 	  https://github.com/librsync/librsync
-
-comment "librsync needs a toolchain w/ dynamic library support"
-	depends on BR2_STATIC_LIBS

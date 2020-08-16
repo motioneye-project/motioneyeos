@@ -1,0 +1,29 @@
+From 39e534ab696157b244ec226d649c789dcf423e42 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Wed, 24 Apr 2019 20:48:57 +0200
+Subject: [PATCH] htp.pc.in: add -lz to Libs.private
+
+zlib is a mandatory dependency so add it to Libs.private otherwise
+static linking of packages linking with htp (e.g. suricata) will fail.
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/OISF/libhtp/pull/294]
+---
+ htp.pc.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/htp.pc.in b/htp.pc.in
+index 2fec995..9b1a6cc 100644
+--- a/htp.pc.in
++++ b/htp.pc.in
+@@ -7,6 +7,6 @@ Name: @PACKAGE_NAME@
+ Description: A security-aware HTTP parser, designed for use in IDS/IPS and WAF products.
+ Version: @PACKAGE_VERSION@
+ Libs: -L${libdir} -lhtp
+-Libs.private: @LIBICONV@
++Libs.private: -lz @LIBICONV@
+ Cflags: -I${includedir} -I${libdir}/htp/include
+ 
+-- 
+2.20.1
+

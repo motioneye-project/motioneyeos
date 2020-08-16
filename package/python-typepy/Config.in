@@ -1,8 +1,7 @@
 config BR2_PACKAGE_PYTHON_TYPEPY
 	bool "python-typepy"
+	depends on BR2_PACKAGE_PYTHON3 # python-mbstrdecoder
 	select BR2_PACKAGE_PYTHON_DATEUTIL # runtime
-	select BR2_PACKAGE_PYTHON_ENUM34 if BR2_PACKAGE_PYTHON # runtime
-	select BR2_PACKAGE_PYTHON_IPADDRESS if BR2_PACKAGE_PYTHON # runtime
 	select BR2_PACKAGE_PYTHON_MBSTRDECODER # runtime
 	select BR2_PACKAGE_PYTHON_PYTZ # runtime
 	select BR2_PACKAGE_PYTHON_SIX # runtime

@@ -1,6 +1,6 @@
 config BR2_PACKAGE_WEBRTC_AUDIO_PROCESSING_ARCH_SUPPORTS
 	bool
-	default y if BR2_arm || BR2_i386 || BR2_x86_64
+	default y if BR2_aarch64 || BR2_arm || BR2_i386 || BR2_x86_64
 
 config BR2_PACKAGE_WEBRTC_AUDIO_PROCESSING
 	bool "webrtc-audio-processing"

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TCLAP_VERSION = 1.2.1
+TCLAP_VERSION = 1.2.2
 TCLAP_SITE = http://downloads.sourceforge.net/project/tclap
 TCLAP_LICENSE = MIT
 TCLAP_LICENSE_FILES = COPYING

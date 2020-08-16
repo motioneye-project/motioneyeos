@@ -1,0 +1,13 @@
+config BR2_PACKAGE_UFTP
+	bool "uftp"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_WCHAR
+	help
+	  Encrypted UDP based FTP with multicast.
+
+	  http://uftp-multicast.sourceforge.net/
+
+comment "uftp needs a toolchain w/ threads, wchar"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR

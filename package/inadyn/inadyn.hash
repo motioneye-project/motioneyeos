@@ -1,5 +1,6 @@
-# From https://github.com/troglobit/inadyn/releases/download/v2.5/inadyn-2.5.tar.xz.md5
-md5 8a864d5186e54d24de2d7554fc01b3ec  inadyn-2.5.tar.xz
+# From https://github.com/troglobit/inadyn/releases/download/v2.7/inadyn-2.7.tar.xz.md5
+md5  3ab125df504a9755264a9ebeedbfa4de  inadyn-2.7.tar.xz
+
 # Locally computed
-sha256 4a9ad208671f62912428413da0282450b2d2c4da38f3c95c4ac975d048c41fcd  inadyn-2.5.tar.xz
-sha256 ab15fd526bd8dd18a9e77ebc139656bf4d33e97fc7238cd11bf60e2b9b8666c6  COPYING
+sha256  eb03bc9d9c09dfbbc651b43a2eb5a967d0454a8293576df23784710dac50c6a4  inadyn-2.7.tar.xz
+sha256  ab15fd526bd8dd18a9e77ebc139656bf4d33e97fc7238cd11bf60e2b9b8666c6  COPYING

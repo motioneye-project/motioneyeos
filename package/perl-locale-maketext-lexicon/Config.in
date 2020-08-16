@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PERL_LOCALE_MAKETEXT_LEXICON
+	bool "perl-locale-maketext-lexicon"
+	help
+	  Use other catalog formats in Maketext.
+
+	  http://search.cpan.org/dist/Locale-Maketext-Lexicon

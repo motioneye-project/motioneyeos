@@ -1,0 +1,66 @@
+#!/bin/sh
+
+PROGS="@PROGS@"
+PIDDIR="/var/run"
+
+# shellcheck source=/dev/null
+[ -r "/etc/default/hyperv" ] && . "/etc/default/hyperv"
+
+start_one() {
+	printf 'Starting %s: ' "$1"
+	# shellcheck disable=SC2086 # we need the word splitting
+	start-stop-daemon -b -m -S -q -p "$PIDDIR/$1.pid" -x "/sbin/$1" -- -n
+	status=$?
+	if [ "$status" -eq 0 ]; then
+		echo "OK"
+	else
+		echo "FAIL"
+	fi
+	return $status
+}
+
+start() {
+	# shellcheck disable=SC2086 # we need the word splitting
+	for prog in ${PROGS}; do
+		start_one "${prog}" || ret=$?
+	done
+    return $ret
+}
+
+stop_one() {
+	printf 'Stopping %s: ' "$1"
+	start-stop-daemon -K -q -p "$PIDDIR/$1.pid"
+	status=$?
+	if [ "$status" -eq 0 ]; then
+		rm -f "$PIDDIR/$1.pid"
+		echo "OK"
+	else
+		echo "FAIL"
+	fi
+	return $status
+}
+
+stop() {
+	# shellcheck disable=SC2086 # we need the word splitting
+	for prog in ${PROGS}; do
+		stop_one "${prog}" || ret=$?
+	done
+    return $ret
+}
+
+restart() {
+	stop
+	sleep 1
+	start
+}
+
+case "$1" in
+	start|stop|restart)
+		"$1";;
+	reload)
+		# Restart, since there is no true "reload" feature.
+		restart;;
+	*)
+		echo "Usage: $0 {start|stop|restart|reload}"
+		exit 1
+esac

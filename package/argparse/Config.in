@@ -7,4 +7,4 @@ config BR2_PACKAGE_ARGPARSE
 	  subcommands and more. Argparse automatically generates
 	  usage, help and error messages.
 
-	  https://github.com/mpeterv/argparse
+	  https://github.com/luarocks/argparse

@@ -1,5 +1,6 @@
 config BR2_PACKAGE_PYTHON_MBSTRDECODER
 	bool "python-mbstrdecoder"
+	depends on BR2_PACKAGE_PYTHON3
 	help
 	  multi-byte character string decoder.
 

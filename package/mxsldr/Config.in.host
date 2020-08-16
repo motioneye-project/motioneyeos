@@ -6,4 +6,4 @@ config BR2_PACKAGE_HOST_MXSLDR
 	  Freescale i.MX23 and i.MX28 SoC's through the Serial
 	  Download Protocol.
 
-	  git://git.denx.de/mxsldr.git
+	  https://gitlab.denx.de/denx/mxsldr

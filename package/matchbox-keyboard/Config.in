@@ -6,3 +6,5 @@ config BR2_PACKAGE_MATCHBOX_KEYBOARD
 	select BR2_PACKAGE_MATCHBOX_LIB
 	help
 	  Virtual Keyboard
+
+	  http://git.yoctoproject.org/cgit/cgit.cgi/matchbox-keyboard/

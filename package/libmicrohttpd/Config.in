@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBMICROHTTPD
 	bool "libmicrohttpd"
-	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  GNU libmicrohttpd is a small C library that makes it easy to
 	  run an HTTP server as part of another application.
@@ -21,6 +20,3 @@ comment "libmicrohttpd https support needs a toolchain w/ wchar, dynamic library
 	depends on !BR2_USE_WCHAR || BR2_STATIC_LIBS
 
 endif
-
-comment "libmicrohttpd needs a toolchain w/ threads"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS

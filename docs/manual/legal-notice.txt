@@ -67,9 +67,8 @@ for packages released under BSD-like licenses, that you are not required to
 redistribute in source form.
 
 Moreover, due to technical limitations, Buildroot does not produce some
-material that you will or may need, such as the toolchain source code and the
-Buildroot source code itself (including patches to packages for which source
-distribution is required).
+material that you will or may need, such as the toolchain source code for
+some of the external toolchains and the Buildroot source code itself.
 When you run +make legal-info+, Buildroot produces warnings in the +README+
 file to inform you of relevant material that could not be saved.
 

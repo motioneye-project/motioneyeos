@@ -1,0 +1,12 @@
+config BR2_PACKAGE_TI_SGX_LIBGBM
+	bool "ti-sgx-libgbm"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_PACKAGE_HAS_UDEV
+	select BR2_PACKAGE_LIBDRM
+	help
+	  TI SGX libgbm variant.
+
+	  https://git.ti.com/cgit/glsdk/libgbm
+
+comment "ti-sgx-libgbm needs udev and a toolchain w/ threads"
+	depends on !BR2_PACKAGE_HAS_UDEV || !BR2_TOOLCHAIN_HAS_THREADS

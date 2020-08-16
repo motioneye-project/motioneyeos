@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-XINETD_VERSION = xinetd-2-3-15
-XINETD_SITE = $(call github,xinetd-org,xinetd,$(XINETD_VERSION))
+XINETD_VERSION = 2-3-15
+XINETD_SITE = $(call github,xinetd-org,xinetd,xinetd-$(XINETD_VERSION))
 XINETD_LICENSE = xinetd license
 XINETD_LICENSE_FILES = COPYRIGHT
 

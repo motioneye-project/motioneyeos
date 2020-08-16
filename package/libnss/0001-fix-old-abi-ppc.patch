@@ -1,0 +1,40 @@
+From a7a862bab5e4aae4615ddae3cbe230345f92ed0d Mon Sep 17 00:00:00 2001
+From: Lauri Kasanen <cand@gmx.com>
+Date: Mon, 1 Jun 2020 12:11:45 +0300
+Subject: [PATCH v3] Bug 1642174 /usr/bin/ld: OBJS/Linux_SINGLE_SHLIB/sha512-p8.o:
+ ABI version 2 is not compatible with ABI version 1 output
+
+Don't try to build the SHA-2 accelerated asm on old-ABI ppc.
+
+Currently make only, I don't have enough gyp-fu to do that side.
+However, the reporters of 1642174 and 1635625 both used make, not gyp.
+
+Signed-off-by: Lauri Kasanen <cand@gmx.com>
+[Fetch-from: https://bugzilla.mozilla.org/show_bug.cgi?id=1642174
+ Manually modified paths to apply to nss subdirectory in release tarball.]
+Signed-off-by: Joseph Kogut <joseph.kogut@gmail.com>
+---
+ lib/freebl/Makefile | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/nss/lib/freebl/Makefile b/nss/lib/freebl/Makefile
+index 5f7384429..e0461c7d3 100644
+--- a/nss/lib/freebl/Makefile
++++ b/nss/lib/freebl/Makefile
+@@ -267,9 +267,12 @@ ifeq ($(CPU_ARCH),arm)
+ endif
+ ifeq ($(CPU_ARCH),ppc)
+     EXTRA_SRCS += gcm-ppc.c
+-    ASFILES += sha512-p8.s
+ ifdef USE_64
+     DEFINES += -DNSS_NO_INIT_SUPPORT
++    PPC_ABI := $(shell $(CC) -dM -E - < /dev/null | awk '$$2 == "_CALL_ELF" {print $$3}')
++    ifeq ($(PPC_ABI),2)
++        ASFILES += sha512-p8.s
++    endif
+ endif # USE_64
+ endif # ppc
+ endif # Linux
+--
+2.19.1
+

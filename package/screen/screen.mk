@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SCREEN_VERSION = 4.6.2
+SCREEN_VERSION = 4.8.0
 SCREEN_SITE = $(BR2_GNU_MIRROR)/screen
 SCREEN_LICENSE = GPL-3.0+
 SCREEN_LICENSE_FILES = COPYING
@@ -13,6 +13,13 @@ SCREEN_AUTORECONF = YES
 SCREEN_CONF_ENV = CFLAGS="$(TARGET_CFLAGS)"
 SCREEN_CONF_OPTS = --enable-colors256
 SCREEN_INSTALL_TARGET_OPTS = DESTDIR=$(TARGET_DIR) SCREEN=screen install_bin
+
+ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
+SCREEN_DEPENDENCIES += linux-pam
+SCREEN_CONF_OPTS += --enable-pam
+else
+SCREEN_CONF_OPTS += --disable-pam
+endif
 
 define SCREEN_INSTALL_SCREENRC
 	$(INSTALL) -m 0755 -D $(@D)/etc/screenrc $(TARGET_DIR)/etc/screenrc

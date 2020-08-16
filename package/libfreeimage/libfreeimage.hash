@@ -1,5 +1,9 @@
+# From https://sourceforge.net/projects/freeimage/files/Source%20Distribution/3.18.0/
+md5 f8ba138a3be233a3eed9c456e42e2578 FreeImage3180.zip
+sha1 38daa9d8f1bca2330a2eaa42ec66fbe6ede7dce9 FreeImage3180.zip
+
 # Locally computed
-sha256 fbfc65e39b3d4e2cb108c4ffa8c41fd02c07d4d436c594fff8dab1a6d5297f89 FreeImage3170.zip
+sha256 f41379682f9ada94ea7b34fe86bf9ee00935a3147be41b6569c9605a53e438fd FreeImage3180.zip
 sha256 d51615a1a47f1ddbb027920d60d3fc30a00e1284c795a47857883e641349fadf license-gplv2.txt
 sha256 084be110e3e8757d8e6945cda1fbc7e5073bbe688dc19b92c0d8440155d8e282 license-gplv3.txt
 sha256 0bb9a3123297c73ae6e19c70459fb0e58f313f67ca63176fd43f8e77668b8243 license-fi.txt

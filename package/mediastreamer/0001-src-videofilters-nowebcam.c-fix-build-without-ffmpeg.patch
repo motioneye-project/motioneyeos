@@ -1,0 +1,55 @@
+From 342f59f1603f759b6dd90754f8dba14d08947f55 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Thu, 27 Feb 2020 16:18:35 +0100
+Subject: [PATCH] src/videofilters/nowebcam.c: fix build without ffmpeg or jpeg
+
+jpeg2yuv is only defined if ffmpeg or turbojpeg is available
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ CMakeLists.txt              | 3 +++
+ src/videofilters/nowebcam.c | 4 ++++
+ 2 files changed, 7 insertions(+)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 0efc1a5f..6668db2b 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -336,7 +336,10 @@ if(ENABLE_JPEG)
+ 	if(NOT TURBOJPEG_FOUND)
+ 		message(WARNING "Could not find libturbo-jpeg, mediastreamer2 will be compiled without LibJpeg-Turbo")
+ 		set(ENABLE_JPEG OFF CACHE BOOL "Enable JPEG support" FORCE)
++		add_definitions(-DNO_JPEG)
+ 	endif()
++else()
++	add_definitions(-DNO_JPEG)
+ endif()
+ if(ENABLE_QRCODE)
+ 	find_package(Zxing)
+diff --git a/src/videofilters/nowebcam.c b/src/videofilters/nowebcam.c
+index a2344dcd..afb0d7b1 100644
+--- a/src/videofilters/nowebcam.c
++++ b/src/videofilters/nowebcam.c
+@@ -107,7 +107,9 @@ static mblk_t *_ms_load_jpeg_as_yuv(const char *jpgpath, MSVideoSize *reqsize) {
+ 	if (err != st_sizel) {
+ 		  ms_error("Could not read as much as wanted !");
+ 	}
++#if !(defined(NO_FFMPEG) && defined(NO_JPEG))
+ 	m = jpeg2yuv(jpgbuf, st_sizel, reqsize);
++#endif
+ 	ms_free(jpgbuf);
+ 	if (m == NULL) {
+ 		CloseHandle(fd);
+@@ -140,7 +142,9 @@ static mblk_t *_ms_load_jpeg_as_yuv(const char *jpgpath, MSVideoSize *reqsize) {
+ 		if (err != statbuf.st_size) {
+ 			ms_error("Could not read as much as wanted: %i<>%li !", err, (long)statbuf.st_size);
+ 		}
++#if !(defined(NO_FFMPEG) && defined(NO_JPEG))
+ 		m = jpeg2yuv(jpgbuf,statbuf.st_size,reqsize);
++#endif
+ 		ms_free(jpgbuf);
+ 		if (m == NULL) {
+ 			close(fd);
+-- 
+2.25.0
+

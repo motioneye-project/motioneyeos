@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-TCPING_VERSION = 1.3.5
-TCPING_SITE = http://linuxco.de/tcping
-TCPING_LICENSE = GPL-3.0+
+TCPING_VERSION = 1.3.6
+TCPING_SITE = $(call github,mkirchner,tcping,$(TCPING_VERSION))
+TCPING_LICENSE = MIT
 TCPING_LICENSE_FILES = LICENSE
 
 define TCPING_BUILD_CMDS

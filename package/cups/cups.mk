@@ -4,25 +4,21 @@
 #
 ################################################################################
 
-CUPS_VERSION = 2.2.10
+CUPS_VERSION = 2.3.1
 CUPS_SOURCE = cups-$(CUPS_VERSION)-source.tar.gz
 CUPS_SITE = https://github.com/apple/cups/releases/download/v$(CUPS_VERSION)
-CUPS_LICENSE = GPL-2.0, LGPL-2.0
-CUPS_LICENSE_FILES = LICENSE.txt
+CUPS_LICENSE = Apache-2.0 with GPL-2.0/LGPL-2.0 exception
+CUPS_LICENSE_FILES = LICENSE NOTICE
 CUPS_INSTALL_STAGING = YES
-CUPS_INSTALL_STAGING_OPTS = DESTDIR=$(STAGING_DIR) DSTROOT=$(STAGING_DIR) install
-CUPS_INSTALL_TARGET_OPTS = DESTDIR=$(TARGET_DIR) DSTROOT=$(TARGET_DIR) install
 
 # Using autoconf, not autoheader, so we cannot use AUTORECONF = YES.
 define CUPS_RUN_AUTOCONF
-	cd $(@D); $(HOST_DIR)/bin/autoconf -f
+	cd $(@D); $(AUTOCONF) -f
 endef
 CUPS_PRE_CONFIGURE_HOOKS += CUPS_RUN_AUTOCONF
 
 CUPS_CONF_OPTS = \
-	--without-perl \
-	--without-java \
-	--without-php \
+	--with-docdir=/usr/share/cups/doc-root \
 	--disable-gssapi \
 	--disable-pam \
 	--libdir=/usr/lib
@@ -52,13 +48,6 @@ CUPS_CONF_OPTS += --enable-gnutls
 CUPS_DEPENDENCIES += gnutls
 else
 CUPS_CONF_OPTS += --disable-gnutls
-endif
-
-ifeq ($(BR2_PACKAGE_PYTHON),y)
-CUPS_CONF_OPTS += --with-python
-CUPS_DEPENDENCIES += python
-else
-CUPS_CONF_OPTS += --without-python
 endif
 
 ifeq ($(BR2_PACKAGE_LIBUSB),y)

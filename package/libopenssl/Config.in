@@ -1,0 +1,47 @@
+if BR2_PACKAGE_LIBOPENSSL
+
+# 4xx PowerPC cores seem to have trouble with openssl's ASM
+# optimizations
+config BR2_PACKAGE_LIBOPENSSL_TARGET_ARCH_LINUX_PPC
+	bool
+	default y if BR2_powerpc
+	depends on !BR2_powerpc_401
+	depends on !BR2_powerpc_403
+	depends on !BR2_powerpc_405
+	depends on !BR2_powerpc_405fp
+	depends on !BR2_powerpc_440
+	depends on !BR2_powerpc_440fp
+
+config BR2_PACKAGE_LIBOPENSSL_TARGET_ARCH
+	string
+	# Use "gcc" minimalistic target to disable DSO
+	# no-asm is needed with generic architectures such as gcc, see
+	# https://github.com/openssl/openssl/issues/9839
+	default "gcc no-asm"			if BR2_STATIC_LIBS
+	# Doesn't work for thumb-only (Cortex-M?)
+	default "linux-armv4"			if BR2_ARM_CPU_HAS_ARM
+	default "linux-aarch64"			if BR2_aarch64
+	default "linux-ppc"			if BR2_PACKAGE_LIBOPENSSL_TARGET_ARCH_LINUX_PPC
+	default "linux-ppc64"			if BR2_powerpc64
+	default "linux-ppc64le"			if BR2_powerpc64le
+	default "linux-x86"			if BR2_i386
+	default "linux-x86_64"			if BR2_x86_64
+	# no-asm is needed with generic architectures such as
+	# linux-generic{32,64}, see
+	# https://github.com/openssl/openssl/issues/9839
+	default "linux-generic64 no-asm"	if BR2_ARCH_IS_64 && !BR2_MIPS_NABI32
+	default "linux-generic32 no-asm"
+
+config BR2_PACKAGE_LIBOPENSSL_BIN
+	bool "openssl binary"
+	help
+	  Install the openssl binary and the associated helper scripts
+	  to the target file system. This is a command line tool for
+	  doing various cryptographic stuff.
+
+config BR2_PACKAGE_LIBOPENSSL_ENGINES
+	bool "openssl additional engines"
+	help
+	  Install additional encryption engine libraries.
+
+endif # BR2_PACKAGE_LIBOPENSSL

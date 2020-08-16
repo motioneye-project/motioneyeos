@@ -3,7 +3,7 @@ config BR2_PACKAGE_PYTHON_REENTRY
 	select BR2_PACKAGE_PYTHON_SETUPTOOLS # runtime
 	select BR2_PACKAGE_PYTHON_CLICK # runtime
 	select BR2_PACKAGE_PYTHON_SIX # runtime
-	select BR2_PACKAGE_PYTHON_PY # runtime
+	select BR2_PACKAGE_PYTHON_PATHLIB2 if BR2_PACKAGE_PYTHON # runtime
 	help
 	  A plugin manager based on setuptools entry points mechanism.
 

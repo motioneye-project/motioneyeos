@@ -29,6 +29,8 @@ Update gitignore accordingly, too.
 
 Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 Cc: Sam Voss <sam.voss@rockwellcollins.com>
+[Fabrice: Remove .gitignore so patch applies on 1.9.0]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
 ---
  .gitignore          |  2 ++
  buildconf           | 24 +++++-------------------
@@ -37,19 +39,6 @@ Cc: Sam Voss <sam.voss@rockwellcollins.com>
  example/Makefile.am |  2 +-
  5 files changed, 9 insertions(+), 23 deletions(-)
 
-diff --git a/.gitignore b/.gitignore
-index 997e51e1..b6d6b5cb 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -13,6 +13,8 @@ Makefile
- Makefile.in
- aclocal.m4
- autom4te.cache
-+compile
-+test-driver
- config.guess
- config.log
- config.status
 diff --git a/buildconf b/buildconf
 index 558dcb66..728b3397 100755
 --- a/buildconf
@@ -95,19 +84,6 @@ index c6ff7535..6939d0d6 100644
  AM_MAINTAINER_MODE
  m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
  
-diff --git a/example/.gitignore b/example/.gitignore
-index 13448191..cac152b8 100644
---- a/example/.gitignore
-+++ b/example/.gitignore
-@@ -20,8 +20,6 @@ sftp_write_nonblock
- config.h.in
- ssh2_exec
- ssh2_agent
--libssh2_config.h
--libssh2_config.h.in
- stamp-h2
- sftp_append
- sftp_write_sliding
 diff --git a/example/Makefile.am b/example/Makefile.am
 index 5cf5f071..41f65b12 100644
 --- a/example/Makefile.am

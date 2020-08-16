@@ -1,6 +1,6 @@
 # retrieved by scancpan from http://cpan.metacpan.org/
-md5    94ed21d4557a6bbc3cb6bfd7c3479ef0 Net-SSH2-0.69.tar.gz
-sha256 2fc85e1434b8a6e77142d85e3cea5a081ca71da5d02c4212b9970d3a3924baa6 Net-SSH2-0.69.tar.gz
+md5  baa1b19fec9ca37ecfc12a22ba0c9122  Net-SSH2-0.71.tar.gz
+sha256  ee411ec263c900c441fd1c490e9d52fc56b0bb32e1ed98869229501b200f8fa2  Net-SSH2-0.71.tar.gz
 
 # computed by scancpan
-sha256 6db904d7c8127a33df4666961088c97586c24644a4980dc50d0676ef4c0509f7 README
+sha256  b9fe64368dd41bb5b9405b23f95ee0deb970427895ab0119eb3cd4d221764c1d  README.pod

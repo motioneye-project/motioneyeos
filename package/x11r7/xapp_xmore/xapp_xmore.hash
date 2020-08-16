@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2010-July/001360.html
-sha1	7db4e5feb82d5d05038722d3af00d28e103bed18	xmore-1.0.2.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2019-March/002964.html
+md5 8e1279352192e4142740c21db58f9be9  xmore-1.0.3.tar.bz2
+sha1 b57b92afd783d28c4c505e0c95556939f24c3ec9  xmore-1.0.3.tar.bz2
+sha256 644a1e0d5182d7708d413722d0579a587dc56b9a8cb60640df076d302e09251b  xmore-1.0.3.tar.bz2
+sha512 e3e44831cd87a54bb585f80ef0d87f69dc35f6c834a73241aad9f6e2b0999b53c51a0a3f915a94ae4d6dc9bdfb9f60b6576f0bdcec441443abd98efa6c51b1d3  xmore-1.0.3.tar.bz2
+# Locally computed
+sha256 27d8cbdcde7a0bd062ce49cdf8c672201452a64e3e6823f09b1beffe2c4b8eff  COPYING

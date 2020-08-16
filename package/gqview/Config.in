@@ -4,4 +4,4 @@ config BR2_PACKAGE_GQVIEW
 	help
 	  GQview is an image viewer for Unix operating systems
 
-	  http://prdownloads.sourceforge.net/gqview
+	  http://gqview.sourceforge.net/

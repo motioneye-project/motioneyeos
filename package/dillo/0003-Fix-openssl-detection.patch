@@ -1,0 +1,29 @@
+From 96dde9dedf806256cdc6cbf5cacbd5c8d74e6288 Mon Sep 17 00:00:00 2001
+From: Jonathan Kimmitt <jrrk2@cam.ac.uk>
+Date: Thu, 9 Jan 2020 22:01:42 +0100
+Subject: [PATCH] Fix openssl detection
+
+SSL_library_init is now a define, use OPENSSL_init_ssl instead.
+
+Signed-off-by: Jonathan Kimmitt <jrrk2@cam.ac.uk>
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 66b5e9f..206fd53 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -276,7 +276,7 @@ if test "x$enable_ssl" = "xyes"; then
+ 
+   if test "x$ssl_ok" = "xyes"; then
+     old_libs="$LIBS"
+-    AC_CHECK_LIB(ssl, SSL_library_init, ssl_ok=yes, ssl_ok=no, -lcrypto)
++    AC_CHECK_LIB(ssl, OPENSSL_init_ssl, ssl_ok=yes, ssl_ok=no, -lcrypto)
+     LIBS="$old_libs"
+   fi
+ 
+-- 
+2.24.1
+

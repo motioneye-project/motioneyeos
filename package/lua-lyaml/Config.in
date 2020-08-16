@@ -1,0 +1,9 @@
+config BR2_PACKAGE_LUA_LYAML
+	bool "lua-lyaml"
+	select BR2_PACKAGE_LIBYAML
+	help
+	  This is a Lua binding for the fast libYAML C library for
+	  converting between `%YAML 1.1` and Lua tables, with a
+	  flexible Lua language API to load and save YAML documents.
+
+	  http://github.com/gvvaughan/lyaml

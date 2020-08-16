@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/futures/json
-md5	d1b299a06b96ccb59f70324716dc0016  futures-3.2.0.tar.gz
-sha256	9ec02aa7d674acb8618afb127e27fde7fc68994c0437ad759fa094a574adb265  futures-3.2.0.tar.gz
+md5	b43a39ae1475e3fd6940f2b4f7214675  futures-3.3.0.tar.gz
+sha256	7e033af76a5e35f58e56da7a91e687706faf4e7bdfb2cbc3f2cca6b9bcda9794  futures-3.3.0.tar.gz
 # Locally computed sha256 checksums
 sha256	a698bd5d441e4a16af6c992b8e80cbfa12755d72d910854fa1fb11d4deb0059a  LICENSE

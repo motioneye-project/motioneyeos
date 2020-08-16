@@ -1,0 +1,4 @@
+# locally computed
+sha256  90bf86c07ffbe2c22be46d75c7345fad12d5911653c59750a37d59c63ad5d10e  apparmor-2.13.4.tar.gz
+sha256  a7e0cdcbea5c14927cedfc600d46526bdcbb1eb0a4d951e2ea53c2a6de159cb4  LICENSE
+sha256  6095e9ffa777dd22839f7801aa845b31c9ed07f3d6bf8a26dc5d2dec8ccc0ef3  libraries/libapparmor/COPYING.LGPL

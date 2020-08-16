@@ -1,0 +1,26 @@
+Fix musl build
+
+Fixes
+
+  match.c.text+0x9c): undefined reference to `re_comp'
+  match.c.text+0xca): undefined reference to `re_exec'
+
+by forcing to use the 'modern' regex methods implementation instead of
+the obsolete re_comp/re_exec ([1]) one?
+
+[1] http://man7.org/linux/man-pages/man3/re_comp.3.html
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -uNr ytree-1.99pl2.orig/match.c ytree-1.99pl2/match.c
+--- ytree-1.99pl2.orig/match.c	2019-09-29 12:37:57.000000000 +0200
++++ ytree-1.99pl2/match.c	2019-10-01 19:46:56.193815327 +0200
+@@ -10,7 +10,7 @@
+ #include "ytree.h"
+ 
+ #if defined( sun ) || defined( linux ) || defined( __NeXT__ ) || defined( OSF1 ) ||  defined( __OpenBSD__ ) || defined(__NetBSD__) || defined( __FreeBSD__ ) || defined( __GNU__ )
+-#define HAS_REGEX
++#define HAS_REGCOMP
+ #endif
+ 
+ #ifdef linux

@@ -1,5 +1,4 @@
 import os
-import subprocess
 
 import infra.basetest
 
@@ -29,9 +28,7 @@ class TestF2FS(infra.basetest.BRTest):
 
     def test_run(self):
         img = os.path.join(self.builddir, "images", "rootfs.f2fs")
-        out = subprocess.check_output(["host/sbin/dump.f2fs", img],
-                                      cwd=self.builddir,
-                                      env={"LANG": "C"})
+        out = infra.run_cmd_on_host(self.builddir, ["host/sbin/dump.f2fs", img])
         out = out.splitlines()
         prop = dumpf2fs_getprop(out, "Info: total sectors")
         self.assertEqual(prop, "262144 (128 MB)")

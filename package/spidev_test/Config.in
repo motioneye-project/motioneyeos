@@ -14,4 +14,4 @@ config BR2_PACKAGE_SPIDEV_TEST
 	  This means you won't have quad-pumped SPI support if your
 	  toolchain is too old.
 
-	  https://www.kernel.org/doc/Documentation/spi/spidev_test.c
+	  https://www.kernel.org/doc/html/latest/spi/index.html

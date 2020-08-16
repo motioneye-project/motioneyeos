@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_TERMINALTABLES
+	bool "python-terminaltables"
+	help
+	  Generate simple tables in terminals from a nested list of
+	  strings.
+
+	  https://github.com/Robpol86/terminaltables

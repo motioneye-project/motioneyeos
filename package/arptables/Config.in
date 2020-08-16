@@ -1,7 +1,12 @@
 config BR2_PACKAGE_ARPTABLES
-	bool "arptables"
+	bool "arptables-legacy"
 	depends on BR2_USE_MMU # needs fork()
 	help
-	  Tool to set up, maintain, and inspect the tables of ARP rules.
+	  Legacy tool to set up, maintain, and inspect the tables of ARP
+	  rules.
 
-	  http://ebtables.sourceforge.net
+	  A more uptodate client of the arptables tool is provided in
+	  the iptables package. The new tool was formerly known as
+	  arptables-compat.
+
+	  http://git.netfilter.org/arptables

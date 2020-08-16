@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MOSQUITTO_VERSION = 1.5.8
+MOSQUITTO_VERSION = 1.6.9
 MOSQUITTO_SITE = https://mosquitto.org/files/source
 MOSQUITTO_LICENSE = EPL-1.0 or EDLv1.0
 MOSQUITTO_LICENSE_FILES = LICENSE.txt epl-v10 edl-v10
@@ -16,6 +16,23 @@ MOSQUITTO_MAKE_OPTS = \
 	prefix=/usr \
 	WITH_WRAP=no \
 	WITH_DOCS=no
+
+ifeq ($(BR2_SHARED_LIBS),y)
+MOSQUITTO_MAKE_OPTS += WITH_STATIC_LIBRARIES=no
+else
+MOSQUITTO_MAKE_OPTS += WITH_STATIC_LIBRARIES=yes
+endif
+
+ifeq ($(BR2_STATIC_LIBS),y)
+MOSQUITTO_MAKE_OPTS += WITH_SHARED_LIBRARIES=no
+else
+MOSQUITTO_MAKE_OPTS += WITH_SHARED_LIBRARIES=yes
+endif
+
+ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+MOSQUITTO_MAKE_OPTS += WITH_SYSTEMD=yes
+MOSQUITTO_DEPENDENCIES += systemd
+endif
 
 # adns uses getaddrinfo_a
 ifeq ($(BR2_TOOLCHAIN_USES_GLIBC),y)
@@ -31,8 +48,10 @@ MOSQUITTO_MAKE_OPTS += WITH_THREADING=no
 endif
 
 ifeq ($(BR2_PACKAGE_LIBOPENSSL),y)
-MOSQUITTO_DEPENDENCIES += libopenssl
-MOSQUITTO_MAKE_OPTS += WITH_TLS=yes
+MOSQUITTO_DEPENDENCIES += host-pkgconf libopenssl
+MOSQUITTO_MAKE_OPTS += \
+	WITH_TLS=yes \
+	CLIENT_STATIC_LDADD="`$(PKG_CONFIG_HOST_BINARY) --libs openssl`"
 else
 MOSQUITTO_MAKE_OPTS += WITH_TLS=no
 endif
@@ -42,13 +61,6 @@ MOSQUITTO_DEPENDENCIES += c-ares
 MOSQUITTO_MAKE_OPTS += WITH_SRV=yes
 else
 MOSQUITTO_MAKE_OPTS += WITH_SRV=no
-endif
-
-ifeq ($(BR2_PACKAGE_UTIL_LINUX_LIBUUID),y)
-MOSQUITTO_DEPENDENCIES += util-linux
-MOSQUITTO_MAKE_OPTS += WITH_UUID=yes
-else
-MOSQUITTO_MAKE_OPTS += WITH_UUID=no
 endif
 
 ifeq ($(BR2_PACKAGE_LIBWEBSOCKETS),y)
@@ -97,11 +109,8 @@ define MOSQUITTO_INSTALL_INIT_SYSV
 endef
 
 define MOSQUITTO_INSTALL_INIT_SYSTEMD
-	$(INSTALL) -D -m 644 package/mosquitto/mosquitto.service \
+	$(INSTALL) -D -m 644 $(@D)/service/systemd/mosquitto.service.notify \
 		$(TARGET_DIR)/usr/lib/systemd/system/mosquitto.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -fs ../../../../usr/lib/systemd/system/mosquitto.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/mosquitto.service
 endef
 
 define MOSQUITTO_USERS

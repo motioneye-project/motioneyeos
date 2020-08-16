@@ -8,7 +8,8 @@ GUILE_VERSION = 2.0.14
 GUILE_SOURCE = guile-$(GUILE_VERSION).tar.xz
 GUILE_SITE = $(BR2_GNU_MIRROR)/guile
 GUILE_INSTALL_STAGING = YES
-# For 0002-calculate-csqrt_manually.patch
+# For 0002-calculate-csqrt_manually.patch and
+# 0004-Makefile.am-fix-build-without-makeinfo.patch
 GUILE_AUTORECONF = YES
 GUILE_LICENSE = LGPL-3.0+
 GUILE_LICENSE_FILES = LICENSE COPYING COPYING.LESSER

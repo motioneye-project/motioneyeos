@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBFREEGLUT_VERSION = 3.0.0
+LIBFREEGLUT_VERSION = 3.2.1
 LIBFREEGLUT_SOURCE = freeglut-$(LIBFREEGLUT_VERSION).tar.gz
 LIBFREEGLUT_SITE = http://downloads.sourceforge.net/freeglut
 LIBFREEGLUT_LICENSE = MIT

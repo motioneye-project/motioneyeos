@@ -1,0 +1,58 @@
+From 41d6c984699f30c11e8c92550239bbe5a3e5ada1 Mon Sep 17 00:00:00 2001
+From: Gao Xiang <gaoxiang25@huawei.com>
+Date: Sat, 14 Mar 2020 17:05:37 +0800
+Subject: [PATCH] erofs-utils: avoid _LARGEFILE64_SOURCE and _GNU_SOURCE
+ redefinition
+
+This patch can be used to resolve the following build errors:
+
+compress.c:10: error: "_LARGEFILE64_SOURCE" redefined [-Werror]
+ #define _LARGEFILE64_SOURCE
+
+<command-line>: note: this is the location of the previous definition
+
+io.c:9: error: "_LARGEFILE64_SOURCE" redefined [-Werror]
+ #define _LARGEFILE64_SOURCE
+
+<command-line>: note: this is the location of the previous definition
+
+Signed-off-by: Gao Xiang <gaoxiang25@huawei.com>
+---
+ lib/compress.c | 2 ++
+ lib/io.c       | 4 ++++
+ 2 files changed, 6 insertions(+)
+
+diff --git a/lib/compress.c b/lib/compress.c
+index 8337487..b14ff17 100644
+--- a/lib/compress.c
++++ b/lib/compress.c
+@@ -7,7 +7,9 @@
+  * Created by Miao Xie <miaoxie@huawei.com>
+  * with heavy changes by Gao Xiang <gaoxiang25@huawei.com>
+  */
++#ifndef _LARGEFILE64_SOURCE
+ #define _LARGEFILE64_SOURCE
++#endif
+ #include <string.h>
+ #include <stdlib.h>
+ #include <unistd.h>
+diff --git a/lib/io.c b/lib/io.c
+index 52f9424..5b998d8 100644
+--- a/lib/io.c
++++ b/lib/io.c
+@@ -6,8 +6,12 @@
+  *             http://www.huawei.com/
+  * Created by Li Guifu <bluce.liguifu@huawei.com>
+  */
++#ifndef _LARGEFILE64_SOURCE
+ #define _LARGEFILE64_SOURCE
++#endif
++#ifndef _GNU_SOURCE
+ #define _GNU_SOURCE
++#endif
+ #include <sys/stat.h>
+ #include <sys/ioctl.h>
+ #include "erofs/io.h"
+-- 
+2.20.1
+

@@ -33,4 +33,8 @@ define PCM_TOOLS_INSTALL_TARGET_CMDS
 	$(PCM_TOOLS_INSTALL_PMU_QUERY)
 endef
 
+define PCM_TOOLS_LINUX_CONFIG_FIXUPS
+	$(call KCONFIG_ENABLE_OPT,CONFIG_X86_MSR)
+endef
+
 $(eval $(generic-package))

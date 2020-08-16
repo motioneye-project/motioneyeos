@@ -1,4 +1,6 @@
-# From https://github.com/thom311/libnl/releases/download/libnl3_4_0/libnl-3.4.0.tar.gz.sha256sum
-sha256	b7287637ae71c6db6f89e1422c995f0407ff2fe50cecd61a312b6a9b0921f5bf	libnl-3.4.0.tar.gz
+# From https://github.com/thom311/libnl/releases/download/libnl3_5_0/libnl-3.5.0.tar.gz.md5sum
+md5 74ba57b1b1d6f9f92268aa8141d8e8e4  libnl-3.5.0.tar.gz
+# From https://github.com/thom311/libnl/releases/download/libnl3_5_0/libnl-3.5.0.tar.gz.sha256sum
+sha256 352133ec9545da76f77e70ccb48c9d7e5324d67f6474744647a7ed382b5e05fa  libnl-3.5.0.tar.gz
 # Locally calculated
 sha256	dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551	COPYING

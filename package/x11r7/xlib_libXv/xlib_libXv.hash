@@ -1,2 +1,5 @@
 # From https://lists.x.org/archives/xorg-announce/2016-October/002727.html
 sha256 d26c13eac99ac4504c532e8e76a1c8e4bd526471eb8a0a4ff2a88db60cb0b088  libXv-1.0.11.tar.bz2
+
+# Locally calculated
+sha256 4fac4d581d00f11c459d68b7cb970f3d4e5a5bbfb53784d85f59a90076280301  COPYING

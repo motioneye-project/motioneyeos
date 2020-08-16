@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBFREEIMAGE_VERSION = 3.17.0
+LIBFREEIMAGE_VERSION = 3.18.0
 LIBFREEIMAGE_SITE = http://downloads.sourceforge.net/freeimage
 LIBFREEIMAGE_SOURCE = FreeImage$(subst .,,$(LIBFREEIMAGE_VERSION)).zip
 LIBFREEIMAGE_LICENSE = GPL-2.0 or GPL-3.0 or FreeImage Public License

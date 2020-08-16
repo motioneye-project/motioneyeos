@@ -1,0 +1,9 @@
+if BR2_TOOLCHAIN_EXTERNAL_ANDES_NDS32
+
+config BR2_TOOLCHAIN_EXTERNAL_PREFIX
+	default "nds32le-linux"
+
+config BR2_PACKAGE_PROVIDES_TOOLCHAIN_EXTERNAL
+	default "toolchain-external-andes-nds32"
+
+endif

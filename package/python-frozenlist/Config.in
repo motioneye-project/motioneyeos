@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_FROZENLIST
+	bool "python-frozenlist"
+	depends on BR2_PACKAGE_PYTHON3
+	help
+	  A list-like structure which implements
+	  collections.abc.MutableSequence.
+
+	  https://github.com/aio-libs/frozenlist

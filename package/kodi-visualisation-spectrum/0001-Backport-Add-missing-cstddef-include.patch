@@ -1,0 +1,30 @@
+From b2c54c1043c2396678005b578e85db30bdf5ccb9 Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Sat, 18 Jan 2020 20:22:41 +0100
+Subject: [PATCH] [Backport] Add missing cstddef include
+
+Backported from https://github.com/xbmc/visualization.spectrum/pull/37
+
+Patch sent upstream:
+https://github.com/xbmc/visualization.spectrum/pull/38
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ src/opengl_spectrum.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/opengl_spectrum.cpp b/src/opengl_spectrum.cpp
+index 05409ea..2441fd6 100644
+--- a/src/opengl_spectrum.cpp
++++ b/src/opengl_spectrum.cpp
+@@ -38,6 +38,7 @@
+ #include <string.h>
+ #include <math.h>
+ #include <stdint.h>
++#include <cstddef>
+ 
+ #include <glm/glm.hpp>
+ #include <glm/gtc/type_ptr.hpp>
+-- 
+2.20.1
+

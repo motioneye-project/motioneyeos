@@ -1,2 +1,6 @@
-# From http://qosient.com/argus/src/argus-3.0.8.tar.gz.md5
-md5	84daae71a502e4f6d088c279de3aa36b  argus-3.0.8.tar.gz
+# From http://qosient.com/argus/src/argus-3.0.8.2.tar.gz.md5
+md5	eaf5f5ec66569e556392802a70ef9ca5  argus-3.0.8.2.tar.gz
+
+# Locally computed
+sha256	ca4e3bd5b9d4a8ff7c01cc96d1bffd46dbd6321237ec94c52f8badd51032eeff  argus-3.0.8.2.tar.gz
+sha256	c68221f7207486bfce863fada4ba9b2aaf4adc9e1c672f965ae98e88143e5f16  README

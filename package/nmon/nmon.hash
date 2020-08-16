@@ -1,5 +1,5 @@
 # From https://sourceforge.net/projects/nmon/files/
-md5 246ccfc74d5af55d992601fc4d3d4a72  lmon16g.c
-sha1 926217a98f78dd398d4d5690d7b10b8b2b620168  lmon16g.c
+md5 df67f07ea4006c6204acff586beada81  lmon16m.c
+sha1 68cd02be19036a287fe352823db93223e73a9411  lmon16m.c
 # Locally computed
-sha256 da82dd693b503b062854dfe7dbb5d36b347872ab44a4aa05b97e9d577747f688  lmon16g.c
+sha256 2bed4d45fdfdf1d1387ec91e139c04975d5f838e3e0d53c0fe2d803a707e5fc1  lmon16m.c

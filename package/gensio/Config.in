@@ -1,0 +1,8 @@
+config BR2_PACKAGE_GENSIO
+	bool "gensio"
+	depends on BR2_USE_MMU # fork()
+	help
+	  A library to abstract stream I/O like serial port, TCP,
+	  telnet, UDP, SSL, IPMI SOL, etc.
+
+	  https://github.com/cminyard/gensio

@@ -28,36 +28,18 @@ config BR2_PACKAGE_FREERDP
 
 if BR2_PACKAGE_FREERDP
 
-choice
-	bool "gstreamer support"
-	depends on BR2_PACKAGE_XORG7 # xlib-libxrandr
-	depends on BR2_PACKAGE_GSTREAMER || BR2_PACKAGE_GSTREAMER1
-
 config BR2_PACKAGE_FREERDP_GSTREAMER1
-	bool "gstreamer-1.x"
+	bool "gstreamer support"
 	depends on BR2_PACKAGE_GSTREAMER1
+	depends on BR2_PACKAGE_XORG7 # xlib-libxrandr
 	# gstreamer-1.x dependencies already dependencies of FreeRDP
 	select BR2_PACKAGE_GST1_PLUGINS_BASE
 	select BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_APP
 	select BR2_PACKAGE_XLIB_LIBXRANDR
 
-config BR2_PACKAGE_FREERDP_GSTREAMER
-	bool "gstreamer-0.x"
-	depends on BR2_PACKAGE_GSTREAMER
-	# gstreamer-0.x dependencies already dependencies of FreeRDP
-	select BR2_PACKAGE_GST_PLUGINS_BASE
-	select BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_APP
-	select BR2_PACKAGE_XLIB_LIBXRANDR
-	select BR2_PACKAGE_LIBXML2
-
-config BR2_PACKAGE_FREERDP_GSTREAMER_NO
-	bool "none"
-
-endchoice
-
 comment "gstreamer support needs X.Org"
 	depends on !BR2_PACKAGE_XORG7
-	depends on BR2_PACKAGE_GSTREAMER || BR2_PACKAGE_GSTREAMER1
+	depends on BR2_PACKAGE_GSTREAMER1
 
 config BR2_PACKAGE_FREERDP_SERVER
 	bool "server"

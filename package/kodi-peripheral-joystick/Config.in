@@ -1,7 +1,7 @@
 config BR2_PACKAGE_KODI_PERIPHERAL_JOYSTICK
 	bool "kodi-peripheral-joystick"
 	depends on BR2_PACKAGE_HAS_UDEV
-	select BR2_PACKAGE_KODI_PLATFORM
+	select BR2_PACKAGE_TINYXML
 	help
 	  Kodi joystick support (drivers and button maps)
 

@@ -1,0 +1,43 @@
+From 9e5dfa57f3b998bc3049bfa893b20e81dea656df Mon Sep 17 00:00:00 2001
+From: Yuri <yuri@rawbw.com>
+Date: Sat, 20 Apr 2019 07:28:26 -0700
+Subject: [PATCH] Link library with OpenCV, not only the executable, make libs
+ PRIVATE.
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/glassechidna/zxing-cpp/pull/86]
+---
+ CMakeLists.txt | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 738f4e1..efe3aee 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -60,10 +60,12 @@ include_directories(core/src)
+ add_library(libzxing ${LIBZXING_FILES})
+ set_target_properties(libzxing PROPERTIES PREFIX "")
+ 
++set(libzxing_LIBS "")
++
+ find_package(Iconv)
+ if(ICONV_FOUND)
+     include_directories(${ICONV_INCLUDE_DIR})
+-    target_link_libraries(libzxing ${ICONV_LIBRARIES})
++    set(libzxing_LIBS ${libzxing_LIBS} ${ICONV_LIBRARIES})
+ else()
+     add_definitions(-DNO_ICONV=1)
+ endif()
+@@ -75,9 +77,12 @@ if(OpenCV_FOUND)
+         "./opencv-cli/src/*.h"
+     )
+     add_executable(zxing-cv ${OPENCV_ZXING_FILES})
++    set(libzxing_LIBS ${libzxing_LIBS} ${OpenCV_LIBRARIES})
+     target_link_libraries(zxing-cv libzxing ${OpenCV_LIBRARIES})
+ endif()
+ 
++target_link_libraries(libzxing PRIVATE ${libzxing_LIBS})
++
+ # Add cli executable.
+ file(GLOB_RECURSE ZXING_FILES
+     "./cli/src/*.cpp"

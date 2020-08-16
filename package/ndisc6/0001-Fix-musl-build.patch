@@ -1,0 +1,34 @@
+From 12787f5936c79b56b24ffe0a92f4370804070223 Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Thu, 7 Nov 2019 21:41:34 +0100
+Subject: [PATCH] Fix musl build
+
+Fixes
+src/trace-tcp.c:67:24: error: 'TH_SYN' undeclared (first use in this function); did you mean 'TH_CWR'?
+  packet->th.th_flags = TH_SYN | (ecn ? (TH_ECE | TH_CWR) : 0);
+
+Musl guards TH_SYN with if defined(_GNU_SOURCE):
+https://git.musl-libc.org/cgit/musl/tree/include/netinet/tcp.h#n82
+
+Patch sent via email to upstream.
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ src/trace-tcp.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/src/trace-tcp.c b/src/trace-tcp.c
+index 5aba9d4..1b367ae 100644
+--- a/src/trace-tcp.c
++++ b/src/trace-tcp.c
+@@ -21,7 +21,6 @@
+ # include <config.h>
+ #endif
+ 
+-#undef _GNU_SOURCE
+ #define _DEFAULT_SOURCE 1
+ 
+ #include <string.h>
+-- 
+2.20.1
+

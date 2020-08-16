@@ -1,0 +1,7 @@
+# https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs952/MD5SUMS
+# and SHA512SUMS are missing the hashes for this file.
+# Locally computed:
+sha256  9e19775237350e299c422b7b91b0c045e90ffa4ba66abf28c8fb5eb005772f5e  jbig2dec-0.18.tar.gz
+
+# Hash for license files:
+sha256  1bf5258afe453934484fd0cea97508b72301633a6a78b0ae8a9ee44ac78f26d9  LICENSE

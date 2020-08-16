@@ -4,7 +4,7 @@ config BR2_PACKAGE_KODI_SCREENSAVER_BIOGENESIS
 	help
 	  BioGenesis screensaver for Kodi
 
-	  https://github.com/notspiff/screensaver.biogenesis
+	  https://github.com/xbmc/screensaver.biogenesis
 
 comment "kodi-screensaver-biogenesis needs OpenGL"
 	depends on !BR2_PACKAGE_HAS_LIBGL

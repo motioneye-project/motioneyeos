@@ -1,0 +1,48 @@
+From 7fec3ac22efb86fce90a9edc5696e16ee88a65c7 Mon Sep 17 00:00:00 2001
+From: NIIBE Yutaka <gniibe@fsij.org>
+Date: Wed, 24 Oct 2018 14:29:45 +0900
+Subject: [PATCH] build: Don't default to underscore=yes for cross-build.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+* acinclude.m4: Don't set ac_cv_sys_symbol_underscore
+for cross build.
+
+--
+
+It made sense in the past when cross compile were basically for a.out
+system, but nowadays, it's better not to assume that.
+
+Fetched from: 0f4545b441b6fbdd6e9c4e95f5f2a367483e78ad
+
+Signed-off-by: NIIBE Yutaka <gniibe@fsij.org>
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ acinclude.m4 | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
+
+diff --git a/acinclude.m4 b/acinclude.m4
+index fc208c53..6f7789d0 100644
+--- a/acinclude.m4
++++ b/acinclude.m4
+@@ -111,14 +111,10 @@ case "${host}" in
+         ac_cv_sys_symbol_underscore=yes
+         ;;
+     *)
+-      if test "$cross_compiling" = yes; then
+-        if test "x$ac_cv_sys_symbol_underscore" = x ; then
+-           ac_cv_sys_symbol_underscore=yes
+-        fi
+-      else
++      if test "$cross_compiling" != yes; then
+          tmp_do_check="yes"
+       fi
+-       ;;
++      ;;
+ esac
+ if test "$tmp_do_check" = "yes"; then
+   AC_REQUIRE([AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE])
+-- 
+2.22.0
+

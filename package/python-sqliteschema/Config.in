@@ -1,0 +1,13 @@
+config BR2_PACKAGE_PYTHON_SQLITESCHEMA
+	bool "python-sqliteschema"
+	depends on BR2_PACKAGE_PYTHON3 # python-mbstrdecoder
+	select BR2_PACKAGE_PYTHON_SETUPTOOLS # runtime
+	select BR2_PACKAGE_PYTHON_MBSTRDECODER # runtime
+	select BR2_PACKAGE_PYTHON_SIX # runtime
+	select BR2_PACKAGE_PYTHON_TABLEDATA # runtime
+	select BR2_PACKAGE_PYTHON_TYPEPY # runtime
+	help
+	  A Python library to dump table schema of a SQLite database
+	  file.
+
+	  https://github.com/thombashi/sqliteschema

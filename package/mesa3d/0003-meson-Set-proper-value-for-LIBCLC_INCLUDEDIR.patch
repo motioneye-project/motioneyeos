@@ -1,0 +1,39 @@
+From 7b46756a99aca7f27a45c3b99460f088570f6f53 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@smile.fr>
+Date: Wed, 17 Apr 2019 23:07:42 +0200
+Subject: [PATCH] meson: Set proper value for LIBCLC_INCLUDEDIR
+
+LIBCLC_INCLUDEDIR is the location where mesa3d OpenCL implementation
+will look for OpenCL "headers" on the target, when building the OpenCL
+kernels.
+
+The value returned by pkg-config for includedir is relevant when
+cross-compiling, on the build machine. But in this specific case, we
+really need a value that is valid on the target.
+
+Those headers are installed by the libclc package in /usr/share so
+that they are not removed by Buildroot target-finalize logic.
+
+Based on the patch for autotools provided by Valentin Korenblit.
+
+Signed-off-by: Romain Naour <romain.naour@smile.fr>
+---
+ src/gallium/state_trackers/clover/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/gallium/state_trackers/clover/meson.build b/src/gallium/state_trackers/clover/meson.build
+index 62ac5f5278d..ecdeb39669c 100644
+--- a/src/gallium/state_trackers/clover/meson.build
++++ b/src/gallium/state_trackers/clover/meson.build
+@@ -49,7 +49,7 @@ libclllvm = static_library(
+   include_directories : clover_incs,
+   cpp_args : [
+     cpp_vis_args,
+-    '-DLIBCLC_INCLUDEDIR="@0@/"'.format(dep_clc.get_pkgconfig_variable('includedir')),
++    '-DLIBCLC_INCLUDEDIR="/usr/share"',
+     '-DLIBCLC_LIBEXECDIR="@0@/"'.format(dep_clc.get_pkgconfig_variable('libexecdir')),
+     '-DCLANG_RESOURCE_DIR="@0@"'.format(join_paths(
+       dep_llvm.get_configtool_variable('libdir'), 'clang',
+-- 
+2.20.1
+

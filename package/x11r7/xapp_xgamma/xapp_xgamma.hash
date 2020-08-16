@@ -1,2 +1,4 @@
 # From http://lists.x.org/archives/xorg-announce/2015-April/002574.html
-sha256	0ef1c35b5c18b1b22317f455c8df13c0a471a8efad63c89c98ae3ce8c2b222d3	xgamma-1.0.6.tar.bz2
+sha256  0ef1c35b5c18b1b22317f455c8df13c0a471a8efad63c89c98ae3ce8c2b222d3  xgamma-1.0.6.tar.bz2
+# Locally computed
+sha256  78d354d348feaaab8d67a220e84137ec24fece04af4dface2e67132c72e216a2  COPYING

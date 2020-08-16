@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PHP_VERSION = 7.3.4
+PHP_VERSION = 7.4.8
 PHP_SITE = http://www.php.net/distributions
 PHP_SOURCE = php-$(PHP_VERSION).tar.xz
 PHP_INSTALL_STAGING = YES
@@ -16,6 +16,7 @@ PHP_LICENSE_FILES = LICENSE
 PHP_CONF_OPTS = \
 	--mandir=/usr/share/man \
 	--infodir=/usr/share/info \
+	--with-config-file-scan-dir=/etc/php.d \
 	--disable-all \
 	--without-pear \
 	--with-config-file-path=/etc \
@@ -112,14 +113,28 @@ PHP_CONF_OPTS += \
 	$(if $(BR2_PACKAGE_PHP_EXT_SYSVMSG),--enable-sysvmsg) \
 	$(if $(BR2_PACKAGE_PHP_EXT_SYSVSEM),--enable-sysvsem) \
 	$(if $(BR2_PACKAGE_PHP_EXT_SYSVSHM),--enable-sysvshm) \
-	$(if $(BR2_PACKAGE_PHP_EXT_ZIP),--enable-zip) \
+	$(if $(BR2_PACKAGE_PHP_EXT_ZIP),--with-zip) \
 	$(if $(BR2_PACKAGE_PHP_EXT_CTYPE),--enable-ctype) \
 	$(if $(BR2_PACKAGE_PHP_EXT_FILTER),--enable-filter) \
 	$(if $(BR2_PACKAGE_PHP_EXT_CALENDAR),--enable-calendar) \
 	$(if $(BR2_PACKAGE_PHP_EXT_FILEINFO),--enable-fileinfo) \
 	$(if $(BR2_PACKAGE_PHP_EXT_BCMATH),--enable-bcmath) \
-	$(if $(BR2_PACKAGE_PHP_EXT_MBSTRING),--enable-mbstring) \
 	$(if $(BR2_PACKAGE_PHP_EXT_PHAR),--enable-phar)
+
+ifeq ($(BR2_PACKAGE_PHP_EXT_LIBARGON2),y)
+PHP_CONF_OPTS += --with-password-argon2=$(STAGING_DIR)/usr
+PHP_DEPENDENCIES += libargon2
+endif
+
+ifeq ($(BR2_PACKAGE_PHP_EXT_LIBSODIUM),y)
+PHP_CONF_OPTS += --with-sodium=$(STAGING_DIR)/usr
+PHP_DEPENDENCIES += libsodium
+endif
+
+ifeq ($(BR2_PACKAGE_PHP_EXT_MBSTRING),y)
+PHP_CONF_OPTS += --enable-mbstring
+PHP_DEPENDENCIES += oniguruma
+endif
 
 ifeq ($(BR2_PACKAGE_PHP_EXT_MCRYPT),y)
 PHP_CONF_OPTS += --with-mcrypt=$(STAGING_DIR)/usr
@@ -136,7 +151,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_PHP_EXT_LIBXML2),y)
 PHP_CONF_ENV += php_cv_libxml_build_works=yes
-PHP_CONF_OPTS += --enable-libxml --with-libxml-dir=$(STAGING_DIR)/usr
+PHP_CONF_OPTS += --with-libxml --with-libxml-dir=$(STAGING_DIR)/usr
 PHP_DEPENDENCIES += libxml2
 endif
 
@@ -159,6 +174,8 @@ endif
 ifneq ($(BR2_PACKAGE_PHP_EXT_ZLIB)$(BR2_PACKAGE_PHP_EXT_ZIP),)
 PHP_CONF_OPTS += --with-zlib=$(STAGING_DIR)/usr
 PHP_DEPENDENCIES += zlib
+else
+PHP_CONF_OPTS += --disable-mysqlnd_compression_support
 endif
 
 ifeq ($(BR2_PACKAGE_PHP_EXT_GETTEXT),y)
@@ -246,6 +263,15 @@ PHP_POST_CONFIGURE_HOOKS += PHP_DISABLE_VALGRIND
 ifeq ($(BR2_PACKAGE_PCRE2),y)
 PHP_CONF_OPTS += --with-pcre-regex=$(STAGING_DIR)/usr
 PHP_DEPENDENCIES += pcre2
+
+ifeq ($(BR2_PACKAGE_PCRE2_JIT),y)
+PHP_CONF_OPTS += --with-pcre-jit=yes
+PHP_CONF_ENV += ac_cv_have_pcre2_jit=yes
+else
+PHP_CONF_OPTS += --with-pcre-jit=no
+PHP_CONF_ENV += ac_cv_have_pcre2_jit=no
+endif
+
 else
 # The bundled pcre library is not configurable through ./configure options,
 # and by default is configured to be thread-safe, so it wants pthreads. So
@@ -301,12 +327,10 @@ endif
 
 ifeq ($(BR2_PACKAGE_PHP_EXT_GD),y)
 PHP_CONF_OPTS += \
-	--with-gd \
-	--with-jpeg-dir=$(STAGING_DIR)/usr \
-	--with-png-dir=$(STAGING_DIR)/usr \
-	--with-zlib-dir=$(STAGING_DIR)/usr \
-	--with-freetype-dir=$(STAGING_DIR)/usr
-PHP_DEPENDENCIES += jpeg libpng freetype
+	--enable-gd \
+	--with-jpeg \
+	--with-freetype
+PHP_DEPENDENCIES += jpeg libpng freetype zlib
 endif
 
 ifeq ($(BR2_PACKAGE_PHP_SAPI_FPM),y)
@@ -318,15 +342,12 @@ endef
 define PHP_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 0644 $(@D)/sapi/fpm/php-fpm.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/php-fpm.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -fs ../../../../usr/lib/systemd/system/php-fpm.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/php-fpm.service
 endef
 
 define PHP_INSTALL_FPM_CONF
 	$(INSTALL) -D -m 0644 package/php/php-fpm.conf \
 		$(TARGET_DIR)/etc/php-fpm.conf
-	rm -f $(TARGET_DIR)/etc/php-fpm.conf.default
+	rm -f $(TARGET_DIR)/etc/php-fpm.d/www.conf.default
 	# remove unused sample status page /usr/php/php/fpm/status.html
 	rm -rf $(TARGET_DIR)/usr/php
 endef

@@ -1,0 +1,38 @@
+From 1f7b2e5bd6603b30202a66b6317a41e2be85742b Mon Sep 17 00:00:00 2001
+From: Esben Haabendal <esben@haabendal.dk>
+Date: Tue, 26 Mar 2019 13:37:02 +0100
+Subject: [PATCH] Revert "efilink: fix build with gcc 4.8"
+
+This reverts commit 6335e5c697c57d8b5854b8202de3733bcb151ca6, as it breaks
+gcc builds with '-nostdinc' flag.
+
+The fix in 1a53d8f88a452847b25f9689f9a08dbcf82c86e4
+(Fix for problem with undeclared intptr_t type), which is also merged
+fixes the same problem, without causing breakage.
+
+Signed-off-by: Esben Haabendal <esben@haabendal.dk>
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+[Upstream status:
+https://sourceforge.net/p/gnu-efi/code/merge-requests/6/]
+---
+ inc/efilink.h | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/inc/efilink.h b/inc/efilink.h
+index b69a6fd..cc5aa2d 100644
+--- a/inc/efilink.h
++++ b/inc/efilink.h
+@@ -1,10 +1,6 @@
+ #ifndef _EFI_LINK_H
+ #define _EFI_LINK_H
+ 
+-#if defined(__GNUC__)
+-#include <stdint.h>
+-#endif
+-
+ /*++
+ 
+ Copyright (c) 1998  Intel Corporation
+-- 
+2.20.1
+

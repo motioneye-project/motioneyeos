@@ -19,5 +19,11 @@ ifeq ($(BR2_m68k_cf)$(BR2_MIPS_CPU_MIPS32R6)$(BR2_MIPS_CPU_MIPS64R6)$(BR2_ARM_CP
 GMP_CONF_OPTS += --disable-assembly
 endif
 
+ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
+GMP_CONF_OPTS += --enable-cxx
+else
+GMP_CONF_OPTS += --disable-cxx
+endif
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

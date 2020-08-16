@@ -15,7 +15,6 @@ HOST_ACL_DEPENDENCIES = host-attr
 ACL_INSTALL_STAGING = YES
 
 ACL_CONF_OPTS = --disable-nls
-HOST_ACL_CONF_OPTS = --disable-nls
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

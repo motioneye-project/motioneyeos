@@ -1,0 +1,12 @@
+config BR2_PACKAGE_MOST
+	bool "most"
+	depends on BR2_USE_MMU # slang
+	select BR2_PACKAGE_SLANG
+	help
+	  most is a powerful pager, including features like multi
+	  document support, hex view and unpack on-the-fly.
+
+	  Note: this program depends on the slang library which is
+	  rather large to be used just for this pager.
+
+	  https://www.jedsoft.org/most/

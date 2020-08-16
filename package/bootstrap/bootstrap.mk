@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-BOOTSTRAP_VERSION = 4.1.0
+BOOTSTRAP_VERSION = 4.3.1
 BOOTSTRAP_SITE = https://github.com/twbs/bootstrap/releases/download/v$(BOOTSTRAP_VERSION)
 BOOTSTRAP_SOURCE = bootstrap-$(BOOTSTRAP_VERSION)-dist.zip
 BOOTSTRAP_LICENSE = MIT
@@ -12,6 +12,7 @@ BOOTSTRAP_LICENSE_FILES = css/bootstrap.css
 
 define BOOTSTRAP_EXTRACT_CMDS
 	$(UNZIP) $(BOOTSTRAP_DL_DIR)/$(BOOTSTRAP_SOURCE) -d $(@D)
+	mv $(@D)/bootstrap-$(BOOTSTRAP_VERSION)-dist/* $(@D)
 endef
 
 define BOOTSTRAP_INSTALL_TARGET_CMDS

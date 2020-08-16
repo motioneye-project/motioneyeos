@@ -1,5 +1,8 @@
+# From https://github.com/troglobit/libite/releases/download/v2.2.0/libite-2.2.0.tar.xz.md5
+md5  8533ab27d0d4a7c745f11925907795a9  libite-2.2.0.tar.xz
+
 # Locally calculated
-sha256 bd5d08066f3e53cc8967beb6f0620286aad7a24d49fb730caa1c6d09a26bb705  libite-v2.0.2.tar.gz
-sha256 0e97ab27b60e20a7ddb8e9638189ad159124e51d2c12e12735b05423df224da5  LICENSE
-sha256 9e0fb98d251dddf5ba81a355f6b4d89835ec53bc5d7f5fcd2c866b54ec5ccec8  src/chomp.c
-sha256 a7d29c148e057fae11a87febc3a51970a26433c35a08fc710be689394442d32d  src/pidfile.c
+sha256  3fdeb48ea3d9220f91111ed7a68e1e68edfc70346d0108a49bab73a47a7dd761  libite-2.2.0.tar.xz
+sha256  a8a7506c64ce46a58c17838b0f678f8c2567d71869402f97d19460ddec4882f5  LICENSE
+sha256  89053891d46d04a21d4a492f68038703e179986baffa458201810f4222b57427  src/chomp.c
+sha256  a7d29c148e057fae11a87febc3a51970a26433c35a08fc710be689394442d32d  src/pidfile.c

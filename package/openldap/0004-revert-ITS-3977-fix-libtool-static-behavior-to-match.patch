@@ -1,0 +1,56 @@
+From 88a0442a0f01076914af80db40571fd52914ffa3 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Thu, 28 Mar 2019 23:52:38 +0100
+Subject: [PATCH] revert ITS#3977, fix libtool -static behavior to match docs
+
+Revert
+https://github.com/openldap/openldap/commit/7b6a088a2590fdad10286d10050b769e48554e13
+as this patch does not work with our buildroot patches
+
+Fixes:
+ - http://autobuild.buildroot.org/results/ab4f85fd21cacfaef6b0b43a38da6a4a1d32ecb6
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: Not upstreamable]
+---
+ build/ltmain.sh | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
+
+diff --git a/build/ltmain.sh b/build/ltmain.sh
+index 1d079b91e..996dc7dad 100755
+--- a/build/ltmain.sh
++++ b/build/ltmain.sh
+@@ -1190,15 +1190,14 @@ EOF
+ 	  if test -n "$link_static_flag"; then
+ 	    dlopen_self=$dlopen_self_static
+ 	  fi
+-	  prefer_static_libs=yes
+ 	else
+ 	  if test -z "$pic_flag" && test -n "$link_static_flag"; then
+ 	    dlopen_self=$dlopen_self_static
+ 	  fi
+-	  prefer_static_libs=built
+ 	fi
+ 	build_libtool_libs=no
+ 	build_old_libs=yes
++	prefer_static_libs=yes
+ 	break
+ 	;;
+       esac
+@@ -2602,12 +2601,8 @@ EOF
+ 	fi
+ 
+ 	link_static=no # Whether the deplib will be linked statically
+-	use_static_libs=$prefer_static_libs
+-	if test "$use_static_libs" = built && test "$installed" = yes ; then
+-	  use_static_libs=no
+-	fi
+ 	if test -n "$library_names" &&
+-	   { test "$use_static_libs" = no || test -z "$old_library"; }; then
++	   { test "$prefer_static_libs" = no || test -z "$old_library"; }; then
+ 	  if test "$installed" = no; then
+ 	    notinst_deplibs="$notinst_deplibs $lib"
+ 	    need_relink=yes
+-- 
+2.14.1
+

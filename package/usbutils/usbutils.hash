@@ -1,5 +1,5 @@
 # From https://www.kernel.org/pub/linux/utils/usb/usbutils/sha256sums.asc
-sha256	61c7364bb4986fb05e5067e4ac5585b1299b664c57f761caecd2e9e724794a19	usbutils-010.tar.xz
+sha256	88634625f91840bc1993d2731cc081ee8d3b13d56069a95bdd6ac6ef0e063e46	usbutils-012.tar.xz
 # Locally calculated
 sha256	8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643	LICENSES/GPL-2.0.txt
 sha256	3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986	LICENSES/GPL-3.0.txt

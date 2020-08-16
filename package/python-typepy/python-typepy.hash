@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/typepy/json, sha256 locally computed
+# md5 from https://pypi.python.org/pypi/typepy/json
 md5	b9abd4d661dabe512e95ca69ddb65d55  typepy-0.0.20.tar.gz
+# Locally computed
 sha256	a1a5b9438670d4a5d9f882b7499ea85d06dc384577bb7636cb29d903288bca8c  typepy-0.0.20.tar.gz
+sha256  bebbdf0524a147f89a615fff53d79bdc90cbc7631550fb4b725cd3f3bdcd24f6  LICENSE

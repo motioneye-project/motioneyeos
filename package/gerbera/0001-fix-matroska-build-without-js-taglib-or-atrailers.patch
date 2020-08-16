@@ -1,0 +1,51 @@
+From 0ac781b0b0deef5c02c32a70ac484f882c3f4dd0 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Tue, 24 Dec 2019 18:55:57 +0100
+Subject: [PATCH] fix matroska build without js, taglib or atrailers
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+i2i function is used in matroska_handler.cc but this function is defined
+only if defined(HAVE_JS) || defined(HAVE_TAGLIB) || defined(ATRAILERS)
+as a result compilation fails if HAVE_MATROSKA is set but HAVE_JS,
+HAVE_TAGLIG or ATRAILERS are not.
+
+Backported from: 0ac781b0b0deef5c02c32a70ac484f882c3f4dd0
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ src/string_converter.cc | 2 +-
+ src/string_converter.h  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/string_converter.cc b/src/string_converter.cc
+index f669c661..7a3c55d7 100644
+--- a/src/string_converter.cc
++++ b/src/string_converter.cc
+@@ -218,7 +218,7 @@ Ref<StringConverter> StringConverter::p2i()
+ }
+ #endif
+ 
+-#if defined(HAVE_JS) || defined(HAVE_TAGLIB) || defined(ATRAILERS)
++#if defined(HAVE_JS) || defined(HAVE_TAGLIB) || defined(ATRAILERS) || defined(HAVE_MATROSKA)
+ 
+ Ref<StringConverter> StringConverter::i2i()
+ {
+diff --git a/src/string_converter.h b/src/string_converter.h
+index 58495430..f75bf833 100644
+--- a/src/string_converter.h
++++ b/src/string_converter.h
+@@ -65,7 +65,7 @@ public:
+     static zmm::Ref<StringConverter> p2i();
+ 
+ #endif
+-#if defined(HAVE_JS) || defined(HAVE_TAGLIB) || defined(ATRAILERS)
++#if defined(HAVE_JS) || defined(HAVE_TAGLIB) || defined(ATRAILERS) || defined(HAVE_MATROSKA)
+     /// \brief safeguard - internal to internal - needed to catch some
+     /// scenarious where the user may have forgotten to add proper conversion
+     /// in the script.
+-- 
+2.26.1
+

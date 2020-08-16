@@ -2,3 +2,5 @@ config BR2_PACKAGE_LIBGLOB
 	bool "libglob"
 	help
 	  OpenBSD implementation of glob(3).
+
+	  https://github.com/void-linux/libglob

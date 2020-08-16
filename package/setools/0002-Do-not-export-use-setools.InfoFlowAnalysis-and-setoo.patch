@@ -12,7 +12,7 @@ Therefore it's better to use setools.infoflow.InfoFlowAnalysis and
 setools.dta.DomainTransitionAnalysis and let the package containing
 sedta and seinfoflow to require python3-networkx
 
-Signed-off-by: Adam Duskett <Adamduskett@outlook.com>
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
 ---
  sedta                       | 3 ++-
  seinfoflow                  | 3 ++-

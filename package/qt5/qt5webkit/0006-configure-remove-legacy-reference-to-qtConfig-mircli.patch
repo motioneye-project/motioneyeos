@@ -1,0 +1,34 @@
+From c408484e3a442ecf99d3cc61402f20c45c894b7c Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Mon, 3 Feb 2020 21:19:57 +0100
+Subject: [PATCH] configure: remove legacy reference to qtConfig(mirclient)
+
+The optio mirclient is removed since Qt-5.14.x (see [1])
+Fixes:
+
+  Project ERROR: Could not find feature mirclient.
+
+[1] https://code.qt.io/cgit/qt/qtbase.git/commit/?id=8c73ddd8e3fb43cc22fa111b855ab1f9f5b83405
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ Tools/qmake/mkspecs/features/configure.prf | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/Tools/qmake/mkspecs/features/configure.prf b/Tools/qmake/mkspecs/features/configure.prf
+index 23d99040..783f6752 100644
+--- a/Tools/qmake/mkspecs/features/configure.prf
++++ b/Tools/qmake/mkspecs/features/configure.prf
+@@ -130,9 +130,6 @@ defineTest(finalizeConfigure) {
+         addReasonForSkippingBuild("Build not supported on Android.")
+     }
+     QT_FOR_CONFIG += gui-private
+-    production_build:qtConfig(mirclient) {
+-        addReasonForSkippingBuild("Build not supported on Ubuntu Touch.")
+-    }
+     !gnu_thin_archives:!win32-msvc2013:!mingw:qtConfig(static) {
+         addReasonForSkippingBuild("QtWebKit cannot be built as a static library on this platform. Check your configuration in qtbase/config.summary.")
+     }
+-- 
+2.25.0
+

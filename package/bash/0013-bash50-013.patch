@@ -1,0 +1,77 @@
+From https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-013
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	5.0
+Patch-ID:	bash50-013
+
+Bug-Reported-by:	HIROSE Masaaki <hirose31@gmail.com>
+Bug-Reference-ID:	<CAGSOfA-RqiTe=+GsXsDKyZrrMWH4bDbXgMVVegMa6OjqC5xbnQ@mail.gmail.com>
+Bug-Reference-URL:	https://lists.gnu.org/archive/html/bug-bash/2019-05/msg00038.html
+
+Bug-Description:
+
+Reading history entries with timestamps can result in history entries joined
+by linefeeds.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-5.0-patched/lib/readline/histfile.c	2018-06-11 09:14:52.000000000 -0400
+--- b/lib/readline/histfile.c	2019-05-16 15:55:57.000000000 -0400
+***************
+*** 370,376 ****
+  
+    has_timestamps = HIST_TIMESTAMP_START (buffer);
+!   history_multiline_entries += has_timestamps && history_write_timestamps;  
+  
+    /* Skip lines until we are at FROM. */
+    for (line_start = line_end = buffer; line_end < bufend && current_line < from; line_end++)
+      if (*line_end == '\n')
+--- 370,378 ----
+  
+    has_timestamps = HIST_TIMESTAMP_START (buffer);
+!   history_multiline_entries += has_timestamps && history_write_timestamps;
+  
+    /* Skip lines until we are at FROM. */
++   if (has_timestamps)
++     last_ts = buffer;
+    for (line_start = line_end = buffer; line_end < bufend && current_line < from; line_end++)
+      if (*line_end == '\n')
+***************
+*** 381,385 ****
+--- 383,398 ----
+  	if (HIST_TIMESTAMP_START(p) == 0)
+  	  current_line++;
++ 	else
++ 	  last_ts = p;
+  	line_start = p;
++ 	/* If we are at the last line (current_line == from) but we have
++ 	   timestamps (has_timestamps), then line_start points to the
++ 	   text of the last command, and we need to skip to its end. */
++ 	if (current_line >= from && has_timestamps)
++ 	  {
++ 	    for (line_end = p; line_end < bufend && *line_end != '\n'; line_end++)
++ 	      ;
++ 	    line_start = (*line_end == '\n') ? line_end + 1 : line_end;
++ 	  }
+        }
+  
+
+*** ../bash-5.0/patchlevel.h	2016-06-22 14:51:03.000000000 -0400
+--- b/patchlevel.h	2016-10-01 11:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 12
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 13
+  
+  #endif /* _PATCHLEVEL_H_ */

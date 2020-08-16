@@ -4,4 +4,4 @@ config BR2_PACKAGE_LIBFCGI
 	help
 	  FCGI, a fastcgi developer library for C/C++
 
-	  http://www.fastcgi.com/
+	  https://fastcgi-archives.github.io/

@@ -1,0 +1,6 @@
+# retrieved by scancpan from http://cpan.metacpan.org/
+md5    4002f7a7da4c90973ad6eedfb0fcfa16 Mojolicious-Plugin-I18N-1.6.tar.gz
+sha256 32fb5ef8037d954b7ecebef5c1b2b24b420abd829702312f4ad42794f52b514d Mojolicious-Plugin-I18N-1.6.tar.gz
+
+# manually computed
+sha256 82b05028033057b388b0040a3b5590a1c51168fe3b9899bffdb5ef7962c4eb47 README.pod
