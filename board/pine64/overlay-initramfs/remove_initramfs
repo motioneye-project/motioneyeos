@@ -1,3 +1,0 @@
-#!/bin/sh
-
-sed -i 's/initrd_filename=/#initrd_filename=/' /boot/uEnv.txt
