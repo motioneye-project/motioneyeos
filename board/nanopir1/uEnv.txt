@@ -1,0 +1,2 @@
+disk_dev=/dev/mmcblk0
+initramfs_enabled=0

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+sn=$(cat /sys/class/net/eth0/address 2>/dev/null | tr -d ':')
+echo ${sn: -8}

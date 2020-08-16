@@ -1,0 +1,56 @@
+#!/bin/bash
+
+if [[ -z "$1" ]]; then
+    echo "Usage: $0 <emmc_dev>"
+    exit 1
+fi
+
+shopt -s extglob  # For extended globbing of /boot/*.{txt,ini,...}
+
+emmc_dev=$1
+
+function msg() {
+    echo " * $1"
+}
+
+source /tmp/disk_info
+
+msg "SD card device is ${DISK_DEV}"
+
+root_info=$(fdisk -l -o device,start,end,size ${DISK_DEV} | grep "${ROOT_DEV}")
+root_info=(${root_info})
+
+root_end_sector=${root_info[2]}
+total_size=$(((root_end_sector + 1) * 512 / 10485760))  # x 10MB
+
+msg "Unmounting all EMMC partitions"
+umount ${emmc_dev}* &>/dev/null
+partx -d ${emmc_dev} &>/dev/null
+
+msg "Copying ${total_size}0MB from ${DISK_DEV} to ${emmc_dev}"
+dd if=${DISK_DEV} of=${emmc_dev} bs=10M count=${total_size} status=none
+sync
+partx -a ${emmc_dev} &>/dev/null
+
+msg "Removing data partition from EMMC"
+fdisk >/dev/null ${emmc_dev} <<END
+d
+3
+w
+END
+sync
+
+msg "Mounting ${emmc_dev}p1 boot partition"
+mkdir -p /data/.emmc_boot
+mount ${emmc_dev}p1 /data/.emmc_boot
+cd /data/.emmc_boot
+
+msg "Ajusting EMMC root device"
+sed -i "s,${DISK_DEV},${emmc_dev},g" *.@(txt|ini|conf)
+
+msg "Cleaning up"
+cd - >/dev/null
+umount /data/.emmc_boot
+rmdir /data/.emmc_boot
+
+msg "Done!"

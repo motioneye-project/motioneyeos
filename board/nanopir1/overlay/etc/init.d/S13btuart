@@ -1,0 +1,45 @@
+#!/bin/bash
+
+SYS_CONF="/etc/bluetooth.conf"
+BOOT_CONF="/boot/bluetooth.conf"
+CONF="/data/etc/bluetooth.conf"
+
+PROG="/sbin/brcm_patchram_plus"
+FW_DIR="/lib/firmware/ap6212/"
+UART="/dev/ttyS3"
+
+LOG="/var/log/brcm_patchram_plus.log"
+
+
+test -f ${CONF} || test -f ${BOOT_CONF} || test -f ${SYS_CONF} || exit 0
+
+if [[ -f ${CONF} ]] && ! [[ -s ${CONF} ]]; then
+    exit 0  # bluetooth explicitly disabled by empty bluetooth.conf
+fi
+
+test -n "${OS_VERSION}" || source /etc/init.d/base
+
+function start() {
+    mac_address=$(md5sum /sys/bus/nvmem/devices/sunxi-sid0/nvmem | cut -b 1-12 | sed -r ':1;s/(.*[^:])([^:]{2})/\1:\2/;t1')
+    ${PROG} -d --patchram ${FW_DIR} --enable_hci --bd_addr ${mac_address} --no2bytes --tosleep 5000 ${UART} &>${LOG} &
+}
+
+case "$1" in
+    start)
+        msg_begin "Attaching UART bluetooth device"
+        start
+        msg_background
+        ;;
+
+    stop)
+        msg_begin "Detaching UART bluetooth device"
+        killall $(basename ${PROG}) &>/dev/null
+        test $? == 0 && msg_done || msg_fail
+        ;;
+
+    *)
+        echo $"Usage: $0 {start|stop}"
+        exit 1
+esac
+
+exit $?

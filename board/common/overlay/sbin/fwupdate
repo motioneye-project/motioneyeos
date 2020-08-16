@@ -99,31 +99,13 @@ function cleanup_on_exit() {
     losetup -d ${BOOT_LOOP} 2>/dev/null
     losetup -d ${ROOT_LOOP} 2>/dev/null
 
-    mount -T /etc/fstab.disk -o ro /boot 2>/dev/null
+    mount -T /tmp/fstab.disk -o ro /boot 2>/dev/null
 }
 
 
 #### disk & partition devices ####
 
-BOOT_DEV=$(mount | grep /boot | cut -d ' ' -f 1)
-if [[ -n "${BOOT_DEV}" ]]; then
-    ROOT_DEV=${BOOT_DEV:0:-1}2
-    DATA_DEV=${BOOT_DEV:0:-1}3
-else  # boot partition not mounted, trying with data partition
-    DATA_DEV=$(mount | grep /data | cut -d ' ' -f 1)
-    BOOT_DEV=${DATA_DEV:0:-1}1
-    ROOT_DEV=${BOOT_DEV:0:-1}2
-fi
-
-DISK_DEV=${BOOT_DEV}
-if [[ "${ROOT_DEV}" =~ ^([/a-z0-9]+)(p[0-9])$ ]]; then  # e.g. /dev/mmcblk0p2
-    DISK_DEV=${BASH_REMATCH[1]}
-elif [[ "${ROOT_DEV}" =~ ^([/a-z0-9]+)([0-9])$ ]]; then  # e.g. /dev/sdc2
-    DISK_DEV=${BASH_REMATCH[1]}
-else
-    echo "cannot identify disk device from ${ROOT_DEV}" 1>&2
-    exit 1
-fi
+source /tmp/disk_info
 
 function reallocate_boot_part() {
     current_boot_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep "${BOOT_DEV}")
@@ -480,7 +462,7 @@ function do_flash_boot() {
     echo ${pid} > ${DD_PID_FILE}
     wait ${pid}
 
-    mount -T /etc/fstab.disk -o rw /boot
+    mount -T /tmp/fstab.disk -o rw /boot
 
     # the /usr/libexec/fw-restore-boot-cfg script, if present, takes the old (backup) boot dir as argument
     # and should restore any /boot configuration that needs to be preserved across updates

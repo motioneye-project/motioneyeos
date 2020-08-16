@@ -1,0 +1,16 @@
+BR2_arm=y
+BR2_cortex_a7=y
+BR2_ARM_FPU_VFPV4=y
+BR2_CCACHE=y
+BR2_CCACHE_DIR="$(TOPDIR)/.buildroot-ccache-nanopir1-initramfs"
+BR2_OPTIMIZE_2=y
+BR2_TOOLCHAIN_EXTERNAL=y
+BR2_TARGET_OPTIMIZATION="-pipe"
+BR2_ROOTFS_OVERLAY="board/common/overlay-initramfs board/nanopir1/overlay-initramfs"
+BR2_PACKAGE_BUSYBOX_CONFIG="board/common/busybox_initramfs.config"
+BR2_PACKAGE_UTIL_LINUX=y
+BR2_PACKAGE_UTIL_LINUX_LIBBLKID=y
+BR2_TARGET_ROOTFS_CPIO=y
+BR2_TARGET_ROOTFS_CPIO_GZIP=y
+BR2_TARGET_ROOTFS_CPIO_UIMAGE=y
+# BR2_TARGET_ROOTFS_TAR is not set
