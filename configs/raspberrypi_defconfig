@@ -3,6 +3,7 @@ BR2_arm1176jzf_s=y
 BR2_CCACHE=y
 BR2_CCACHE_DIR="$(TOPDIR)/.buildroot-ccache-raspberrypi"
 BR2_OPTIMIZE_2=y
+BR2_GLOBAL_PATCH_DIR="board/raspberrypi"
 BR2_TOOLCHAIN_EXTERNAL=y
 BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD=y
 BR2_TOOLCHAIN_EXTERNAL_URL="https://github.com/raspberrypi/tools/archive/5caa7046982f0539cf5380f94da04b31129ed521.tar.gz"
