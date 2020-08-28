@@ -4,8 +4,8 @@ test -n "${OS_VERSION}" || source /etc/init.d/base
 
 mount_fs() {
     msg_begin "Mounting filesystems"
-    /bin/mount -T /etc/fstab.disk -a &&
-    /bin/mount -T /etc/fstab.extra -a &&
+    /bin/mount -T /tmp/fstab.disk -a &&
+    /bin/mount -T /tmp/fstab.extra -a &&
     if [[ -r /data/etc/fstab.user ]]; then /bin/mount -T /data/etc/fstab.user -a; fi
 
     test $? == 0 && msg_done || msg_fail
@@ -16,10 +16,10 @@ mount_overlay() {
     grep -qw overlay /proc/filesystems || return
 
     msg_begin "Mounting overlay filesystems"
-    grep -oE 'lowerdir=[^,]+' /etc/fstab.overlay | cut -d '=' -f 2 | xargs -r mkdir -p
-    grep -oE 'upperdir=[^,]+' /etc/fstab.overlay | cut -d '=' -f 2 | xargs -r mkdir -p
-    grep -oE 'workdir=[^ ]+' /etc/fstab.overlay | cut -d '=' -f 2 | xargs -r mkdir -p
-    /bin/mount -T /etc/fstab.overlay -a
+    grep -oE 'lowerdir=[^,]+' /tmp/fstab.overlay | cut -d '=' -f 2 | xargs -r mkdir -p
+    grep -oE 'upperdir=[^,]+' /tmp/fstab.overlay | cut -d '=' -f 2 | xargs -r mkdir -p
+    grep -oE 'workdir=[^ ]+' /tmp/fstab.overlay | cut -d '=' -f 2 | xargs -r mkdir -p
+    /bin/mount -T /tmp/fstab.overlay -a
     test $? == 0 && msg_done || msg_fail
 }
 
@@ -59,4 +59,3 @@ case "$1" in
 esac
 
 exit $?
-

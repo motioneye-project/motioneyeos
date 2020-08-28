@@ -1,0 +1,18 @@
+#!/bin/bash
+
+case "$1" in
+    start)
+        echo 0 > /sys/class/leds/status_led/brightness
+        echo 1 > /sys/class/leds/status_led/brightness
+        ;;
+
+    stop)
+        true
+        ;;
+
+    *)
+        echo "Usage: $0 {start}"
+        exit 1
+esac
+
+exit $?

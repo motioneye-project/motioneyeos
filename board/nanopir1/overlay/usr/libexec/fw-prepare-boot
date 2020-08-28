@@ -1,0 +1,6 @@
+#!/bin/bash
+
+source /tmp/disk_info
+
+sed -ri 's/initramfs_enabled=.*/initramfs_enabled=1/' /boot/uEnv.txt
+sed -ri "s,disk_dev=.*,disk_dev=${DISK_DEV}," /boot/uEnv.txt
