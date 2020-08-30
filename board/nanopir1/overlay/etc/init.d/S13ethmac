@@ -1,0 +1,23 @@
+#!/bin/bash
+
+test -n "${OS_VERSION}" || source /etc/init.d/base
+
+case "$1" in
+    start)
+        msg_begin "Assigning persistent eth MAC addresses"
+        mac_address0=$(md5sum /sys/bus/nvmem/devices/sunxi-sid0/nvmem | cut -b 2-13 | sed -r ':1;s/(.*[^:])([^:]{2})/\1:\2/;t1' | sed 's/^../00/')
+        mac_address1=$(md5sum /sys/bus/nvmem/devices/sunxi-sid0/nvmem | cut -b 3-14 | sed -r ':1;s/(.*[^:])([^:]{2})/\1:\2/;t1' | sed 's/^../00/')
+        ip link set eth0 address ${mac_address0}
+        ip link set eth1 address ${mac_address1}
+        test $? == 0 && msg_done || msg_fail
+        ;;
+
+    stop)
+        ;;
+
+    *)
+        echo $"Usage: $0 {start|stop}"
+        exit 1
+esac
+
+exit $?
