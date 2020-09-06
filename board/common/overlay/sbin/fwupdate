@@ -325,7 +325,7 @@ function run_pre_upgrade() {
 
     boot_info=($(cat ${BOOT_INFO_FILE}))
     root_info=($(cat ${ROOT_INFO_FILE}))
-    pre_upgrade="${TMP_ROOT_DIR}/usr/share/pre-upgrade/*"
+    pre_upgrade="${TMP_ROOT_DIR}/usr/share/pre-upgrade"
 
     mkdir -p ${TMP_BOOT_DIR}
     mkdir -p ${TMP_ROOT_DIR}

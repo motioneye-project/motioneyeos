@@ -20,3 +20,6 @@ cp ${RPI_FW_DIR}/fixup.dat ${BOOT_DIR}
 # copy overlays
 mkdir -p ${BOOT_DIR}/overlays
 cp ${RPI_FW_DIR}/overlays/*.dtbo ${BOOT_DIR}/overlays
+
+# libfdt.so doesn't get installed automatically, for some reason
+cp ${BUILD_DIR}/rpi-userland-*/build/lib/libfdt.so ${TARGET}/usr/lib
