@@ -1,0 +1,31 @@
+From a507a9cd6525d5b3a1eea32e25a139b4023800a2 Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Sun, 20 Sep 2020 13:48:00 +0200
+Subject: [PATCH] configure: use require_pkg_config to check for wavpack
+
+Fixes static builds with toolchains needing "-lm" for math functions.
+
+Patch sent upstream:
+http://ffmpeg.org/pipermail/ffmpeg-devel/2020-September/270127.html
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ configure | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure b/configure
+index 5d68695192..4e6c6edd30 100755
+--- a/configure
++++ b/configure
+@@ -6438,7 +6438,7 @@ enabled libvpx            && {
+     fi
+ }
+ 
+-enabled libwavpack        && require libwavpack wavpack/wavpack.h WavpackOpenFileOutput  -lwavpack
++enabled libwavpack        && require_pkg_config libwavpack wavpack "wavpack/wavpack.h" WavpackOpenFileOutput
+ enabled libwebp           && {
+     enabled libwebp_encoder      && require_pkg_config libwebp "libwebp >= 0.2.0" webp/encode.h WebPGetEncoderVersion
+     enabled libwebp_anim_encoder && check_pkg_config libwebp_anim_encoder "libwebpmux >= 0.4.0" webp/mux.h WebPAnimEncoderOptionsInit; }
+-- 
+2.27.0
+
