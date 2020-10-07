@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PROG_DATE="/bin/date"
-PROG_NTPD="/usr/sbin/ntpd"
+PROG_NTPD="/usr/sbin/chronyd"
 PROG_SNTP="/usr/bin/sntp"
 LOG_SNTP="/var/log/sntp.log"
 
@@ -47,7 +47,11 @@ set_current_date_http() {
 }
 
 set_current_date_ntp() {
-    ${PROG_NTPD} -gq &>/dev/null
+    if [[ -n "${DATE_NTP_SERVER}" ]]; then
+        sed -i "s/pool .*/pool ${DATE_NTP_SERVER} iburst/" ${NTP_CONF}
+    fi
+
+    ${PROG_NTPD} -f ${NTP_CONF} -q -t ${DATE_TIMEOUT} &>/dev/null
     if [[ $? == 0 ]]; then
         logger -t date "current system date/time set to $(date) via NTP"
         return 0
@@ -58,8 +62,8 @@ set_current_date_ntp() {
 }
 
 set_current_date_sntp() {
-    sntp_args="-t ${DATE_TIMEOUT} -K /var/lib/ntp/kod -Ss"
-    server=$(cat ${NTP_CONF} | grep server | head -n 1 | cut -d ' ' -f 2)
+    sntp_args="-t ${DATE_TIMEOUT} -K /dev/null -Ss"
+    server=$(cat ${NTP_CONF} | grep pool | head -n 1 | cut -d ' ' -f 2)
     ${PROG_SNTP} ${sntp_args} ${server} &>${LOG_SNTP}
     if [[ $? == 0 ]]; then
         logger -t date "current system date/time set to $(date) via SNTP"
@@ -94,19 +98,9 @@ start_http() {
 }
 
 start_ntp() {
-    mkdir -p /var/lib/ntp
-    touch /var/lib/ntp/kod
-
-    cat ${NTP_CONF} | grep -v iburst > ${NTP_CONF}.tmp
-
     if [[ -n "${DATE_NTP_SERVER}" ]]; then
-        echo "server ${DATE_NTP_SERVER} iburst" > ${NTP_CONF}
-    else
-        cat ${SYS_NTP_CONF} | grep iburst > ${NTP_CONF}
+        sed -i "s/pool .*/pool ${DATE_NTP_SERVER} iburst/" ${NTP_CONF}
     fi
-
-    cat ${NTP_CONF}.tmp >> ${NTP_CONF}
-    rm ${NTP_CONF}.tmp
 
     if [[ "${DATE_METHOD}" == "sntp" ]]; then
         msg_begin "Setting current date using SNTP"
@@ -114,12 +108,12 @@ start_ntp() {
         test $? == 0 && msg_done "$(${PROG_DATE})" || msg_fail
     else # assuming ntp
         msg_begin "Setting current date using NTP"
-        set_current_date_ntp || set_current_date_ntp
+        set_current_date_ntp
         test $? == 0 && msg_done "$(${PROG_DATE})" || msg_fail
     fi
 
     msg_begin "Starting ntpd"
-    ${PROG_NTPD} -g -c ${NTP_CONF}
+    ${PROG_NTPD} -f ${NTP_CONF}
     test $? == 0 && msg_done || msg_fail
 }
 
