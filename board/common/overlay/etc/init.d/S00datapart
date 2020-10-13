@@ -41,7 +41,16 @@ case "$1" in
 
         msg_done "${disk_dev}"
 
-        test -b ${data_dev} && exit 0
+        if [ -b ${data_dev} ]
+        then
+            if grep -q 'fsck.mode=force' /proc/cmdline
+            then
+                /sbin/e2fsck -fy ${data_dev}
+            else
+                /sbin/e2fsck -y ${data_dev}
+            fi
+            exit 0
+        fi
 
         msg_begin "Creating data partition"
         data_start=$((DATA_OFFS * 2048))
