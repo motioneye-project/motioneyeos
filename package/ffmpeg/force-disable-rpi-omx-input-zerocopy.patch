@@ -1,0 +1,15 @@
+diff --git a/libavcodec/omx.c b/libavcodec/omx.c
+index 19b4f33836..4641dc79e2 100644
+--- a/libavcodec/omx.c
++++ b/libavcodec/omx.c
+@@ -644,6 +644,10 @@ static av_cold int omx_encode_init(AVCodecContext *avctx)
+     OMX_BUFFERHEADERTYPE *buffer;
+     OMX_ERRORTYPE err;
+ 
++#if CONFIG_OMX_RPI
++    s->input_zerocopy = 0;
++#endif
++
+     s->omx_context = omx_init(avctx, s->libname, s->libprefix);
+     if (!s->omx_context)
+         return AVERROR_ENCODER_NOT_FOUND;
