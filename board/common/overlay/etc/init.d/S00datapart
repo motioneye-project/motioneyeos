@@ -41,7 +41,21 @@ case "$1" in
 
         msg_done "${disk_dev}"
 
-        test -b ${data_dev} && exit 0
+        if [[ -b ${data_dev} ]]; then
+            msg_begin "Checking data filesystem"
+            if grep -q 'fsck.mode=force' /proc/cmdline; then
+                /sbin/e2fsck -fy ${data_dev} &> /tmp/fsck.log
+            elif ! grep -q 'fsck.mode=skip' /proc/cmdline; then
+                /sbin/e2fsck -y ${data_dev} &> /tmp/fsck.log
+            fi
+            if [[ $? == 0 ]]; then
+                msg_done
+            else
+                msg_fail
+                cat /tmp/fsck.log
+            fi
+            exit 0
+        fi
 
         msg_begin "Creating data partition"
         data_start=$((DATA_OFFS * 2048))
