@@ -17,7 +17,7 @@ jobs:
       - run: isort --check-only --profile black . || true
       - run: pip install -r requirements.txt || pip install --editable .  || pip install . || true
       - run: mkdir --parents --verbose .mypy_cache
-      - run: mypy --ignore-missing-imports --install-types --namespace-packages --non-interactive --scripts-are-modules . || true
+      - run: mypy --explicit-package-bases --ignore-missing-imports --install-types --non-interactive . || true
       - run: pytest . || true
       - run: pytest --doctest-modules . || true
       - run: shopt -s globstar && pyupgrade --py37-plus **/*.py || true
