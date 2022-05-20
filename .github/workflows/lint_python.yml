@@ -2,6 +2,7 @@ name: lint_python
 on: [pull_request, push]
 jobs:
   lint_python:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.owner.login != github.event.pull_request.base.repo.owner.login
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
