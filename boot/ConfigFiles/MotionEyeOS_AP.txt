@@ -1,0 +1,56 @@
+MotionEyeOS Stand-alone Setup
+MotionEye has the ability to act as a stand-alone WiFi IP camera, even in a non-networked environment. 
+To do so, you need a Raspberry Pi, and MicroSD card, along with a PC to image the SD Card. If you do not have a Pi 3, 3B+, 4B,
+or Zero W or Zero WH, you will also need a supported USB WiFi adapter.
+Download the latestest stable image of motionEyeOS for the Raspberry Pi you will be using. (as of 17 Feb 2020 it is
+20200203)  https://github.com/ccrisan/motioneyeos/releases
+Image the SD Card using the tool of your choice. I recommend Win32DiskImager, but Etcher also works in Windows.
+Do not remove the SD Card yet. You need to create or copy the following files to the /boot drive:
+hostapd.conf , dnsmasq.conf , os.conf , and static_ip.conf . I will include the contents at the end of this tutorial.
+If you are using Windows, do not create/edit these files with notepad or wordpad. They create files that aren't quite correct for Linux. I recommend Notepad++, but you can use anything that supports Linux files.
+Eject the SD Card, and place it in your Pi. If you are going to use a USB or CSI Camera, attach it. 
+Power on the Pi. 
+Wait about 2-3 minutes for the first boot and setup.
+On your Android Phone, turn on WiFi and connect to 'picam' (if using the settings below in hostapd.conf)
+Open the web browser on the phone and go to http://192.168.42.1 (again, if using the settings below in static_ip.conf)
+You should get a login. Username is 'admin', password is blank.
+You should now be at motionEye screen, with a link to add a camera.
+All the normal setup configurations will now work as in the instructions at: https://github.com/ccrisan/motioneyeos/wiki/Configuration
+Congratulations!
+If you would like more assistance, please put in a ticket at:
+https://kevinshumaker.wixsite.com/thethirdlevel
+
+Files needed in /boot before first startup:
+Filename:	os.conf
+========
+OS_NETWORKLESS="true"
+========
+--------
+Filename:	static_ip.conf
+========
+STATIC_IP="192.168.42.1/24"
+STATIC_GW="192.168.42.1"
+STATIC_DNS="192.168.42.1"
+========
+--------
+Filename:	hostapd.conf
+========
+ssid=picam
+wpa_passphrase=12345678
+wpa=2
+wpa_key_mgmt=WPA-PSK
+interface=wlan0
+channel=1
+driver=nl80211
+hw_mode=g
+ieee80211n=1
+ieee80211ac=1
+========
+--------
+Filename:	dnsmasq.conf
+========
+interface=wlan0
+dhcp-range=192.168.42.50,192.168.42.150,24h
+dhcp-leasefile=/data/dnsmasq.leases
+========
+
