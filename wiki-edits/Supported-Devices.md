@@ -1,6 +1,6 @@
 ### Banana PI M1
 
-* [board home page](http://www.bananapi.org/p/product.html)
+* [board home page](https://www.banana-pi.org/en/banana-pi-sbcs/10.html)
 * latest version: [20200606](https://github.com/ccrisan/motioneyeos/releases/download/20200606/motioneyeos-bananapim1-20200606.img.xz)
 * kernel: 4.4 (vanilla)
 
