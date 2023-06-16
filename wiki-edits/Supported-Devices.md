@@ -1,37 +1,43 @@
 ### Banana PI M1
 
-* [board home page](http://www.banana-pi.org/m1.html)
+* [board home page](http://www.bananapi.org/p/product.html)
 * latest version: [20200606](https://github.com/ccrisan/motioneyeos/releases/download/20200606/motioneyeos-bananapim1-20200606.img.xz)
 * kernel: 4.4 (vanilla)
 
 ### Nano Pi Neo2
 
- * [board home page](http://www.friendlyarm.com/index.php?route=product/product&product_id=180)
+ * [board home page](https://wiki.friendlyelec.com/wiki/index.php/NanoPi_NEO2)
  * latest version: [20200606](https://github.com/ccrisan/motioneyeos/releases/download/20200606/motioneyeos-nanopineo2-20200606.img.xz)
  * kernel 4.11 (friendlyarm)
 
 ### Odroid C1/C1+
 
-* [board home page](http://www.hardkernel.com/main/products/prdt_info.php?g_code=G141578608433)
+* [board home page](https://www.hardkernel.com/shop/odroid-c1)
 * latest version: [20200606](https://github.com/ccrisan/motioneyeos/releases/download/20200606/motioneyeos-odroidc1-20200606.img.xz)
 * kernel: 3.10 (hardkernel)
 
 ### Odroid C2
 
-* [board home page](http://www.hardkernel.com/main/products/prdt_info.php?g_code=G145457216438)
+* [board home page](https://www.hardkernel.com/shop/odroid-c2)
 * latest version: [20200606](https://github.com/ccrisan/motioneyeos/releases/download/20200606/motioneyeos-odroidc2-20200606.img.xz)
 * kernel: 3.16 (hardkernel)
 
 ### Odroid XU4/XU4Q/HC1/HC2/MC1
 
-* [board home page](http://www.hardkernel.com/main/products/prdt_info.php?g_code=G143452239825)
+* board home pages:
+  [XU4](https://www.hardkernel.com/shop/odroid-xu4-special-price),
+  [XU4Q](https://www.hardkernel.com/shop/odroid-xu4q-special-price),
+  [HC1](https://web.archive.org/web/20180823224437/https://www.hardkernel.com/main/products/prdt_info.php?g_code=G150229074080),
+  [HC2](https://web.archive.org/web/20180609152620/http://www.hardkernel.com/main/products/prdt_info.php?g_code=G151505170472),
+  [MC1](https://web.archive.org/web/20181028104325/http://www.hardkernel.com/main/products/prdt_info.php?g_code=G150152508314)
+
 * latest version: [20200606](https://github.com/ccrisan/motioneyeos/releases/download/20200606/motioneyeos-odroidxu4-20200606.img.xz)
 * kernel: 4.14 (hardkernel)
 
 ### Orange Pi One
 
- * [board home page](http://www.orangepi.org/orangepione/)
- * latest version: [2020200606](https://github.com/ccrisan/motioneyeos/releases/download/20200606/motioneyeos-orangepione-20200606.img.xz)
+ * [board home page](http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/details/Orange-Pi-One.html)
+ * latest version: [20200606](https://github.com/ccrisan/motioneyeos/releases/download/20200606/motioneyeos-orangepione-20200606.img.xz)
  * kernel 4.14 (megous)
 
 ### Pine A64/A64+
@@ -66,6 +72,6 @@
 
 ### Tinker Board
 
-* [board home page] (https://www.asus.com/us/Single-Board-Computer/Tinker-Board/)
+* [board home page](https://www.asus.com/us/Single-Board-Computer/Tinker-Board/)
 * latest version: [20200606](https://github.com/ccrisan/motioneyeos/releases/download/20200606/motioneyeos-tinkerboard-20200606.img.xz)
 * kernel: (unknown)
