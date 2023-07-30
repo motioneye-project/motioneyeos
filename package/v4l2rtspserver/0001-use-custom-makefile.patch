@@ -19,16 +19,19 @@ index e69de29..fb3f2bf 100644
 +RM = rm -rf
 +
 +RTSPSERVER_OBJS = \
-+	src/DeviceSource.o \
 +	src/H264_V4l2DeviceSource.o \
++	src/H265_V4l2DeviceSource.o \
++ src/H26x_V4l2DeviceSource.o \
 +	src/HTTPServer.o \
-+	src/main.o \
-+	src/MemoryBufferSink.o \
 +	src/MJPEGVideoSource.o \
++	src/MemoryBufferSink.o \
 +	src/MulticastServerMediaSubsession.o \
 +	src/ServerMediaSubsession.o \
 +	src/TSServerMediaSubsession.o \
 +	src/UnicastServerMediaSubsession.o \
++ src/V4L2DeviceSource.o \
++ src/V4l2RTSPServer.o \
++	main.o \
 +
 +
 +# v4l2wrapper

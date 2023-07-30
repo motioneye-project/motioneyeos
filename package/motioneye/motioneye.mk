@@ -4,7 +4,7 @@
 #
 #############################################################
 
-MOTIONEYE_VERSION = 1b04e8968c2a127b23341575ab80e9892893b576
+MOTIONEYE_VERSION = 268c8a6ba2d9a5ebb29b421488321972f9777adf # todo: try updating to python3 dev branch
 MOTIONEYE_SITE = $(call github,ccrisan,motioneye,$(MOTIONEYE_VERSION))
 MOTIONEYE_SOURCE = $(MOTIONEYE_VERSION).tar.gz
 MOTIONEYE_LICENSE = GPLv3

@@ -4,8 +4,8 @@
 #
 #############################################################
 
-V4L2TOOLS_VERSION = ab94cf8
-V4L2TOOLS_SITE = https://github.com/jasaw/v4l2tools.git
+V4L2TOOLS_VERSION = bfed609
+V4L2TOOLS_SITE = https://github.com/mpromonet/v4l2tools
 V4L2TOOLS_SITE_METHOD = git
 V4L2TOOLS_LICENSE = UNLICENSE
 V4L2TOOLS_LICENSE_FILES = LICENSE
@@ -74,7 +74,7 @@ define V4L2TOOLS_INSTALL_TARGET_CMDS
 	$(if $(BR2_PACKAGE_RPI_USERLAND_HELLO), $(INSTALL) -D -m 0755 $(@D)/v4l2grab_h264 $(TARGET_DIR)/usr/sbin )
 	$(if $(BR2_PACKAGE_RPI_USERLAND_HELLO), $(INSTALL) -D -m 0755 $(@D)/v4l2display_h264 $(TARGET_DIR)/usr/sbin )
 	$(if $(BR2_PACKAGE_RPI_USERLAND_HELLO), $(INSTALL) -D -m 0755 $(@D)/v4l2compress_omx $(TARGET_DIR)/usr/sbin )
-	$(if $(BR2_PACKAGE_RPI_USERLAND), $(INSTALL) -D -m 0755 $(@D)/v4l2multi_stream_mmal $(TARGET_DIR)/usr/sbin )
+	# $(if $(BR2_PACKAGE_RPI_USERLAND), $(INSTALL) -D -m 0755 $(@D)/v4l2multi_stream_mmal $(TARGET_DIR)/usr/sbin )
 	$(if $(BR2_PACKAGE_LIBYUV), $(INSTALL) -D -m 0755 $(@D)/v4l2convert_yuv $(TARGET_DIR)/usr/sbin )
 	$(if $(and $(BR2_PACKAGE_LIBYUV),$(BR2_PACKAGE_H264BITSTREAM)), $(INSTALL) -D -m 0755 $(@D)/v4l2compress_h264 $(TARGET_DIR)/usr/sbin )
 	$(if $(and $(BR2_PACKAGE_LIBYUV),$(BR2_PACKAGE_HEVCBITSTREAM)), $(INSTALL) -D -m 0755 $(@D)/v4l2compress_x265 $(TARGET_DIR)/usr/sbin )
