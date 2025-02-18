@@ -19,8 +19,6 @@ if [ -z "$1" ]; then
     usage 1>&2
 fi
 
-if [[ $(id -u) -ne 0 ]]; then echo "please run as root"; exit 1; fi
-
 function msg() {
     echo " * $1"
 }
@@ -78,31 +76,43 @@ if ! [ -f "$DISK_IMG" ]; then
     exit 1
 fi
 
-gunzip=$(which unpigz 2> /dev/null || which gunzip 2> /dev/null || true)
-unxz=$(which unxz 2> /dev/null || true)
+if [[ $(id -u) -ne 0 ]]; then echo "please run as root"; exit 1; fi
 
+gzip=$(which pigz 2>/dev/null || which gzip 2>/dev/null || true)
+xz=$(which xz 2>/dev/null || true)
+pv=$(which pv 2>/dev/null || true)
+ddopts="status=none"
+if [ -z "$pv" ]; then
+	pv=cat
+	ddopts="status=progress"
+fi
+
+extractor=""
+extractopts=(-d -c)
 if [[ $DISK_IMG == *.gz ]]; then
-    if [ -z "$gunzip" ]; then
+    if [ -z "$gzip" ]; then
         msg "make sure you have the gzip package installed"
         exit 1
     fi
-    msg "decompressing the .gz compressed image"
-    $gunzip -c "$DISK_IMG" > "${DISK_IMG%???}"
-    DISK_IMG=${DISK_IMG%???}
+    extractor=$gzip
 elif [[ $DISK_IMG == *.xz ]]; then
-    if [ -z "$unxz" ]; then
+    if [ -z "$xz" ]; then
         msg "make sure you have the xz package installed"
         exit 1
     fi
-    msg "decompressing the .xz compressed image"
-    $unxz -T 0 -c "$DISK_IMG" > "${DISK_IMG%???}"
-    DISK_IMG=${DISK_IMG%???}
+	extractor=$xz
+fi
+
+if [ -z "$extractor" ]; then
+	msg "Could not determine archive type!"
+	exit 1
 fi
 
 umount "${SDCARD_DEV}"* 2>/dev/null || true
-msg "writing disk image to sdcard"
-dd if="$DISK_IMG" of="$SDCARD_DEV" bs=1048576
-sync
+msg "extracting disk image to sdcard"
+do_extract=("$extractor" ${extractopts[@]})
+$pv "$DISK_IMG" | "${do_extract[@]}" | dd of="$SDCARD_DEV" bs=4M iflag=fullblock oflag=direct,sync $ddopts
+#sync
 
 if which partprobe > /dev/null 2>&1; then
     msg "re-reading sdcard partition table"
