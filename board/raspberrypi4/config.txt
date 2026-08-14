@@ -1,5 +1,19 @@
 gpu_mem=128
 
+# The boot files are installed under generic names (see postscript.sh), so name
+# them explicitly rather than relying on the firmware's start4.elf/fixup4.dat ->
+# start.elf/fixup.dat fallback.
+start_file=start.elf
+fixup_file=fixup.dat
+kernel=kernel.img
+
+# This is a 32-bit (armhf) build. Newer firmware defaults arm_64bit=1 on BCM2711
+# and would look for kernel8.img, so pin it off.
+arm_64bit=0
+
+# Firmware-stage output on the UART, to make boot failures diagnosable.
+enable_uart=1
+
 dtparam=i2c_arm=on
 dtparam=i2s=on
 dtparam=spi=on
